@@ -792,7 +792,7 @@ public class TravisTest
 
 			final String ludPath = folder.getPath().replaceAll(Pattern.quote("\\"), "/");
 			final String trialDirPath = ludPath
-					.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/../TravisTrials/"))
+					.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/Player/res/"))
 					.replaceFirst(Pattern.quote("/lud/"), Matcher.quoteReplacement("/random_trials/"))
 					.replace(".lud", "");
 
