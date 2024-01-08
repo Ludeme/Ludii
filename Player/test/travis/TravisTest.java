@@ -746,7 +746,7 @@ public class TravisTest
 
 			try
 			{
-				final Game gameWithOptions = GameLoader.loadGameFromName(gameCompiled.name() + ".lud",
+				final Game gameWithOptions = GameLoader.loadGameFromName(pathGameCompiled,
 						optionCombination);
 
 				if (gameWithOptions.hasMissingRequirement())
