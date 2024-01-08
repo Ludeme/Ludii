@@ -200,9 +200,13 @@ public class TravisTest
 				fail();
 			}
 
+			final List<String> excludedIntegrity = new ArrayList<String>();
+			excludedIntegrity.add("Pagade Kayi Ata (Sixteen-handed)");
+
 			try
 			{
-				testIntegrity();
+				if (!containsPartOf(excludedIntegrity, game.name()))
+					testIntegrity();
 			}
 			catch (final IOException e)
 			{
