@@ -1,0 +1,997 @@
+game=../Common/res/lud/board/race/reach/Chonpa.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-102,113,122,-7,18,39,102,106
+Move=[Move:mover=0,from=97,to=97,actions=[Add:type=Cell,to=97,level=0,what=1]]
+Move=[Move:mover=0,from=98,to=98,actions=[Add:type=Cell,to=98,level=0,what=2]]
+Move=[Move:mover=0,from=99,to=99,actions=[Add:type=Cell,to=99,level=0,what=3]]
+Move=[Move:mover=0,actions=[AddPlayerToTeam:team=1,player=1]]
+Move=[Move:mover=0,actions=[AddPlayerToTeam:team=1,player=3]]
+Move=[Move:mover=0,actions=[AddPlayerToTeam:team=2,player=2]]
+Move=[Move:mover=0,actions=[AddPlayerToTeam:team=2,player=4]]
+Move=[Move:mover=0,from=61,to=61,actions=[Add:type=Cell,to=61,level=0,what=4,stack=true]]
+Move=[Move:mover=0,from=64,to=64,actions=[Add:type=Cell,to=64,level=0,what=4,stack=true]]
+Move=[Move:mover=0,from=21,to=21,actions=[Add:type=Cell,to=21,level=0,what=5,stack=true]]
+Move=[Move:mover=0,from=22,to=22,actions=[Add:type=Cell,to=22,level=0,what=5,stack=true]]
+Move=[Move:mover=0,from=85,to=85,actions=[Add:type=Cell,to=85,level=0,what=6,stack=true]]
+Move=[Move:mover=0,from=88,to=88,actions=[Add:type=Cell,to=88,level=0,what=6,stack=true]]
+Move=[Move:mover=0,from=31,to=31,actions=[Add:type=Cell,to=31,level=0,what=7,stack=true]]
+Move=[Move:mover=0,from=32,to=32,actions=[Add:type=Cell,to=32,level=0,what=7,stack=true]]
+Move=[Move:mover=0,from=17,to=17,actions=[Add:type=Cell,to=17,level=0,what=4,state=1,stack=true]]
+Move=[Move:mover=0,from=18,to=18,actions=[Add:type=Cell,to=18,level=0,what=4,state=1,stack=true]]
+Move=[Move:mover=0,from=54,to=54,actions=[Add:type=Cell,to=54,level=0,what=5,state=1,stack=true]]
+Move=[Move:mover=0,from=57,to=57,actions=[Add:type=Cell,to=57,level=0,what=5,state=1,stack=true]]
+Move=[Move:mover=0,from=35,to=35,actions=[Add:type=Cell,to=35,level=0,what=6,state=1,stack=true]]
+Move=[Move:mover=0,from=36,to=36,actions=[Add:type=Cell,to=36,level=0,what=6,state=1,stack=true]]
+Move=[Move:mover=0,from=92,to=92,actions=[Add:type=Cell,to=92,level=0,what=7,state=1,stack=true]]
+Move=[Move:mover=0,from=95,to=95,actions=[Add:type=Cell,to=95,level=0,what=7,state=1,stack=true]]
+Move=[Move:mover=1,from=64,to=61,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=true],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=64,levelFrom=0,typeTo=Cell,to=61,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=61,to=58,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=61,levelFrom=0,typeTo=Cell,to=58,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=58,to=55,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=58,levelFrom=0,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=22,to=21,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=22,levelFrom=0,typeTo=Cell,to=21,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=21,to=3,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=21,levelFrom=1,typeTo=Cell,to=3,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=3,to=4,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=3,levelFrom=0,typeTo=Cell,to=4,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=85,to=88,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=85,levelFrom=0,typeTo=Cell,to=88,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=88,to=94,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=88,levelFrom=0,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=88,to=91,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=88,levelFrom=0,typeTo=Cell,to=91,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=31,to=33,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=true],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=31,levelFrom=0,typeTo=Cell,to=33,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=33,to=50,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=33,levelFrom=0,typeTo=Cell,to=50,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=50,to=48,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=50,levelFrom=0,typeTo=Cell,to=48,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=61,to=58,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=61,levelFrom=0,typeTo=Cell,to=58,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=58,to=56,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=58,levelFrom=0,typeTo=Cell,to=56,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=56,to=71,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=56,levelFrom=0,typeTo=Cell,to=71,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=4,to=72,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=4,levelFrom=0,typeTo=Cell,to=72,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=21,to=3,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=21,levelFrom=0,typeTo=Cell,to=3,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=3,to=5,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=3,levelFrom=0,typeTo=Cell,to=5,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=94,to=78,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=78,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=91,to=93,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=91,levelFrom=0,typeTo=Cell,to=93,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=93,to=75,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=93,levelFrom=0,typeTo=Cell,to=75,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=92,to=94,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=95,levelFrom=0,typeTo=Cell,to=93],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=92,levelFrom=0,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,from=32,to=48,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=32,levelFrom=0,typeTo=Cell,to=48,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=55,to=68,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=68,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=68,to=12,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=68,levelFrom=0,typeTo=Cell,to=12,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=12,to=13,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=12,levelFrom=0,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=5,to=6,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=5,levelFrom=0,typeTo=Cell,to=6,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=72,to=54,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=72,levelFrom=0,typeTo=Cell,to=54,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=78,to=51,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=78,levelFrom=0,typeTo=Cell,to=51,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=36,to=2,actions=[Move:typeFrom=Cell,from=35,levelFrom=0,typeTo=Cell,to=3],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=36,levelFrom=0,typeTo=Cell,to=2,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=93,to=78,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=81],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=93,levelFrom=0,typeTo=Cell,to=78,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,from=48,to=46,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=48,levelFrom=0,typeTo=Cell,to=46,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=13,to=34,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=34,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=34,to=49,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=34,levelFrom=0,typeTo=Cell,to=49,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=49,to=44,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=49,levelFrom=0,typeTo=Cell,to=44,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=54,to=55,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=54,levelFrom=1,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=55,to=59,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=59,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=6,to=7,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=6,levelFrom=0,typeTo=Cell,to=7,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=75,to=42,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=75,levelFrom=0,typeTo=Cell,to=42,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=51,to=38,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=51,levelFrom=0,typeTo=Cell,to=38,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=38,to=37,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=38,levelFrom=0,typeTo=Cell,to=37,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=46,to=44,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=46,levelFrom=0,typeTo=Cell,to=44,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=44,to=53,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=44,levelFrom=1,typeTo=Cell,to=53,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=48,to=53,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=48,levelFrom=0,typeTo=Cell,to=53,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=71,to=74,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=71,levelFrom=0,typeTo=Cell,to=74,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=44,to=53,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=44,levelFrom=0,typeTo=Cell,to=53,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=53,to=92,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=53,levelFrom=2,typeTo=Cell,to=92,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=59,to=10,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=59,levelFrom=0,typeTo=Cell,to=10,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=7,to=60,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=7,levelFrom=0,typeTo=Cell,to=60,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=60,to=57,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=60,levelFrom=0,typeTo=Cell,to=57,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=3,to=5,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=2,levelFrom=0,typeTo=Cell,to=4],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=3,levelFrom=0,typeTo=Cell,to=5,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=37,to=35,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=37,levelFrom=0,typeTo=Cell,to=35,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=53,to=80,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=53,levelFrom=1,typeTo=Cell,to=80,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=81,to=78,actions=[Move:typeFrom=Cell,from=78,levelFrom=0,typeTo=Cell,to=75],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=81,levelFrom=0,typeTo=Cell,to=78,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=74,to=15,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=74,levelFrom=0,typeTo=Cell,to=15,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=15,to=17,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=15,levelFrom=0,typeTo=Cell,to=17,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=57,to=62,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=57,levelFrom=1,typeTo=Cell,to=62,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=62,to=11,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=62,levelFrom=0,typeTo=Cell,to=11,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=10,to=11,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=10,levelFrom=0,typeTo=Cell,to=11,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=42,to=36,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=42,levelFrom=0,typeTo=Cell,to=36,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=36,to=2,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=36,levelFrom=0,typeTo=Cell,to=2,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=35,to=19,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=35,levelFrom=0,typeTo=Cell,to=19,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=80,to=86,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=80,levelFrom=0,typeTo=Cell,to=86,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=53,to=80,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=53,levelFrom=0,typeTo=Cell,to=80,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=86,to=89,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=86,levelFrom=0,typeTo=Cell,to=89,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=92,to=87,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=92,levelFrom=0,typeTo=Cell,to=87,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=17,to=47,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=17,levelFrom=0,typeTo=Cell,to=47,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=54,to=55,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=57,levelFrom=0,typeTo=Cell,to=54],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=54,levelFrom=0,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,from=11,to=16,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=11,levelFrom=0,typeTo=Cell,to=16,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=19,to=1,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=19,levelFrom=0,typeTo=Cell,to=1,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=1,to=6,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=1,levelFrom=0,typeTo=Cell,to=6,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=6,to=7,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=6,levelFrom=0,typeTo=Cell,to=7,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=80,to=86,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=80,levelFrom=0,typeTo=Cell,to=86,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=86,to=89,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=86,levelFrom=0,typeTo=Cell,to=89,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=89,to=90,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=89,levelFrom=1,typeTo=Cell,to=90,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=17,to=48,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=17,levelFrom=0,typeTo=Cell,to=48,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=48,to=47,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=48,levelFrom=0,typeTo=Cell,to=47,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=54,to=55,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=56],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=54,levelFrom=0,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,from=11,to=13,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=11,levelFrom=0,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=2,to=3,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=2,levelFrom=0,typeTo=Cell,to=3,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=7,to=8,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=7,levelFrom=0,typeTo=Cell,to=8,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=3,to=8,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=3,levelFrom=0,typeTo=Cell,to=8,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=90,to=84,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=90,levelFrom=0,typeTo=Cell,to=84,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=84,to=41,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=84,levelFrom=0,typeTo=Cell,to=41,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=89,to=92,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=89,levelFrom=0,typeTo=Cell,to=92,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=87,to=81,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=87,levelFrom=0,typeTo=Cell,to=81,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=81,to=41,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=81,levelFrom=0,typeTo=Cell,to=41,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=41,to=39,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=41,levelFrom=1,typeTo=Cell,to=39,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=55,to=56,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=56,levelFrom=0,typeTo=Cell,to=59],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=56,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,from=13,to=15,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=15,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=8,to=60,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=8,levelFrom=0,typeTo=Cell,to=60,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=8,to=69,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=8,levelFrom=0,typeTo=Cell,to=69,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=60,to=57,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=60,levelFrom=0,typeTo=Cell,to=57,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=92,to=94,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=92,levelFrom=0,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=41,to=35,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=41,levelFrom=0,typeTo=Cell,to=35,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=94,to=93,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=93,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=47,to=77,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=true],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=47,levelFrom=1,typeTo=Cell,to=77,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=39,to=0,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=39,levelFrom=0,typeTo=Cell,to=0,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=77,to=95,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=95,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=16,to=18,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=16,levelFrom=0,typeTo=Cell,to=18,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,from=18,to=34,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=18,levelFrom=1,typeTo=Cell,to=34,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=57,to=62,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=57,levelFrom=0,typeTo=Cell,to=62,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=5,to=7,actions=[Move:typeFrom=Cell,from=4,levelFrom=0,typeTo=Cell,to=6],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=5,levelFrom=0,typeTo=Cell,to=7,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=35,to=19,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=35,levelFrom=0,typeTo=Cell,to=19,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=93,to=90,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=93,levelFrom=0,typeTo=Cell,to=90,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=19,to=4,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=19,levelFrom=0,typeTo=Cell,to=4,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=0,to=5,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=0,levelFrom=0,typeTo=Cell,to=5,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=5,to=58,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=5,levelFrom=0,typeTo=Cell,to=58,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=58,to=61,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=58,levelFrom=0,typeTo=Cell,to=61,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=15,to=16,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=15,levelFrom=0,typeTo=Cell,to=16,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=16,to=48,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=16,levelFrom=0,typeTo=Cell,to=48,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=48,to=43,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=48,levelFrom=0,typeTo=Cell,to=43,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=62,to=10,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=62,levelFrom=0,typeTo=Cell,to=10,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=10,to=11,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=10,levelFrom=0,typeTo=Cell,to=11,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=11,to=17,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=11,levelFrom=0,typeTo=Cell,to=17,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=90,to=87,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=90,levelFrom=0,typeTo=Cell,to=87,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=4,to=72,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=4,levelFrom=0,typeTo=Cell,to=72,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=87,to=42,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=87,levelFrom=0,typeTo=Cell,to=42,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=61,to=55,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=61,levelFrom=0,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=55,to=71,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=71,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=95,to=84,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=95,levelFrom=0,typeTo=Cell,to=84,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=34,to=49,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=34,levelFrom=0,typeTo=Cell,to=49,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=49,to=44,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=49,levelFrom=0,typeTo=Cell,to=44,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=43,to=53,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=43,levelFrom=0,typeTo=Cell,to=53,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=17,to=34,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=17,levelFrom=0,typeTo=Cell,to=34,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=34,to=46,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=34,levelFrom=0,typeTo=Cell,to=46,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=69,to=66,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=69,levelFrom=0,typeTo=Cell,to=66,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=72,to=66,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=72,levelFrom=0,typeTo=Cell,to=66,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=66,to=56,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=66,levelFrom=1,typeTo=Cell,to=56,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=84,to=41,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=84,levelFrom=0,typeTo=Cell,to=41,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=41,to=39,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=41,levelFrom=0,typeTo=Cell,to=39,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=39,to=19,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=39,levelFrom=0,typeTo=Cell,to=19,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=53,to=77,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=53,levelFrom=0,typeTo=Cell,to=77,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=77,to=92,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=92,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=92,to=95,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=92,levelFrom=0,typeTo=Cell,to=95,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=46,to=77,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=46,levelFrom=0,typeTo=Cell,to=77,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=77,to=95,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=95,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=95,to=94,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=95,levelFrom=1,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=42,to=40,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=42,levelFrom=0,typeTo=Cell,to=40,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=40,to=39,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=40,levelFrom=0,typeTo=Cell,to=39,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=56,to=71,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=56,levelFrom=1,typeTo=Cell,to=71,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=19,to=5,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=19,levelFrom=0,typeTo=Cell,to=5,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=5,to=55,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=5,levelFrom=0,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=71,to=10,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=71,levelFrom=0,typeTo=Cell,to=10,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=95,to=93,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=95,levelFrom=0,typeTo=Cell,to=93,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=44,to=43,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=44,levelFrom=0,typeTo=Cell,to=43,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=43,to=89,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=43,levelFrom=0,typeTo=Cell,to=89,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=94,to=91,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=91,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=91,to=52,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=91,levelFrom=0,typeTo=Cell,to=52,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=66,to=60,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=66,levelFrom=0,typeTo=Cell,to=60,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=39,to=19,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=39,levelFrom=0,typeTo=Cell,to=19,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=19,to=0,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=19,levelFrom=0,typeTo=Cell,to=0,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=71,to=14,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=71,levelFrom=0,typeTo=Cell,to=14,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=10,to=11,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=10,levelFrom=0,typeTo=Cell,to=11,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=55,to=61,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=61,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=11,to=12,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=11,levelFrom=0,typeTo=Cell,to=12,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=93,to=90,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=93,levelFrom=0,typeTo=Cell,to=90,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=90,to=84,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=90,levelFrom=0,typeTo=Cell,to=84,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=89,to=90,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=89,levelFrom=0,typeTo=Cell,to=90,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=60,to=57,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=60,levelFrom=0,typeTo=Cell,to=57,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=57,to=65,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=57,levelFrom=0,typeTo=Cell,to=65,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=65,to=68,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=65,levelFrom=0,typeTo=Cell,to=68,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=75,to=51,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=78,levelFrom=0,typeTo=Cell,to=75],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=75,levelFrom=0,typeTo=Cell,to=51,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,from=0,to=5,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=0,levelFrom=0,typeTo=Cell,to=5,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=61,to=67,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=61,levelFrom=0,typeTo=Cell,to=67,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=18,to=46,actions=[Move:typeFrom=Cell,from=47,levelFrom=0,typeTo=Cell,to=77],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=18,levelFrom=0,typeTo=Cell,to=46,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=84,to=78,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=84,levelFrom=0,typeTo=Cell,to=78,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=78,to=51,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=78,levelFrom=0,typeTo=Cell,to=51,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=68,to=13,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=68,levelFrom=0,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=13,to=34,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=34,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=34,to=46,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=34,levelFrom=0,typeTo=Cell,to=46,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=5,to=6,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=5,levelFrom=0,typeTo=Cell,to=6,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,from=14,to=33,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=14,levelFrom=0,typeTo=Cell,to=33,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=67,to=70,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=67,levelFrom=0,typeTo=Cell,to=70,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=12,to=13,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=12,levelFrom=0,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=13,to=18,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=18,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=90,to=87,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=90,levelFrom=0,typeTo=Cell,to=87,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=51,to=37,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=51,levelFrom=1,typeTo=Cell,to=37,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=37,to=21,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=37,levelFrom=0,typeTo=Cell,to=21,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=52,to=96,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=52,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=46,to=44,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=46,levelFrom=1,typeTo=Cell,to=44,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=44,to=43,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=44,levelFrom=0,typeTo=Cell,to=43,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=6,to=7,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=6,levelFrom=1,typeTo=Cell,to=7,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,from=33,to=27,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=33,levelFrom=0,typeTo=Cell,to=27,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=46,to=80,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=95],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=46,levelFrom=0,typeTo=Cell,to=80,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,from=70,to=9,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=70,levelFrom=0,typeTo=Cell,to=9,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=21,to=2,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=21,levelFrom=0,typeTo=Cell,to=2,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=2,to=4,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=2,levelFrom=0,typeTo=Cell,to=4,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=4,to=5,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=4,levelFrom=0,typeTo=Cell,to=5,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=7,to=63,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=7,levelFrom=0,typeTo=Cell,to=63,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=43,to=77,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=43,levelFrom=0,typeTo=Cell,to=77,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=7,to=72,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=7,levelFrom=0,typeTo=Cell,to=72,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=72,to=66,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=72,levelFrom=0,typeTo=Cell,to=66,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=66,to=63,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=66,levelFrom=0,typeTo=Cell,to=63,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=18,to=50,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=18,levelFrom=0,typeTo=Cell,to=50,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=50,to=44,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=50,levelFrom=0,typeTo=Cell,to=44,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=44,to=83,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=44,levelFrom=0,typeTo=Cell,to=83,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=5,to=6,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=5,levelFrom=0,typeTo=Cell,to=6,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,from=87,to=51,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=87,levelFrom=0,typeTo=Cell,to=51,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=77,to=95,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=95,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=95,to=94,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=95,levelFrom=1,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=63,to=57,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=63,levelFrom=1,typeTo=Cell,to=57,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=57,to=62,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=57,levelFrom=0,typeTo=Cell,to=62,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=62,to=11,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=62,levelFrom=0,typeTo=Cell,to=11,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=83,to=89,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=83,levelFrom=0,typeTo=Cell,to=89,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=89,to=95,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=89,levelFrom=0,typeTo=Cell,to=95,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=51,to=38,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=51,levelFrom=1,typeTo=Cell,to=38,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=59,to=65,actions=[Move:typeFrom=Cell,from=56,levelFrom=0,typeTo=Cell,to=62],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=59,levelFrom=0,typeTo=Cell,to=65,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=94,to=91,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=91,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=6,to=8,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=6,levelFrom=0,typeTo=Cell,to=8,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=27,to=96,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=27,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=11,to=13,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=11,levelFrom=0,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=13,to=15,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=15,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=95,to=84,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=95,levelFrom=1,typeTo=Cell,to=84,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=84,to=41,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=84,levelFrom=0,typeTo=Cell,to=41,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=9,to=96,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=9,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=6,to=63,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=6,levelFrom=0,typeTo=Cell,to=63,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,from=38,to=36,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=38,levelFrom=0,typeTo=Cell,to=36,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=63,to=60,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=true],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=63,levelFrom=0,typeTo=Cell,to=60,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=91,to=88,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=91,levelFrom=0,typeTo=Cell,to=88,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=15,to=17,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=15,levelFrom=0,typeTo=Cell,to=17,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=17,to=18,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=17,levelFrom=0,typeTo=Cell,to=18,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=18,to=33,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=18,levelFrom=0,typeTo=Cell,to=33,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=41,to=39,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=41,levelFrom=0,typeTo=Cell,to=39,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=39,to=19,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=39,levelFrom=0,typeTo=Cell,to=19,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=19,to=0,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=19,levelFrom=0,typeTo=Cell,to=0,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=62,to=65,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=65,levelFrom=0,typeTo=Cell,to=68],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=62,levelFrom=0,typeTo=Cell,to=65,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,from=63,to=57,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=63,levelFrom=0,typeTo=Cell,to=57,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=8,to=57,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=60,levelFrom=0,typeTo=Cell,to=62],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=8,levelFrom=0,typeTo=Cell,to=57,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=88,to=84,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=88,levelFrom=0,typeTo=Cell,to=84,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=84,to=42,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=84,levelFrom=0,typeTo=Cell,to=42,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=33,to=27,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=33,levelFrom=0,typeTo=Cell,to=27,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,from=27,to=96,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=27,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=0,to=5,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=0,levelFrom=0,typeTo=Cell,to=5,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=5,to=58,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=5,levelFrom=0,typeTo=Cell,to=58,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=58,to=64,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=58,levelFrom=0,typeTo=Cell,to=64,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=36,to=23,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=36,levelFrom=0,typeTo=Cell,to=23,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=57,to=62,actions=[Move:typeFrom=Cell,from=65,levelFrom=0,typeTo=Cell,to=11],[Move:typeFrom=Cell,from=68,levelFrom=0,typeTo=Cell,to=12],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=57,levelFrom=0,typeTo=Cell,to=62,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=62,to=68,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=true],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=62,levelFrom=0,typeTo=Cell,to=68,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=42,to=40,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=42,levelFrom=0,typeTo=Cell,to=40,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=51,to=38,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=75,levelFrom=0,typeTo=Cell,to=39],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=51,levelFrom=0,typeTo=Cell,to=38,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=95,to=94,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=80,levelFrom=0,typeTo=Cell,to=83],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=95,levelFrom=0,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,from=64,to=62,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=64,levelFrom=0,typeTo=Cell,to=62,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=62,to=11,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=62,levelFrom=0,typeTo=Cell,to=11,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=40,to=35,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=40,levelFrom=0,typeTo=Cell,to=35,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=35,to=0,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=35,levelFrom=0,typeTo=Cell,to=0,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=0,to=6,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=0,levelFrom=0,typeTo=Cell,to=6,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=39,to=38,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=38,levelFrom=0,typeTo=Cell,to=37],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=39,levelFrom=0,typeTo=Cell,to=38,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=62,to=11,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=62,levelFrom=0,typeTo=Cell,to=11,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,from=11,to=13,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=11,levelFrom=2,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=11,to=13,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=11,levelFrom=1,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=13,to=18,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=13,levelFrom=1,typeTo=Cell,to=18,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=18,to=34,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=18,levelFrom=0,typeTo=Cell,to=34,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=6,to=7,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=6,levelFrom=0,typeTo=Cell,to=7,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=57,to=65,actions=[Move:typeFrom=Cell,from=68,levelFrom=0,typeTo=Cell,to=13],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=57,levelFrom=0,typeTo=Cell,to=65,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=94,to=78,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=83,levelFrom=0,typeTo=Cell,to=93],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=78,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,from=13,to=15,actions=[Move:typeFrom=Cell,from=78,levelFrom=0,typeTo=Cell,to=51],[Move:typeFrom=Cell,from=93,levelFrom=0,typeTo=Cell,to=87],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=15,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=34,to=50,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=34,levelFrom=0,typeTo=Cell,to=50,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=50,to=48,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=50,levelFrom=0,typeTo=Cell,to=48,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=48,to=47,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=48,levelFrom=0,typeTo=Cell,to=47,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=7,to=72,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=7,levelFrom=0,typeTo=Cell,to=72,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=72,to=54,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=72,levelFrom=0,typeTo=Cell,to=54,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=54,to=65,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=54,levelFrom=0,typeTo=Cell,to=65,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=15,to=17,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=15,levelFrom=0,typeTo=Cell,to=17,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=17,to=18,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=17,levelFrom=0,typeTo=Cell,to=18,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=18,to=46,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=18,levelFrom=0,typeTo=Cell,to=46,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=23,to=25,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=23,levelFrom=0,typeTo=Cell,to=25,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=47,to=53,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=47,levelFrom=0,typeTo=Cell,to=53,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=53,to=92,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=53,levelFrom=0,typeTo=Cell,to=92,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=65,to=71,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=65,levelFrom=1,typeTo=Cell,to=71,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=71,to=13,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=71,levelFrom=0,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=46,to=45,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=true],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=46,levelFrom=0,typeTo=Cell,to=45,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=45,to=44,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=45,levelFrom=0,typeTo=Cell,to=44,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=44,to=43,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=44,levelFrom=0,typeTo=Cell,to=43,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=25,to=96,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=25,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=92,to=95,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=92,levelFrom=0,typeTo=Cell,to=95,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=95,to=81,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=95,levelFrom=0,typeTo=Cell,to=81,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=65,to=71,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=15],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=65,levelFrom=0,typeTo=Cell,to=71,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=13,to=15,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=15,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=38,to=37,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=37,levelFrom=0,typeTo=Cell,to=36],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=38,levelFrom=0,typeTo=Cell,to=37,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=43,to=77,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=true],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=43,levelFrom=0,typeTo=Cell,to=77,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=87,to=81,actions=[Move:typeFrom=Cell,from=51,levelFrom=0,typeTo=Cell,to=41],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=87,levelFrom=0,typeTo=Cell,to=81,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=77,to=83,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=83,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=12,to=17,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=11,levelFrom=0,typeTo=Cell,to=16],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=12,levelFrom=0,typeTo=Cell,to=17,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,from=81,to=78,actions=[Move:typeFrom=Cell,from=16,levelFrom=0,typeTo=Cell,to=17],[Move:typeFrom=Cell,from=17,levelFrom=0,typeTo=Cell,to=18],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=81,levelFrom=0,typeTo=Cell,to=78,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=15,to=17,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=15,levelFrom=1,typeTo=Cell,to=17,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=36,to=3,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=37,levelFrom=0,typeTo=Cell,to=2],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=36,levelFrom=0,typeTo=Cell,to=3,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=81,to=40,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=41,levelFrom=0,typeTo=Cell,to=35],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=81,levelFrom=0,typeTo=Cell,to=40,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,from=83,to=94,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=83,levelFrom=0,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=78,to=39,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=78,levelFrom=0,typeTo=Cell,to=39,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=39,to=38,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=39,levelFrom=0,typeTo=Cell,to=38,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=38,to=20,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=38,levelFrom=0,typeTo=Cell,to=20,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=15,to=16,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=71,levelFrom=0,typeTo=Cell,to=74],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=15,levelFrom=0,typeTo=Cell,to=16,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=17,to=34,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=17,levelFrom=1,typeTo=Cell,to=34,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=3,to=8,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=2,levelFrom=0,typeTo=Cell,to=7],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=3,levelFrom=0,typeTo=Cell,to=8,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=94,to=81,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=81,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=81,to=78,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=81,levelFrom=0,typeTo=Cell,to=78,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=78,to=51,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=78,levelFrom=0,typeTo=Cell,to=51,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=20,to=26,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=20,levelFrom=0,typeTo=Cell,to=26,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=16,to=48,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=74,levelFrom=0,typeTo=Cell,to=15],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=16,levelFrom=0,typeTo=Cell,to=48,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=34,to=50,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=34,levelFrom=0,typeTo=Cell,to=50,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=8,to=69,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=7,levelFrom=0,typeTo=Cell,to=72],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=8,levelFrom=0,typeTo=Cell,to=69,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=51,to=42,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=51,levelFrom=0,typeTo=Cell,to=42,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=42,to=41,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=42,levelFrom=0,typeTo=Cell,to=41,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=41,to=35,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=41,levelFrom=0,typeTo=Cell,to=35,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=26,to=96,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=26,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=50,to=49,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=50,levelFrom=0,typeTo=Cell,to=49,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=49,to=47,actions=[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=49,levelFrom=0,typeTo=Cell,to=47,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=47,to=53,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=47,levelFrom=0,typeTo=Cell,to=53,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=35,to=3,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=35,levelFrom=1,typeTo=Cell,to=3,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=3,to=54,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=3,levelFrom=0,typeTo=Cell,to=54,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=54,to=67,actions=[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=54,levelFrom=0,typeTo=Cell,to=67,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=17,to=47,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=18,levelFrom=0,typeTo=Cell,to=46],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=17,levelFrom=0,typeTo=Cell,to=47,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=53,to=77,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=53,levelFrom=0,typeTo=Cell,to=77,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=77,to=80,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=80,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=80,to=94,actions=[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=80,levelFrom=0,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=69,to=63,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=72,levelFrom=0,typeTo=Cell,to=66],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=69,levelFrom=0,typeTo=Cell,to=63,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=67,to=73,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=67,levelFrom=0,typeTo=Cell,to=73,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=47,to=77,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=46,levelFrom=0,typeTo=Cell,to=80],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=47,levelFrom=0,typeTo=Cell,to=77,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=48,to=53,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=15,levelFrom=0,typeTo=Cell,to=49],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=48,levelFrom=0,typeTo=Cell,to=53,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,from=94,to=91,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=91,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=73,to=96,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=73,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=77,to=92,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=80,levelFrom=0,typeTo=Cell,to=95],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=92,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=91,to=52,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=91,levelFrom=0,typeTo=Cell,to=52,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,from=52,to=96,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=52,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=40,to=19,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=35,levelFrom=0,typeTo=Cell,to=4],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=40,levelFrom=0,typeTo=Cell,to=19,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=92,to=94,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=95,levelFrom=0,typeTo=Cell,to=93],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=92,levelFrom=0,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=53,to=77,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=49,levelFrom=0,typeTo=Cell,to=48],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=53,levelFrom=0,typeTo=Cell,to=77,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=66,to=55,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=63,levelFrom=0,typeTo=Cell,to=56],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=66,levelFrom=0,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=19,to=1,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=4,levelFrom=0,typeTo=Cell,to=6],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=19,levelFrom=0,typeTo=Cell,to=1,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=94,to=93,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=93,levelFrom=0,typeTo=Cell,to=90],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=93,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=55,to=56,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=56,levelFrom=0,typeTo=Cell,to=59],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=56,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=6,to=7,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=1,levelFrom=0,typeTo=Cell,to=2],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=6,levelFrom=0,typeTo=Cell,to=7,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=90,to=51,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=93,levelFrom=0,typeTo=Cell,to=75],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=90,levelFrom=0,typeTo=Cell,to=51,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=77,to=92,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=48,levelFrom=0,typeTo=Cell,to=43],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=77,levelFrom=0,typeTo=Cell,to=92,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=59,to=65,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=56,levelFrom=0,typeTo=Cell,to=62],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=59,levelFrom=0,typeTo=Cell,to=65,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=2,to=4,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=7,levelFrom=0,typeTo=Cell,to=54],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=2,levelFrom=0,typeTo=Cell,to=4,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=75,to=42,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=51,levelFrom=0,typeTo=Cell,to=41],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=75,levelFrom=0,typeTo=Cell,to=42,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=54,to=55,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=4,levelFrom=0,typeTo=Cell,to=5],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=54,levelFrom=0,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=41,to=36,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=42,levelFrom=0,typeTo=Cell,to=37],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=41,levelFrom=0,typeTo=Cell,to=36,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=43,to=89,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=92,levelFrom=0,typeTo=Cell,to=82],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=43,levelFrom=0,typeTo=Cell,to=89,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=65,to=68,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=62,levelFrom=0,typeTo=Cell,to=65],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=65,levelFrom=0,typeTo=Cell,to=68,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=5,to=7,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=61],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=5,levelFrom=0,typeTo=Cell,to=7,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=68,to=74,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=65,levelFrom=0,typeTo=Cell,to=71],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=68,levelFrom=0,typeTo=Cell,to=74,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=36,to=35,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=37,levelFrom=0,typeTo=Cell,to=36],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=36,levelFrom=0,typeTo=Cell,to=35,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=71,to=13,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=74,levelFrom=0,typeTo=Cell,to=14],[SetVar:name=Pips,value=5],[Move:typeFrom=Cell,from=71,levelFrom=0,typeTo=Cell,to=13,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=61,to=67,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=7,levelFrom=0,typeTo=Cell,to=54],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=61,levelFrom=0,typeTo=Cell,to=67,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=35,to=19,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=36,levelFrom=0,typeTo=Cell,to=35],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=35,levelFrom=0,typeTo=Cell,to=19,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=89,to=95,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=82,levelFrom=0,typeTo=Cell,to=76],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=89,levelFrom=0,typeTo=Cell,to=95,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=54,to=55,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=67,levelFrom=0,typeTo=Cell,to=70],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=54,levelFrom=0,typeTo=Cell,to=55,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=19,to=25,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=35,levelFrom=0,typeTo=Cell,to=24],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=19,levelFrom=0,typeTo=Cell,to=25,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=95,to=94,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=76,levelFrom=0,typeTo=Cell,to=52],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=95,levelFrom=0,typeTo=Cell,to=94,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=14,to=33,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=13,levelFrom=0,typeTo=Cell,to=34],[SetVar:name=Pips,value=6],[Move:typeFrom=Cell,from=14,levelFrom=0,typeTo=Cell,to=33,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=55,to=61,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=70,levelFrom=0,typeTo=Cell,to=9],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=55,levelFrom=0,typeTo=Cell,to=61,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=94,to=88,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=94,levelFrom=0,typeTo=Cell,to=88,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=33,to=32,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=34,levelFrom=0,typeTo=Cell,to=33],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=33,levelFrom=0,typeTo=Cell,to=32,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=61,to=64,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=9,levelFrom=0,typeTo=Cell,to=96],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=61,levelFrom=0,typeTo=Cell,to=64,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=25,to=26,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=24,levelFrom=0,typeTo=Cell,to=25],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=25,levelFrom=0,typeTo=Cell,to=26,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=52,to=96,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=88,levelFrom=0,typeTo=Cell,to=85],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=52,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=64,to=67,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=64,levelFrom=0,typeTo=Cell,to=67,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=85,to=79,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=85,levelFrom=0,typeTo=Cell,to=79,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=67,to=70,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=67,levelFrom=0,typeTo=Cell,to=70,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=26,to=96,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=25,levelFrom=0,typeTo=Cell,to=26],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=26,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=26,to=96,actions=[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=26,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=79,to=76,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=79,levelFrom=0,typeTo=Cell,to=76,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=32,to=31,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=33,levelFrom=0,typeTo=Cell,to=32],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=32,levelFrom=0,typeTo=Cell,to=31,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=31,to=30,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=32,levelFrom=0,typeTo=Cell,to=31],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=31,levelFrom=0,typeTo=Cell,to=30,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=31,to=30,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=30,levelFrom=0,typeTo=Cell,to=29],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=31,levelFrom=0,typeTo=Cell,to=30,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=2],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,from=29,to=27,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=30,levelFrom=0,typeTo=Cell,to=28],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=29,levelFrom=0,typeTo=Cell,to=27,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=98],[SetNextPlayer:player=4],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=4,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,from=76,to=96,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=1],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=2],[Move:typeFrom=Cell,from=76,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=3]]
+Move=[Move:mover=3,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,from=70,to=73,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=70,levelFrom=0,typeTo=Cell,to=73,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=97],[SetNextPlayer:player=1],[SetVar:name=MovePair,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=27,to=96,actions=[SetStateAndUpdateDice:site=97,state=0],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=28,levelFrom=0,typeTo=Cell,to=27],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=27,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,actions=[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=97,state=2],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=3],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=3,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=1],[SetStateAndUpdateDice:site=99,state=2],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=4,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=3],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=1,actions=[SetStateAndUpdateDice:site=97,state=3],[SetStateAndUpdateDice:site=98,state=2],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[Pass:decision=true],[SetVar:name=MovePair,value=0],[SetVar:name=Pips,value=0]]
+Move=[Move:mover=2,from=27,to=96,actions=[SetStateAndUpdateDice:site=97,state=1],[SetStateAndUpdateDice:site=98,state=0],[SetStateAndUpdateDice:site=99,state=0],[SetDiceAllEqual:value=false],[SetVar:name=Pips,value=1],[Move:typeFrom=Cell,from=27,levelFrom=0,typeTo=Cell,to=96,decision=true],[UseDie:indexHandDice=0,indexDie=2,site=99],[SetNextPlayer:player=2]]
+LEGAL MOVES LIST SIZE = 12
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 12
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 12
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 12
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 5
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 5
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 9
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+numInitialPlacementMoves=23
+winner=2
+endtype=NaturalEnd
+rankings=0.0,3.0,1.0,3.0,1.0
+SANDBOX=false
+LUDII_VERSION=1.3.10

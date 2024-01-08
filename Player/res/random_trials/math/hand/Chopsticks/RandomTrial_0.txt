@@ -1,0 +1,38 @@
+game=../Common/res/lud/math/hand/Chopsticks.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-80,-72,-87,-21,97,-56,101,57
+Move=[Move:mover=0,from=0,to=0,actions=[Add:type=Cell,to=0,what=3,state=1]]
+Move=[Move:mover=0,from=1,to=1,actions=[Add:type=Cell,to=1,what=1,state=1]]
+Move=[Move:mover=0,from=2,to=2,actions=[Add:type=Cell,to=2,what=2,state=1]]
+Move=[Move:mover=0,from=3,to=3,actions=[Add:type=Cell,to=3,what=4,state=1]]
+Move=[Move:mover=1,from=0,to=3,actions=[Select:typeFrom=Cell,from=0,typeTo=Cell,to=3,levelTo=0,decision=true],[SetState:type=Cell,to=3,state=2]]
+Move=[Move:mover=2,from=3,to=1,actions=[Select:typeFrom=Cell,from=3,typeTo=Cell,to=1,levelTo=0,decision=true],[SetState:type=Cell,to=1,state=3]]
+Move=[Move:mover=1,from=0,to=3,actions=[Select:typeFrom=Cell,from=0,typeTo=Cell,to=3,levelTo=0,decision=true],[SetState:type=Cell,to=3,state=3]]
+Move=[Move:mover=2,from=2,to=0,actions=[Select:typeFrom=Cell,from=2,typeTo=Cell,to=0,levelTo=0,decision=true],[SetState:type=Cell,to=0,state=2]]
+Move=[Move:mover=1,from=1,to=2,actions=[Select:typeFrom=Cell,from=1,typeTo=Cell,to=2,levelTo=0,decision=true],[SetState:type=Cell,to=2,state=4]]
+Move=[Move:mover=2,from=3,to=0,actions=[Select:typeFrom=Cell,from=3,typeTo=Cell,to=0,levelTo=0,decision=true],[SetState:type=Cell,to=0,state=0]]
+Move=[Move:mover=1,from=1,to=0,actions=[Select:typeFrom=Cell,from=1,typeTo=Cell,to=0,levelTo=0,decision=true],[SetState:type=Cell,to=1,state=1],[SetState:type=Cell,to=0,state=2]]
+Move=[Move:mover=2,from=2,to=1,actions=[Select:typeFrom=Cell,from=2,typeTo=Cell,to=1,levelTo=0,decision=true],[SetState:type=Cell,to=1,state=0]]
+Move=[Move:mover=1,from=0,to=1,actions=[Select:typeFrom=Cell,from=0,typeTo=Cell,to=1,levelTo=0,decision=true],[SetState:type=Cell,to=0,state=0],[SetState:type=Cell,to=1,state=2]]
+Move=[Move:mover=2,from=2,to=1,actions=[Select:typeFrom=Cell,from=2,typeTo=Cell,to=1,levelTo=0,decision=true],[SetState:type=Cell,to=1,state=1]]
+Move=[Move:mover=1,from=1,to=0,actions=[Select:typeFrom=Cell,from=1,typeTo=Cell,to=0,levelTo=0,decision=true],[SetState:type=Cell,to=1,state=0],[SetState:type=Cell,to=0,state=1]]
+Move=[Move:mover=2,from=2,to=0,actions=[Select:typeFrom=Cell,from=2,typeTo=Cell,to=0,levelTo=0,decision=true],[SetState:type=Cell,to=0,state=0]]
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 5
+LEGAL MOVES LIST SIZE = 5
+LEGAL MOVES LIST SIZE = 5
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 3
+numInitialPlacementMoves=4
+winner=2
+endtype=NaturalEnd
+rankings=0.0,2.0,1.0
+SANDBOX=false
+LUDII_VERSION=1.3.10

@@ -1,0 +1,35 @@
+game=../Common/res/lud/board/race/reach/Kawasukuts.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-105,-54,-40,96,-124,-31,73,12
+Move=[Move:mover=0,from=42,to=42,actions=[Add:type=Cell,to=42,level=0,what=1]]
+Move=[Move:mover=0,from=43,to=43,actions=[Add:type=Cell,to=43,level=0,what=2]]
+Move=[Move:mover=0,from=44,to=44,actions=[Add:type=Cell,to=44,level=0,what=3]]
+Move=[Move:mover=0,from=40,to=40,actions=[Add:type=Cell,to=40,level=0,what=4]]
+Move=[Move:mover=0,from=41,to=41,actions=[Add:type=Cell,to=41,level=0,what=5]]
+Move=[Move:mover=1,from=40,to=39,actions=[Move:typeFrom=Cell,from=40,typeTo=Edge,to=39,decision=true],[SetValue:type=Edge,to=39,value=39]]
+Move=[Move:mover=2,from=41,to=39,actions=[Move:typeFrom=Cell,from=41,typeTo=Edge,to=39,decision=true],[SetValue:type=Edge,to=39,value=39]]
+Move=[Move:mover=1,from=39,to=32,actions=[SetStateAndUpdateDice:site=42,state=1],[SetStateAndUpdateDice:site=43,state=0],[SetStateAndUpdateDice:site=44,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Edge,from=39,levelFrom=0,typeTo=Edge,to=32,decision=true],[SetValueOfPlayer:player=1,value=2]]
+Move=[Move:mover=2,from=39,to=8,actions=[SetStateAndUpdateDice:site=42,state=1],[SetStateAndUpdateDice:site=43,state=1],[SetStateAndUpdateDice:site=44,state=1],[SetDiceAllEqual:value=true],[Move:typeFrom=Edge,from=39,levelFrom=0,typeTo=Edge,to=8,decision=true],[SetValueOfPlayer:player=2,value=2]]
+Move=[Move:mover=1,from=32,to=14,actions=[SetStateAndUpdateDice:site=42,state=0],[SetStateAndUpdateDice:site=43,state=0],[SetStateAndUpdateDice:site=44,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Edge,from=32,levelFrom=0,typeTo=Edge,to=14,decision=true]]
+Move=[Move:mover=2,from=8,to=4,actions=[SetStateAndUpdateDice:site=42,state=1],[SetStateAndUpdateDice:site=43,state=0],[SetStateAndUpdateDice:site=44,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Edge,from=8,levelFrom=0,typeTo=Edge,to=4,decision=true]]
+Move=[Move:mover=1,from=14,to=9,actions=[SetStateAndUpdateDice:site=42,state=0],[SetStateAndUpdateDice:site=43,state=1],[SetStateAndUpdateDice:site=44,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Edge,from=14,levelFrom=0,typeTo=Edge,to=9,decision=true]]
+Move=[Move:mover=2,from=4,to=38,actions=[SetStateAndUpdateDice:site=42,state=0],[SetStateAndUpdateDice:site=43,state=1],[SetStateAndUpdateDice:site=44,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Edge,from=4,levelFrom=0,typeTo=Edge,to=38,decision=true]]
+Move=[Move:mover=1,from=9,to=31,actions=[SetStateAndUpdateDice:site=42,state=1],[SetStateAndUpdateDice:site=43,state=0],[SetStateAndUpdateDice:site=44,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Edge,from=9,levelFrom=0,typeTo=Edge,to=31,decision=true]]
+Move=[Move:mover=2,from=38,to=30,actions=[SetStateAndUpdateDice:site=42,state=0],[SetStateAndUpdateDice:site=43,state=1],[SetStateAndUpdateDice:site=44,state=1],[SetDiceAllEqual:value=false],[Move:typeFrom=Edge,from=38,levelFrom=0,typeTo=Edge,to=30,decision=true]]
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+numInitialPlacementMoves=5
+winner=2
+endtype=NaturalEnd
+rankings=0.0,2.0,1.0
+SANDBOX=false
+LUDII_VERSION=1.3.0

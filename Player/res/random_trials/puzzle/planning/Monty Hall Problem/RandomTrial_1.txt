@@ -1,0 +1,19 @@
+game=../Common/res/lud/puzzle/planning/Monty Hall Problem.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=86,-6,-114,125,-67,39,18,42
+Move=[Move:mover=0,from=2,to=2,actions=[Add:type=Cell,to=2,what=1]]
+Move=[Move:mover=0,from=1,to=1,actions=[Add:type=Cell,to=1,what=2]]
+Move=[Move:mover=0,from=0,to=0,actions=[Add:type=Cell,to=0,what=2]]
+Move=[Move:mover=0,from=0,to=0,actions=[SetHiddenWhat:type=Cell,to=0,level=0,who=1,value=true]]
+Move=[Move:mover=0,from=1,to=1,actions=[SetHiddenWhat:type=Cell,to=1,level=0,who=1,value=true]]
+Move=[Move:mover=0,from=2,to=2,actions=[SetHiddenWhat:type=Cell,to=2,level=0,who=1,value=true]]
+Move=[Move:mover=1,from=0,to=0,actions=[Select:typeFrom=Cell,from=0,decision=true],[SetHiddenWhat:type=Cell,to=1,level=0,who=1,value=false]]
+Move=[Move:mover=1,from=2,to=2,actions=[Select:typeFrom=Cell,from=2,decision=true],[SetHiddenWhat:type=Cell,to=0,level=0,who=1,value=false],[SetHiddenWhat:type=Cell,to=1,level=0,who=1,value=false],[SetHiddenWhat:type=Cell,to=2,level=0,who=1,value=false]]
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 3
+winner=1
+endtype=NaturalEnd
+rankings=0.0,1.0
+SANDBOX=false
+LUDII_VERSION=1.1.19

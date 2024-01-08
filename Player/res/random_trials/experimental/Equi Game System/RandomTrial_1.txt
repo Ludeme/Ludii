@@ -1,0 +1,114 @@
+game=../Common/res/lud/experimental/Equi Game System.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-46,55,90,-55,-43,-33,-54,-128
+Move=[Move:mover=0,actions=[SetScore:player=1,score=0]]
+Move=[Move:mover=0,actions=[SetScore:player=2,score=0]]
+Move=[Move:mover=1,from=2,to=2,actions=[Add:type=Vertex,to=2,what=3,decision=true],[SetScore:player=1,score=1,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=10,to=10,actions=[Add:type=Vertex,to=10,what=4,decision=true],[SetScore:player=2,score=1,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=12,to=12,actions=[Add:type=Vertex,to=12,what=3,decision=true],[SetScore:player=1,score=1,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=20,to=20,actions=[Add:type=Vertex,to=20,what=4,decision=true],[SetScore:player=2,score=1,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=4,to=4,actions=[Add:type=Vertex,to=4,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=26,to=26,actions=[Add:type=Vertex,to=26,what=4,decision=true],[SetScore:player=2,score=1,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=4,to=16,actions=[SetScore:player=2,score=-1,add=true],[SetPending:value=10],[Move:typeFrom=Vertex,from=4,typeTo=Vertex,to=16,decision=true],[RememberValue:name=null,value=10],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=10],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=10,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=18,to=18,actions=[Add:type=Vertex,to=18,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=19,to=19,actions=[Add:type=Vertex,to=19,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=7,to=7,actions=[Add:type=Vertex,to=7,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=19,to=17,actions=[ForgetValue:name=null,value=10],[SetScore:player=1,score=3,add=true],[SetPending:value=18],[Move:typeFrom=Vertex,from=19,typeTo=Vertex,to=17,decision=true],[RememberValue:name=null,value=18],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=18],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=18,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=17,to=15,actions=[SetScore:player=1,score=3,add=true],[SetPending:value=16],[Move:typeFrom=Vertex,from=17,typeTo=Vertex,to=15,decision=true],[RememberValue:name=null,value=16],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=16],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=16,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=15,to=5,actions=[SetScore:player=1,score=-1,add=true],[SetPending:value=10],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=5,decision=true],[RememberValue:name=null,value=10],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=10],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=10,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=1,to=1,actions=[Add:type=Vertex,to=1,what=4,decision=true],[SetScore:player=2,score=1,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=7,to=6,actions=[Move:typeFrom=Vertex,from=7,typeTo=Vertex,to=6,decision=true],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=21,to=21,actions=[Add:type=Vertex,to=21,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=5,to=7,actions=[ForgetValue:name=null,value=18],[ForgetValue:name=null,value=16],[ForgetValue:name=null,value=10],[SetScore:player=1,score=3,add=true],[SetPending:value=6],[Move:typeFrom=Vertex,from=5,typeTo=Vertex,to=7,decision=true],[RememberValue:name=null,value=6],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=6],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=6,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=7,to=17,actions=[SetScore:player=1,score=-1,add=true],[SetPending:value=12],[Move:typeFrom=Vertex,from=7,typeTo=Vertex,to=17,decision=true],[RememberValue:name=null,value=12],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=12],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=12,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=17,to=24,actions=[SetScore:player=1,score=3,add=true],[SetPending:value=21],[Move:typeFrom=Vertex,from=17,typeTo=Vertex,to=24,decision=true],[RememberValue:name=null,value=21],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=21],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=21,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=0,to=0,actions=[Add:type=Vertex,to=0,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=7,to=7,actions=[Add:type=Vertex,to=7,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=23,to=23,actions=[Add:type=Vertex,to=23,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=7,to=17,actions=[ForgetValue:name=null,value=6],[ForgetValue:name=null,value=12],[ForgetValue:name=null,value=21],[SetScore:player=2,score=-1,add=true],[SetPending:value=12],[Move:typeFrom=Vertex,from=7,typeTo=Vertex,to=17,decision=true],[RememberValue:name=null,value=12],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=12],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=12,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=17,to=15,actions=[SetScore:player=2,score=-1,add=true],[SetPending:value=16],[Move:typeFrom=Vertex,from=17,typeTo=Vertex,to=15,decision=true],[RememberValue:name=null,value=16],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=16],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=16,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=15,to=5,actions=[SetScore:player=2,score=-1,add=true],[SetPending:value=10],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=5,decision=true],[RememberValue:name=null,value=10],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=10],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=10,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=5,to=7,actions=[SetScore:player=2,score=-1,add=true],[SetPending:value=6],[Move:typeFrom=Vertex,from=5,typeTo=Vertex,to=7,decision=true],[RememberValue:name=null,value=6],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=6],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=6,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=14,to=14,actions=[Add:type=Vertex,to=14,what=3,decision=true],[SetScore:player=1,score=1,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=15,to=15,actions=[Add:type=Vertex,to=15,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=22,to=22,actions=[Add:type=Vertex,to=22,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=15,to=5,actions=[ForgetValue:name=null,value=12],[ForgetValue:name=null,value=16],[ForgetValue:name=null,value=10],[ForgetValue:name=null,value=6],[SetScore:player=1,score=-1,add=true],[SetPending:value=10],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=5,decision=true],[RememberValue:name=null,value=10],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=10],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=10,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=15,to=15,actions=[Add:type=Vertex,to=15,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=22,to=13,actions=[ForgetValue:name=null,value=10],[SetScore:player=2,score=-1,add=true],[SetPending:value=18],[Move:typeFrom=Vertex,from=22,typeTo=Vertex,to=13,decision=true],[RememberValue:name=null,value=18],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=18],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=18,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=19,to=19,actions=[Add:type=Vertex,to=19,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=15,to=17,actions=[ForgetValue:name=null,value=18],[SetScore:player=1,score=-1,add=true],[SetPending:value=16],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=17,decision=true],[RememberValue:name=null,value=16],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=16],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=16,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=22,to=22,actions=[Add:type=Vertex,to=22,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=7,to=8,actions=[Move:typeFrom=Vertex,from=7,typeTo=Vertex,to=8,decision=true],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=3,to=3,actions=[Add:type=Vertex,to=3,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=17,to=7,actions=[ForgetValue:name=null,value=16],[SetScore:player=1,score=-1,add=true],[SetPending:value=12],[Move:typeFrom=Vertex,from=17,typeTo=Vertex,to=7,decision=true],[RememberValue:name=null,value=12],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=12],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=12,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=4,to=4,actions=[Add:type=Vertex,to=4,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=13,to=11,actions=[ForgetValue:name=null,value=12],[SetScore:player=2,score=-1,add=true],[SetPending:value=12],[Move:typeFrom=Vertex,from=13,typeTo=Vertex,to=11,decision=true],[RememberValue:name=null,value=12],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=12],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=12,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=11,to=9,actions=[SetScore:player=2,score=-1,add=true],[SetPending:value=10],[Move:typeFrom=Vertex,from=11,typeTo=Vertex,to=9,decision=true],[RememberValue:name=null,value=10],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=10],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=10,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=11,to=11,actions=[Add:type=Vertex,to=11,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=7,to=17,actions=[ForgetValue:name=null,value=12],[ForgetValue:name=null,value=10],[SetScore:player=1,score=-1,add=true],[SetPending:value=12],[Move:typeFrom=Vertex,from=7,typeTo=Vertex,to=17,decision=true],[RememberValue:name=null,value=12],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=12],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=12,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=17,to=15,actions=[SetScore:player=2,score=-1,add=true],[SetPending:value=16],[Move:typeFrom=Vertex,from=17,typeTo=Vertex,to=15,decision=true],[RememberValue:name=null,value=16],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=16],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=16,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=7,to=7,actions=[Add:type=Vertex,to=7,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=11,to=13,actions=[ForgetValue:name=null,value=12],[ForgetValue:name=null,value=16],[SetScore:player=2,score=-1,add=true],[SetPending:value=12],[Move:typeFrom=Vertex,from=11,typeTo=Vertex,to=13,decision=true],[RememberValue:name=null,value=12],[SetPending:],[SetNextPlayer:player=1],[Remove:type=Vertex,to=12],[SetPending:],[SetNextPlayer:player=1],[Add:type=Vertex,to=12,what=3],[SetPending:],[SetNextPlayer:player=1],[SetScore:player=1,score=1,add=true],[SetPending:],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=11,to=11,actions=[Add:type=Vertex,to=11,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,from=7,to=17,actions=[ForgetValue:name=null,value=12],[SetScore:player=1,score=-1,add=true],[SetPending:value=12],[Move:typeFrom=Vertex,from=7,typeTo=Vertex,to=17,decision=true],[RememberValue:name=null,value=12],[SetPending:],[SetNextPlayer:player=2],[Remove:type=Vertex,to=12],[SetPending:],[SetNextPlayer:player=2],[Add:type=Vertex,to=12,what=4],[SetPending:],[SetNextPlayer:player=2],[SetScore:player=2,score=1,add=true],[SetPending:],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=7,to=7,actions=[Add:type=Vertex,to=7,what=2,decision=true],[SetScore:player=2,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=1,from=25,to=25,actions=[Add:type=Vertex,to=25,what=1,decision=true],[SetScore:player=1,score=-3,add=true],[SetVar:name=FirstNoPlace,value=0]]
+Move=[Move:mover=2,actions=[Pass:decision=true,forced=true]]
+LEGAL MOVES LIST SIZE = 27
+LEGAL MOVES LIST SIZE = 26
+LEGAL MOVES LIST SIZE = 25
+LEGAL MOVES LIST SIZE = 24
+LEGAL MOVES LIST SIZE = 23
+LEGAL MOVES LIST SIZE = 22
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 21
+LEGAL MOVES LIST SIZE = 20
+LEGAL MOVES LIST SIZE = 29
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 18
+LEGAL MOVES LIST SIZE = 22
+LEGAL MOVES LIST SIZE = 17
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 17
+LEGAL MOVES LIST SIZE = 15
+LEGAL MOVES LIST SIZE = 19
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 13
+LEGAL MOVES LIST SIZE = 19
+LEGAL MOVES LIST SIZE = 16
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 11
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 8
+LEGAL MOVES LIST SIZE = 11
+LEGAL MOVES LIST SIZE = 7
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 5
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 11
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+numInitialPlacementMoves=2
+winner=1
+endtype=NaturalEnd
+rankings=0.0,1.0,2.0
+SANDBOX=false
+LUDII_VERSION=1.3.7
