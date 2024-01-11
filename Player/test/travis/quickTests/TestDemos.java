@@ -65,14 +65,19 @@ public class TestDemos
 				final JSONObject json = new JSONObject(new JSONTokener(inputStream));
 				final JSONObject jsonDemo = json.getJSONObject("Demo");
 				
-				final String gameName = jsonDemo.getString("Game");
+				String gameName = jsonDemo.getString("Game");
 				final List<String> gameOptions = new ArrayList<>();
 		
 				final JSONArray optionsArray = jsonDemo.optJSONArray("Options");
 				if (optionsArray != null)
 					for (final Object object : optionsArray)
 						gameOptions.add((String) object);
-				
+
+				if (gameName.equals("Hnefatafl.lud"))  // Make sure the correct version of the game will be loaded
+				{
+					gameName = "/lud/board/war/custodial/" + gameName;
+				}
+
 				// Make sure we can load the game
 				final Game game = GameLoader.loadGameFromName(gameName, gameOptions);
 				assert(game != null);
