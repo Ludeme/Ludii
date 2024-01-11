@@ -1,0 +1,25 @@
+game=../Common/res/lud/board/race/reach/Pente Grammai.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-100,66,126,101,-107,65,-31,23
+Move=[Move:mover=0,from=13,to=13,actions=[Add:type=Cell,to=13,level=0,what=1]]
+Move=[Move:mover=0,from=11,to=11,actions=[Add:type=Cell,to=11,level=0,what=2,stack=true]]
+Move=[Move:mover=0,from=11,to=11,actions=[Add:type=Cell,to=11,level=1,what=2,stack=true]]
+Move=[Move:mover=0,from=11,to=11,actions=[Add:type=Cell,to=11,level=2,what=2,stack=true]]
+Move=[Move:mover=0,from=11,to=11,actions=[Add:type=Cell,to=11,level=3,what=2,stack=true]]
+Move=[Move:mover=0,from=11,to=11,actions=[Add:type=Cell,to=11,level=4,what=2,stack=true]]
+Move=[Move:mover=0,from=12,to=12,actions=[Add:type=Cell,to=12,level=0,what=3,stack=true]]
+Move=[Move:mover=0,from=12,to=12,actions=[Add:type=Cell,to=12,level=1,what=3,stack=true]]
+Move=[Move:mover=0,from=12,to=12,actions=[Add:type=Cell,to=12,level=2,what=3,stack=true]]
+Move=[Move:mover=0,from=12,to=12,actions=[Add:type=Cell,to=12,level=3,what=3,stack=true]]
+Move=[Move:mover=0,from=12,to=12,actions=[Add:type=Cell,to=12,level=4,what=3,stack=true]]
+Move=[Move:mover=1,from=11,to=8,levelMin=4,levelMax=4,actions=[SetStateAndUpdateDice:site=13,state=0],[SetDiceAllEqual:value=true],[Move:typeFrom=Cell,from=11,typeTo=Vertex,to=8,decision=true]]
+Move=[Move:mover=2,actions=[SetStateAndUpdateDice:site=13,state=5],[SetDiceAllEqual:value=true],[Pass:decision=true,forced=true]]
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+numInitialPlacementMoves=11
+winner=2
+endtype=NaturalEnd
+rankings=0.0,2.0,1.0
+SANDBOX=false
+LUDII_VERSION=1.3.0

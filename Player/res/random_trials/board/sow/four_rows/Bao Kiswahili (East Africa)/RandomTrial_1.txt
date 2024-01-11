@@ -1,0 +1,26 @@
+game=../Common/res/lud/board/sow/four_rows/Bao Kiswahili (East Africa).lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=101,117,-33,2,-114,11,-88,-97
+Move=[Move:mover=0,from=32,to=32,actions=[SetCount:type=Cell,to=32,what=1,count=22]]
+Move=[Move:mover=0,from=33,to=33,actions=[SetCount:type=Cell,to=33,what=1,count=22]]
+Move=[Move:mover=0,from=13,to=13,actions=[SetCount:type=Vertex,to=13,what=1,count=2]]
+Move=[Move:mover=0,from=14,to=14,actions=[SetCount:type=Vertex,to=14,what=1,count=2]]
+Move=[Move:mover=0,from=17,to=17,actions=[SetCount:type=Vertex,to=17,what=1,count=2]]
+Move=[Move:mover=0,from=18,to=18,actions=[SetCount:type=Vertex,to=18,what=1,count=2]]
+Move=[Move:mover=0,from=12,to=12,actions=[SetCount:type=Vertex,to=12,what=1,count=6]]
+Move=[Move:mover=0,from=19,to=19,actions=[SetCount:type=Vertex,to=19,what=1,count=6]]
+Move=[Move:mover=1,from=32,to=11,actions=[Move:typeFrom=Cell,from=32,typeTo=Vertex,to=11,count=1,decision=true],[SetNextPlayer:player=1],[SetPending:],[SetVar:name=Side,value=0]]
+Move=[Move:mover=1,from=15,to=15,actions=[Move:typeFrom=Vertex,from=19,typeTo=Vertex,to=15,count=6],[Select:typeFrom=Vertex,from=15,decision=true],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=14],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=13],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=12],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=11],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=10],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=9],[SetNextPlayer:player=1],[SetPending:],[SetVar:name=Side,value=1]]
+Move=[Move:mover=1,from=8,to=8,actions=[Move:typeFrom=Vertex,from=17,typeTo=Vertex,to=8,count=2],[Select:typeFrom=Vertex,from=8,decision=true],[Move:typeFrom=Vertex,from=8,typeTo=Vertex,to=9],[Move:typeFrom=Vertex,from=8,typeTo=Vertex,to=10],[SetNextPlayer:player=1],[SetPending:],[SetVar:name=Side,value=0]]
+Move=[Move:mover=1,from=8,to=8,actions=[Move:typeFrom=Vertex,from=18,typeTo=Vertex,to=8,count=2],[Select:typeFrom=Vertex,from=8,decision=true],[Move:typeFrom=Vertex,from=8,typeTo=Vertex,to=9],[Move:typeFrom=Vertex,from=8,typeTo=Vertex,to=10],[SetNextPlayer:player=1],[SetVar:name=Replay,value=10],[SetVar:name=Direction,value=1]]
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+numInitialPlacementMoves=8
+winner=1
+endtype=NaturalEnd
+rankings=0.0,1.0,2.0
+SANDBOX=false
+LUDII_VERSION=1.2.10

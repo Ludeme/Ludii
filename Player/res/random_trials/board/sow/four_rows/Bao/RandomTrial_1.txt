@@ -1,0 +1,48 @@
+game=../Common/res/lud/board/sow/four_rows/Bao.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=40,-71,-52,-91,-108,74,-116,29
+Move=[Move:mover=0,from=32,to=32,actions=[SetCount:type=Cell,to=32,what=1,count=22]]
+Move=[Move:mover=0,from=33,to=33,actions=[SetCount:type=Cell,to=33,what=1,count=22]]
+Move=[Move:mover=0,from=12,to=12,actions=[SetCount:type=Vertex,to=12,what=1,count=6]]
+Move=[Move:mover=0,from=19,to=19,actions=[SetCount:type=Vertex,to=19,what=1,count=6]]
+Move=[Move:mover=0,from=13,to=13,actions=[SetCount:type=Vertex,to=13,what=1,count=2]]
+Move=[Move:mover=0,from=18,to=18,actions=[SetCount:type=Vertex,to=18,what=1,count=2]]
+Move=[Move:mover=1,from=32,to=13,actions=[Move:typeFrom=Cell,from=32,typeTo=Vertex,to=13,count=1,decision=true],[SetNextPlayer:player=1],[SetVar:name=Replay,value=13],[SetVar:name=Direction,value=3]]
+Move=[Move:mover=1,from=13,to=13,actions=[Select:typeFrom=Vertex,from=13,decision=true],[Move:typeFrom=Vertex,from=13,typeTo=Vertex,to=14],[Move:typeFrom=Vertex,from=13,typeTo=Vertex,to=15],[Move:typeFrom=Vertex,from=13,typeTo=Vertex,to=7]]
+Move=[Move:mover=2,from=33,to=18,actions=[Move:typeFrom=Cell,from=33,typeTo=Vertex,to=18,count=1,decision=true],[SetNextPlayer:player=2],[SetVar:name=Replay,value=18],[SetVar:name=Direction,value=3]]
+Move=[Move:mover=2,from=18,to=18,actions=[Select:typeFrom=Vertex,from=18,decision=true],[Move:typeFrom=Vertex,from=18,typeTo=Vertex,to=17],[Move:typeFrom=Vertex,from=18,typeTo=Vertex,to=16],[Move:typeFrom=Vertex,from=18,typeTo=Vertex,to=24]]
+Move=[Move:mover=1,from=32,to=15,actions=[Move:typeFrom=Cell,from=32,typeTo=Vertex,to=15,count=1,decision=true],[SetNextPlayer:player=1],[SetVar:name=Replay,value=15],[SetVar:name=Direction,value=3]]
+Move=[Move:mover=1,from=15,to=15,actions=[Select:typeFrom=Vertex,from=15,decision=true],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=14],[Move:typeFrom=Vertex,from=15,typeTo=Vertex,to=13]]
+Move=[Move:mover=2,from=33,to=17,actions=[Move:typeFrom=Cell,from=33,typeTo=Vertex,to=17,count=1,decision=true],[SetNextPlayer:player=2],[SetVar:name=Replay,value=17],[SetVar:name=Direction,value=3]]
+Move=[Move:mover=2,from=17,to=17,actions=[Select:typeFrom=Vertex,from=17,decision=true],[Move:typeFrom=Vertex,from=17,typeTo=Vertex,to=16],[Move:typeFrom=Vertex,from=17,typeTo=Vertex,to=24],[SetNextPlayer:player=2],[SetVar:name=Replay,value=24],[SetVar:name=Direction,value=1]]
+Move=[Move:mover=2,from=24,to=24,actions=[Select:typeFrom=Vertex,from=24,decision=true],[Move:typeFrom=Vertex,from=24,typeTo=Vertex,to=25],[Move:typeFrom=Vertex,from=24,typeTo=Vertex,to=26]]
+Move=[Move:mover=1,from=32,to=14,actions=[Move:typeFrom=Cell,from=32,typeTo=Vertex,to=14,count=1,decision=true],[SetNextPlayer:player=1],[SetVar:name=Replay,value=14],[SetVar:name=Direction,value=3]]
+Move=[Move:mover=1,from=14,to=14,actions=[Select:typeFrom=Vertex,from=14,decision=true],[Move:typeFrom=Vertex,from=14,typeTo=Vertex,to=15],[Move:typeFrom=Vertex,from=14,typeTo=Vertex,to=7],[Move:typeFrom=Vertex,from=14,typeTo=Vertex,to=6]]
+Move=[Move:mover=2,from=33,to=16,actions=[Move:typeFrom=Cell,from=33,typeTo=Vertex,to=16,count=1,decision=true],[SetNextPlayer:player=2],[SetVar:name=Replay,value=16],[SetVar:name=Direction,value=3]]
+Move=[Move:mover=2,from=16,to=16,actions=[Select:typeFrom=Vertex,from=16,decision=true],[Move:typeFrom=Vertex,from=16,typeTo=Vertex,to=17],[Move:typeFrom=Vertex,from=16,typeTo=Vertex,to=18],[Move:typeFrom=Vertex,from=16,typeTo=Vertex,to=19],[SetVar:name=Direction,value=0]]
+Move=[Move:mover=1,from=32,to=13,actions=[Move:typeFrom=Cell,from=32,typeTo=Vertex,to=13,count=1,decision=true],[SetNextPlayer:player=1],[SetVar:name=Replay,value=13],[SetVar:name=Direction,value=3]]
+Move=[Move:mover=1,from=13,to=13,actions=[Select:typeFrom=Vertex,from=13,decision=true],[Move:typeFrom=Vertex,from=13,typeTo=Vertex,to=14],[Move:typeFrom=Vertex,from=13,typeTo=Vertex,to=15],[SetNextPlayer:player=1],[SetVar:name=Replay,value=15],[SetVar:name=Direction,value=1]]
+Move=[Move:mover=1,actions=[Pass:decision=true,forced=true]]
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+numInitialPlacementMoves=6
+winner=2
+endtype=NaturalEnd
+rankings=0.0,2.0,1.0
+SANDBOX=false
+LUDII_VERSION=1.2.11

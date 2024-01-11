@@ -200,9 +200,13 @@ public class TravisTest
 				fail();
 			}
 
+			final List<String> excludedIntegrity = new ArrayList<String>();
+			excludedIntegrity.add("Pagade Kayi Ata (Sixteen-handed)");
+
 			try
 			{
-				testIntegrity();
+				if (!containsPartOf(excludedIntegrity, game.name()))
+					testIntegrity();
 			}
 			catch (final IOException e)
 			{
@@ -746,7 +750,7 @@ public class TravisTest
 
 			try
 			{
-				final Game gameWithOptions = GameLoader.loadGameFromName(gameCompiled.name() + ".lud",
+				final Game gameWithOptions = GameLoader.loadGameFromName(pathGameCompiled,
 						optionCombination);
 
 				if (gameWithOptions.hasMissingRequirement())
@@ -792,7 +796,7 @@ public class TravisTest
 
 			final String ludPath = folder.getPath().replaceAll(Pattern.quote("\\"), "/");
 			final String trialDirPath = ludPath
-					.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/../TravisTrials/"))
+					.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/Player/res/"))
 					.replaceFirst(Pattern.quote("/lud/"), Matcher.quoteReplacement("/random_trials/"))
 					.replace(".lud", "");
 

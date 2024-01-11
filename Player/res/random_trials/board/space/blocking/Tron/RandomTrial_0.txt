@@ -1,0 +1,22 @@
+game=../Common/res/lud/board/space/blocking/Tron.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-121,-116,35,4,65,-39,-67,-6
+Move=[Move:mover=0,from=44,to=44,actions=[Add:type=Cell,to=44,what=1]]
+Move=[Move:mover=0,from=55,to=55,actions=[Add:type=Cell,to=55,what=2]]
+Move=[Move:mover=1,from=44,to=43,actions=[Move:typeFrom=Cell,from=44,typeTo=Cell,to=43,decision=true],[Add:type=Cell,to=44,what=3]]
+Move=[Move:mover=2,from=55,to=56,actions=[Move:typeFrom=Cell,from=55,typeTo=Cell,to=56,decision=true],[Add:type=Cell,to=55,what=4]]
+Move=[Move:mover=1,from=43,to=42,actions=[Move:typeFrom=Cell,from=43,typeTo=Cell,to=42,decision=true],[Add:type=Cell,to=43,what=3]]
+Move=[Move:mover=2,from=56,to=46,actions=[Move:typeFrom=Cell,from=56,typeTo=Cell,to=46,decision=true],[Add:type=Cell,to=56,what=4]]
+Move=[Move:mover=1,from=42,to=43,actions=[Trigger:event=Collision,player=1],[Move:typeFrom=Cell,from=42,typeTo=Cell,to=43,decision=true],[Add:type=Cell,to=42,what=3]]
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 4
+numInitialPlacementMoves=2
+winner=2
+endtype=NaturalEnd
+rankings=0.0,2.0,1.0
+SANDBOX=false
+LUDII_VERSION=1.3.0
