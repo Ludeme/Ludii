@@ -54,7 +54,7 @@ public abstract class TopologyElement
 	// --------------------Pre-Generation----------------------------------------------
 
 	/**
-	 * Properties of the graph element (Inner, Centre, Corner, ect..).
+	 * Properties of the graph element (Inner, Centre, Corner, etc..).
 	 */
 	protected Properties properties = new Properties();
 
@@ -305,7 +305,7 @@ public abstract class TopologyElement
 	//--------------------Pre-Generation methods----------------------------------
 
 	/**
-	 * @return The properties of the graph element (INNER, CENTRE, CORNER, ect...).
+	 * @return The properties of the graph element (INNER, CENTRE, CORNER, etc...).
 	 */
 	public Properties properties()
 	{
@@ -331,7 +331,7 @@ public abstract class TopologyElement
 	}
 
 	/**
-	 * Set the the properties of the graph element (INNER, CENTRE, CORNER, ect...).
+	 * Set the properties of the graph element (INNER, CENTRE, CORNER, etc...).
 	 * 
 	 * @param properties The properties.
 	 */

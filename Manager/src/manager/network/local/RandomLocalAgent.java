@@ -152,7 +152,7 @@ public class RandomLocalAgent
 		final Thread repeatUpdateValuesThread = new Thread(runnableUpdateValues);
 		repeatUpdateValuesThread.start();
 
-		// If its the agent's turn, make a random move.
+		// If it's the agent's turn, make a random move.
 		final long timeInterval = 100;
 		final Runnable runnableMakeMove = new Runnable()
 		{

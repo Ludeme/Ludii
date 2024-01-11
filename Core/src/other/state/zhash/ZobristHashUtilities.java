@@ -27,7 +27,7 @@ public final class ZobristHashUtilities
 	public static final long UNKNOWN = -1L;
 
 	/**
-	 * @return a new instance of a generator which will return a consistent set of hashes acropss different runs of the code
+	 * @return a new instance of a generator which will return a consistent set of hashes across different runs of the code
 	 */
 	public static final ZobristHashGenerator getHashGenerator()
 	{

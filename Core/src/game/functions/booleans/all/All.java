@@ -64,7 +64,7 @@ public class All extends BaseBooleanFunction
 	}
 	
 	/**
-	 * For checking a condition in each value of a integer array.
+	 * For checking a condition in each value of an integer array.
 	 * 
 	 * @param allType The query type to perform.
 	 * @param array   The array to check.

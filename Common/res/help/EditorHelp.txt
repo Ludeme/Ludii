@@ -2967,7 +2967,7 @@ CONST JAVADOC: Pass: Makes a pass move.
 CONST JAVADOC: PlayCard: Plays a card.
 TYPE: game.rules.play.moves.decision.MoveSiteType
 TYPE JAVADOC: Defines the types of decision move corresponding to a single site.
-CONST JAVADOC: Add: Makes a add move.
+CONST JAVADOC: Add: Makes an add move.
 CONST JAVADOC: Claim: Makes a claim move.
 TYPE: game.rules.play.moves.nonDecision.NonDecision
 TYPE JAVADOC: Defines moves that do not involve an immediate decision by the player.
@@ -5591,7 +5591,7 @@ CONST JAVADOC: Mancala: General style for Mancala boards.
 CONST JAVADOC: PenAndPaper: General style for the pen \& paper style games, such as graph games.
 CONST JAVADOC: Shibumi: Style for square pyramidal games played on the Shibumi board, e.g. Spline.
 CONST JAVADOC: Spiral: General style for games played on a spiral board, e.g. Mehen.
-CONST JAVADOC: Isometric: General style for games played on a isometric board.
+CONST JAVADOC: Isometric: General style for games played on an isometric board.
 CONST JAVADOC: Puzzle: General style for deduction puzzle boards.
 CONST JAVADOC: Backgammon: Custom style for the Backgammon board.
 CONST JAVADOC: Chess: Custom style for the Chess board.
@@ -6191,7 +6191,7 @@ DEFINE: CustodialCapturePieceType
 DEFINE JAVADOC: Defines a custodial capture in all the directions specified (by default Adjacent) to capture a specific piece type owned by the next player. The piece is removed. #1 = The name of the piece type. #2 = Directions of the capture. #3 = Constraints related to the number of pieces to capture. #4 = The consequences. 
 DEFINE EXAMPLE: ("CustodialCapturePieceType" "Jarl")
 DEFINE: EncloseCapture
-DEFINE JAVADOC: Defines a enclose capture by all the directions specified (by default Adjacent). The enemy pieces are removed. #1 = Directions of the capture. #2 = The consequences. 
+DEFINE JAVADOC: Defines an enclose capture by all the directions specified (by default Adjacent). The enemy pieces are removed. #1 = Directions of the capture. #2 = The consequences. 
 DEFINE EXAMPLE: ("EncloseCapture")
 DEFINE: HittingCapture
 DEFINE JAVADOC: Defines the capture of an enemy piece returning to a site. This ludemeplex can be used only as an effect. 

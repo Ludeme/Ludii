@@ -36,7 +36,7 @@ public class ContainerFlatEdgeState extends BaseContainerState
 	/** State of an edge. */
 	private final HashedChunkSet stateEdge;
 
-	/** Rotation of a edge. */
+	/** Rotation of an edge. */
 	private final HashedChunkSet rotationEdge;
 
 	/** Value of the piece on an edge. */

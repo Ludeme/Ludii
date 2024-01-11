@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Handles connections between LudemeNodeComponents on a iGraphPanel
+ * Handles connections between LudemeNodeComponents on an iGraphPanel
  */
 
 public class ConnectionHandler

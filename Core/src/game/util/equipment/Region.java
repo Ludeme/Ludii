@@ -111,7 +111,7 @@ public final class Region extends BaseLudeme implements Serializable
 	}
 
 	/**
-	 * Constructor with a array of int.
+	 * Constructor with an array of int.
 	 * @param bitsToSet
 	 */
 	@Hide
