@@ -208,7 +208,7 @@ public class HashedChunkSet implements Serializable
 
 	/**
 	 * @param mask    The mask.
-	 * @param pattern The patten.
+	 * @param pattern The pattern.
 	 * @return True if the pattern matched.
 	 * @see #util.ChunkSet.matches(ChunkSet, ChunkSet)
 	 */
@@ -241,7 +241,7 @@ public class HashedChunkSet implements Serializable
 	
 	/**
 	 * @param mask      The mask chunkset.
-	 * @param pattern   The patten chunkset.
+	 * @param pattern   The pattern chunkset.
 	 * @param startWord The word to start.
 	 * @return True if this is not violated.
 	 * @see #util.ChunkSet.violatesNot(ChunkSet, ChunkSet, int)

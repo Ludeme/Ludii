@@ -1024,7 +1024,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 
 	/**
-	 * @return True if the game uses somes decks.
+	 * @return True if the game uses some decks.
 	 */
 	public boolean hasHandDeck()
 	{

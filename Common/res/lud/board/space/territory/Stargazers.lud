@@ -325,10 +325,10 @@
 //-------------------------------------------------------
 // -- rational for determining Heuristic wins, and AI scoring. --  scripts used continue below
 //-----------------------------------------------------
-// Empty and friend sites surrounded by enemies witout including live sites are permanently dead.
+// Empty and friend sites surrounded by enemies without including live sites are permanently dead.
 // And provide immortality to the enemy as long as they contain an empty locations between the group and a star.
 // Plus a special case where: line of sight across a singleton eye connects a separate group of the connecting pieces.
-// Note it is possible that their are dead pieces making up parts of the walls.  
+// Note it is possible that there are dead pieces making up parts of the walls.  
 
 // The algorithm is conservative. It does not see every possible LoS connected live group that is assured life, because some are very hard to distinguish from grouips that can later be cut-off.
 

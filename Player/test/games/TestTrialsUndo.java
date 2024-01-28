@@ -290,7 +290,7 @@ public class TestTrialsUndo
 									
 									if(!legalMoveFound)
 									{
-										System.err.println("STATE COMPARAISON BUG no legal moves found");
+										System.err.println("STATE COMPARISON BUG no legal moves found");
 										fail();
 									}
 								}

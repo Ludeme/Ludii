@@ -236,7 +236,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Visual Editor (Beta)"))
 		{
-			// Create and lauch an instance of the visual editor
+			// Create and launch an instance of the visual editor
 			setStartVisualEditor(new StartVisualEditor(app));
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
