@@ -89,7 +89,7 @@ public class DuplicateMovesTest
 							{
 								duplicateMove = true;
 								if (!duplicateMoveInPlayout)
-									System.err.println("DUPLIATE move in " + name);
+									System.err.println("DUPLICATE move in " + name);
 								duplicateMoveInPlayout = true;
 							}
 						}

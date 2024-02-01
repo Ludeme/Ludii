@@ -93,7 +93,7 @@
 )
 
 //----------------------------------
-// For each mover group find out how many matching groups there are and if that is less then the group multiply it by the group size and add to the score, otherwise square the group size and add it to the score
+// For each mover group find out how many matching groups there are and if that is less than the group multiply it by the group size and add to the score, otherwise square the group size and add it to the score
 
 (define "GroupSize" 
     (size Group at:(var "KeySite"))

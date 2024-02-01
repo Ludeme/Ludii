@@ -367,7 +367,7 @@ public class UnionFindD implements Serializable
 //		//System.out.println(" here UnionGT 425 player  "+player);
 //		if (player < 1 || player > numplayers + 1)
 //		{
-//			//System.out.println(" return fron UFGT");
+//			//System.out.println(" return from UFGT");
 //			return;
 //		}
 //		//System.out.println(" here UnionGT 425 id "+siteId);		
@@ -456,7 +456,7 @@ public class UnionFindD implements Serializable
 //		
 //		if (player < 1 || player > numplayers + 1)
 //		{
-//			//System.out.println(" return fron DeleteGT");
+//			//System.out.println(" return from DeleteGT");
 //			return;
 //		}
 //		

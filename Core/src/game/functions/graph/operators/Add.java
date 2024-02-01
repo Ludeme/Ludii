@@ -166,13 +166,13 @@ public final class Add extends BaseGraphFunction
 
 				if (fns[0].length < 2)
 				{
-					System.out.println("** Add.eval(): Two values expcted for vertex A for edge " + e + ".");
+					System.out.println("** Add.eval(): Two values expected for vertex A for edge " + e + ".");
 					continue;
 				}
 				
 				if (fns[1].length < 2)
 				{
-					System.out.println("** Add.eval(): Two values expcted for vertex B for edge " + e + ".");
+					System.out.println("** Add.eval(): Two values expected for vertex B for edge " + e + ".");
 					continue;
 				}
 				
@@ -207,25 +207,25 @@ public final class Add extends BaseGraphFunction
 
 				if (fns[0].length < 2)
 				{
-					System.out.println("** Add.eval(): Two values expcted for vertex A for edge " + e + ".");
+					System.out.println("** Add.eval(): Two values expected for vertex A for edge " + e + ".");
 					continue;
 				}
 				
 				if (fns[1].length < 2)
 				{
-					System.out.println("** Add.eval(): Two or three values expcted for vertex B for edge " + e + ".");
+					System.out.println("** Add.eval(): Two or three values expected for vertex B for edge " + e + ".");
 					continue;
 				}
 			
 				if (fns[2].length != 2)
 				{
-					System.out.println("** Add.eval(): Two or three values expcted for tangent A for edge " + e + ".");
+					System.out.println("** Add.eval(): Two or three values expected for tangent A for edge " + e + ".");
 					continue;
 				}
 				
 				if (fns[3].length != 2)
 				{
-					System.out.println("** Add.eval(): Two values expcted for tangent B for edge " + e + ".");
+					System.out.println("** Add.eval(): Two values expected for tangent B for edge " + e + ".");
 					continue;
 				}
 				

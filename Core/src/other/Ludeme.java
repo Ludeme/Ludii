@@ -39,7 +39,7 @@ public interface Ludeme
 	public BitSet readsEvalContextFlat();
 	
 	/**
-	 * @return EvalContext properties writte by this ludeme directly (not recursively)
+	 * @return EvalContext properties written by this ludeme directly (not recursively)
 	 */
 	public BitSet writesEvalContextFlat();
 
