@@ -1,0 +1,49 @@
+(game "Un" 
+    (players 2) 
+    (equipment { 
+        (board (hex 5)) 
+        (piece "Marker" Neutral 
+            (move Slide
+                (between trail:(id "Marker" Shared))	
+            )
+        )
+        (piece "Marker" Shared)
+    })
+    
+    (rules 
+        (meta (swap))
+        phases:{
+        (phase "Init"
+            (play (move Add (piece "Marker0") (to (sites Empty))))
+            (nextPhase "Main")
+        )
+        (phase "Main"
+            (play (forEach Piece Neutral)
+            )
+        )
+        }
+        
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Slide a shared piece and be the last to do it.")
+        (rules "One player drops the neutral stone on a cell and the other chooses who starts. On each turn, each player slides the neutral stone a number of empty cells in a straight line and each cell passed becomes unavailable for the rest of the game. The first player that cannot move loses")
+        (source "<a href=\"https://www.di.fc.ul.pt/~jpn/gv/un.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.12")
+        (classification "board/space/territory")
+        (credit "Eric Piette")
+        }
+    )
+    
+    (graphics {
+        (player Colour Neutral (colour Black))
+    })
+    
+)
