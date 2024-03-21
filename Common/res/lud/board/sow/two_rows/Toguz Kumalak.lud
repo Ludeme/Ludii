@@ -75,8 +75,20 @@
                         origin:(!= (count at:(last From)) 1)
                         (then
                             (and
-                                ("CaptureFromTuzOf" P1)
-                                ("CaptureFromTuzOf" P2)
+                                (and
+                                    ("CaptureFromTuzOf" P1)
+                                    ("CaptureFromTuzOf" P2)
+                                )
+                                (and
+                                    (set Score 
+                                        P1 
+                                        ("PiecesOwnedBy" P1)
+                                    )
+                                    (set Score 
+                                        P2
+                                        ("PiecesOwnedBy" P2) 
+                                    )
+                                )
                             )
                         )
                     )
