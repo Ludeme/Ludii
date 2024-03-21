@@ -28,12 +28,24 @@
                     if:(> (count at:(from)) 0)		
                 )
                 (then
-                    (sow
-                        apply:(if (= 6 (count at:(to)))
-                            (fromTo
-                                (from (to))
-                                (to (mapEntry Mover))
-                                count:6
+                    (and
+                        (sow
+                            apply:(if (= 6 (count at:(to)))
+                                (fromTo
+                                    (from (to))
+                                    (to (mapEntry Mover))
+                                    count:6
+                                )
+                            )
+                        )
+                        (and
+                            (set Score 
+                                P1 
+                                ("PiecesOwnedBy" P1)
+                            )
+                            (set Score 
+                                P2
+                                ("PiecesOwnedBy" P2) 
                             )
                         )
                     )
