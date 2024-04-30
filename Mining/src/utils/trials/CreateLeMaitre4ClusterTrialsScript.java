@@ -113,10 +113,9 @@ public class CreateLeMaitre4ClusterTrialsScript
 					writer.println("#SBATCH -t 2880");
 					writer.println("#SBATCH -N 1");
 					writer.println("#SBATCH --cpus-per-task=128");
-					writer.println("#SBATCH --mem=224");
+					writer.println("#SBATCH --mem=224G");
 					writer.println("#SBATCH --exclusive");
-					writer.println("module load 2021");
-					writer.println("module load Java/11.0.2");
+					writer.println("module load Java/11.0.20");
 					
 					for(int j = 0; j < 42; j++)
 					{
