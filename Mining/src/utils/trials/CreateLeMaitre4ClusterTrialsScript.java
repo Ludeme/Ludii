@@ -107,7 +107,7 @@ public class CreateLeMaitre4ClusterTrialsScript
 				{
 					writer.println("#!/bin/bash");
 					writer.println("#SBATCH -J GenTrials"+agentName+"Script" + scriptId);
-					writer.println("#SBATCH -p thin");
+					writer.println("#SBATCH -p batch");
 					writer.println("#SBATCH -o /home/ucl/ingi/" + clusterLogin + "/Out/Out_%J.out");
 					writer.println("#SBATCH -e /home/ucl/ingi/" + clusterLogin + "/Out/Err_%J.err");
 					writer.println("#SBATCH -t 6000");
