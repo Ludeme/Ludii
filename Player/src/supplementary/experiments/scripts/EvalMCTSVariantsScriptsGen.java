@@ -43,9 +43,6 @@ public class EvalMCTSVariantsScriptsGen
 	/** Memory to assign per process (in GB) */
 	private static final int MEM_PER_PROCESS = 7;
 	
-	/** Memory available per node in GB (this is for Thin nodes on Snellius) */
-	private static final int MEM_PER_NODE = 256;
-	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
 	private static final int MAX_REQUEST_MEM = 224;
 	
@@ -520,7 +517,7 @@ public class EvalMCTSVariantsScriptsGen
 				final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
 				final int jobMemRequestGB;
 				if (exclusive)
-					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
+					jobMemRequestGB = MAX_REQUEST_MEM;	// We're requesting full node anyway, might as well take all the memory
 				else
 					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
 				
