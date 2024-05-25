@@ -87,7 +87,7 @@ public final class ExItSelection implements SelectionStrategy
         	else
         	{
         		exploit = child.exploitationScore(moverAgent);
-        		numVisits = child.numVisits() + child.numVirtualVisits();
+        		numVisits = Math.max(child.numVisits() + child.numVirtualVisits(), 1);
         		explore = Math.sqrt(parentLog / numVisits);
         	}
 
