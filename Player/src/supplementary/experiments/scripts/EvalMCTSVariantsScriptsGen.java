@@ -98,7 +98,7 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				{"0.1", "0.6", "1.41421356237"},
 				{"ProgressiveHistory", "UCB1", "UCB1GRAVE", "UCB1Tuned"},
-				{"MAST", "NST", "Random200", "Random4", "Random0"},
+				{"MAST", "NST", "Random200"},
 				{"true", "false"}
 			};
 		
@@ -107,7 +107,7 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				{true, true, true},
 				{true, true, true, true},
-				{true, true, true, true, true},
+				{true, true, true},
 				{false, true},
 			};
 	
@@ -290,12 +290,6 @@ public class EvalMCTSVariantsScriptsGen
 				break;
 			case "Random200":
 				algStringParts.add("playout=random,playoutturnlimit=200");
-				break;
-			case "Random4":
-				algStringParts.add("playout=random,playoutturnlimit=4");
-				break;
-			case "Random0":
-				algStringParts.add("playout=random,playoutturnlimit=0");
 				break;
 			default:
 				System.err.println("Unrecognised playout type: " + playoutType);
