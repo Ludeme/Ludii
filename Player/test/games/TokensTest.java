@@ -19,7 +19,7 @@ public class TokensTest
 {
 
 	@Test
-	public static void test()
+	public void test()
 	{
 		final File startFolder = new File("../Common/res/lud/");
 		final List<File> gameDirs = new ArrayList<>();

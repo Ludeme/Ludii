@@ -3,6 +3,7 @@
 // #1 = Maximum distance before the hop [0].
 // #2 = Maximum distance after the hop [0].
 // #3 = When to perform the capture (immediately or at the end of the turn) [immediately].
+// #4 = Moves to perform when the sequence cannot continue.
 // @example ("HopSequenceCapture")
 // @example ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn)
 
@@ -31,6 +32,7 @@
                     )
                 ) 
                 (moveAgain)
+                #4
             )
         )
     )
