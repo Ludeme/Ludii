@@ -117,7 +117,7 @@ public class UCB1GRAVE implements SelectionStrategy
 //        			System.out.println("current context legal moves = " + current.contextRef().activeGame().moves(current.contextRef()));
 //        		}
         		
-        		final int childVisits = child.numVisits() + child.numVirtualVisits();
+        		final int childVisits = Math.max(child.numVisits() + child.numVirtualVisits(), 1);
         		
         		if (graveStats == null)
         		{

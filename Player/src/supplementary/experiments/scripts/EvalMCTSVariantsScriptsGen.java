@@ -43,9 +43,6 @@ public class EvalMCTSVariantsScriptsGen
 	/** Memory to assign per process (in GB) */
 	private static final int MEM_PER_PROCESS = 7;
 	
-	/** Memory available per node in GB (this is for Thin nodes on Snellius) */
-	private static final int MEM_PER_NODE = 256;
-	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
 	private static final int MAX_REQUEST_MEM = 224;
 	
@@ -101,7 +98,7 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				{"0.1", "0.6", "1.41421356237"},
 				{"ProgressiveHistory", "UCB1", "UCB1GRAVE", "UCB1Tuned"},
-				{"MAST", "NST", "Random200", "Random4", "Random0"},
+				{"MAST", "NST", "Random200"},
 				{"true", "false"}
 			};
 		
@@ -110,7 +107,7 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				{true, true, true},
 				{true, true, true, true},
-				{true, true, true, true, true},
+				{true, true, true},
 				{false, true},
 			};
 	
@@ -293,12 +290,6 @@ public class EvalMCTSVariantsScriptsGen
 				break;
 			case "Random200":
 				algStringParts.add("playout=random,playoutturnlimit=200");
-				break;
-			case "Random4":
-				algStringParts.add("playout=random,playoutturnlimit=4");
-				break;
-			case "Random0":
-				algStringParts.add("playout=random,playoutturnlimit=0");
 				break;
 			default:
 				System.err.println("Unrecognised playout type: " + playoutType);
@@ -520,7 +511,7 @@ public class EvalMCTSVariantsScriptsGen
 				final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
 				final int jobMemRequestGB;
 				if (exclusive)
-					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
+					jobMemRequestGB = MAX_REQUEST_MEM;	// We're requesting full node anyway, might as well take all the memory
 				else
 					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
 				
