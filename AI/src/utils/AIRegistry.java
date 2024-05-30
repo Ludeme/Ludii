@@ -1,4 +1,4 @@
-package manager.ai;
+package utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,9 +15,7 @@ import search.flat.FlatMonteCarlo;
 import search.mcts.MCTS;
 import search.minimax.AlphaBetaSearch;
 import search.minimax.BRSPlus;
-import utils.AIFactory;
 import utils.AIFactory.AIConstructor;
-import utils.RandomAI;
 
 /**
  * A registry of AIs that can be instantiated in the GUI of Ludii.
@@ -180,19 +178,31 @@ public class AIRegistry
 	
 	/**
 	 * @param agentName The name of the agent.
-	 * @return The AI object from its name.
+	 * @return The AI object from its name. Null if no agent with this name is registered.
 	 */
 	public static AI fromRegistry
 	(
 		final String agentName
 	)
 	{
+		if (!isRegistered(agentName))
+			return null;
+		
 		final JSONObject json = new JSONObject();
 		final JSONObject aiJson = new JSONObject();
 		aiJson.put("algorithm", agentName);
 		json.put("AI", aiJson);
 		AIRegistry.processJson(json);
 		return AIFactory.fromJson(json);
+	}
+	
+	/**
+	 * @param agentName
+	 * @return 
+	 */
+	public static boolean isRegistered(final String agentName)
+	{
+		return registry.containsKey(agentName);
 	}
 	
 	//-------------------------------------------------------------------------
