@@ -58,6 +58,13 @@ public class ParallelEvalMultiGamesMultiAgents
 
 	//-------------------------------------------------------------------------
 	
+	public class TrialsBatchToRun
+	{
+		
+	}
+	
+	//-------------------------------------------------------------------------
+	
 	/**
 	 * Can be used for quick testing without command-line args, or proper
 	 * testing with elaborate setup through command-line args
