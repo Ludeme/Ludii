@@ -23,8 +23,6 @@ import main.collections.ListUtils;
 import main.options.Ruleset;
 import other.GameLoader;
 import search.mcts.MCTS;
-import utils.AIFactory;
-import utils.RandomAI;
 
 /**
  * Generates scripts to run on Snellius cluster to evaluate many different variants
@@ -186,7 +184,6 @@ public class EvalMCTSVariantsScriptsGen
 	{
 		final List<String> jobScriptNames = new ArrayList<String>();
 		final MCTS dummyUCT = MCTS.createUCT();
-		final RandomAI dummyRandom = (RandomAI) AIFactory.createAI("Random");
 		
 		final int[][] deterministicMCTSCombos = generateMCTSCombos(false);
 		final int[][] stochasticMCTSCombos = generateMCTSCombos(true);
@@ -391,11 +388,6 @@ public class EvalMCTSVariantsScriptsGen
 				
 				if (game.hasSubgames())
 					continue;
-								
-				final List<String> relevantNonMCTSAIs = new ArrayList<String>();
-
-				if (dummyRandom.supportsGame(game))
-					relevantNonMCTSAIs.add("Random");
 				
 				final int numPlayers = game.players().count();
 				
@@ -407,37 +399,7 @@ public class EvalMCTSVariantsScriptsGen
 
 					for (int evalAgentIdxMCTS = 0; evalAgentIdxMCTS < relevantMCTSNames.length; ++evalAgentIdxMCTS)
 					{				
-						// ... against all non-MCTSes...
-						for (int oppIdx = 0; oppIdx < relevantNonMCTSAIs.size(); ++oppIdx)
-						{
-							// Take (k - 1) copies of same opponent for a k-player game
-							final String[] agentStrings = new String[numPlayers];
-							for (int i = 0; i < numPlayers - 1; ++i)
-							{
-								final String agent = relevantNonMCTSAIs.get(oppIdx);
-								final String agentCommandString = StringRoutines.quote(agent);
-
-								agentStrings[i] = agentCommandString;
-							}
-
-							// and finally add the eval agent
-							String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
-
-							evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
-
-							agentStrings[numPlayers - 1] = evalAgentCommandString;
-							
-							processDataList.add
-							(
-								new ProcessData
-								(
-									gameName, fullRulesetName, callID++, 
-									agentStrings
-								)
-							);
-						}
-
-						// ... and once against a randomly selected set of (k - 1) other MCTSes for a k-player game
+						// ... against a randomly selected set of (k - 1) other MCTSes for a k-player game
 						final String[] agentStrings = new String[numPlayers];
 						for (int i = 0; i < numPlayers - 1; ++i)
 						{
