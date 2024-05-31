@@ -66,6 +66,16 @@ public class ParallelEvalMultiGamesMultiAgents
 		this.useGUI = useGUI;
 		this.maxWallTime = maxWallTime;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Starts the experiment
+	 */
+	public void startExperiment()
+	{
+		
+	}
 
 	//-------------------------------------------------------------------------
 	
@@ -229,6 +239,20 @@ public class ParallelEvalMultiGamesMultiAgents
 					true,
 					"Evaluate many agents in many games in parallel. Configuration of all experiments to be run should be in a JSON file."
 				);
+		
+		// Parse the args
+		if (!argParse.parseArguments(args))
+			return;
+
+		// Use the parsed args
+		final ParallelEvalMultiGamesMultiAgents experiment = 
+				new ParallelEvalMultiGamesMultiAgents
+				(
+					argParse.getValueBool("--useGUI"), 
+					argParse.getValueInt("--max-wall-time")
+				);
+		
+		experiment.startExperiment();
 	}
 
 }
