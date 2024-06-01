@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
@@ -100,7 +101,11 @@ public class ParallelEvalMultiGamesMultiAgents
 	public void startExperiment()
 	{
 		final AtomicInteger numCoresAvailable = new AtomicInteger(numCoresTotal);
+		
+		@SuppressWarnings("resource")
 		final ExecutorService threadPool = Executors.newFixedThreadPool(numCoresTotal / numThreadsPerTrial, DaemonThreadFactory.INSTANCE);
+		@SuppressWarnings("resource")
+		final ExecutorService resultsWritingPool = Executors.newFixedThreadPool(1, DaemonThreadFactory.INSTANCE);
 		
 		final long startTime = System.currentTimeMillis();
 		
@@ -175,6 +180,7 @@ public class ParallelEvalMultiGamesMultiAgents
 					agentStrings.add(AIFactory.createAI(agentString).friendlyName());
 				}
 				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
+				final CountDownLatch resultsSummaryLatch = new CountDownLatch(trialsBatch.numTrials);
 				
 				for (int trialCounter = 0; trialCounter < trialsBatch.numTrials; ++trialCounter)
 				{
@@ -187,7 +193,7 @@ public class ParallelEvalMultiGamesMultiAgents
 						{
 							try
 							{
-								numCoresAvailable.decrementAndGet();
+								numCoresAvailable.addAndGet(-numThreadsPerTrial);
 								
 								// Compute list of AIs to use for this trial (we rotate every trial)
 								final List<AI> currentAIList = new ArrayList<AI>(numPlayers);
@@ -248,13 +254,29 @@ public class ParallelEvalMultiGamesMultiAgents
 							}
 							finally
 							{
-								numCoresAvailable.incrementAndGet();
+								numCoresAvailable.addAndGet(numThreadsPerTrial);
+								resultsSummaryLatch.countDown();
 							}
 						}
 					);
 				}
 				
-				// TODO write results
+				// Submit job to write results once we're ready
+				resultsWritingPool.submit
+				(
+					() -> 
+					{
+						try
+						{
+							resultsSummaryLatch.await(maxWallTime, TimeUnit.MINUTES);
+							// TODO actually write results
+						}
+						catch (final Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+				);
 
 				while (numCoresAvailable.get() <= 0)
 				{
