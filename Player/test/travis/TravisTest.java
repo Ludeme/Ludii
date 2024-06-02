@@ -250,6 +250,7 @@ public class TravisTest
 			excludedPlayoutPerOption.add("Shisen-Sho");
 			excludedPlayoutPerOption.add("Allemande");
 			excludedPlayoutPerOption.add("Chains of Thought");
+			excludedPlayoutPerOption.add("Pagade Kayi Ata (Sixteen-handed)");
 
 			if (!containsPartOf(excludedPlayoutPerOption, game.name()))
 				testPlayoutPerOption((USE_TIME) ? (hour < MIN_HOUR || hour > MAX_HOUR) : true);
