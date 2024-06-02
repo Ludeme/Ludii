@@ -190,14 +190,13 @@ public class ParallelEvalMultiGamesMultiAgents
 					// Submit another job to the thread pool for this specific trial
 					final int thisTrialCounter = trialCounter;		// Need to make this variable final for inner class
 					
+					numCoresAvailable.addAndGet(-numThreadsPerTrial);
 					threadPool.submit
 					(
 						() -> 
 						{
 							try
-							{
-								numCoresAvailable.addAndGet(-numThreadsPerTrial);
-								
+							{								
 								// Compute list of AIs to use for this trial (we rotate every trial)
 								final List<AI> currentAIList = new ArrayList<AI>(numPlayers);
 								final int currentAIsPermutation = thisTrialCounter % aiListPermutations.size();
@@ -316,7 +315,7 @@ public class ParallelEvalMultiGamesMultiAgents
 					// We could just continue creating jobs and submitting them to the pool, but then we would
 					// already be loading all those games into memory. We don't want to do that, so we'll wait
 					// with submitting more tasks until we actually have cores to run them.
-					Thread.sleep(10000L);
+					Thread.sleep(20000L);
 				}
 			}
 			

@@ -447,7 +447,7 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				writer.println("#!/bin/bash");
 				writer.println("#SBATCH -J EvalMCTSVariants");
-				writer.println("#SBATCH -p thin");
+				writer.println("#SBATCH -p rome");
 				writer.println("#SBATCH -o /home/" + userName + "/EvalMCTSVariants/Out/Out_%J.out");
 				writer.println("#SBATCH -e /home/" + userName + "/EvalMCTSVariants/Out/Err_%J.err");
 				writer.println("#SBATCH -t " + MAX_WALL_TIME);
@@ -478,6 +478,7 @@ public class EvalMCTSVariantsScriptsGen
 						"-Xms" + JVM_MEM,
 						"-Xmx" + JVM_MEM,
 						"-XX:+HeapDumpOnOutOfMemoryError",
+						"-XX:HeapDumpPath=" + StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Err"),
 						"-da",
 						"-dsa",
 						"-XX:+UseStringDeduplication",
@@ -517,7 +518,7 @@ public class EvalMCTSVariantsScriptsGen
 							);
 					
 					trialsBatch.toJson(scriptsDir + "TrialsBatch_" + processData.callID + ".json");
-					writer.print(" " + "/home/" + userName + "/EvalMCTSVariants/" + "TrialsBatch_" + processData.callID + ".json");
+					writer.print(" " + "/home/" + userName + "/EvalMCTSVariants/Scripts/" + "TrialsBatch_" + processData.callID + ".json");
 					
 					++processIdx;
 					++numJobProcesses;
@@ -532,7 +533,7 @@ public class EvalMCTSVariantsScriptsGen
 						">",
 						"/home/" + userName + "/EvalMCTSVariants/Out/Out_${SLURM_JOB_ID}" + ".out",
 						"2>",
-						"/home/" + userName + "/EvalMCTSVariants/Out/Err_${SLURM_JOB_ID}" + ".err",
+						"/home/" + userName + "/EvalMCTSVariants/Err/Err_${SLURM_JOB_ID}" + ".err",
 						"&"		// Run processes in parallel
 					)
 				);
