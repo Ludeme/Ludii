@@ -400,14 +400,13 @@ public class EvalMCTSVariantsScriptsGen
 
 					for (int evalAgentIdxMCTS = 0; evalAgentIdxMCTS < relevantMCTSNames.length; ++evalAgentIdxMCTS)
 					{
-						String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
-						evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
+						final String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
 						
-						// ... against 3 randomly selected other MCTSes
+						// ... against 2 randomly selected other MCTSes
 						final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
 						sampleIndices.removeAt(evalAgentIdxMCTS);
 						
-						for (int i = 0; i < 3; ++i)
+						for (int i = 0; i < 2; ++i)
 						{
 							final String[] agentStrings = new String[numPlayers];
 							agentStrings[0] = evalAgentCommandString;
@@ -416,8 +415,7 @@ public class EvalMCTSVariantsScriptsGen
 							final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
 							ListUtils.removeSwap(sampleIndices, randIdx);
 							
-							String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
-							agentCommandString = StringRoutines.quote(agentCommandString);
+							final String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
 							agentStrings[1] = agentCommandString;
 							
 							processDataList.add
@@ -510,25 +508,16 @@ public class EvalMCTSVariantsScriptsGen
 					final TrialsBatchToRun trialsBatch = 
 							new TrialsBatchToRun
 							(
-								StringRoutines.quote(processData.gameName + ".lud"), 
-								StringRoutines.quote(processData.rulesetName), 
+								processData.gameName + ".lud", 
+								processData.rulesetName, 
 								30, 750, 1.0, 100000, 10, 
-								StringRoutines.quote
-								(
-									"/home/" + 
-									userName + 
-									"/EvalMCTSVariants/Out/" + 
-									filepathsGameName + filepathsRulesetName +
-									"/" + processData.callID + "/"
-								), 
+								"/home/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + filepathsRulesetName + "/" + processData.callID + "/", 
 								processData.agentStrings, 
 								false, false, true
 							);
 					
-					final String jsonFilepath = scriptsDir + "TrialsBatch_" + processData.callID + ".json";
-					trialsBatch.toJson(jsonFilepath);
-					
-					writer.print(" " + jsonFilepath);
+					trialsBatch.toJson(scriptsDir + "TrialsBatch_" + processData.callID + ".json");
+					writer.print(" " + "/home/" + userName + "/EvalMCTSVariants/" + "TrialsBatch_" + processData.callID + ".json");
 					
 					++processIdx;
 					++numJobProcesses;
