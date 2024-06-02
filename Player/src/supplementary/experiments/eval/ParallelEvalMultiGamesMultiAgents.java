@@ -3,8 +3,11 @@ package supplementary.experiments.eval;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -269,7 +272,37 @@ public class ParallelEvalMultiGamesMultiAgents
 						try
 						{
 							resultsSummaryLatch.await(maxWallTime, TimeUnit.MINUTES);
-							// TODO actually write results
+							
+							if (trialsBatch.outDir != null)
+							{
+								if (trialsBatch.outputSummary)
+								{
+									final File outFile = new File(trialsBatch.outDir + "/results.txt");
+									outFile.getParentFile().mkdirs();
+									try (final PrintWriter writer = new PrintWriter(outFile, "UTF-8"))
+									{
+										writer.write(resultsSummary.generateIntermediateSummary());
+									}
+									catch (final FileNotFoundException | UnsupportedEncodingException e)
+									{
+										e.printStackTrace();
+									}
+								}
+								
+								if (trialsBatch.outputAlphaRankData)
+								{
+									final File outFile = new File(trialsBatch.outDir + "/alpha_rank_data.csv");
+									outFile.getParentFile().mkdirs();
+									resultsSummary.writeAlphaRankData(outFile);
+								}
+								
+								if (trialsBatch.outputRawResults)
+								{
+									final File outFile = new File(trialsBatch.outDir + "/raw_results.csv");
+									outFile.getParentFile().mkdirs();
+									resultsSummary.writeRawResults(outFile);
+								}
+							}
 						}
 						catch (final Exception e)
 						{
@@ -326,6 +359,9 @@ public class ParallelEvalMultiGamesMultiAgents
 		protected final int warmingUpSecs;
 		protected final String outDir;
 		protected final String[] agentStrings;
+		protected final boolean outputSummary;
+		protected final boolean outputAlphaRankData;
+		protected final boolean outputRawResults;
 		
 		/**
 		 * Constructor
@@ -339,12 +375,16 @@ public class ParallelEvalMultiGamesMultiAgents
 		 * @param warmingUpSecs
 		 * @param outDir
 		 * @param agentStrings
+		 * @param outputSummary
+		 * @param outputAlphaRankData
+		 * @param outputRawResults
 		 */
 		public TrialsBatchToRun
 		(
 			final String gameName, final String ruleset, final int numTrials, final int gameLengthCap, 
 			final double thinkingTime, final int iterationLimit, final int warmingUpSecs, final String outDir, 
-			final String[] agentStrings
+			final String[] agentStrings, final boolean outputSummary, final boolean outputAlphaRankData,
+			final boolean outputRawResults
 		) 
 		{
 			this.gameName = gameName;
@@ -356,6 +396,9 @@ public class ParallelEvalMultiGamesMultiAgents
 			this.warmingUpSecs = warmingUpSecs;
 			this.outDir = outDir;
 			this.agentStrings = agentStrings;
+			this.outputSummary = outputSummary;
+			this.outputAlphaRankData = outputAlphaRankData;
+			this.outputRawResults = outputRawResults;
 		}
 		
 		public void toJson(final String jsonFilepath)
@@ -380,6 +423,9 @@ public class ParallelEvalMultiGamesMultiAgents
 				json.put("outDir", outDir);
 				final JSONArray agentStringsJsonArray = new JSONArray(Arrays.asList(agentStrings));
 				json.put("agentStrings", agentStringsJsonArray);
+				json.put("outputSummary", outputSummary);
+				json.put("outputAlphaRankData", outputAlphaRankData);
+				json.put("outputRawResults", outputRawResults);
 
 				final FileWriter fw = new FileWriter(file);
 				bw = new BufferedWriter(fw);
@@ -420,9 +466,12 @@ public class ParallelEvalMultiGamesMultiAgents
 				final String outDir = json.getString("outDir");
 				final JSONArray jArray = json.optJSONArray("agentStrings");
 				final String[] agentStrings = jArray.toList().toArray(new String[0]);
+				final boolean outputSummary = json.getBoolean("outputSummary");
+				final boolean outputAlphaRankData = json.getBoolean("outputAlphaRankData");
+				final boolean outputRawResults = json.getBoolean("outputRawResults");
 				
 				return new TrialsBatchToRun(gameName, ruleset, numTrials, gameLengthCap, thinkingTime, iterationLimit, 
-						warmingUpSecs, outDir, agentStrings);
+						warmingUpSecs, outDir, agentStrings, outputSummary, outputAlphaRankData, outputRawResults);
 
 			}
 			catch (final Exception e)
