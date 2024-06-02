@@ -13,6 +13,7 @@ import supplementary.experiments.debugging.FindCrashingTrial;
 import supplementary.experiments.eval.EvalAgents;
 import supplementary.experiments.eval.EvalGames;
 import supplementary.experiments.eval.EvalGate;
+import supplementary.experiments.eval.ParallelEvalMultiGamesMultiAgents;
 import supplementary.experiments.feature_importance.IdentifyTopFeatures;
 import supplementary.experiments.optim.EvolOptimHeuristics;
 import supplementary.experiments.scripts.GenerateBiasedMCTSEvalScripts;
@@ -78,7 +79,8 @@ public class PlayerCLI
 					"--generate-biased-mcts-eval-scripts",
 					"--kilothon",
 					"--identify-top-features",
-					"--skill-trace-analysis"
+					"--skill-trace-analysis",
+					"--parallel-eval-multi-games-multi-agents"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
@@ -137,6 +139,8 @@ public class PlayerCLI
 //			HeuristicsTraining.main(passArgs);
 //			EvaluateAllUBFMs.main(new String[] {passArgs[0], "eval heuristics"});
 //		}
+		else if (command.equalsIgnoreCase("--parallel-eval-multi-games-multi-agents"))
+			ParallelEvalMultiGamesMultiAgents.main(passArgs);
 		else
 			System.err.println("ERROR: command not yet implemented: " + command);
 
