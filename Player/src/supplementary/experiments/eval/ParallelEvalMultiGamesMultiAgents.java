@@ -291,10 +291,14 @@ public class ParallelEvalMultiGamesMultiAgents
 			if (threadPool != null)
 			{
 				final long maxWallTimeMillis = maxWallTime * 60 * 1000L;
-				final long alreadyElapsedTime = System.currentTimeMillis() - startTime;
+				long alreadyElapsedTime = System.currentTimeMillis() - startTime;
 				
 				threadPool.shutdown();
+				resultsWritingPool.shutdown();
 				threadPool.awaitTermination(maxWallTimeMillis - alreadyElapsedTime, TimeUnit.MILLISECONDS);
+				
+				alreadyElapsedTime = System.currentTimeMillis() - startTime;
+				resultsWritingPool.awaitTermination(maxWallTimeMillis - alreadyElapsedTime, TimeUnit.MILLISECONDS);
 			}
 		}
 		catch (final InterruptedException e) {
