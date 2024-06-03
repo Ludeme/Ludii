@@ -40,7 +40,7 @@ public class EvalMCTSVariantsScriptsGen
 	private static final String JVM_MEM_MIN = "200g";
 	
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MAX = "214g";
+	private static final String JVM_MEM_MAX = "220g";
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
 	private static final int MAX_REQUEST_MEM = 224;
@@ -443,7 +443,7 @@ public class EvalMCTSVariantsScriptsGen
 				writer.println("#SBATCH -J EvalMCTSVariants");
 				writer.println("#SBATCH -p rome");
 				writer.println("#SBATCH -o /home/" + userName + "/EvalMCTSVariants/Out/Out_%J.out");
-				writer.println("#SBATCH -e /home/" + userName + "/EvalMCTSVariants/Out/Err_%J.err");
+				writer.println("#SBATCH -e /home/" + userName + "/EvalMCTSVariants/Err/Err_%J.err");
 				writer.println("#SBATCH -t " + MAX_WALL_TIME);
 				writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
 				
@@ -505,7 +505,7 @@ public class EvalMCTSVariantsScriptsGen
 							(
 								processData.gameName + ".lud", 
 								processData.rulesetName, 
-								30, 750, 1.0, 100000, 10, 
+								30, 650, 1.0, 100000, 10, 
 								"/home/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + filepathsRulesetName + "/" + processData.callID, 
 								processData.agentStrings, 
 								false, false, true
