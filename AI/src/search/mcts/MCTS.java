@@ -552,7 +552,7 @@ public class MCTS extends ExpertPolicy
 				final ActionStatistics stats = entry.getValue();
 				stats.visitCount *= globalActionDecayFactor;
 				
-				if (stats.visitCount < 1.0)
+				if (stats.visitCount < 2.f)
 					it.remove();
 				else
 					stats.accumulatedScore *= globalActionDecayFactor;
@@ -571,7 +571,7 @@ public class MCTS extends ExpertPolicy
 				final ActionStatistics stats = entry.getValue();
 				stats.visitCount *= globalActionDecayFactor;
 				
-				if (stats.visitCount < 1.0)
+				if (stats.visitCount < 2.f)
 					it.remove();
 				else
 					stats.accumulatedScore *= globalActionDecayFactor;
@@ -1616,10 +1616,10 @@ public class MCTS extends ExpertPolicy
     public static class ActionStatistics
     {
     	/** Visit count (not int because we want to be able to decay) */
-    	public double visitCount = 0.0;
+    	public float visitCount = 0.f;
     	
     	/** Accumulated score */
-    	public double accumulatedScore = 0.0;
+    	public float accumulatedScore = 0.f;
     	
     	@Override
     	public String toString()

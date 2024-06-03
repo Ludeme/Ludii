@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
@@ -107,8 +106,6 @@ public class ParallelEvalMultiGamesMultiAgents
 		
 		@SuppressWarnings("resource")
 		final ExecutorService threadPool = Executors.newFixedThreadPool(numCoresTotal / numThreadsPerTrial, DaemonThreadFactory.INSTANCE);
-		@SuppressWarnings("resource")
-		final ExecutorService resultsWritingPool = Executors.newFixedThreadPool(1, DaemonThreadFactory.INSTANCE);
 		
 		final long startTime = System.currentTimeMillis();
 		
@@ -126,6 +123,10 @@ public class ParallelEvalMultiGamesMultiAgents
 					game = GameLoader.loadGameFromName(trialsBatch.gameName, trialsBatch.ruleset);
 				else
 					game = GameLoader.loadGameFromName(trialsBatch.gameName, new ArrayList<String>());	// TODO add support for options
+				
+				// Let's clear some unnecessary memory
+				game.description().setParseTree(null);
+				game.description().setExpanded(null);
 				
 				final int numPlayers = game.players().count();
 				
@@ -183,7 +184,6 @@ public class ParallelEvalMultiGamesMultiAgents
 					agentStrings.add(AIFactory.createAI(agentString).friendlyName());
 				}
 				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
-				final CountDownLatch resultsSummaryLatch = new CountDownLatch(trialsBatch.numTrials);
 				
 				System.out.println("Num cores available: " + numCoresAvailable.get());
 				System.out.println("Submitting jobs.");
@@ -193,7 +193,6 @@ public class ParallelEvalMultiGamesMultiAgents
 				{
 					System.out.println("Agent: " + agentString);
 				}
-				System.out.println();
 				
 				for (int trialCounter = 0; trialCounter < trialsBatch.numTrials; ++trialCounter)
 				{
@@ -266,65 +265,48 @@ public class ParallelEvalMultiGamesMultiAgents
 							}
 							finally
 							{
-								numCoresAvailable.addAndGet(numThreadsPerTrial);
-								resultsSummaryLatch.countDown();
+								if (resultsSummary.agentPoints()[0].n() == trialsBatch.numTrials)
+								{
+									// Completed all our trials, we're ready to write output
+									System.out.println("Finished a set of trials, should write results...");
+									if (trialsBatch.outDir != null)
+									{
+										if (trialsBatch.outputSummary)
+										{
+											final File outFile = new File(trialsBatch.outDir + "/results.txt");
+											outFile.getParentFile().mkdirs();
+											try (final PrintWriter writer = new PrintWriter(outFile, "UTF-8"))
+											{
+												writer.write(resultsSummary.generateIntermediateSummary());
+											}
+											catch (final FileNotFoundException | UnsupportedEncodingException e)
+											{
+												e.printStackTrace();
+											}
+										}
+										
+										if (trialsBatch.outputAlphaRankData)
+										{
+											final File outFile = new File(trialsBatch.outDir + "/alpha_rank_data.csv");
+											outFile.getParentFile().mkdirs();
+											resultsSummary.writeAlphaRankData(outFile);
+										}
+										
+										if (trialsBatch.outputRawResults)
+										{
+											System.out.println("writing raw results to " + trialsBatch.outDir + "/raw_results.csv");
+											final File outFile = new File(trialsBatch.outDir + "/raw_results.csv");
+											outFile.getParentFile().mkdirs();
+											resultsSummary.writeRawResults(outFile);
+										}
+									}
+								}
 								
-								System.out.println("results summary latch counted down to " + resultsSummaryLatch.getCount());
+								numCoresAvailable.addAndGet(numThreadsPerTrial);
 							}
 						}
 					);
 				}
-				
-				// Submit job to write results once we're ready
-				resultsWritingPool.submit
-				(
-					() -> 
-					{
-						try
-						{
-							resultsSummaryLatch.await(maxWallTime, TimeUnit.MINUTES);
-							System.out.println("got past the latch");
-							System.out.println("trialsBatch.outDir = " + trialsBatch.outDir);
-							System.out.println("trialsBatch.outputRawResults = " + trialsBatch.outputRawResults);
-							
-							if (trialsBatch.outDir != null)
-							{
-								if (trialsBatch.outputSummary)
-								{
-									final File outFile = new File(trialsBatch.outDir + "/results.txt");
-									outFile.getParentFile().mkdirs();
-									try (final PrintWriter writer = new PrintWriter(outFile, "UTF-8"))
-									{
-										writer.write(resultsSummary.generateIntermediateSummary());
-									}
-									catch (final FileNotFoundException | UnsupportedEncodingException e)
-									{
-										e.printStackTrace();
-									}
-								}
-								
-								if (trialsBatch.outputAlphaRankData)
-								{
-									final File outFile = new File(trialsBatch.outDir + "/alpha_rank_data.csv");
-									outFile.getParentFile().mkdirs();
-									resultsSummary.writeAlphaRankData(outFile);
-								}
-								
-								if (trialsBatch.outputRawResults)
-								{
-									System.out.println("writing raw results to " + trialsBatch.outDir + "/raw_results.csv");
-									final File outFile = new File(trialsBatch.outDir + "/raw_results.csv");
-									outFile.getParentFile().mkdirs();
-									resultsSummary.writeRawResults(outFile);
-								}
-							}
-						}
-						catch (final Exception e)
-						{
-							e.printStackTrace();
-						}
-					}
-				);
 
 				while (numCoresAvailable.get() <= 0)
 				{
@@ -339,14 +321,10 @@ public class ParallelEvalMultiGamesMultiAgents
 			if (threadPool != null)
 			{
 				final long maxWallTimeMillis = maxWallTime * 60 * 1000L;
-				long alreadyElapsedTime = System.currentTimeMillis() - startTime;
+				final long alreadyElapsedTime = System.currentTimeMillis() - startTime;
 				
 				threadPool.shutdown();
-				resultsWritingPool.shutdown();
 				threadPool.awaitTermination(maxWallTimeMillis - alreadyElapsedTime, TimeUnit.MILLISECONDS);
-				
-				alreadyElapsedTime = System.currentTimeMillis() - startTime;
-				resultsWritingPool.awaitTermination(maxWallTimeMillis - alreadyElapsedTime, TimeUnit.MILLISECONDS);
 			}
 		}
 		catch (final InterruptedException e) {
