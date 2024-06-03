@@ -313,6 +313,7 @@
     	 	<fileset dir="${Player.location}/res">
     	      	<exclude name="**/*.launch"/>
     	   		<exclude name="**/*.java"/>
+    	 		<exclude name="random_trials/**"/>
     		</fileset>
     	</copy>
     </target>

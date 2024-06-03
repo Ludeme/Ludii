@@ -6279,11 +6279,11 @@ DEFINE: HopRotationalSequenceCaptureAgain
 DEFINE JAVADOC: Defines a sequence of hop move in all the rotational directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
 DEFINE EXAMPLE: ("HopRotationalSequenceCaptureAgain")
 DEFINE: HopSequenceCapture
-DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. #4 = Moves to perform when the sequence cannot continue. 
 DEFINE EXAMPLE: ("HopSequenceCapture")
 DEFINE EXAMPLE: ("HopSequenceCapture" before:(count Rows) after:(count Rows) at:EndOfTurn)
 DEFINE: HopSequenceCaptureAgain
-DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. 
+DEFINE JAVADOC: Defines a sequence of hop move in all the adjacent directions over an enemy to an empty site from the last ``to'' location of the previous move. The enemy pieces are removed. #1 = Maximum distance before the hop [0]. #2 = Maximum distance after the hop [0]. #3 = When to perform the capture (immediately or at the end of the turn) [immediately]. #4 = Moves to perform when the sequence cannot continue. 
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain")
 DEFINE EXAMPLE: ("HopSequenceCaptureAgain" before:(count Rows) after:(count Rows) at:EndOfTurn)
 DEFINE: HopStackEnemyCaptureTop

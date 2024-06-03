@@ -303,11 +303,11 @@ public class EvalAgents
 				.withNumVals(1)
 				.withType(OptionTypes.Int));
 		
-		// parse the args
+		// Parse the args
 		if (!argParse.parseArguments(args))
 			return;
 		
-		// use the parsed args
+		// Use the parsed args
 		final EvalAgents eval = 
 				new EvalAgents
 				(

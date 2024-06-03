@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 import game.Game;
-import manager.ai.AIRegistry;
 import metrics.Evaluation;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
+import utils.AIRegistry;
 import utils.AIUtils;
 import utils.concepts.ComputePlayoutConcepts;
 
