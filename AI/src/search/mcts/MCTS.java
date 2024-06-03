@@ -552,7 +552,7 @@ public class MCTS extends ExpertPolicy
 				final ActionStatistics stats = entry.getValue();
 				stats.visitCount *= globalActionDecayFactor;
 				
-				if (stats.visitCount < 2.f)
+				if (stats.visitCount < 10.f)
 					it.remove();
 				else
 					stats.accumulatedScore *= globalActionDecayFactor;
@@ -571,7 +571,7 @@ public class MCTS extends ExpertPolicy
 				final ActionStatistics stats = entry.getValue();
 				stats.visitCount *= globalActionDecayFactor;
 				
-				if (stats.visitCount < 2.f)
+				if (stats.visitCount < 10.f)
 					it.remove();
 				else
 					stats.accumulatedScore *= globalActionDecayFactor;
