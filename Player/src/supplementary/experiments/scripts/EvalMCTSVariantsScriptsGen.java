@@ -37,10 +37,10 @@ public class EvalMCTSVariantsScriptsGen
 	private static final int MAX_JOBS_PER_BATCH = 800;
 
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MIN = "180g";
+	private static final String JVM_MEM_MIN = "200g";
 	
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MAX = "208g";
+	private static final String JVM_MEM_MAX = "214g";
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
 	private static final int MAX_REQUEST_MEM = 224;
@@ -459,8 +459,8 @@ public class EvalMCTSVariantsScriptsGen
 				writer.println("#SBATCH --exclusive");
 				
 				// load Java modules
-				writer.println("module load 2021");
-				writer.println("module load Java/11.0.2");
+				writer.println("module load 2022");
+				writer.println("module load Java/11.0.16");
 				
 				// Start writing the first part of the Java call line
 				writer.print
