@@ -506,7 +506,7 @@ public class EvalMCTSVariantsScriptsGen
 								processData.gameName + ".lud", 
 								processData.rulesetName, 
 								30, 750, 1.0, 100000, 10, 
-								"/home/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + filepathsRulesetName + "/" + processData.callID + "/", 
+								"/home/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + filepathsRulesetName + "/" + processData.callID, 
 								processData.agentStrings, 
 								false, false, true
 							);

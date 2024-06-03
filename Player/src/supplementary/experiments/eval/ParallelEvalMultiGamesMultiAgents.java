@@ -268,6 +268,8 @@ public class ParallelEvalMultiGamesMultiAgents
 							{
 								numCoresAvailable.addAndGet(numThreadsPerTrial);
 								resultsSummaryLatch.countDown();
+								
+								System.out.println("results summary latch counted down to " + resultsSummaryLatch.getCount());
 							}
 						}
 					);
@@ -281,6 +283,9 @@ public class ParallelEvalMultiGamesMultiAgents
 						try
 						{
 							resultsSummaryLatch.await(maxWallTime, TimeUnit.MINUTES);
+							System.out.println("got past the latch");
+							System.out.println("trialsBatch.outDir = " + trialsBatch.outDir);
+							System.out.println("trialsBatch.outputRawResults = " + trialsBatch.outputRawResults);
 							
 							if (trialsBatch.outDir != null)
 							{
@@ -307,6 +312,7 @@ public class ParallelEvalMultiGamesMultiAgents
 								
 								if (trialsBatch.outputRawResults)
 								{
+									System.out.println("writing raw results to " + trialsBatch.outDir + "/raw_results.csv");
 									final File outFile = new File(trialsBatch.outDir + "/raw_results.csv");
 									outFile.getParentFile().mkdirs();
 									resultsSummary.writeRawResults(outFile);
