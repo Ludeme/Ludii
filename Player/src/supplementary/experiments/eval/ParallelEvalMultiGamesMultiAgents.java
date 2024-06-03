@@ -185,6 +185,16 @@ public class ParallelEvalMultiGamesMultiAgents
 				final ResultsSummary resultsSummary = new ResultsSummary(game, agentStrings);
 				final CountDownLatch resultsSummaryLatch = new CountDownLatch(trialsBatch.numTrials);
 				
+				System.out.println("Num cores available: " + numCoresAvailable.get());
+				System.out.println("Submitting jobs.");
+				System.out.println("Game: " + trialsBatch.gameName);
+				System.out.println("Ruleset: " + trialsBatch.ruleset);
+				for (final String agentString : trialsBatch.agentStrings)
+				{
+					System.out.println("Agent: " + agentString);
+				}
+				System.out.println();
+				
 				for (int trialCounter = 0; trialCounter < trialsBatch.numTrials; ++trialCounter)
 				{
 					// Submit another job to the thread pool for this specific trial
@@ -232,6 +242,12 @@ public class ParallelEvalMultiGamesMultiAgents
 										-1, 0.0
 									);
 								}
+								
+								// Close AIs
+								for (int p = 1; p < currentAIList.size(); ++p)
+								{
+									currentAIList.get(p).closeAI();
+								}
 
 								// Record results
 								if (context.trial().over())
@@ -242,12 +258,6 @@ public class ParallelEvalMultiGamesMultiAgents
 									currentPlayersPermutation.toArray(agentPermutation, 0, 1, currentPlayersPermutation.size());
 									
 									resultsSummary.recordResults(agentPermutation, utilities, numMovesPlayed);
-								}
-								
-								// Close AIs
-								for (int p = 1; p < currentAIList.size(); ++p)
-								{
-									currentAIList.get(p).closeAI();
 								}
 							}
 							catch (final Exception e)

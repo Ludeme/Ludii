@@ -42,9 +42,6 @@ public class EvalMCTSVariantsScriptsGen
 	/** Memory to assign to JVM */
 	private static final String JVM_MEM_MAX = "208g";
 	
-	/** Memory to assign per process (in GB) */
-	private static final int MEM_PER_PROCESS = 7;
-	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
 	private static final int MAX_REQUEST_MEM = 224;
 	
@@ -56,12 +53,6 @@ public class EvalMCTSVariantsScriptsGen
 	
 	/** Number of cores per Java call */
 	private static final int CORES_PER_PROCESS = 4;
-	
-	/** If we request more cores than this in a job, we get billed for the entire node anyway, so should request exclusive */
-	private static final int EXCLUSIVE_CORES_THRESHOLD = 96;
-	
-	/** If we have more processes than this in a job, we get billed for the entire node anyway, so should request exclusive  */
-	private static final int EXCLUSIVE_PROCESSES_THRESHOLD = EXCLUSIVE_CORES_THRESHOLD / CORES_PER_PROCESS;
 	
 	/**Number of processes we can put in a single job (on a single node) */
 	private static final int PROCESSES_PER_JOB = CORES_PER_NODE / CORES_PER_PROCESS;
@@ -481,7 +472,7 @@ public class EvalMCTSVariantsScriptsGen
 						"-Xms" + JVM_MEM_MIN,
 						"-Xmx" + JVM_MEM_MAX,
 						"-XX:+HeapDumpOnOutOfMemoryError",
-						"-XX:HeapDumpPath=" + StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Err"),
+						"-XX:HeapDumpPath=" + StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Err/java_pid%p.hprof"),
 						"-da",
 						"-dsa",
 						"-XX:+UseStringDeduplication",
