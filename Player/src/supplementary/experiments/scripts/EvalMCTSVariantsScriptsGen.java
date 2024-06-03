@@ -37,7 +37,10 @@ public class EvalMCTSVariantsScriptsGen
 	private static final int MAX_JOBS_PER_BATCH = 800;
 
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM = "220g";
+	private static final String JVM_MEM_MIN = "180g";
+	
+	/** Memory to assign to JVM */
+	private static final String JVM_MEM_MAX = "208g";
 	
 	/** Memory to assign per process (in GB) */
 	private static final int MEM_PER_PROCESS = 7;
@@ -475,8 +478,8 @@ public class EvalMCTSVariantsScriptsGen
 					(
 						" ",
 						"java",
-						"-Xms" + JVM_MEM,
-						"-Xmx" + JVM_MEM,
+						"-Xms" + JVM_MEM_MIN,
+						"-Xmx" + JVM_MEM_MAX,
 						"-XX:+HeapDumpOnOutOfMemoryError",
 						"-XX:HeapDumpPath=" + StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Err"),
 						"-da",
