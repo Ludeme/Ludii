@@ -63,7 +63,7 @@ public class Description
 
   	public Description(final String raw)
   	{
-  		this.raw = new String(raw);
+  		this.raw = raw;
   	}
   	
   	//-------------------------------------------------------------------------
@@ -75,7 +75,7 @@ public class Description
 
 	public void setRaw(final String str)
 	{
-		raw = new String(str);
+		raw = str;
 	}
 
 	public String expanded()
@@ -85,7 +85,7 @@ public class Description
 
 	public void setExpanded(final String str)
 	{
-		expanded = new String(str);
+		expanded = str;
 	}
 
 	public String metadata()
@@ -95,7 +95,7 @@ public class Description
 
 	public void setMetadata(final String str)
 	{
-		metadata = new String(str);
+		metadata = str;
 	}
 
 	public GameOptions gameOptions()
