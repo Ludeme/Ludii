@@ -74,7 +74,7 @@ public final class Slide extends Effect
 	/** The rule to continue the move. */
 	private final BooleanFunction goRule;
 
-	/** The rule to stop the move. */
+	/** The rule to stop the move (limit of the slide movement). */
 	private final BooleanFunction stopRule;
 	
 	/** If not null, the site has to go has to follow this condition. */
