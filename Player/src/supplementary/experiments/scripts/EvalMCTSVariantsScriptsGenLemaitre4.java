@@ -44,7 +44,7 @@ public class EvalMCTSVariantsScriptsGenLemaitre4
 	private static final int MAX_REQUEST_MEM = 600;
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 1000;
+	private static final int MAX_WALL_TIME = 1500;
 	
 	/** Number of cores per node (this is for Lemaitre4) */
 	private static final int CORES_PER_NODE = 128;
@@ -435,9 +435,9 @@ public class EvalMCTSVariantsScriptsGenLemaitre4
 					)
 				);
 				
-				// Put up to PROCESSES_PER_JOB jsons in this job
+				// Put up to 48 jsons in this job
 				int numJobProcesses = 0;
-				while (numJobProcesses < PROCESSES_PER_JOB && processIdx < processDataList.size())
+				while (numJobProcesses < 48 && processIdx < processDataList.size())
 				{
 					final ProcessData processData = processDataList.get(processIdx);
 					
@@ -448,10 +448,10 @@ public class EvalMCTSVariantsScriptsGenLemaitre4
 					final TrialsBatchToRun trialsBatch = 
 							new TrialsBatchToRun
 							(
-								processData.gamePath, 
+								"/home/ucl/ingi/" + userName + "/Kaggle-Game-Dataset/" + gameName + ".lud", 
 								"", 
 								30, 650, 1.0, 75000, 10, 
-								"/home/ucl/ingi/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + "/" + processData.callID, 
+								"$GLOBALSCRATCH" + "/EvalMCTSVariants/Out/" + filepathsGameName + "/" + processData.callID, 
 								processData.agentStrings, 
 								false, false, true, true
 							);
