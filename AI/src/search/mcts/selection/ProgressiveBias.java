@@ -48,7 +48,7 @@ public final class ProgressiveBias implements SelectionStrategy
 	{
 		assert(mcts.heuristics() != null);
 		
-		int bestIdx = -1;
+		int bestIdx = 0;
         double bestValue = Double.NEGATIVE_INFINITY;
         int numBestFound = 0;
         
