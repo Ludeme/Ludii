@@ -37,10 +37,10 @@ public class EvalMCTSVariantsScriptsGen
 	private static final int MAX_JOBS_PER_BATCH = 800;
 
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MIN = "200g";
+	private static final String JVM_MEM_MIN = "192g";
 	
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MAX = "220g";
+	private static final String JVM_MEM_MAX = "192g";
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
 	private static final int MAX_REQUEST_MEM = 224;
@@ -251,7 +251,7 @@ public class EvalMCTSVariantsScriptsGen
 			
 			nameParts.add("MCTS");
 			algStringParts.add("algorithm=MCTS");
-			algStringParts.add("tree_reuse=true");
+			algStringParts.add("tree_reuse=false");
 			
 			final String selectionType = mctsHyperParamValues[IDX_SELECTION][combo[IDX_SELECTION]];
 			final String explorationConstant = mctsHyperParamValues[IDX_EXPLORATION_CONSTANT][combo[IDX_EXPLORATION_CONSTANT]];
@@ -451,7 +451,7 @@ public class EvalMCTSVariantsScriptsGen
 				final int numProcessesThisJob = Math.min(processDataList.size() - processIdx, PROCESSES_PER_JOB);
 				final int jobMemRequestGB = MAX_REQUEST_MEM;
 
-				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
+				writer.println("#SBATCH --cpus-per-task=" + (numProcessesThisJob * CORES_PER_PROCESS));
 				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
 				
 				totalRequestedCoreHours += (CORES_PER_NODE * (MAX_WALL_TIME / 60));
