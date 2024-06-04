@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,39 +15,38 @@ import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
-import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
 import main.collections.ListUtils;
-import main.options.Ruleset;
 import other.GameLoader;
 import search.mcts.MCTS;
 import supplementary.experiments.eval.ParallelEvalMultiGamesMultiAgents.TrialsBatchToRun;
 
 /**
- * Generates scripts to run on Snellius cluster to evaluate many different variants
+ * Generates scripts to run on the Lemaitre4 cluster to evaluate many different variants
  * of MCTS in many different games.
  *
  * @author Dennis Soemers
  */
-public class EvalMCTSVariantsScriptsGen
+public class EvalMCTSVariantsScriptsGenLemaitre4
 {
 	/** Don't submit more than this number of jobs at a single time */
-	private static final int MAX_JOBS_PER_BATCH = 800;
+	private static final int MAX_JOBS_PER_BATCH = 200;
 
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MIN = "192g";
+	private static final String JVM_MEM_MIN = "512g";
 	
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MAX = "192g";
+	private static final String JVM_MEM_MAX = "512g";
 	
+	// TODO no idea what this should be on Lemaitre4
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
-	private static final int MAX_REQUEST_MEM = 224;
+	private static final int MAX_REQUEST_MEM = 600;
 	
 	/** Max wall time (in minutes) */
 	private static final int MAX_WALL_TIME = 1000;
 	
-	/** Number of cores per node (this is for Thin nodes on Snellius) */
+	/** Number of cores per node (this is for Lemaitre4) */
 	private static final int CORES_PER_NODE = 128;
 	
 	/** Number of cores per Java call */
@@ -56,20 +54,6 @@ public class EvalMCTSVariantsScriptsGen
 	
 	/**Number of processes we can put in a single job (on a single node) */
 	private static final int PROCESSES_PER_JOB = CORES_PER_NODE / CORES_PER_PROCESS;
-	
-	/**
-	 * Games we should skip since they never end anyway (in practice), but do
-	 * take a long time.
-	 */
-	private static final String[] SKIP_GAMES = new String[]
-			{
-				"Chinese Checkers.lud",
-				"Li'b al-'Aqil.lud",
-				"Li'b al-Ghashim.lud",
-				"Mini Wars.lud",
-				"Pagade Kayi Ata (Sixteen-handed).lud",
-				"Taikyoku Shogi.lud"
-			};
 	
 	/** All our hyperparameters for MCTS */
 	private static final String[] mctsHyperparamNames = new String[] 
@@ -109,7 +93,7 @@ public class EvalMCTSVariantsScriptsGen
 	/**
 	 * Constructor (don't need this)
 	 */
-	private EvalMCTSVariantsScriptsGen()
+	private EvalMCTSVariantsScriptsGenLemaitre4()
 	{
 		// Do nothing
 	}
@@ -175,6 +159,7 @@ public class EvalMCTSVariantsScriptsGen
 	 * Generates our scripts
 	 * @param argParse
 	 */
+	@SuppressWarnings("unchecked")
 	private static void generateScripts(final CommandLineArgParse argParse)
 	{
 		final List<String> jobScriptNames = new ArrayList<String>();
@@ -299,128 +284,89 @@ public class EvalMCTSVariantsScriptsGen
 			scriptsDir += "/";
 		
 		final String userName = argParse.getValueString("--user-name");
-				
-		final String[] allGameNames = Arrays.stream(FileHandling.listGames()).filter(s -> (
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wishlist/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/reconstruction/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/simulation/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/puzzle/deduction/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/subgame/")) &&
-				!(s.replaceAll(Pattern.quote("\\"), "/").contains("/lud/proprietary/"))
-			)).toArray(String[]::new);
+		
+		final List<String> gamePaths = (List<String>) argParse.getValue("--game-paths");
 		
 		long callID = 0L;
 		
 		// First create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
 		
-		for (final String fullGamePath : allGameNames)
+		for (final String gamePath : gamePaths)
 		{
-			final String[] gamePathParts = fullGamePath.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
+			final Game game = GameLoader.loadGameFromFile(new File(gamePath));
 			
-			boolean skipGame = false;
-			for (final String game : SKIP_GAMES)
+			if (game.players().count() != 2)
 			{
-				if (gamePathParts[gamePathParts.length - 1].endsWith(game))
-				{
-					skipGame = true;
-					break;
-				}
+				System.err.println("Error: " + gamePath + " does not have 2 players");
+				continue;
 			}
 			
-			if (skipGame)
-				continue;
-			
-			final String gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
-			final Game gameNoRuleset = GameLoader.loadGameFromName(gameName + ".lud");
-			final List<Ruleset> gameRulesets = new ArrayList<Ruleset>(gameNoRuleset.description().rulesets());
-			gameRulesets.add(null);
-			boolean foundRealRuleset = false;
-			
-			for (final Ruleset ruleset : gameRulesets)
+			if (game.isDeductionPuzzle())
 			{
-				final Game game;
-				String fullRulesetName = "";
-				if (ruleset == null && foundRealRuleset)
-				{
-					// Skip this, don't allow game without ruleset if we do have real implemented ones
-					continue;
-				}
-				else if (ruleset != null && !ruleset.optionSettings().isEmpty())
-				{
-					fullRulesetName = ruleset.heading();
-					foundRealRuleset = true;
-					game = GameLoader.loadGameFromName(gameName + ".lud", fullRulesetName);
-				}
-				else if (ruleset != null && ruleset.optionSettings().isEmpty())
-				{
-					// Skip empty ruleset
-					continue;
-				}
-				else
-				{
-					game = gameNoRuleset;
-				}
-				
-				if (game.players().count() != 2)
-					continue;
-				
-				if (game.isDeductionPuzzle())
-					continue;
-				
-				if (game.isSimulationMoveGame())
-					continue;
-				
-				if (!game.isAlternatingMoveGame())
-					continue;
-				
-				if (game.hasSubgames())
-					continue;
-				
-				if (game.hiddenInformation())
-					continue;
-				
-				final int numPlayers = game.players().count();
-				
-				if (dummyUCT.supportsGame(game))
-				{
-					// Evaluate all MCTSes...
-					final String[] relevantMCTSNames = (game.isStochasticGame()) ? mctsNamesStochastic : mctsNamesDeterministic;
-					final String[] relevantMCTSStrings = (game.isStochasticGame()) ? mctsStringsStochastic : mctsStringsDeterministic;
+				System.err.println("Error: " + gamePath + " is a deduction puzzle");
+				continue;
+			}
+			
+			if (game.isSimulationMoveGame())
+			{
+				System.err.println("Error: " + gamePath + " is a simulation");
+				continue;
+			}
+			
+			if (!game.isAlternatingMoveGame())
+			{
+				System.err.println("Error: " + gamePath + " is a simultaneous-move game");
+				continue;
+			}
+			
+			if (game.hasSubgames())
+			{
+				System.err.println("Error: " + gamePath + " has subgames");
+				continue;
+			}
+			
+			if (game.hiddenInformation())
+			{
+				System.err.println("Error: " + gamePath + " has partial observability");
+				continue;
+			}
+			
+			final int numPlayers = game.players().count();
+			
+			if (dummyUCT.supportsGame(game))
+			{
+				// Evaluate all MCTSes...
+				final String[] relevantMCTSNames = (game.isStochasticGame()) ? mctsNamesStochastic : mctsNamesDeterministic;
+				final String[] relevantMCTSStrings = (game.isStochasticGame()) ? mctsStringsStochastic : mctsStringsDeterministic;
 
-					for (int evalAgentIdxMCTS = 0; evalAgentIdxMCTS < relevantMCTSNames.length; ++evalAgentIdxMCTS)
+				for (int evalAgentIdxMCTS = 0; evalAgentIdxMCTS < relevantMCTSNames.length; ++evalAgentIdxMCTS)
+				{
+					final String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
+					
+					// ... against 2 randomly selected other MCTSes
+					final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
+					sampleIndices.removeAt(evalAgentIdxMCTS);
+					
+					for (int i = 0; i < 2; ++i)
 					{
-						final String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
+						final String[] agentStrings = new String[numPlayers];
+						agentStrings[0] = evalAgentCommandString;
 						
-						// ... against 2 randomly selected other MCTSes
-						final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
-						sampleIndices.removeAt(evalAgentIdxMCTS);
+						final int randIdx = ThreadLocalRandom.current().nextInt(sampleIndices.size());
+						final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
+						ListUtils.removeSwap(sampleIndices, randIdx);
 						
-						for (int i = 0; i < 2; ++i)
-						{
-							final String[] agentStrings = new String[numPlayers];
-							agentStrings[0] = evalAgentCommandString;
-							
-							final int randIdx = ThreadLocalRandom.current().nextInt(sampleIndices.size());
-							final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
-							ListUtils.removeSwap(sampleIndices, randIdx);
-							
-							final String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
-							agentStrings[1] = agentCommandString;
-							
-							processDataList.add
+						final String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
+						agentStrings[1] = agentCommandString;
+						
+						processDataList.add
+						(
+							new ProcessData
 							(
-								new ProcessData
-								(
-									gameName, fullRulesetName, callID++, 
-									agentStrings
-								)
-							);
-						}
+								gamePath, callID++, agentStrings
+							)
+						);
 					}
 				}
 			}
@@ -435,15 +381,16 @@ public class EvalMCTSVariantsScriptsGen
 		while (processIdx < processDataList.size())
 		{
 			// Start a new job script and collection of JSON files
-			final String jobScriptFilename = "EvalMCTSVariants_" + jobScriptNames.size() + ".sh";
+			final String jobScriptFilename = 
+					"EvalMCTSVariants_" + String.valueOf(System.currentTimeMillis()) + "_" + jobScriptNames.size() + ".sh";
 					
 			try (final PrintWriter writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8"))
 			{
 				writer.println("#!/bin/bash");
 				writer.println("#SBATCH -J EvalMCTSVariants");
-				writer.println("#SBATCH -p rome");
-				writer.println("#SBATCH -o /home/" + userName + "/EvalMCTSVariants/Out/Out_%J.out");
-				writer.println("#SBATCH -e /home/" + userName + "/EvalMCTSVariants/Err/Err_%J.err");
+				writer.println("#SBATCH -p batch");
+				writer.println("#SBATCH -o /home/ucl/ingi/" + userName + "/EvalMCTSVariants/Out/Out_%J.out");
+				writer.println("#SBATCH -e /home/ucl/ingi/" + userName + "/EvalMCTSVariants/Err/Err_%J.err");
 				writer.println("#SBATCH -t " + MAX_WALL_TIME);
 				writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
 				
@@ -458,9 +405,8 @@ public class EvalMCTSVariantsScriptsGen
 				
 				writer.println("#SBATCH --exclusive");
 				
-				// load Java modules
-				writer.println("module load 2022");
-				writer.println("module load Java/11.0.16");
+				// load Java module
+				writer.println("module load Java/11.0.20");
 				
 				// Start writing the first part of the Java call line
 				writer.print
@@ -472,12 +418,12 @@ public class EvalMCTSVariantsScriptsGen
 						"-Xms" + JVM_MEM_MIN,
 						"-Xmx" + JVM_MEM_MAX,
 						"-XX:+HeapDumpOnOutOfMemoryError",
-						"-XX:HeapDumpPath=" + StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Err/java_pid%p.hprof"),
+						"-XX:HeapDumpPath=" + StringRoutines.quote("/home/ucl/ingi/" + userName + "/EvalMCTSVariants/Err/java_pid%p.hprof"),
 						"-da",
 						"-dsa",
 						"-XX:+UseStringDeduplication",
 						"-jar",
-						StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Ludii.jar"),
+						StringRoutines.quote("/home/ucl/ingi/" + userName + "/EvalMCTSVariants/Ludii.jar"),
 						"--parallel-eval-multi-games-multi-agents",
 						"--max-wall-time",
 						String.valueOf(MAX_WALL_TIME),
@@ -494,25 +440,24 @@ public class EvalMCTSVariantsScriptsGen
 				while (numJobProcesses < PROCESSES_PER_JOB && processIdx < processDataList.size())
 				{
 					final ProcessData processData = processDataList.get(processIdx);
-					final String filepathsGameName = 
-							StringRoutines.cleanGameName(processData.gameName);
-					final String filepathsRulesetName = 
-							StringRoutines.cleanRulesetName(
-									processData.rulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
+					
+					final String[] gamePathParts = processData.gamePath.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
+					final String gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
+					final String filepathsGameName = StringRoutines.cleanGameName(gameName);
 					
 					final TrialsBatchToRun trialsBatch = 
 							new TrialsBatchToRun
 							(
-								processData.gameName + ".lud", 
-								processData.rulesetName, 
+								processData.gamePath, 
+								"", 
 								30, 650, 1.0, 75000, 10, 
-								"/home/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + filepathsRulesetName + "/" + processData.callID, 
+								"/home/ucl/ingi/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + "/" + processData.callID, 
 								processData.agentStrings, 
-								false, false, true, false
+								false, false, true, true
 							);
 					
 					trialsBatch.toJson(scriptsDir + "TrialsBatch_" + processData.callID + ".json");
-					writer.print(" " + "/home/" + userName + "/EvalMCTSVariants/Scripts/" + "TrialsBatch_" + processData.callID + ".json");
+					writer.print(" " + "/home/ucl/ingi/" + userName + "/EvalMCTSVariants/Scripts/" + "TrialsBatch_" + processData.callID + ".json");
 					
 					++processIdx;
 					++numJobProcesses;
@@ -525,9 +470,9 @@ public class EvalMCTSVariantsScriptsGen
 					(
 						" ",
 						">",
-						"/home/" + userName + "/EvalMCTSVariants/Out/Out_${SLURM_JOB_ID}" + ".out",
+						"/home/ucl/ingi/" + userName + "/EvalMCTSVariants/Out/Out_${SLURM_JOB_ID}" + ".out",
 						"2>",
-						"/home/" + userName + "/EvalMCTSVariants/Err/Err_${SLURM_JOB_ID}" + ".err",
+						"/home/ucl/ingi/" + userName + "/EvalMCTSVariants/Err/Err_${SLURM_JOB_ID}" + ".err",
 						"&"		// Run processes in parallel
 					)
 				);
@@ -593,28 +538,24 @@ public class EvalMCTSVariantsScriptsGen
 	 */
 	private static class ProcessData
 	{
-		public final String gameName;
-		public final String rulesetName;
+		public final String gamePath;
 		public final long callID;
 		public final String[] agentStrings;
 		
 		/**
 		 * Constructor
-		 * @param gameName
-		 * @param rulesetName
+		 * @param gamePath
 		 * @param callID
 		 * @param agentStrings
 		 */
 		public ProcessData
 		(
-			final String gameName, 
-			final String rulesetName, 
+			final String gamePath, 
 			final long callID,
 			final String[] agentStrings
 		)
 		{
-			this.gameName = gameName;
-			this.rulesetName = rulesetName;
+			this.gamePath = gamePath;
 			this.callID = callID;
 			this.agentStrings = agentStrings;
 		}
@@ -633,7 +574,7 @@ public class EvalMCTSVariantsScriptsGen
 				new CommandLineArgParse
 				(
 					true,
-					"Generate Snellius scripts to evaluate different MCTS combinations."
+					"Generate Lemaitre4 scripts to evaluate different MCTS combinations."
 				);
 		
 		argParse.addOption(new ArgOption()
@@ -647,6 +588,13 @@ public class EvalMCTSVariantsScriptsGen
 				.withNames("--scripts-dir")
 				.help("Directory in which to store generated scripts.")
 				.withNumVals(1)
+				.withType(OptionTypes.String)
+				.setRequired());
+		
+		argParse.addOption(new ArgOption()
+				.withNames("--game-paths")
+				.help("Filepaths for games we wish to run.")
+				.withNumVals("+")
 				.withType(OptionTypes.String)
 				.setRequired());
 		

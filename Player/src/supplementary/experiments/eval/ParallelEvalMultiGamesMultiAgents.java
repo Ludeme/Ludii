@@ -119,10 +119,20 @@ public class ParallelEvalMultiGamesMultiAgents
 				// Load game for this batch
 				final Game game;
 				
-				if (trialsBatch.ruleset != null && !trialsBatch.ruleset.equals(""))
-					game = GameLoader.loadGameFromName(trialsBatch.gameName, trialsBatch.ruleset);
+				if (trialsBatch.treatGameNameAsFilepath)
+				{
+					if (trialsBatch.ruleset != null && !trialsBatch.ruleset.equals(""))
+						game = GameLoader.loadGameFromFile(new File(trialsBatch.gameName), trialsBatch.ruleset);
+					else
+						game = GameLoader.loadGameFromFile(new File(trialsBatch.gameName), new ArrayList<String>());	// TODO add support for options
+				}
 				else
-					game = GameLoader.loadGameFromName(trialsBatch.gameName, new ArrayList<String>());	// TODO add support for options
+				{
+					if (trialsBatch.ruleset != null && !trialsBatch.ruleset.equals(""))
+						game = GameLoader.loadGameFromName(trialsBatch.gameName, trialsBatch.ruleset);
+					else
+						game = GameLoader.loadGameFromName(trialsBatch.gameName, new ArrayList<String>());	// TODO add support for options
+				}
 				
 				// Let's clear some unnecessary memory
 				game.description().setParseTree(null);
@@ -355,6 +365,7 @@ public class ParallelEvalMultiGamesMultiAgents
 		protected final boolean outputSummary;
 		protected final boolean outputAlphaRankData;
 		protected final boolean outputRawResults;
+		protected final boolean treatGameNameAsFilepath;
 		
 		/**
 		 * Constructor
@@ -371,13 +382,14 @@ public class ParallelEvalMultiGamesMultiAgents
 		 * @param outputSummary
 		 * @param outputAlphaRankData
 		 * @param outputRawResults
+		 * @param treatGameNameAsFilepath
 		 */
 		public TrialsBatchToRun
 		(
 			final String gameName, final String ruleset, final int numTrials, final int gameLengthCap, 
 			final double thinkingTime, final int iterationLimit, final int warmingUpSecs, final String outDir, 
 			final String[] agentStrings, final boolean outputSummary, final boolean outputAlphaRankData,
-			final boolean outputRawResults
+			final boolean outputRawResults, final boolean treatGameNameAsFilepath
 		) 
 		{
 			this.gameName = gameName;
@@ -392,6 +404,7 @@ public class ParallelEvalMultiGamesMultiAgents
 			this.outputSummary = outputSummary;
 			this.outputAlphaRankData = outputAlphaRankData;
 			this.outputRawResults = outputRawResults;
+			this.treatGameNameAsFilepath = treatGameNameAsFilepath;
 		}
 		
 		public void toJson(final String jsonFilepath)
@@ -419,6 +432,7 @@ public class ParallelEvalMultiGamesMultiAgents
 				json.put("outputSummary", outputSummary);
 				json.put("outputAlphaRankData", outputAlphaRankData);
 				json.put("outputRawResults", outputRawResults);
+				json.put("treatGameNameAsFilepath", treatGameNameAsFilepath);
 
 				final FileWriter fw = new FileWriter(file);
 				bw = new BufferedWriter(fw);
@@ -462,9 +476,11 @@ public class ParallelEvalMultiGamesMultiAgents
 				final boolean outputSummary = json.getBoolean("outputSummary");
 				final boolean outputAlphaRankData = json.getBoolean("outputAlphaRankData");
 				final boolean outputRawResults = json.getBoolean("outputRawResults");
+				final boolean treatGameNameAsFilepath = json.optBoolean("treatGameNameAsFilepath", false);
 				
 				return new TrialsBatchToRun(gameName, ruleset, numTrials, gameLengthCap, thinkingTime, iterationLimit, 
-						warmingUpSecs, outDir, agentStrings, outputSummary, outputAlphaRankData, outputRawResults);
+						warmingUpSecs, outDir, agentStrings, outputSummary, outputAlphaRankData, outputRawResults, 
+						treatGameNameAsFilepath);
 
 			}
 			catch (final Exception e)
