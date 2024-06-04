@@ -101,7 +101,7 @@ public final class ScoreBoundsNode extends DeterministicNode
     @Override
     public double exploitationScore(final int agent)
     {
-    	if (pruned)
+    	if (pruned && parent != null)
     	{
     		final ScoreBoundsNode sbParent = (ScoreBoundsNode) parent;
     		if (sbParent.optBound(agent) > pessBound(agent))
