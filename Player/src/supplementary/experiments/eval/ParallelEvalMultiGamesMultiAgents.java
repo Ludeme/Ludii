@@ -171,6 +171,7 @@ public class ParallelEvalMultiGamesMultiAgents
 							TIntArrayList.wrap(IntStream.range(0, numPlayers).toArray()), 120);
 				}
 				
+				try
 				{
 					// Do a warming up (just a few seconds anyway, so let's not worry about parallelisation)
 					final Trial trial = new Trial(game);
@@ -185,6 +186,12 @@ public class ParallelEvalMultiGamesMultiAgents
 						stopAt = System.nanoTime();
 					}
 					System.gc();
+				}
+				catch (final Exception e)
+				{
+					System.err.println("Crash during warmup for game: " + trialsBatch.gameName);
+					e.printStackTrace();
+					continue;
 				}
 				
 				// Prepare results writing (ResultsSummary is thread-safe)
