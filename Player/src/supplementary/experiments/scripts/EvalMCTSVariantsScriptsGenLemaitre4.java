@@ -344,11 +344,11 @@ public class EvalMCTSVariantsScriptsGenLemaitre4
 				{
 					final String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
 					
-					// ... against 2 randomly selected other MCTSes
+					// ... against 3 randomly selected other MCTSes
 					final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
 					sampleIndices.removeAt(evalAgentIdxMCTS);
 					
-					for (int i = 0; i < 2; ++i)
+					for (int i = 0; i < 3; ++i)
 					{
 						final String[] agentStrings = new String[numPlayers];
 						agentStrings[0] = evalAgentCommandString;
