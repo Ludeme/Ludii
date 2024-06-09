@@ -451,7 +451,7 @@ public class EvalMCTSVariantsScriptsGenLemaitre4
 								"/home/ucl/ingi/" + userName + "/Kaggle-Game-Dataset/" + gameName + ".lud", 
 								"", 
 								30, 650, 1.0, 75000, 10, 
-								"$GLOBALSCRATCH" + "/EvalMCTSVariants/Out/" + filepathsGameName + "/" + processData.callID, 
+								"/globalscratch/ucl/ingi/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + "/" + processData.callID, 
 								processData.agentStrings, 
 								false, false, true, true
 							);
