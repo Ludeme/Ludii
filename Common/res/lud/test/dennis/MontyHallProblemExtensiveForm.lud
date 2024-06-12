@@ -1,12 +1,12 @@
 (game "MontyHallProblemExtensiveForm"
 
 	//--------------------------------------------------------------------------
-	// Subsection 3.1 of the paper
+	// Subsection III.A of the paper
 	//--------------------------------------------------------------------------
     (players 1)
 	
     //--------------------------------------------------------------------------
-	// Subsection 3.2 of the paper
+	// Subsection III.B of the paper
     //--------------------------------------------------------------------------
     (equipment {
         (piece "Marker" Neutral)
@@ -197,7 +197,7 @@
     
     (rules
     	//----------------------------------------------------------------------
-		// Subsection 3.3 of the paper
+		// Subsection III.C of the paper
     	//----------------------------------------------------------------------
         (start {
         	(place "Marker0" 0)		// Mark true game state
@@ -206,7 +206,7 @@
         })
         
         //----------------------------------------------------------------------
-		// Subsection 3.4 of the paper
+		// Subsection III.D of the paper
         //----------------------------------------------------------------------
         (play 
         	// We have to enumerate all possible (non-terminal) game states for playing rules
@@ -800,7 +800,7 @@
         )
 		
         //----------------------------------------------------------------------
-		// Subsection 3.5 of the paper
+		// Subsection III.E of the paper
         //----------------------------------------------------------------------
 		(end {
 			(if (= (where "Marker" Neutral) 25)
