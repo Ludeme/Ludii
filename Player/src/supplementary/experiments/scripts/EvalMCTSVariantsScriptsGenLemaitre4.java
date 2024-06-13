@@ -287,7 +287,7 @@ public class EvalMCTSVariantsScriptsGenLemaitre4
 		
 		final List<String> gamePaths = (List<String>) argParse.getValue("--game-paths");
 		
-		long callID = 0L;
+		long callID = argParse.getValueInt("--first-call-id");
 		
 		// First create list with data for every process we want to run
 		final List<ProcessData> processDataList = new ArrayList<ProcessData>();
@@ -512,10 +512,12 @@ public class EvalMCTSVariantsScriptsGenLemaitre4
 				remainingJobScriptNames = new ArrayList<String>();
 			}
 		}
+		
+		final int firstJobsBatchIndex = argParse.getValueInt("--first-jobs-batch-index");
 
 		for (int i = 0; i < jobScriptsLists.size(); ++i)
 		{
-			try (final PrintWriter writer = new UnixPrintWriter(new File(scriptsDir + "SubmitJobs_Part" + i + ".sh"), "UTF-8"))
+			try (final PrintWriter writer = new UnixPrintWriter(new File(scriptsDir + "SubmitJobs_Part" + (i + firstJobsBatchIndex) + ".sh"), "UTF-8"))
 			{
 				for (final String jobScriptName : jobScriptsLists.get(i))
 				{
@@ -596,6 +598,20 @@ public class EvalMCTSVariantsScriptsGenLemaitre4
 				.help("Filepaths for games we wish to run.")
 				.withNumVals("+")
 				.withType(OptionTypes.String)
+				.setRequired());
+		
+		argParse.addOption(new ArgOption()
+				.withNames("--first-call-id")
+				.help("Call ID to use for the first JSON.")
+				.withNumVals(1)
+				.withType(OptionTypes.Int)
+				.setRequired());
+		
+		argParse.addOption(new ArgOption()
+				.withNames("--first-jobs-batch-index")
+				.help("Index to use in SubmitJobs filename for the first batch of jobs.")
+				.withNumVals(1)
+				.withType(OptionTypes.Int)
 				.setRequired());
 		
 		// parse the args
