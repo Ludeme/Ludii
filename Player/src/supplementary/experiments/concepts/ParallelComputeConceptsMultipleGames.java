@@ -6,9 +6,11 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -35,6 +37,7 @@ public class ParallelComputeConceptsMultipleGames
 	//-------------------------------------------------------------------------
 	
 	protected int numCoresTotal;
+	protected int numThreadsPerJob;
 	protected List<String> jsonFiles;
 
 	/** 
@@ -86,7 +89,10 @@ public class ParallelComputeConceptsMultipleGames
 		final AtomicInteger numCoresAvailable = new AtomicInteger(numCoresTotal);
 		
 		@SuppressWarnings("resource")
-		final ExecutorService threadPool = Executors.newFixedThreadPool(numCoresTotal, DaemonThreadFactory.INSTANCE);
+		final ExecutorService threadPool = Executors.newFixedThreadPool(numCoresTotal / numThreadsPerJob, DaemonThreadFactory.INSTANCE);
+		
+		// Queue of jobs that are waiting to be submitted because they depend on a set of other jobs
+		final List<WaitingJob> waitingJobs = new LinkedList<WaitingJob>();
 		
 		final long startTime = System.currentTimeMillis();
 		
@@ -94,7 +100,10 @@ public class ParallelComputeConceptsMultipleGames
 		{
 			for (final String jsonFile : jsonFiles)
 			{
-				// Let's try to start another batch of trials
+				// First check if we can now submit any jobs that were still waiting around
+				// TODO
+				
+				// Let's try to start jobs for another game
 				final GameRulesetToCompute experiment = GameRulesetToCompute.fromJson(jsonFile);
 				
 				// Load game for this batch
@@ -124,7 +133,11 @@ public class ParallelComputeConceptsMultipleGames
 				System.out.println("Game: " + experiment.gameName);
 				System.out.println("Ruleset: " + experiment.ruleset);
 				
-				// TODO start creating and submitting jobs here
+				// Check if we need to submit jobs for generating trials (if we don't already have them)
+				// TODO 
+				
+				// Submit jobs for computing concepts
+				// TODO
 
 				while (numCoresAvailable.get() <= 0)
 				{
@@ -162,6 +175,7 @@ public class ParallelComputeConceptsMultipleGames
 		
 		protected final String gameName;
 		protected final String ruleset;
+		protected final int numTrials;
 		protected final String outDir;
 		protected final boolean treatGameNameAsFilepath;
 		
@@ -170,17 +184,19 @@ public class ParallelComputeConceptsMultipleGames
 		 * 
 		 * @param gameName
 		 * @param ruleset
+		 * @param numTrials
 		 * @param outDir
 		 * @param treatGameNameAsFilepath
 		 */
 		public GameRulesetToCompute
 		(
-			final String gameName, final String ruleset, 
+			final String gameName, final String ruleset, final int numTrials,
 			final String outDir, final boolean treatGameNameAsFilepath
 		) 
 		{
 			this.gameName = gameName;
 			this.ruleset = ruleset;
+			this.numTrials = numTrials;
 			this.outDir = outDir;
 			this.treatGameNameAsFilepath = treatGameNameAsFilepath;
 		}
@@ -199,6 +215,7 @@ public class ParallelComputeConceptsMultipleGames
 				
 				json.put("gameName", gameName);
 				json.put("ruleset", ruleset);
+				json.put("numTrials", numTrials);
 				json.put("outDir", outDir);
 				json.put("treatGameNameAsFilepath", treatGameNameAsFilepath);
 
@@ -233,10 +250,11 @@ public class ParallelComputeConceptsMultipleGames
 				
 				final String gameName = json.getString("gameName");
 				final String ruleset = json.getString("ruleset");
+				final int numTrials = json.getInt("numTrials");
 				final String outDir = json.getString("outDir");
 				final boolean treatGameNameAsFilepath = json.optBoolean("treatGameNameAsFilepath", false);
 				
-				return new GameRulesetToCompute(gameName, ruleset, outDir, treatGameNameAsFilepath);
+				return new GameRulesetToCompute(gameName, ruleset, numTrials, outDir, treatGameNameAsFilepath);
 
 			}
 			catch (final Exception e)
@@ -244,6 +262,42 @@ public class ParallelComputeConceptsMultipleGames
 				e.printStackTrace();
 				return null;
 			}
+		}
+		
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * A job that is waiting for other jobs that need to be finished first before
+	 * it can be submitted to an ExecutorService
+	 * 
+	 * @author Dennis Soemers
+	 */
+	public static class WaitingJob
+	{
+		
+		/** The actual job */
+		protected final Runnable runnable;
+		
+		/** Jobs which must've completed running before we can be queued */
+		protected final List<Future<Void>> dependencies;
+		
+		/** Num threads this job expects to be using */
+		protected final int numThreads;
+		
+		/**
+		 * Constructor
+		 * 
+		 * @param runnable
+		 * @param dependencies
+		 * @param numThreads
+		 */
+		public WaitingJob(final Runnable runnable, final List<Future<Void>> dependencies, final int numThreads)
+		{
+			this.runnable = runnable;
+			this.dependencies = dependencies;
+			this.numThreads = numThreads;
 		}
 		
 	}
@@ -272,6 +326,12 @@ public class ParallelComputeConceptsMultipleGames
 		argParse.addOption(new ArgOption()
 				.withNames("--num-cores-total")
 				.help("Total number of cores we expect to be able to use for all jobs together.")
+				.withNumVals(1)
+				.withType(OptionTypes.Int)
+				.setRequired());
+		argParse.addOption(new ArgOption()
+				.withNames("--num-threads-per-job")
+				.help("Number of threads to be used per job. Jobs may either generate random trials, or compute concepts")
 				.withNumVals(1)
 				.withType(OptionTypes.Int)
 				.setRequired());
@@ -307,6 +367,7 @@ public class ParallelComputeConceptsMultipleGames
 				);
 		
 		experiment.numCoresTotal = argParse.getValueInt("--num-cores-total");
+		experiment.numThreadsPerJob = argParse.getValueInt("--num-threads-per-job");
 		experiment.jsonFiles = (List<String>) argParse.getValue("--json-files");
 		
 		experiment.startExperiment();
