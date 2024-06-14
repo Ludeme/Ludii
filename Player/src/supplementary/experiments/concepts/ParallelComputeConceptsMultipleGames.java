@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -24,6 +25,8 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.DaemonThreadFactory;
 import other.GameLoader;
+import other.concept.Concept;
+import other.concept.ConceptDataType;
 
 /**
  * Implementation of an experiment that computes concepts for multiple games in parallel.
@@ -86,6 +89,16 @@ public class ParallelComputeConceptsMultipleGames
 	 */
 	public void startExperiment()
 	{
+		final List<Concept> booleanConcepts = new ArrayList<Concept>();
+		final List<Concept> nonBooleanConcepts = new ArrayList<Concept>();
+		for (final Concept concept : Concept.values())
+		{
+			if (concept.dataType().equals(ConceptDataType.BooleanData))
+				booleanConcepts.add(concept);
+			else
+				nonBooleanConcepts.add(concept);
+		}
+		
 		final AtomicInteger numCoresAvailable = new AtomicInteger(numCoresTotal);
 		
 		@SuppressWarnings("resource")
@@ -101,7 +114,26 @@ public class ParallelComputeConceptsMultipleGames
 			for (final String jsonFile : jsonFiles)
 			{
 				// First check if we can now submit any jobs that were still waiting around
-				// TODO
+				final Iterator<WaitingJob> it = waitingJobs.iterator();
+				while (it.hasNext() && numCoresAvailable.get() >= numThreadsPerJob)
+				{
+					final WaitingJob job = it.next();
+					if (job.checkDependencies()) 
+					{
+						// This job can be submitted now
+						it.remove();
+						numCoresAvailable.addAndGet(-numThreadsPerJob);
+						threadPool.submit(job.runnable);
+					}
+				}
+				
+				while (numCoresAvailable.get() <= 0)
+				{
+					// We could just continue creating jobs and submitting them to the pool, but then we would
+					// already be loading all those games into memory. We don't want to do that, so we'll wait
+					// with submitting more tasks until we actually have cores to run them.
+					Thread.sleep(20000L);
+				}
 				
 				// Let's try to start jobs for another game
 				final GameRulesetToCompute experiment = GameRulesetToCompute.fromJson(jsonFile);
@@ -123,6 +155,8 @@ public class ParallelComputeConceptsMultipleGames
 					else
 						game = GameLoader.loadGameFromName(experiment.gameName, new ArrayList<String>());	// TODO add support for options
 				}
+				
+				// TODO maybe set move limit on game?
 				
 				// Let's clear some unnecessary memory
 				game.description().setParseTree(null);
@@ -298,6 +332,25 @@ public class ParallelComputeConceptsMultipleGames
 			this.runnable = runnable;
 			this.dependencies = dependencies;
 			this.numThreads = numThreads;
+		}
+		
+		/**
+		 * @return True if and only if all dependencies have finished running.
+		 */
+		public boolean checkDependencies()
+		{
+			final Iterator<Future<Void>> it = dependencies.iterator();
+			while (it.hasNext())
+			{
+				final Future<Void> future = it.next();
+				
+				if (future.isDone())
+					it.remove();
+				else
+					return false;
+			}
+			
+			return true;
 		}
 		
 	}
