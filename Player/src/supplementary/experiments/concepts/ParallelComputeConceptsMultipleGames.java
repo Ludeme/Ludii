@@ -165,6 +165,8 @@ public class ParallelComputeConceptsMultipleGames
 						game = GameLoader.loadGameFromName(experiment.gameName, new ArrayList<String>());	// TODO add support for options
 				}
 				
+				final List<String> gameOptions = game.getOptions();
+				
 				game.setMaxTurns(Math.min(5000, game.getMaxTurnLimit()));
 				
 				// Let's clear some unnecessary memory
@@ -209,7 +211,8 @@ public class ParallelComputeConceptsMultipleGames
 									generateRandomTrials
 									(
 										game, numTrialsToRun, firstTrialIndex,
-										trialsDir, numThreadsPerJob
+										trialsDir, numThreadsPerJob, experiment.gameName,
+										gameOptions
 									);
 								}
 								catch (final Exception e)
@@ -225,8 +228,38 @@ public class ParallelComputeConceptsMultipleGames
 					);
 				}
 				
-				// Submit jobs for computing concepts
-				// TODO
+				// Create jobs for computing concepts
+				final Runnable conceptsJob = () -> {
+					try
+					{								
+						computeConcepts
+						(
+							game, trialsDir, new File(experiment.conceptsDir),
+							numThreadsPerJob
+						);
+					}
+					catch (final Exception e)
+					{
+						e.printStackTrace();
+					}
+					finally
+					{
+						numCoresAvailable.addAndGet(numThreadsPerJob);
+					}
+				};
+				
+				if (!trialJobFutures.isEmpty())
+				{
+					// We can't submit the job directly, but have to wait until
+					// all trials have been generated
+					waitingJobs.add(new WaitingJob(conceptsJob, trialJobFutures, numThreadsPerJob));
+				}
+				else
+				{
+					// We can directly submit this job, as we already have the trials
+					numCoresAvailable.addAndGet(-numThreadsPerJob);
+					threadPool.submit(conceptsJob);
+				}
 
 				while (numCoresAvailable.get() <= 0)
 				{
@@ -262,11 +295,14 @@ public class ParallelComputeConceptsMultipleGames
 	 * @param firstTrialIndex
 	 * @param trialsDir
 	 * @param numThreads
+	 * @param gameName
+	 * @param gameOptions
 	 */
 	protected static void generateRandomTrials
 	(
 		final Game game, final int numTrialsToRun, final int firstTrialIndex,
-		final File trialsDir, final int numThreads
+		final File trialsDir, final int numThreads, final String gameName,
+		final List<String> gameOptions
 	)
 	{
 		@SuppressWarnings("resource")
@@ -302,8 +338,7 @@ public class ParallelComputeConceptsMultipleGames
 									trialFilepath += "/";
 								trialFilepath += "Trial_" + trialIdx + ".txt";
 								
-								// TODO game path and options
-								//trial.saveTrialToTextFile(trialFilepath, game.name(), new ArrayList<String>(), gameStartRngState);
+								trial.saveTrialToTextFile(new File(trialFilepath), gameName, gameOptions, gameStartRngState);
 							}
 							catch (final Exception e)
 							{
@@ -329,6 +364,23 @@ public class ParallelComputeConceptsMultipleGames
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Helper method for parallelised computation of concepts for a game.
+	 * 
+	 * @param game
+	 * @param trialsDir Where are our trials stored?
+	 * @param conceptsDir Where do we want to write our concepts?
+	 * @param numThreads
+	 */
+	protected static void computeConcepts
+	(
+		final Game game, final File trialsDir, 
+		final File conceptsDir, final int numThreads
+	)
+	{
+		// TODO
 	}
 
 	//-------------------------------------------------------------------------
