@@ -138,6 +138,52 @@ public class ListUtils
 		return list;
 	}
 	
+	/**
+	 * @param minInclusive
+	 * @param maxExclusive
+	 * @return Exactly like python's range() function, generates a list from minInclusive to maxExclusive
+	 */
+	public static TIntArrayList range(final int minInclusive, final int maxExclusive)
+	{
+		final TIntArrayList list = new TIntArrayList(maxExclusive);
+		for (int i = minInclusive; i < maxExclusive - minInclusive; ++i)
+		{
+			list.add(i);
+		}
+		return list;
+	}
+	
+	/**
+	 * Splits the given list into numLists different sublists. The sublists will be
+	 * equally-sized (except for, possibly, the last one, which may be smaller than the others).
+	 * 
+	 * @param list
+	 * @param numLists
+	 * @return
+	 */
+	public static TIntArrayList[] split(final TIntArrayList list, final int numLists)
+	{
+		final TIntArrayList[] sublists = new TIntArrayList[numLists];
+		final int sublistSize = (int) Math.ceil((double) list.size() / numLists);
+		
+		for (int i = 0; i < numLists; ++i)
+		{
+			final TIntArrayList sublist = new TIntArrayList();
+			
+			for (int j = 0; j < sublistSize; ++j)
+			{
+				sublist.add(list.getQuick(i * sublistSize + j));
+				
+				if (i * sublistSize + j + 1 >= list.size())
+					break;
+			}
+			
+			sublists[i] = sublist;
+		}
+		
+		return sublists;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**

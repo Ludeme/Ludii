@@ -12,21 +12,28 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
+import org.apache.commons.rng.core.RandomProviderDefaultState;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import features.feature_sets.network.JITSPatterNetFeatureSet;
 import game.Game;
+import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.DaemonThreadFactory;
+import main.collections.ListUtils;
 import other.GameLoader;
 import other.concept.Concept;
 import other.concept.ConceptDataType;
+import other.context.Context;
+import other.trial.Trial;
 
 /**
  * Implementation of an experiment that computes concepts for multiple games in parallel.
@@ -265,9 +272,47 @@ public class ParallelComputeConceptsMultipleGames
 		@SuppressWarnings("resource")
 		final ExecutorService threadPool = Executors.newFixedThreadPool(numThreads, DaemonThreadFactory.INSTANCE);
 		
+		final TIntArrayList trialIndicesToGenerate = ListUtils.range(firstTrialIndex, firstTrialIndex + numTrialsToRun);
+		final TIntArrayList[] trialIndicesPerJob = ListUtils.split(trialIndicesToGenerate, numThreads);
+		
 		try
 		{
-			// TODO
+			for (final TIntArrayList trialIndices : trialIndicesPerJob)
+			{
+				// Submit a job for this sublist of trial indices
+				threadPool.submit
+				(
+					() -> 
+					{
+						for (int i = 0; i < trialIndices.size(); ++i)
+						{
+							final int trialIdx = trialIndices.getQuick(i);
+							
+							try
+							{
+								final Trial trial = new Trial(game);
+								final Context context = new Context(game, trial);
+								final RandomProviderDefaultState gameStartRngState = (RandomProviderDefaultState) context.rng().saveState();
+								game.start(context);
+								game.playout(context, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
+								
+								String trialFilepath = trialsDir.getAbsolutePath();
+								trialFilepath = trialFilepath.replaceAll(Pattern.quote("\\"), "/");
+								if (!trialFilepath.endsWith("/"))
+									trialFilepath += "/";
+								trialFilepath += "Trial_" + trialIdx + ".txt";
+								
+								// TODO game path and options
+								//trial.saveTrialToTextFile(trialFilepath, game.name(), new ArrayList<String>(), gameStartRngState);
+							}
+							catch (final Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+				);
+			}
 		}
 		catch (final Exception e)
 		{
