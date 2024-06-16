@@ -184,6 +184,37 @@ public class ListUtils
 		return sublists;
 	}
 	
+	/**
+	 * Splits the given list into numLists different sublists. The sublists will be
+	 * equally-sized (except for, possibly, the last one, which may be smaller than the others).
+	 * 
+	 * @param list
+	 * @param numLists
+	 * @return
+	 */
+	public static <E> List<List<E>> split(final List<E> list, final int numLists)
+	{
+		final List<List<E>> sublists = new ArrayList<List<E>>(numLists);
+		final int sublistSize = (int) Math.ceil((double) list.size() / numLists);
+		
+		for (int i = 0; i < numLists; ++i)
+		{
+			final List<E> sublist = new ArrayList<E>();
+			
+			for (int j = 0; j < sublistSize; ++j)
+			{
+				sublist.add(list.get(i * sublistSize + j));
+				
+				if (i * sublistSize + j + 1 >= list.size())
+					break;
+			}
+			
+			sublists.add(sublist);
+		}
+		
+		return sublists;
+	}
+	
 	//-------------------------------------------------------------------------
 	
 	/**

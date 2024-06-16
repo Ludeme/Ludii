@@ -4,8 +4,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,22 +19,58 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
+import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import features.feature_sets.network.JITSPatterNetFeatureSet;
 import game.Game;
+import game.rules.end.End;
+import game.rules.end.EndRule;
+import game.rules.phase.Phase;
+import game.rules.play.moves.Moves;
+import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.DaemonThreadFactory;
 import main.collections.ListUtils;
+import manager.utils.game_logs.MatchRecord;
+import metrics.Evaluation;
+import metrics.Metric;
+import metrics.Utils;
+import metrics.multiple.MultiMetricFramework.MultiMetricValue;
+import metrics.multiple.metrics.BoardSitesOccupied;
+import metrics.multiple.metrics.BranchingFactor;
+import metrics.multiple.metrics.DecisionFactor;
+import metrics.multiple.metrics.MoveDistance;
+import metrics.multiple.metrics.PieceNumber;
+import metrics.multiple.metrics.ScoreDifference;
+import metrics.single.boardCoverage.BoardCoverageDefault;
+import metrics.single.boardCoverage.BoardCoverageFull;
+import metrics.single.boardCoverage.BoardCoverageUsed;
+import metrics.single.complexity.DecisionMoves;
+import metrics.single.complexity.GameTreeComplexity;
+import metrics.single.complexity.StateSpaceComplexity;
+import metrics.single.duration.DurationActions;
+import metrics.single.duration.DurationMoves;
+import metrics.single.duration.DurationTurns;
+import metrics.single.duration.DurationTurnsNotTimeouts;
+import metrics.single.duration.DurationTurnsStdDev;
+import metrics.single.outcome.AdvantageP1;
+import metrics.single.outcome.Balance;
+import metrics.single.outcome.Completion;
+import metrics.single.outcome.Drawishness;
+import metrics.single.outcome.OutcomeUniformity;
+import metrics.single.outcome.Timeouts;
 import other.GameLoader;
 import other.concept.Concept;
 import other.concept.ConceptDataType;
+import other.concept.ConceptType;
 import other.context.Context;
+import other.move.Move;
 import other.trial.Trial;
 
 /**
@@ -380,7 +418,296 @@ public class ParallelComputeConceptsMultipleGames
 		final File conceptsDir, final int numThreads
 	)
 	{
-		// TODO
+		// Load all our trials
+		final List<Trial> allTrials = new ArrayList<Trial>();
+		final List<RandomProviderState> trialStartRNGs = new ArrayList<RandomProviderState>();
+		
+		for (final File trialFile : trialsDir.listFiles())
+		{
+			if (trialFile.getName().endsWith(".txt"))
+			{
+				MatchRecord loadedRecord;
+				try
+				{
+					loadedRecord = MatchRecord.loadMatchRecordFromTextFile(trialFile, game);
+					final Trial loadedTrial = loadedRecord.trial();
+					allTrials.add(loadedTrial);
+					trialStartRNGs.add(loadedRecord.rngState());
+				}
+				catch (final IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		// Split trials into batches, each to be processed by a different thread
+		final List<List<Trial>> trialsPerJob = ListUtils.split(allTrials, numThreads);
+		final List<List<RandomProviderState>> rngStartStatesPerJob = ListUtils.split(trialStartRNGs, numThreads);
+		
+		@SuppressWarnings("resource")
+		final ExecutorService threadPool = Executors.newFixedThreadPool(numThreads, DaemonThreadFactory.INSTANCE);
+		
+		try
+		{
+			final List<Future<TDoubleArrayList>> frequenciesPerJob = new ArrayList<Future<TDoubleArrayList>>();
+			
+			for (int jobIdx = 0; jobIdx < numThreads; ++jobIdx)
+			{
+				final List<Trial> trials = trialsPerJob.get(jobIdx);
+				final List<RandomProviderState> rngStartStates = rngStartStatesPerJob.get(jobIdx);
+				
+				// Submit a job for this sublist of trials
+				frequenciesPerJob.add(threadPool.submit
+				(
+					() -> 
+					{
+						// Frequencies returned by all the playouts.
+						final double[] frequencyPlayouts = new double[Concept.values().length];
+						
+						for (int trialIndex = 0; trialIndex < trials.size(); trialIndex++)
+						{
+							final Trial trial = trials.get(trialIndex);
+							final RandomProviderState rngState = rngStartStates.get(trialIndex);
+
+							// Setup a new instance of the game
+							final Context context = Utils.setupNewContext(game, rngState);
+
+							// Frequencies returned by that playout.
+							final double[] frequencyPlayout = new double[Concept.values().length];
+
+							// Run the playout.
+							int turnsWithMoves = 0;
+							Context prevContext = null;
+							for (int i = trial.numInitialPlacementMoves(); i < trial.numMoves(); i++)
+							{
+								final Moves legalMoves = context.game().moves(context);
+
+								final int numLegalMoves = legalMoves.moves().size();
+								if (numLegalMoves > 0)
+									turnsWithMoves++;
+
+								for (final Move legalMove : legalMoves.moves())
+								{
+									final BitSet moveConcepts = legalMove.moveConcepts(context);
+									for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+									{
+										final Concept concept = Concept.values()[indexConcept];
+										if (moveConcepts.get(concept.id()))
+											frequencyPlayout[indexConcept] += 1.0 / numLegalMoves;
+									}
+								}
+
+								// We keep the context before the ending state for the frequencies of the end
+								// conditions.
+								if (i == trial.numMoves() - 1)
+									prevContext = new Context(context);
+
+								// We go to the next move.
+								context.game().apply(context, trial.getMove(i));
+							}
+							
+							// Compute avg for all the playouts.
+							for (int j = 0; j < frequencyPlayout.length; j++)
+								frequencyPlayouts[j] += frequencyPlayout[j] / turnsWithMoves;
+
+							context.trial().lastMove().apply(prevContext, true);
+
+							boolean noEndFound = true;
+
+							if (context.rules().phases() != null)
+							{
+								final int mover = context.state().mover();
+								final Phase endPhase = context.rules().phases()[context.state().currentPhase(mover)];
+								final End endPhaseRule = endPhase.end();
+
+								// Only check if action not part of setup
+								if (context.active() && endPhaseRule != null)
+								{
+									final EndRule[] endRules = endPhaseRule.endRules();
+									for (final EndRule endingRule : endRules)
+									{
+										final EndRule endRuleResult = endingRule.eval(prevContext);
+										if (endRuleResult == null)
+											continue;
+
+										final BitSet endConcepts = endingRule.stateConcepts(prevContext);
+
+										noEndFound = false;
+										for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+										{
+											final Concept concept = Concept.values()[indexConcept];
+											if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
+											{
+												frequencyPlayouts[indexConcept]++; 
+											}
+										}
+										break;
+									}
+								}
+							}
+
+							final End endRule = context.rules().end();
+							if (noEndFound && endRule != null)
+							{
+								final EndRule[] endRules = endRule.endRules();
+								for (final EndRule endingRule : endRules)
+								{
+									final EndRule endRuleResult = endingRule.eval(prevContext);
+									if (endRuleResult == null)
+										continue;
+
+									final BitSet endConcepts = endingRule.stateConcepts(prevContext);
+
+									noEndFound = false;
+									for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+									{
+										final Concept concept = Concept.values()[indexConcept];
+										if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
+										{
+											frequencyPlayouts[indexConcept]++; 
+										}
+									}
+									break;
+								}
+							}
+
+							if (noEndFound)
+							{
+								frequencyPlayouts[Concept.Draw.ordinal()]++; 
+							}
+						}
+
+						final TDoubleArrayList frequenciesThisJob = TDoubleArrayList.wrap(new double[Concept.values().length]);
+						for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+						{
+							frequenciesThisJob.setQuick(indexConcept, frequencyPlayouts[indexConcept] / trials.size());
+						}
+						
+						return frequenciesThisJob;
+					}
+				));
+			}
+			
+			// Use same threadPool (no point in creating more threads, just start reusing those when they're ready)
+			// for computing metrics in a parallelised manner
+			final List<Metric> conceptMetrics = new ArrayList<Metric>();
+			// Duration
+			conceptMetrics.add(new DurationActions());
+			conceptMetrics.add(new DurationMoves());
+			conceptMetrics.add(new DurationTurns());
+			conceptMetrics.add(new DurationTurnsStdDev());
+			conceptMetrics.add(new DurationTurnsNotTimeouts());
+			// Complexity
+			conceptMetrics.add(new DecisionMoves());
+			conceptMetrics.add(new GameTreeComplexity());
+			conceptMetrics.add(new StateSpaceComplexity());
+			// Board Coverage
+			conceptMetrics.add(new BoardCoverageDefault());
+			conceptMetrics.add(new BoardCoverageFull());
+			conceptMetrics.add(new BoardCoverageUsed());
+			// Outcome
+			conceptMetrics.add(new AdvantageP1());
+			conceptMetrics.add(new Balance());
+			conceptMetrics.add(new Completion());
+			conceptMetrics.add(new Drawishness());
+			conceptMetrics.add(new Timeouts());
+			conceptMetrics.add(new OutcomeUniformity());
+			// Board Sites Occupied
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, Concept.BoardSitesOccupiedAverage));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Median, Concept.BoardSitesOccupiedMedian));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Max, Concept.BoardSitesOccupiedMaximum));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Min, Concept.BoardSitesOccupiedMinimum));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Variance, Concept.BoardSitesOccupiedVariance));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeAverage, Concept.BoardSitesOccupiedChangeAverage));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeSign, Concept.BoardSitesOccupiedChangeSign));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeLineBestFit, Concept.BoardSitesOccupiedChangeLineBestFit));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeNumTimes, Concept.BoardSitesOccupiedChangeNumTimes));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.MaxIncrease, Concept.BoardSitesOccupiedMaxIncrease));
+			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.MaxDecrease, Concept.BoardSitesOccupiedMaxDecrease));
+			// Branching Factor
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Average, Concept.BranchingFactorAverage));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Median, Concept.BranchingFactorMedian));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Max, Concept.BranchingFactorMaximum));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Min, Concept.BranchingFactorMinimum));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Variance, Concept.BranchingFactorVariance));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeAverage, Concept.BranchingFactorChangeAverage));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeSign, Concept.BranchingFactorChangeSign));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeLineBestFit, Concept.BranchingFactorChangeLineBestFit));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeNumTimes, Concept.BranchingFactorChangeNumTimesn));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.MaxIncrease, Concept.BranchingFactorChangeMaxIncrease));
+			conceptMetrics.add(new BranchingFactor(MultiMetricValue.MaxDecrease, Concept.BranchingFactorChangeMaxDecrease));
+			// Decision Factor
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Average, Concept.DecisionFactorAverage));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Median, Concept.DecisionFactorMedian));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Max, Concept.DecisionFactorMaximum));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Min, Concept.DecisionFactorMinimum));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Variance, Concept.DecisionFactorVariance));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeAverage, Concept.DecisionFactorChangeAverage));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeSign, Concept.DecisionFactorChangeSign));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeLineBestFit, Concept.DecisionFactorChangeLineBestFit));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeNumTimes, Concept.DecisionFactorChangeNumTimes));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.MaxIncrease, Concept.DecisionFactorMaxIncrease));
+			conceptMetrics.add(new DecisionFactor(MultiMetricValue.MaxDecrease, Concept.DecisionFactorMaxDecrease));
+			// Move Distance
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.Average, Concept.MoveDistanceAverage));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.Median, Concept.MoveDistanceMedian));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.Max, Concept.MoveDistanceMaximum));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.Min, Concept.MoveDistanceMinimum));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.Variance, Concept.MoveDistanceVariance));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeAverage, Concept.MoveDistanceChangeAverage));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeSign, Concept.MoveDistanceChangeSign));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeLineBestFit, Concept.MoveDistanceChangeLineBestFit));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeNumTimes, Concept.MoveDistanceChangeNumTimes));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.MaxIncrease, Concept.MoveDistanceMaxIncrease));
+			conceptMetrics.add(new MoveDistance(MultiMetricValue.MaxDecrease, Concept.MoveDistanceMaxDecrease));
+			// Piece Number
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.Average, Concept.PieceNumberAverage));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.Median, Concept.PieceNumberMedian));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.Max, Concept.PieceNumberMaximum));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.Min, Concept.PieceNumberMinimum));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.Variance, Concept.PieceNumberVariance));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeAverage, Concept.PieceNumberChangeAverage));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeSign, Concept.PieceNumberChangeSign));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeLineBestFit, Concept.PieceNumberChangeLineBestFit));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeNumTimes, Concept.PieceNumberChangeNumTimes));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.MaxIncrease, Concept.PieceNumberMaxIncrease));
+			conceptMetrics.add(new PieceNumber(MultiMetricValue.MaxDecrease, Concept.PieceNumberMaxDecrease));
+			// Score Difference
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Average, Concept.ScoreDifferenceAverage));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Median, Concept.ScoreDifferenceMedian));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Max, Concept.ScoreDifferenceMaximum));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Min, Concept.ScoreDifferenceMinimum));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Variance, Concept.ScoreDifferenceVariance));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeAverage, Concept.ScoreDifferenceChangeAverage));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeSign, Concept.ScoreDifferenceChangeSign));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeLineBestFit, Concept.ScoreDifferenceChangeLineBestFit));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeNumTimes, Concept.ScoreDifferenceChangeNumTimes));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.MaxIncrease, Concept.ScoreDifferenceMaxIncrease));
+			conceptMetrics.add(new ScoreDifference(MultiMetricValue.MaxDecrease, Concept.ScoreDifferenceMaxDecrease));
+			
+			final Evaluation evaluation = new Evaluation();
+			// TODO compute metrics
+			
+			// TODO: collect all the results from the futures and do something with them
+			// TODO do something with frequencies (take them first: they have 0.0 also for non-frequency concepts)
+			// TODO do something with metrics
+		}
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			threadPool.shutdown();
+			try 
+			{
+				threadPool.awaitTermination(24, TimeUnit.HOURS);
+			} 
+			catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	//-------------------------------------------------------------------------

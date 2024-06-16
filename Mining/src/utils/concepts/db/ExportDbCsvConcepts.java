@@ -1688,22 +1688,26 @@ public class ExportDbCsvConcepts
 			if (metric.concept() != null)
 			{
 				Double value;
-				if(reconstructionConcepts.contains(metric.concept()))
+				if (reconstructionConcepts.contains(metric.concept()))
 				{
 					value = metric.apply(game, evaluation, trialsMetrics, rngTrials);
 				}
 				else
+				{
 					value = null; // If that's not a reconstruction metrics we put NULL for it.
+				}
 					
-					if(value == null)
-						playoutConceptValues.put(metric.concept().name(), null);
-					else
-					{
-						double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials).doubleValue();
-						metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
-						playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
-						if (metricValue != 0)
-							System.out.println(metric.concept().name() + ": " + metricValue);
+				if (value == null)
+				{
+					playoutConceptValues.put(metric.concept().name(), null);
+				}
+				else
+				{
+					double metricValue = metric.apply(game, evaluation, trialsMetrics, rngTrials).doubleValue();
+					metricValue = (Math.abs(metricValue) < Constants.EPSILON) ? 0 : metricValue;
+					playoutConceptValues.put(metric.concept().name(), Double.valueOf(metricValue));
+					if (metricValue != 0)
+						System.out.println(metric.concept().name() + ": " + metricValue);
 				}
 			}
 		}
