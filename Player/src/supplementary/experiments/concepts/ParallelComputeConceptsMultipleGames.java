@@ -38,8 +38,8 @@ import main.CommandLineArgParse.OptionTypes;
 import main.DaemonThreadFactory;
 import main.collections.ListUtils;
 import manager.utils.game_logs.MatchRecord;
-import metrics.Evaluation;
 import metrics.Metric;
+import metrics.MetricsTracker;
 import metrics.Utils;
 import metrics.multiple.MultiMetricFramework.MultiMetricValue;
 import metrics.multiple.metrics.BoardSitesOccupied;
@@ -462,6 +462,105 @@ public class ParallelComputeConceptsMultipleGames
 				(
 					() -> 
 					{
+						// We need a separate metrics tracker per job. Separate list of Metric
+						// objects too, as we use them in a stateful manner
+						final List<Metric> conceptMetrics = new ArrayList<Metric>();
+						// Duration
+						conceptMetrics.add(new DurationActions());
+						conceptMetrics.add(new DurationMoves());
+						conceptMetrics.add(new DurationTurns());
+						conceptMetrics.add(new DurationTurnsStdDev());
+						conceptMetrics.add(new DurationTurnsNotTimeouts());
+						// Complexity
+						conceptMetrics.add(new DecisionMoves());
+						conceptMetrics.add(new GameTreeComplexity());
+						conceptMetrics.add(new StateSpaceComplexity());
+						// Board Coverage
+						conceptMetrics.add(new BoardCoverageDefault());
+						conceptMetrics.add(new BoardCoverageFull());
+						conceptMetrics.add(new BoardCoverageUsed());
+						// Outcome
+						conceptMetrics.add(new AdvantageP1());
+						conceptMetrics.add(new Balance());
+						conceptMetrics.add(new Completion());
+						conceptMetrics.add(new Drawishness());
+						conceptMetrics.add(new Timeouts());
+						conceptMetrics.add(new OutcomeUniformity());
+						// Board Sites Occupied
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, Concept.BoardSitesOccupiedAverage));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Median, Concept.BoardSitesOccupiedMedian));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Max, Concept.BoardSitesOccupiedMaximum));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Min, Concept.BoardSitesOccupiedMinimum));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Variance, Concept.BoardSitesOccupiedVariance));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeAverage, Concept.BoardSitesOccupiedChangeAverage));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeSign, Concept.BoardSitesOccupiedChangeSign));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeLineBestFit, Concept.BoardSitesOccupiedChangeLineBestFit));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeNumTimes, Concept.BoardSitesOccupiedChangeNumTimes));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.MaxIncrease, Concept.BoardSitesOccupiedMaxIncrease));
+						conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.MaxDecrease, Concept.BoardSitesOccupiedMaxDecrease));
+						// Branching Factor
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.Average, Concept.BranchingFactorAverage));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.Median, Concept.BranchingFactorMedian));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.Max, Concept.BranchingFactorMaximum));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.Min, Concept.BranchingFactorMinimum));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.Variance, Concept.BranchingFactorVariance));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeAverage, Concept.BranchingFactorChangeAverage));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeSign, Concept.BranchingFactorChangeSign));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeLineBestFit, Concept.BranchingFactorChangeLineBestFit));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeNumTimes, Concept.BranchingFactorChangeNumTimesn));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.MaxIncrease, Concept.BranchingFactorChangeMaxIncrease));
+						conceptMetrics.add(new BranchingFactor(MultiMetricValue.MaxDecrease, Concept.BranchingFactorChangeMaxDecrease));
+						// Decision Factor
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.Average, Concept.DecisionFactorAverage));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.Median, Concept.DecisionFactorMedian));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.Max, Concept.DecisionFactorMaximum));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.Min, Concept.DecisionFactorMinimum));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.Variance, Concept.DecisionFactorVariance));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeAverage, Concept.DecisionFactorChangeAverage));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeSign, Concept.DecisionFactorChangeSign));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeLineBestFit, Concept.DecisionFactorChangeLineBestFit));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeNumTimes, Concept.DecisionFactorChangeNumTimes));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.MaxIncrease, Concept.DecisionFactorMaxIncrease));
+						conceptMetrics.add(new DecisionFactor(MultiMetricValue.MaxDecrease, Concept.DecisionFactorMaxDecrease));
+						// Move Distance
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.Average, Concept.MoveDistanceAverage));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.Median, Concept.MoveDistanceMedian));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.Max, Concept.MoveDistanceMaximum));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.Min, Concept.MoveDistanceMinimum));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.Variance, Concept.MoveDistanceVariance));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeAverage, Concept.MoveDistanceChangeAverage));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeSign, Concept.MoveDistanceChangeSign));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeLineBestFit, Concept.MoveDistanceChangeLineBestFit));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeNumTimes, Concept.MoveDistanceChangeNumTimes));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.MaxIncrease, Concept.MoveDistanceMaxIncrease));
+						conceptMetrics.add(new MoveDistance(MultiMetricValue.MaxDecrease, Concept.MoveDistanceMaxDecrease));
+						// Piece Number
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.Average, Concept.PieceNumberAverage));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.Median, Concept.PieceNumberMedian));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.Max, Concept.PieceNumberMaximum));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.Min, Concept.PieceNumberMinimum));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.Variance, Concept.PieceNumberVariance));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeAverage, Concept.PieceNumberChangeAverage));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeSign, Concept.PieceNumberChangeSign));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeLineBestFit, Concept.PieceNumberChangeLineBestFit));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeNumTimes, Concept.PieceNumberChangeNumTimes));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.MaxIncrease, Concept.PieceNumberMaxIncrease));
+						conceptMetrics.add(new PieceNumber(MultiMetricValue.MaxDecrease, Concept.PieceNumberMaxDecrease));
+						// Score Difference
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.Average, Concept.ScoreDifferenceAverage));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.Median, Concept.ScoreDifferenceMedian));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.Max, Concept.ScoreDifferenceMaximum));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.Min, Concept.ScoreDifferenceMinimum));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.Variance, Concept.ScoreDifferenceVariance));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeAverage, Concept.ScoreDifferenceChangeAverage));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeSign, Concept.ScoreDifferenceChangeSign));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeLineBestFit, Concept.ScoreDifferenceChangeLineBestFit));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeNumTimes, Concept.ScoreDifferenceChangeNumTimes));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.MaxIncrease, Concept.ScoreDifferenceMaxIncrease));
+						conceptMetrics.add(new ScoreDifference(MultiMetricValue.MaxDecrease, Concept.ScoreDifferenceMaxDecrease));
+						
+						final MetricsTracker metricsTracker = new MetricsTracker(conceptMetrics);
+						
 						// Frequencies returned by all the playouts.
 						final double[] frequencyPlayouts = new double[Concept.values().length];
 						
@@ -588,106 +687,6 @@ public class ParallelComputeConceptsMultipleGames
 					}
 				));
 			}
-			
-			// Use same threadPool (no point in creating more threads, just start reusing those when they're ready)
-			// for computing metrics in a parallelised manner
-			final List<Metric> conceptMetrics = new ArrayList<Metric>();
-			// Duration
-			conceptMetrics.add(new DurationActions());
-			conceptMetrics.add(new DurationMoves());
-			conceptMetrics.add(new DurationTurns());
-			conceptMetrics.add(new DurationTurnsStdDev());
-			conceptMetrics.add(new DurationTurnsNotTimeouts());
-			// Complexity
-			conceptMetrics.add(new DecisionMoves());
-			conceptMetrics.add(new GameTreeComplexity());
-			conceptMetrics.add(new StateSpaceComplexity());
-			// Board Coverage
-			conceptMetrics.add(new BoardCoverageDefault());
-			conceptMetrics.add(new BoardCoverageFull());
-			conceptMetrics.add(new BoardCoverageUsed());
-			// Outcome
-			conceptMetrics.add(new AdvantageP1());
-			conceptMetrics.add(new Balance());
-			conceptMetrics.add(new Completion());
-			conceptMetrics.add(new Drawishness());
-			conceptMetrics.add(new Timeouts());
-			conceptMetrics.add(new OutcomeUniformity());
-			// Board Sites Occupied
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Average, Concept.BoardSitesOccupiedAverage));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Median, Concept.BoardSitesOccupiedMedian));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Max, Concept.BoardSitesOccupiedMaximum));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Min, Concept.BoardSitesOccupiedMinimum));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.Variance, Concept.BoardSitesOccupiedVariance));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeAverage, Concept.BoardSitesOccupiedChangeAverage));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeSign, Concept.BoardSitesOccupiedChangeSign));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeLineBestFit, Concept.BoardSitesOccupiedChangeLineBestFit));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.ChangeNumTimes, Concept.BoardSitesOccupiedChangeNumTimes));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.MaxIncrease, Concept.BoardSitesOccupiedMaxIncrease));
-			conceptMetrics.add(new BoardSitesOccupied(MultiMetricValue.MaxDecrease, Concept.BoardSitesOccupiedMaxDecrease));
-			// Branching Factor
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Average, Concept.BranchingFactorAverage));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Median, Concept.BranchingFactorMedian));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Max, Concept.BranchingFactorMaximum));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Min, Concept.BranchingFactorMinimum));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.Variance, Concept.BranchingFactorVariance));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeAverage, Concept.BranchingFactorChangeAverage));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeSign, Concept.BranchingFactorChangeSign));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeLineBestFit, Concept.BranchingFactorChangeLineBestFit));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.ChangeNumTimes, Concept.BranchingFactorChangeNumTimesn));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.MaxIncrease, Concept.BranchingFactorChangeMaxIncrease));
-			conceptMetrics.add(new BranchingFactor(MultiMetricValue.MaxDecrease, Concept.BranchingFactorChangeMaxDecrease));
-			// Decision Factor
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Average, Concept.DecisionFactorAverage));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Median, Concept.DecisionFactorMedian));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Max, Concept.DecisionFactorMaximum));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Min, Concept.DecisionFactorMinimum));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.Variance, Concept.DecisionFactorVariance));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeAverage, Concept.DecisionFactorChangeAverage));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeSign, Concept.DecisionFactorChangeSign));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeLineBestFit, Concept.DecisionFactorChangeLineBestFit));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.ChangeNumTimes, Concept.DecisionFactorChangeNumTimes));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.MaxIncrease, Concept.DecisionFactorMaxIncrease));
-			conceptMetrics.add(new DecisionFactor(MultiMetricValue.MaxDecrease, Concept.DecisionFactorMaxDecrease));
-			// Move Distance
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.Average, Concept.MoveDistanceAverage));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.Median, Concept.MoveDistanceMedian));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.Max, Concept.MoveDistanceMaximum));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.Min, Concept.MoveDistanceMinimum));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.Variance, Concept.MoveDistanceVariance));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeAverage, Concept.MoveDistanceChangeAverage));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeSign, Concept.MoveDistanceChangeSign));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeLineBestFit, Concept.MoveDistanceChangeLineBestFit));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.ChangeNumTimes, Concept.MoveDistanceChangeNumTimes));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.MaxIncrease, Concept.MoveDistanceMaxIncrease));
-			conceptMetrics.add(new MoveDistance(MultiMetricValue.MaxDecrease, Concept.MoveDistanceMaxDecrease));
-			// Piece Number
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.Average, Concept.PieceNumberAverage));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.Median, Concept.PieceNumberMedian));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.Max, Concept.PieceNumberMaximum));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.Min, Concept.PieceNumberMinimum));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.Variance, Concept.PieceNumberVariance));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeAverage, Concept.PieceNumberChangeAverage));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeSign, Concept.PieceNumberChangeSign));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeLineBestFit, Concept.PieceNumberChangeLineBestFit));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.ChangeNumTimes, Concept.PieceNumberChangeNumTimes));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.MaxIncrease, Concept.PieceNumberMaxIncrease));
-			conceptMetrics.add(new PieceNumber(MultiMetricValue.MaxDecrease, Concept.PieceNumberMaxDecrease));
-			// Score Difference
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Average, Concept.ScoreDifferenceAverage));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Median, Concept.ScoreDifferenceMedian));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Max, Concept.ScoreDifferenceMaximum));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Min, Concept.ScoreDifferenceMinimum));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.Variance, Concept.ScoreDifferenceVariance));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeAverage, Concept.ScoreDifferenceChangeAverage));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeSign, Concept.ScoreDifferenceChangeSign));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeLineBestFit, Concept.ScoreDifferenceChangeLineBestFit));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.ChangeNumTimes, Concept.ScoreDifferenceChangeNumTimes));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.MaxIncrease, Concept.ScoreDifferenceMaxIncrease));
-			conceptMetrics.add(new ScoreDifference(MultiMetricValue.MaxDecrease, Concept.ScoreDifferenceMaxDecrease));
-			
-			final Evaluation evaluation = new Evaluation();
-			// TODO compute metrics
 			
 			// TODO: collect all the results from the futures and do something with them
 			// TODO do something with frequencies (take them first: they have 0.0 also for non-frequency concepts)
