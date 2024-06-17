@@ -95,6 +95,12 @@ public class IdealDuration extends Metric
 		System.err.println("Incrementally computing metric not yet implemented for IdealDuration.");
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for IdealDuration.");
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

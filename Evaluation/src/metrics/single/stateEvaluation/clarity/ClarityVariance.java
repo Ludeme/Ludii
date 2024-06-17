@@ -91,6 +91,12 @@ public class ClarityVariance extends Metric
 	{
 		System.err.println("Incrementally computing metric not yet implemented for ClarityVariance.");
 	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for ClarityVariance.");
+	}
 
 	//-------------------------------------------------------------------------
 

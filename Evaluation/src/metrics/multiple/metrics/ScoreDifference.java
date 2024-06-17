@@ -88,6 +88,12 @@ public class ScoreDifference extends MultiMetricFramework
 		currValueList.add(Double.valueOf(getScoreDiscrepancy(context)));
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		currValueList.add(Double.valueOf(getScoreDiscrepancy(context)));
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

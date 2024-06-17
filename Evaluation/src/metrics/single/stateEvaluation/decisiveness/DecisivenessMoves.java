@@ -103,6 +103,12 @@ public class DecisivenessMoves extends Metric
 	{
 		System.err.println("Incrementally computing metric not yet implemented for DecisivenessMoves.");
 	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessMoves.");
+	}
 
 	//-------------------------------------------------------------------------
 

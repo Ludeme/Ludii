@@ -113,6 +113,12 @@ public abstract class Metric
 	 */
 	public abstract void startNewTrial(final Context context, final Trial fullTrial);
 	
+	/**
+	 * Observe the next state for incrementally computing metrics.
+	 * @param context
+	 */
+	public abstract void observeNextState(final Context context);
+	
 	//-------------------------------------------------------------------------
 
 }

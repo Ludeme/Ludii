@@ -101,6 +101,28 @@ public class MoveDistance extends MultiMetricFramework
 		currValueList = new ArrayList<Double>();
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		final Move m = context.trial().lastMove();
+		
+		final SiteType moveType = m.fromType();
+		
+		if 
+		(
+			m.fromType() == m.toType() 
+			&&
+			m.from() < boardTopology.numSites(moveType)
+			&&
+			m.to() < boardTopology.numSites(moveType)
+			&&
+			m.from() != m.to()
+		)	
+		{
+			currValueList.add(Double.valueOf(boardTopology.distancesToOtherSite(moveType)[m.from()][m.to()]));
+		}
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

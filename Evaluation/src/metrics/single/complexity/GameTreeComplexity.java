@@ -91,6 +91,13 @@ public class GameTreeComplexity extends Metric
 		branchingFactor += ((double) context.game().moves(context).moves().size()) / numFullTrialMoves;
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		if (!context.trial().over())
+			branchingFactor += ((double) context.game().moves(context).moves().size()) / numFullTrialMoves;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

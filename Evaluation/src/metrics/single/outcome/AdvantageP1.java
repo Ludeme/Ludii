@@ -71,6 +71,12 @@ public class AdvantageP1 extends Metric
 		// Do nothing
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		// Do nothing
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

@@ -256,6 +256,12 @@ public class SkillTrace extends Metric
 		System.err.println("Incrementally computing metric not yet implemented for SkillTrace.");
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for SkillTrace.");
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

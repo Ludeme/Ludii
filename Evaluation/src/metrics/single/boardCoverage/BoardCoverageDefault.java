@@ -94,6 +94,12 @@ public class BoardCoverageDefault extends Metric
 		sitesCovered.addAll(Utils.boardDefaultSitesCovered(context));
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		sitesCovered.addAll(Utils.boardDefaultSitesCovered(context));
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

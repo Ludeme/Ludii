@@ -18,6 +18,11 @@ import other.trial.Trial;
  */
 public class DurationActions extends Metric
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double actionTally = 0.0;
 
 	//-------------------------------------------------------------------------
 
@@ -62,6 +67,12 @@ public class DurationActions extends Metric
 	public void startNewTrial(final Context context, final Trial fullTrial)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		actionTally += context.trial().lastMove().actions().size();
 	}
 	
 	//-------------------------------------------------------------------------

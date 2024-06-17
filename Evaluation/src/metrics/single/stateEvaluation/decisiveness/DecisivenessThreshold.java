@@ -98,6 +98,12 @@ public class DecisivenessThreshold extends Metric
 	{
 		System.err.println("Incrementally computing metric not yet implemented for DecisivenessThreshold.");
 	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessThreshold.");
+	}
 
 	//-------------------------------------------------------------------------
 

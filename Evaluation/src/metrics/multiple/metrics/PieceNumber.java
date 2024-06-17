@@ -61,6 +61,12 @@ public class PieceNumber extends MultiMetricFramework
 		currValueList.add(Double.valueOf(Utils.numPieces(context)));
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		currValueList.add(Double.valueOf(Utils.numPieces(context)));
+	}
+	
 	//-------------------------------------------------------------------------
 
 

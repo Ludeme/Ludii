@@ -68,6 +68,12 @@ public class BoardSitesOccupied extends MultiMetricFramework
 		currValueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		currValueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
+	}
+	
 	//-------------------------------------------------------------------------
 
 

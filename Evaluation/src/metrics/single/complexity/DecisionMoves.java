@@ -94,6 +94,13 @@ public class DecisionMoves extends Metric
 			numDecisionMoves += 1.0;
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		if (!context.trial().over() && context.game().moves(context).moves().size() > 1)
+			numDecisionMoves += 1.0;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

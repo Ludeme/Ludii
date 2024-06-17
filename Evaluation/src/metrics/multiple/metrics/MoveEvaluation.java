@@ -58,6 +58,12 @@ public class MoveEvaluation extends MultiMetricFramework
 		System.err.println("Incrementally computing metric not yet implemented for MoveEvaluation.");
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for MoveEvaluation.");
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

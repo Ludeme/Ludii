@@ -101,6 +101,12 @@ public class ClarityNarrowness extends Metric
 		System.err.println("Incrementally computing metric not yet implemented for ClarityNarrowness.");
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for ClarityNarrowness.");
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

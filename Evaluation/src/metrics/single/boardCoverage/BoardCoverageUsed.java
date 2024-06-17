@@ -91,6 +91,12 @@ public class BoardCoverageUsed extends Metric
 		sitesCovered.addAll(Utils.boardUsedSitesCovered(context));
 	}
 	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		sitesCovered.addAll(Utils.boardUsedSitesCovered(context));
+	}
+	
 	//-------------------------------------------------------------------------
 
 }
