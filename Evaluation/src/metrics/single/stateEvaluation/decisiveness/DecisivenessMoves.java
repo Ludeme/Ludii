@@ -97,5 +97,13 @@ public class DecisivenessMoves extends Metric
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessMoves.");
+	}
+
+	//-------------------------------------------------------------------------
 
 }

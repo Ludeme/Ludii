@@ -83,5 +83,15 @@ public class ClarityVariance extends Metric
 
 		return Double.valueOf(clarity / trials.length);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for ClarityVariance.");
+	}
+
+	//-------------------------------------------------------------------------
 
 }

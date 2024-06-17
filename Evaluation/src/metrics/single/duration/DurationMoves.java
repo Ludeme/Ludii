@@ -7,6 +7,7 @@ import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -53,6 +54,14 @@ public class DurationMoves extends Metric
 		return Double.valueOf(moveTally / trials.length);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

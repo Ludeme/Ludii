@@ -80,5 +80,14 @@ public class ScoreDifference extends MultiMetricFramework
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		currValueList = new ArrayList<Double>();
+		currValueList.add(Double.valueOf(getScoreDiscrepancy(context)));
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

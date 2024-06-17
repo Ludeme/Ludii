@@ -571,6 +571,7 @@ public class ParallelComputeConceptsMultipleGames
 
 							// Setup a new instance of the game
 							final Context context = Utils.setupNewContext(game, rngState);
+							metricsTracker.startNewTrial(context, trial);
 
 							// Frequencies returned by that playout.
 							final double[] frequencyPlayout = new double[Concept.values().length];
@@ -604,7 +605,10 @@ public class ParallelComputeConceptsMultipleGames
 
 								// We go to the next move.
 								context.game().apply(context, trial.getMove(i));
+								metricsTracker.observeNextState(context);
 							}
+							
+							metricsTracker.observeFinalState(context);
 							
 							// Compute avg for all the playouts.
 							for (int j = 0; j < frequencyPlayout.length; j++)
@@ -682,6 +686,8 @@ public class ParallelComputeConceptsMultipleGames
 						{
 							frequenciesThisJob.setQuick(indexConcept, frequencyPlayouts[indexConcept] / trials.size());
 						}
+						
+						// TODO extract metrics from metricsTracker
 						
 						return frequenciesThisJob;
 					}

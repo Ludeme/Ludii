@@ -6,6 +6,7 @@ import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -57,6 +58,14 @@ public class Completion extends Metric
 		return Double.valueOf(completedGames / trials.length);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

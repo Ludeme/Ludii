@@ -7,6 +7,7 @@ import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -65,5 +66,15 @@ public class StateSpaceComplexity extends Metric
 
 		return Double.valueOf(game.board().topology().getAllUsedGraphElements(game).size() * Math.log10(maxStatePossibilites));
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

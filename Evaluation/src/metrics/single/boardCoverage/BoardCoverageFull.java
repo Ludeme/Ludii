@@ -22,6 +22,11 @@ import other.trial.Trial;
  */
 public class BoardCoverageFull extends Metric
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected Set<TopologyElement> sitesCovered = null;
 
 	//-------------------------------------------------------------------------
 
@@ -76,5 +81,16 @@ public class BoardCoverageFull extends Metric
 
 		return Double.valueOf(numSitesCovered / trials.length);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		sitesCovered = new HashSet<TopologyElement>();
+		sitesCovered.addAll(Utils.boardAllSitesCovered(context));
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

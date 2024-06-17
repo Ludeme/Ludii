@@ -92,5 +92,15 @@ public class ClarityNarrowness extends Metric
 
 		return Double.valueOf(trials.length == 0 ? 0 : clarity / trials.length);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for ClarityNarrowness.");
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

@@ -53,5 +53,13 @@ public class DecisionFactor extends MultiMetricFramework
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		currValueList = new ArrayList<Double>();
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

@@ -5,6 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.multiple.MultiMetricFramework.MultiMetricValue;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 //-----------------------------------------------------------------------------
@@ -104,6 +105,13 @@ public abstract class Metric
 		final Trial[] trials,
 		final RandomProviderState[] randomProviderStates
 	);
+	
+	/**
+	 * Start processing a new trial.
+	 * @param context Initial state.
+	 * @param fullTrial The complete trial (not just the stage we're at with stepping through it).
+	 */
+	public abstract void startNewTrial(final Context context, final Trial fullTrial);
 	
 	//-------------------------------------------------------------------------
 

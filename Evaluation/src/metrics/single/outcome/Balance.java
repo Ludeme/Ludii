@@ -84,5 +84,13 @@ public class Balance extends Metric
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

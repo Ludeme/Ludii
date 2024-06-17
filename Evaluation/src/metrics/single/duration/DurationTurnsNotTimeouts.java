@@ -8,6 +8,7 @@ import main.Status.EndType;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -72,6 +73,14 @@ public class DurationTurnsNotTimeouts extends Metric
 		return Double.valueOf(turnTally / numTrials);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

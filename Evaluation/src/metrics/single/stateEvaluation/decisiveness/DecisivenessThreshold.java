@@ -90,5 +90,15 @@ public class DecisivenessThreshold extends Metric
 		
 		return decisivenessThreshold;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessThreshold.");
+	}
+
+	//-------------------------------------------------------------------------
 
 }

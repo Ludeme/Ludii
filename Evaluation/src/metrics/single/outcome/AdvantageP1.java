@@ -64,5 +64,13 @@ public class AdvantageP1 extends Metric
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

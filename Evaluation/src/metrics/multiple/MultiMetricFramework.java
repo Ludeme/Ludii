@@ -18,6 +18,16 @@ import other.trial.Trial;
 @SuppressWarnings("static-method")
 public abstract class MultiMetricFramework extends Metric
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected ArrayList<Double[]> metricValueLists = new ArrayList<>();
+	
+	/** For incremental computation */
+	protected ArrayList<Double> currValueList = new ArrayList<Double>();
+	
+	//-------------------------------------------------------------------------
 
 	public enum MultiMetricValue 
 	{
@@ -308,10 +318,10 @@ public abstract class MultiMetricFramework extends Metric
 	@Override
 	public Double apply
 	(
-			final Game game,
-			final Evaluation evaluation,
-			final Trial[] trials,
-			final RandomProviderState[] randomProviderStates
+		final Game game,
+		final Evaluation evaluation,
+		final Trial[] trials,
+		final RandomProviderState[] randomProviderStates
 	)
 	{
 		// Zero player games cannot be computed.

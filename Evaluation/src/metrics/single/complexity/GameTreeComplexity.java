@@ -20,7 +20,15 @@ import other.trial.Trial;
  */
 public class GameTreeComplexity extends Metric
 {
-
+	
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	int numFullTrialMoves = 0;
+	
+	/** For incremental computation */
+	double branchingFactor = 0.0;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -62,7 +70,7 @@ public class GameTreeComplexity extends Metric
 			double branchingFactor = 0.0;
 			for (final Move m : trial.generateRealMovesList())
 			{
-				branchingFactor += context.game().moves(context).moves().size() / trial.generateRealMovesList().size();
+				branchingFactor += ((double) context.game().moves(context).moves().size()) / trial.generateRealMovesList().size();
 				context.game().apply(context, m);
 			}
 
@@ -71,5 +79,18 @@ public class GameTreeComplexity extends Metric
 
 		return Double.valueOf(gameTreeComplexity / trials.length);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		branchingFactor = 0.0;
+		numFullTrialMoves = fullTrial.numberRealMoves();
+		
+		branchingFactor += ((double) context.game().moves(context).moves().size()) / numFullTrialMoves;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

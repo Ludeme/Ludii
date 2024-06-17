@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import other.context.Context;
+import other.trial.Trial;
 
 /**
  * Lets us incrementally track and update many different metrics at the same time as
@@ -32,13 +33,17 @@ public class MetricsTracker
 	
 	//-------------------------------------------------------------------------
 	
-	
 	/**
 	 * Inform all the metrics that we're now starting to walk through a new trial.
+	 * @param context The initial state.
+	 * @param fullTrial The complete trial (not just the stage we're at with stepping through it).
 	 */
-	public void startNewTrial()
+	public void startNewTrial(final Context context, final Trial fullTrial)
 	{
-		// TODO
+		for (final Metric metric : metrics)
+		{
+			metric.startNewTrial(context, fullTrial);
+		}
 	}
 	
 	/**

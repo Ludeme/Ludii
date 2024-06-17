@@ -18,6 +18,14 @@ import other.trial.Trial;
  */
 public class DecisionMoves extends Metric
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	int numFullTrialMoves = 0;
+	
+	/** For incremental computation */
+	double numDecisionMoves = 0.0;
 
 	//-------------------------------------------------------------------------
 
@@ -74,6 +82,18 @@ public class DecisionMoves extends Metric
 		return Double.valueOf(avgNumDecisionMoves / trials.length);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		numDecisionMoves = 0.0;
+		numFullTrialMoves = fullTrial.numberRealMoves();
+		
+		if (context.game().moves(context).moves().size() > 1)
+			numDecisionMoves += 1.0;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }
