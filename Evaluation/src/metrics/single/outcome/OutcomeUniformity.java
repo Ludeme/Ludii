@@ -124,6 +124,20 @@ public class OutcomeUniformity extends Metric
 		}
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		final int numPlayers = game.players().count();
+		double accum = 0.0;
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			playerStats[p].measure();
+			accum += playerStats[p].varn();
+		}
+		
+		return 1.0 - (accum / numPlayers);
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

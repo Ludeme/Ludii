@@ -126,6 +126,15 @@ public abstract class Metric
 	 */
 	public abstract void observeFinalState(final Context context);
 	
+	/**
+	 * Finalise incremental computation of metric (i.e., signal that we have seen
+	 * the last of the final trial).
+	 * @param game
+	 * @param numTrials
+	 * @return The metric value.
+	 */
+	public abstract double finaliseMetric(final Game game, final int numTrials);
+	
 	//-------------------------------------------------------------------------
 
 }

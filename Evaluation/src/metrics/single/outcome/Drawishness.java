@@ -113,6 +113,12 @@ public class Drawishness extends Metric
 			naturalDraws++;
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return naturalDraws / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

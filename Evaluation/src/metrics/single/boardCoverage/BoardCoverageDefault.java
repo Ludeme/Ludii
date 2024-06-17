@@ -106,6 +106,12 @@ public class BoardCoverageDefault extends Metric
 		numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getGraphElements(context.board().defaultSite()).size();
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return numSitesCovered / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

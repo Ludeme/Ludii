@@ -268,6 +268,13 @@ public class SkillTrace extends Metric
 		System.err.println("Incrementally computing metric not yet implemented for SkillTrace.");
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for SkillTrace.");
+		return Double.NaN;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

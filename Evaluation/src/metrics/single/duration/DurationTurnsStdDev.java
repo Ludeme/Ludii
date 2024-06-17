@@ -101,6 +101,12 @@ public class DurationTurnsStdDev extends Metric
 		turnTally.add(Integer.valueOf(context.trial().numTurns()));
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return calculateSD(turnTally);
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

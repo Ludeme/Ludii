@@ -88,6 +88,12 @@ public class AdvantageP1 extends Metric
 		p1Wins += (RankUtils.agentUtilities(context)[1] + 1.0) / 2.0;
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return p1Wins / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

@@ -106,6 +106,12 @@ public class BoardCoverageUsed extends Metric
 		numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getAllUsedGraphElements(context.game()).size();
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return numSitesCovered / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

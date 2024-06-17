@@ -81,6 +81,12 @@ public class DurationActions extends Metric
 		// Do nothing
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return actionTally / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

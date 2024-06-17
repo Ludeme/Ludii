@@ -113,6 +113,13 @@ public class ClarityNarrowness extends Metric
 		System.err.println("Incrementally computing metric not yet implemented for ClarityNarrowness.");
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for ClarityNarrowness.");
+		return Double.NaN;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

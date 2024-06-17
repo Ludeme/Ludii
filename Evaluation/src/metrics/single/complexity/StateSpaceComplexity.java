@@ -87,6 +87,12 @@ public class StateSpaceComplexity extends Metric
 		// Do nothing
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return apply(game, null, null, null).doubleValue();
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

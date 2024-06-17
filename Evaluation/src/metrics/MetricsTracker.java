@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import game.Game;
 import other.context.Context;
 import other.trial.Trial;
 
@@ -72,13 +73,18 @@ public class MetricsTracker
 	
 	/**
 	 * Finalise computation of all metrics.
+	 * @param game
+	 * @param numTrials
 	 * @return Mapping from concept names to metric values.
 	 */
-	public Map<String, Double> finaliseMetrics()
+	public Map<String, Double> finaliseMetrics(final Game game, final int numTrials)
 	{
 		final Map<String, Double> metricsMap = new HashMap<String, Double>();
 		
-		// TODO
+		for (final Metric metric : metrics)
+		{
+			metricsMap.put(metric.concept().name(), Double.valueOf(metric.finaliseMetric(game, numTrials)));
+		}
 		
 		return metricsMap;
 	}

@@ -112,6 +112,30 @@ public class Balance extends Metric
 			wins[p] += (RankUtils.agentUtilities(context)[p] + 1.0) / 2.0;
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		// Get mean win rate over all players
+		final int numPlayers = game.players().count();
+		final double[] rate = new double[numPlayers + 1];
+		for (int p = 1; p <= numPlayers; p++)
+			rate[p] = wins[p] / (double)numTrials;
+
+		// Find maximum discrepancy
+		double maxDisc = 0.0;
+		for (int pa = 1; pa <= numPlayers; pa++)
+		{
+			for (int pb = pa+1; pb <= numPlayers; pb++)
+			{
+				final double disc = Math.abs(rate[pa] - rate[pb]);
+				if (disc > maxDisc)
+					maxDisc = disc;
+			}
+		}
+
+		return 1.0 - maxDisc;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

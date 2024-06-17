@@ -79,6 +79,12 @@ public class DurationTurns extends Metric
 		turnTally += context.trial().numTurns();
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return turnTally / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

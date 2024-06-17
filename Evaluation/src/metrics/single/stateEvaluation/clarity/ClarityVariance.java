@@ -103,7 +103,14 @@ public class ClarityVariance extends Metric
 	{
 		System.err.println("Incrementally computing metric not yet implemented for ClarityVariance.");
 	}
-
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for ClarityVariance.");
+		return Double.NaN;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

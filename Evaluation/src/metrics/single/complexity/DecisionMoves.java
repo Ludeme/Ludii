@@ -106,6 +106,12 @@ public class DecisionMoves extends Metric
 		avgNumDecisionMoves += numDecisionMoves / context.trial().numberRealMoves();
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return avgNumDecisionMoves / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

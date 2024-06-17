@@ -78,6 +78,12 @@ public class DurationMoves extends Metric
 		moveTally += context.trial().numberRealMoves();
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return moveTally / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

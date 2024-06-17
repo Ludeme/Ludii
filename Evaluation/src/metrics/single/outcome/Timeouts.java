@@ -91,6 +91,12 @@ public class Timeouts extends Metric
 			timeouts++;
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return timeouts / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

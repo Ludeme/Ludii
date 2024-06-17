@@ -102,6 +102,12 @@ public class DurationTurnsNotTimeouts extends Metric
 		}
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return turnTally / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

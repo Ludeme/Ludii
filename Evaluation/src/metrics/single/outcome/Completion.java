@@ -84,6 +84,12 @@ public class Completion extends Metric
 			completedGames++;
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return completedGames / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

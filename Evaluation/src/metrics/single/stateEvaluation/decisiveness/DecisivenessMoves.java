@@ -115,6 +115,13 @@ public class DecisivenessMoves extends Metric
 	{
 		System.err.println("Incrementally computing metric not yet implemented for DecisivenessMoves.");
 	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessMoves.");
+		return Double.NaN;
+	}
 
 	//-------------------------------------------------------------------------
 

@@ -315,21 +315,8 @@ public abstract class MultiMetricFramework extends Metric
 	
 	//-------------------------------------------------------------------------
 	
-	@Override
-	public Double apply
-	(
-		final Game game,
-		final Evaluation evaluation,
-		final Trial[] trials,
-		final RandomProviderState[] randomProviderStates
-	)
+	private Double computeMultiMetric(final double[][] metricValues)
 	{
-		// Zero player games cannot be computed.
-		if (game.hasSubgames() || game.isSimultaneousMoveGame() || game.players().count() == 0)
-			return null;
-		
-		final double[][] metricValues = getMetricValueLists(game, evaluation, trials, randomProviderStates);
-
 		switch (multiMetricValue())
 		{
 			case Average: return Double.valueOf(metricAverage(metricValues));
@@ -349,6 +336,23 @@ public abstract class MultiMetricFramework extends Metric
 			default: return null;
 		}
 	}
+	
+	@Override
+	public Double apply
+	(
+		final Game game,
+		final Evaluation evaluation,
+		final Trial[] trials,
+		final RandomProviderState[] randomProviderStates
+	)
+	{
+		// Zero player games cannot be computed.
+		if (game.hasSubgames() || game.isSimultaneousMoveGame() || game.players().count() == 0)
+			return null;
+		
+		final double[][] metricValues = getMetricValueLists(game, evaluation, trials, randomProviderStates);
+		return computeMultiMetric(metricValues);
+	}
 
 	//-------------------------------------------------------------------------
 	
@@ -358,6 +362,13 @@ public abstract class MultiMetricFramework extends Metric
 		// We've finished building one list of values
 		metricValueLists.add(currValueList.toArray(new Double[0]));
 		currValueList = new ArrayList<Double>();
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		final double[][] metricValues = metricValueLists.toArray(new double[0][0]);
+		return computeMultiMetric(metricValues).doubleValue();
 	}
 	
 	//-------------------------------------------------------------------------

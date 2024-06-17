@@ -107,6 +107,12 @@ public class GameTreeComplexity extends Metric
 		gameTreeComplexity += numFullTrialMoves * Math.log10(branchingFactor);
 	}
 	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return gameTreeComplexity / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }
