@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,10 +28,13 @@ import org.json.JSONTokener;
 
 import features.feature_sets.network.JITSPatterNetFeatureSet;
 import game.Game;
+import game.equipment.container.Container;
+import game.match.Match;
 import game.rules.end.End;
 import game.rules.end.EndRule;
 import game.rules.phase.Phase;
 import game.rules.play.moves.Moves;
+import game.types.board.SiteType;
 import gnu.trove.list.array.TDoubleArrayList;
 import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
@@ -72,6 +76,7 @@ import other.concept.ConceptDataType;
 import other.concept.ConceptType;
 import other.context.Context;
 import other.move.Move;
+import other.state.container.ContainerState;
 import other.trial.Trial;
 
 /**
@@ -442,6 +447,8 @@ public class ParallelComputeConceptsMultipleGames
 			}
 		}
 		
+		final BitSet gameBooleanConcepts = game.booleanConcepts();
+		
 		// Split trials into batches, each to be processed by a different thread
 		final List<List<Trial>> trialsPerJob = ListUtils.split(allTrials, numThreads);
 		final List<List<RandomProviderState>> rngStartStatesPerJob = ListUtils.split(trialStartRNGs, numThreads);
@@ -451,7 +458,8 @@ public class ParallelComputeConceptsMultipleGames
 		
 		try
 		{
-			final List<Future<TDoubleArrayList>> frequenciesPerJob = new ArrayList<Future<TDoubleArrayList>>();
+			final List<Future<ConceptsJobOutput>> conceptsJobOutputs = 
+					new ArrayList<Future<ConceptsJobOutput>>();
 			
 			for (int jobIdx = 0; jobIdx < numThreads; ++jobIdx)
 			{
@@ -459,7 +467,7 @@ public class ParallelComputeConceptsMultipleGames
 				final List<RandomProviderState> rngStartStates = rngStartStatesPerJob.get(jobIdx);
 				
 				// Submit a job for this sublist of trials
-				frequenciesPerJob.add(threadPool.submit
+				conceptsJobOutputs.add(threadPool.submit
 				(
 					() -> 
 					{
@@ -565,6 +573,13 @@ public class ParallelComputeConceptsMultipleGames
 						// Frequencies returned by all the playouts.
 						final double[] frequencyPlayouts = new double[Concept.values().length];
 						
+						// Starting concepts
+						final Map<String, Double> mapStarting = new HashMap<String, Double>();
+						
+						double numStartComponents = 0.0;
+						double numStartComponentsHands = 0.0;
+						double numStartComponentsBoard = 0.0;
+						
 						for (int trialIndex = 0; trialIndex < trials.size(); trialIndex++)
 						{
 							final Trial trial = trials.get(trialIndex);
@@ -573,8 +588,68 @@ public class ParallelComputeConceptsMultipleGames
 							// Setup a new instance of the game
 							final Context context = Utils.setupNewContext(game, rngState);
 							metricsTracker.startNewTrial(context, trial);
+							
+							// Compute the start concepts
+							for (int cid = 0; cid < context.containers().length; cid++)
+							{
+								final Container cont = context.containers()[cid];
+								final ContainerState cs = context.containerState(cid);
+								if (cid == 0)
+								{
+									if (gameBooleanConcepts.get(Concept.Cell.id()))
+									{
+										for (int cell = 0; cell < cont.topology().cells().size(); cell++)
+										{
+											final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+													? cs.sizeStack(cell, SiteType.Cell)
+													: cs.count(cell, SiteType.Cell);
+											numStartComponents += count;
+											numStartComponentsBoard += count;
+										}
+									}
 
-							// Frequencies returned by that playout.
+									if (gameBooleanConcepts.get(Concept.Vertex.id()))
+									{
+										for (int vertex = 0; vertex < cont.topology().vertices().size(); vertex++)
+										{
+											final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+													? cs.sizeStack(vertex, SiteType.Vertex)
+													: cs.count(vertex, SiteType.Vertex);
+											numStartComponents += count;
+											numStartComponentsBoard += count;
+										}
+									}
+
+									if (gameBooleanConcepts.get(Concept.Edge.id()))
+									{
+										for (int edge = 0; edge < cont.topology().edges().size(); edge++)
+										{
+											final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking())  
+													? cs.sizeStack(edge, SiteType.Edge)
+													: cs.count(edge, SiteType.Edge);
+											numStartComponents += count;
+											numStartComponentsBoard += count;
+										}
+									}
+								}
+								else
+								{
+									if (gameBooleanConcepts.get(Concept.Cell.id()))
+									{
+										for (int cell = context.sitesFrom()[cid]; cell < context.sitesFrom()[cid]
+												+ cont.topology().cells().size(); cell++)
+										{
+											final int count = (game.hasSubgames() ? ((Match) game).instances()[0].getGame().isStacking() :  game.isStacking()) 
+													? cs.sizeStack(cell, SiteType.Cell)
+													: cs.count(cell, SiteType.Cell);
+											numStartComponents += count;
+											numStartComponentsHands += count;
+										}
+									}
+								}
+							}
+
+							// Frequencies returned by this playout.
 							final double[] frequencyPlayout = new double[Concept.values().length];
 
 							// Run the playout.
@@ -690,8 +765,16 @@ public class ParallelComputeConceptsMultipleGames
 						
 						final Map<String, Double> metricsThisJob = metricsTracker.finaliseMetrics(game, trials.size());
 						
-						// TODO also return the metrics
-						return frequenciesThisJob;
+						// Finish computing the starting concepts
+						mapStarting.put(Concept.NumStartComponents.name(), Double.valueOf(numStartComponents / trials.size()));
+						mapStarting.put(Concept.NumStartComponentsHand.name(), Double.valueOf(numStartComponentsHands / trials.size()));
+						mapStarting.put(Concept.NumStartComponentsBoard.name(), Double.valueOf(numStartComponentsBoard / trials.size()));
+
+						mapStarting.put(Concept.NumStartComponentsPerPlayer.name(), Double.valueOf((numStartComponents / trials.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
+						mapStarting.put(Concept.NumStartComponentsHandPerPlayer.name(), Double.valueOf((numStartComponentsHands / trials.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
+						mapStarting.put(Concept.NumStartComponentsBoardPerPlayer.name(), Double.valueOf((numStartComponentsBoard / trials.size()) / (game.players().count() == 0 ? 1 : game.players().count())));
+						
+						return new ConceptsJobOutput(frequenciesThisJob, metricsThisJob, mapStarting);
 					}
 				));
 			}
@@ -699,6 +782,9 @@ public class ParallelComputeConceptsMultipleGames
 			// TODO: collect all the results from the futures and do something with them
 			// TODO do something with frequencies (take them first: they have 0.0 also for non-frequency concepts)
 			// TODO do something with metrics
+			// TODO do something with start concepts
+			
+			// TODO playout estimation concepts
 		}
 		catch (final Exception e)
 		{
@@ -715,6 +801,41 @@ public class ParallelComputeConceptsMultipleGames
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	/**
+	 * Wrapper for outputs from a concepts-computing job.
+	 * 
+	 * @author Dennis Soemers
+	 */
+	public static class ConceptsJobOutput
+	{
+		
+		protected final TDoubleArrayList frequenciesConcepts;
+		protected final Map<String, Double> metricsMap;
+		protected final Map<String, Double> mapStarting;
+		
+		/**
+		 * Constructor
+		 * 
+		 * @param frequenciesConcepts
+		 * @param metricsMap
+		 * @param mapStarting
+		 */
+		public ConceptsJobOutput
+		(
+			final TDoubleArrayList frequenciesConcepts, 
+			final Map<String, Double> metricsMap,
+			final Map<String, Double> mapStarting
+		)
+		{
+			this.frequenciesConcepts = frequenciesConcepts;
+			this.metricsMap = metricsMap;
+			this.mapStarting = mapStarting;
+		}
+		
 	}
 
 	//-------------------------------------------------------------------------
