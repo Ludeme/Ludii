@@ -26,6 +26,9 @@ public class BoardCoverageUsed extends Metric
 	//-------------------------------------------------------------------------
 	
 	/** For incremental computation */
+	protected double numSitesCovered = 0.0;
+	
+	/** For incremental computation */
 	protected Set<TopologyElement> sitesCovered = null;
 
 	//-------------------------------------------------------------------------
@@ -95,6 +98,12 @@ public class BoardCoverageUsed extends Metric
 	public void observeNextState(final Context context)
 	{
 		sitesCovered.addAll(Utils.boardUsedSitesCovered(context));
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getAllUsedGraphElements(context.game()).size();
 	}
 	
 	//-------------------------------------------------------------------------

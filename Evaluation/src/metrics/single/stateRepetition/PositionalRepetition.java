@@ -106,6 +106,12 @@ public class PositionalRepetition extends Metric
 	{
 		System.err.println("Incrementally computing metric not yet implemented for PositionalRepetition.");
 	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for PositionalRepetition.");
+	}
 
 	//-------------------------------------------------------------------------
 

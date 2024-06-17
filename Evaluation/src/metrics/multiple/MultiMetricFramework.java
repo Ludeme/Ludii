@@ -352,4 +352,14 @@ public abstract class MultiMetricFramework extends Metric
 
 	//-------------------------------------------------------------------------
 	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		// We've finished building one list of values
+		metricValueLists.add(currValueList.toArray(new Double[0]));
+		currValueList = new ArrayList<Double>();
+	}
+	
+	//-------------------------------------------------------------------------
+	
 }

@@ -20,6 +20,11 @@ public class DurationTurnsNotTimeouts extends Metric
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double turnTally = 0.0;
+
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -85,6 +90,16 @@ public class DurationTurnsNotTimeouts extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		final boolean trialTimedOut = context.trial().status().endType() == EndType.MoveLimit || context.trial().status().endType() == EndType.TurnLimit;
+		if (!trialTimedOut)
+		{
+			turnTally += context.trial().numTurns();
+		}
 	}
 	
 	//-------------------------------------------------------------------------

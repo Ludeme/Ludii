@@ -114,6 +114,12 @@ public class Stability extends Metric
 	{
 		System.err.println("Incrementally computing metric not yet implemented for Stability.");
 	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for Stability.");
+	}
 
 	//-------------------------------------------------------------------------
 

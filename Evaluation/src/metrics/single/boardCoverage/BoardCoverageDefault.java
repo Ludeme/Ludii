@@ -100,6 +100,12 @@ public class BoardCoverageDefault extends Metric
 		sitesCovered.addAll(Utils.boardDefaultSitesCovered(context));
 	}
 	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getGraphElements(context.board().defaultSite()).size();
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

@@ -20,6 +20,11 @@ public class Balance extends Metric
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double[] wins = null;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -52,7 +57,7 @@ public class Balance extends Metric
 			return null;
 		
 		// Count number of wins per player
-		final int[] wins = new int[numPlayers + 1];		
+		final double[] wins = new double[numPlayers + 1];		
 		for (int i = 0; i < trials.length; i++)
 		{
 			final Trial trial = trials[i];
@@ -95,6 +100,16 @@ public class Balance extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		if (wins == null)
+			wins = new double[context.game().players().count() + 1];
+		
+		for (int p = 1; p < wins.length; p++) 
+			wins[p] += (RankUtils.agentUtilities(context)[p] + 1.0) / 2.0;
 	}
 	
 	//-------------------------------------------------------------------------

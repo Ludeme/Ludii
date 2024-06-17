@@ -22,7 +22,7 @@ public class DecisionMoves extends Metric
 	//-------------------------------------------------------------------------
 	
 	/** For incremental computation */
-	int numFullTrialMoves = 0;
+	double avgNumDecisionMoves = 0.0;
 	
 	/** For incremental computation */
 	double numDecisionMoves = 0.0;
@@ -88,7 +88,6 @@ public class DecisionMoves extends Metric
 	public void startNewTrial(final Context context, final Trial fullTrial)
 	{
 		numDecisionMoves = 0.0;
-		numFullTrialMoves = fullTrial.numberRealMoves();
 		
 		if (context.game().moves(context).moves().size() > 1)
 			numDecisionMoves += 1.0;
@@ -99,6 +98,12 @@ public class DecisionMoves extends Metric
 	{
 		if (!context.trial().over() && context.game().moves(context).moves().size() > 1)
 			numDecisionMoves += 1.0;
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		avgNumDecisionMoves += numDecisionMoves / context.trial().numberRealMoves();
 	}
 	
 	//-------------------------------------------------------------------------

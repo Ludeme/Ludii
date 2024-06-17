@@ -22,6 +22,11 @@ public class DurationTurnsStdDev extends Metric
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected List<Integer> turnTally = new ArrayList<>();
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -88,6 +93,12 @@ public class DurationTurnsStdDev extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		turnTally.add(Integer.valueOf(context.trial().numTurns()));
 	}
 	
 	//-------------------------------------------------------------------------

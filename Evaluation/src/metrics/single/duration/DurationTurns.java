@@ -17,6 +17,11 @@ import other.trial.Trial;
  */
 public class DurationTurns extends Metric
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double turnTally = 0.0;
 
 	//-------------------------------------------------------------------------
 
@@ -66,6 +71,12 @@ public class DurationTurns extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		turnTally += context.trial().numTurns();
 	}
 	
 	//-------------------------------------------------------------------------

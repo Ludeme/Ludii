@@ -26,6 +26,9 @@ public class BoardCoverageFull extends Metric
 	//-------------------------------------------------------------------------
 	
 	/** For incremental computation */
+	protected double numSitesCovered = 0.0;
+	
+	/** For incremental computation */
 	protected Set<TopologyElement> sitesCovered = null;
 
 	//-------------------------------------------------------------------------
@@ -95,6 +98,12 @@ public class BoardCoverageFull extends Metric
 	public void observeNextState(final Context context)
 	{
 		sitesCovered.addAll(Utils.boardAllSitesCovered(context));
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getAllGraphElements().size();
 	}
 	
 	//-------------------------------------------------------------------------

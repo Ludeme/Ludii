@@ -106,6 +106,12 @@ public class LeadChange extends Metric
 	{
 		System.err.println("Incrementally computing metric not yet implemented for LeadChange.");
 	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for LeadChange.");
+	}
 
 	//-------------------------------------------------------------------------
 

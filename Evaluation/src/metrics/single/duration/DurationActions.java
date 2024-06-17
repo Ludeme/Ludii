@@ -75,6 +75,12 @@ public class DurationActions extends Metric
 		actionTally += context.trial().lastMove().actions().size();
 	}
 	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		// Do nothing
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

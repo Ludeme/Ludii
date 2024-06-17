@@ -24,6 +24,9 @@ public class GameTreeComplexity extends Metric
 	//-------------------------------------------------------------------------
 	
 	/** For incremental computation */
+	double gameTreeComplexity = 0.0;
+	
+	/** For incremental computation */
 	int numFullTrialMoves = 0;
 	
 	/** For incremental computation */
@@ -96,6 +99,12 @@ public class GameTreeComplexity extends Metric
 	{
 		if (!context.trial().over())
 			branchingFactor += ((double) context.game().moves(context).moves().size()) / numFullTrialMoves;
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		gameTreeComplexity += numFullTrialMoves * Math.log10(branchingFactor);
 	}
 	
 	//-------------------------------------------------------------------------

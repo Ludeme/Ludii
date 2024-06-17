@@ -64,7 +64,10 @@ public class MetricsTracker
 	 */
 	public void observeFinalState(final Context context)
 	{
-		// TODO
+		for (final Metric metric : metrics)
+		{
+			metric.observeFinalState(context);
+		}
 	}
 	
 	/**

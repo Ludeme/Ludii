@@ -17,6 +17,10 @@ import other.trial.Trial;
  */
 public class DurationMoves extends Metric
 {
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	double moveTally = 0.0;
 
 	//-------------------------------------------------------------------------
 
@@ -66,6 +70,12 @@ public class DurationMoves extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		moveTally += context.trial().numberRealMoves();
 	}
 	
 	//-------------------------------------------------------------------------

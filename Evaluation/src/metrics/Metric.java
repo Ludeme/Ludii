@@ -119,6 +119,13 @@ public abstract class Metric
 	 */
 	public abstract void observeNextState(final Context context);
 	
+	/**
+	 * Observe the final state for incrementally computing metrics
+	 * (NOTE: we will have also already observed this same state via observeNextState()).
+	 * @param context
+	 */
+	public abstract void observeFinalState(final Context context);
+	
 	//-------------------------------------------------------------------------
 
 }

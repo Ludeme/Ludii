@@ -20,6 +20,11 @@ public class AdvantageP1 extends Metric
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double p1Wins = 0.0;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -75,6 +80,12 @@ public class AdvantageP1 extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		p1Wins += (RankUtils.agentUtilities(context)[1] + 1.0) / 2.0;
 	}
 	
 	//-------------------------------------------------------------------------

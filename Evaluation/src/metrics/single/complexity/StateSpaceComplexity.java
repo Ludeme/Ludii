@@ -81,6 +81,12 @@ public class StateSpaceComplexity extends Metric
 		// Do nothing
 	}
 	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		// Do nothing
+	}
+	
 	//-------------------------------------------------------------------------
 
 }
