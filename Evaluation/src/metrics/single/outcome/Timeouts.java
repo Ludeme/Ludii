@@ -19,6 +19,11 @@ public class Timeouts extends Metric
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double timeouts = 0.0;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -74,6 +79,16 @@ public class Timeouts extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		final Trial trial = context.trial();
+		final boolean trialTimedOut = trial.status().endType() == EndType.MoveLimit || trial.status().endType() == EndType.TurnLimit;
+		
+		if (trialTimedOut)
+			timeouts++;
 	}
 	
 	//-------------------------------------------------------------------------

@@ -20,6 +20,11 @@ public class Drawishness extends Metric
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double naturalDraws = 0.0;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -89,6 +94,23 @@ public class Drawishness extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		boolean allRankingZero = true;
+		for (int j = 1; j < RankUtils.agentUtilities(context).length; j++)
+		{
+			if (RankUtils.agentUtilities(context)[j] != 0.0)
+			{
+				allRankingZero = false;
+				break;
+			}
+		}
+		
+		if (allRankingZero)
+			naturalDraws++;
 	}
 	
 	//-------------------------------------------------------------------------

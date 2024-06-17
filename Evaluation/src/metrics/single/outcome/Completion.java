@@ -18,6 +18,11 @@ public class Completion extends Metric
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double completedGames = 0.0;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -70,6 +75,13 @@ public class Completion extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		if (context.trial().status().winner() != 0)
+			completedGames++;
 	}
 	
 	//-------------------------------------------------------------------------

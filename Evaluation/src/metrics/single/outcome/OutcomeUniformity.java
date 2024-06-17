@@ -22,6 +22,11 @@ public class OutcomeUniformity extends Metric
 {
 	
 	//-------------------------------------------------------------------------
+	
+	/** For incremnetal computation */
+	protected Stats[] playerStats = null;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -96,6 +101,27 @@ public class OutcomeUniformity extends Metric
 	public void observeNextState(final Context context)
 	{
 		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		if (playerStats == null)
+		{
+			final int numPlayers = context.game().players().count();
+			playerStats = new Stats[numPlayers + 1];
+			for (int p = 1; p <= numPlayers; ++p)
+			{
+				playerStats[p] = new Stats();
+			}
+		}
+		
+		final double[] utils = RankUtils.agentUtilities(context);
+		
+		for (int p = 1; p < playerStats.length; ++p)
+		{
+			playerStats[p].addSample(utils[p]);
+		}
 	}
 	
 	//-------------------------------------------------------------------------
