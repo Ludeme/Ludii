@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,6 +42,7 @@ import gnu.trove.list.array.TIntArrayList;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
+import main.Constants;
 import main.DaemonThreadFactory;
 import main.collections.ListUtils;
 import main.collections.MapUtils;
@@ -784,9 +786,52 @@ public class ParallelComputeConceptsMultipleGames
 			// Final wrap-up which is not really nicely parallelisable
 			final Map<String, Double> conceptValues = ConceptsJobOutput.mergeResults(conceptsJobOutputs, trialsPerJob);
 			
-			// TODO compute playout estimation concepts
+			// Compute playout estimation concepts
+			final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
+			// Computation of the p/s and m/s
+			final Trial trial = new Trial(game);
+			final Context context = new Context(game, trial);
+
+			// Warming up
+			long stopAt = 0L;
+			long start = System.nanoTime();
+			final double warmingUpSecs = 10;
+			final double measureSecs = 30;
+			double abortAt = start + warmingUpSecs * 1000000000.0;
+			while (stopAt < abortAt)
+			{
+				game.start(context);
+				game.playout(context, null, 1.0, null, -1, Constants.UNDEFINED, ThreadLocalRandom.current());
+				stopAt = System.nanoTime();
+			}
+			System.gc();
+
+			// Set up RNG for this game, Always with a rng of 2077.
+			final Random rng = new Random((long) game.name().hashCode() * 2077);
+
+			// The Test
+			stopAt = 0L;
+			start = System.nanoTime();
+			abortAt = start + measureSecs * 1000000000.0;
+			int playouts = 0;
+			int moveDone = 0;
+			while (stopAt < abortAt)
+			{
+				game.start(context);
+				game.playout(context, null, 1.0, null, -1, Constants.UNDEFINED, rng);
+				moveDone += context.trial().numMoves();
+				stopAt = System.nanoTime();
+				++playouts;
+			}
+
+			final double secs = (stopAt - start) / 1000000000.0;
+			final double rate = (playouts / secs);
+			final double rateMove = (moveDone / secs);
+			conceptValues.put(Concept.PlayoutsPerSecond.name(), Double.valueOf(rate));
+			conceptValues.put(Concept.MovesPerSecond.name(), Double.valueOf(rateMove));
 			
 			// TODO write the file
+			// TODO don't forget about compilation concepts
 		}
 		catch (final Exception e)
 		{
