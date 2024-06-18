@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -42,6 +43,7 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.DaemonThreadFactory;
 import main.collections.ListUtils;
+import main.collections.MapUtils;
 import manager.utils.game_logs.MatchRecord;
 import metrics.Metric;
 import metrics.MetricsTracker;
@@ -779,12 +781,12 @@ public class ParallelComputeConceptsMultipleGames
 				));
 			}
 			
-			// TODO: collect all the results from the futures and do something with them
-			// TODO do something with frequencies (take them first: they have 0.0 also for non-frequency concepts)
-			// TODO do something with metrics
-			// TODO do something with start concepts
+			// Final wrap-up which is not really nicely parallelisable
+			final Map<String, Double> conceptValues = ConceptsJobOutput.mergeResults(conceptsJobOutputs, trialsPerJob);
 			
-			// TODO playout estimation concepts
+			// TODO compute playout estimation concepts
+			
+			// TODO write the file
 		}
 		catch (final Exception e)
 		{
@@ -834,6 +836,47 @@ public class ParallelComputeConceptsMultipleGames
 			this.frequenciesConcepts = frequenciesConcepts;
 			this.metricsMap = metricsMap;
 			this.mapStarting = mapStarting;
+		}
+		
+		/**
+		 * Merge results from multiple jobs (each with a set of trials)
+		 * 
+		 * @param conceptsJobOutputs
+		 * @param trialsPerJob
+		 * @return
+		 */
+		public static Map<String, Double> mergeResults
+		(
+			final List<Future<ConceptsJobOutput>> conceptsJobOutputs, final List<List<Trial>> trialsPerJob
+		)
+		{
+			final Map<String, Double> mergedResults = new HashMap<String, Double>();
+			int totalNumTrials = 0;
+			
+			for (int i = 0; i < conceptsJobOutputs.size(); ++i)
+			{
+				final int numTrials = trialsPerJob.get(i).size();
+				
+				try 
+				{
+					final ConceptsJobOutput jobOutput = conceptsJobOutputs.get(i).get();
+					
+					for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+					{
+						final Concept concept = Concept.values()[indexConcept];
+						MapUtils.add(mergedResults, concept.name(), jobOutput.frequenciesConcepts.getQuick(indexConcept));
+					}
+					
+					totalNumTrials += numTrials;
+				} 
+				catch (final InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			MapUtils.divide(mergedResults, totalNumTrials);
+			
+			return mergedResults;
 		}
 		
 	}
