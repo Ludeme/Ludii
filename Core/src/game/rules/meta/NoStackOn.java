@@ -33,9 +33,9 @@ public class NoStackOn extends MetaRule
 	final NoStackOnType type;
 
 	/**
-	 * @param type The type of pin.
+	 * @param type The type of forbidden Stack
 	 * 
-	 * @example (pin SupportMultiple)
+	 * @example (noStackOn Fallen)
 	 */
 	public NoStackOn(final NoStackOnType type)
 	{

@@ -1,7 +1,7 @@
 package game.types.play;
 
 /**
- * Defines the possible types of pin that can occur in a game.
+ * Defines the possible conditions of piece stacking that can occur in a game.
  * 
  * @author Cedric.Antoine
  */

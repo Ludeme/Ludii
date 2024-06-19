@@ -1,9 +1,9 @@
 package game.functions.ints.count;
 
 /**
- * Defines the types of groups properties that can be counted within a game.
+ * Defines the types of sites to count on a lower layer
  * 
- * @author Eric.Piette
+ * @author Cedric.Antoine
  */
 public enum CountSitesPlatformBelowType
 {

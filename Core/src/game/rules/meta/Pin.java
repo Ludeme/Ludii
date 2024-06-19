@@ -17,7 +17,7 @@ import other.move.Move;
 import other.state.container.ContainerState;
 
 /**
- * To filter some remove moves in case some pieces can not be removed because of pieces on top of them.
+ * To filter some remove moves in case some pieces can not be removed/moved because of pieces on top of them.
  * 
  * @author Eric.Piette
  */
@@ -61,7 +61,6 @@ public class Pin extends MetaRule
 		final PinType pinType = metaRules.pinType();
 		if (pinType != null)
 		{
-//			System.out.println("Applying Pin");
 			if (pinType.equals(PinType.SupportMultiple))
 			{
 				for (int indexMove = legalMoves.moves().size() - 1; indexMove >= 0; indexMove--)
@@ -71,19 +70,16 @@ public class Pin extends MetaRule
 					for(final Action action : move.actions())
 						if (action != null && (action.actionType().equals(ActionType.Remove)) || (action.actionType().equals(ActionType.Move)))
 						{			
-//							final int siteToRemove = action.to();
 
-							int siteToRemove = -1; // ced
+							int siteToRemove = -1; 
 							
-							if (action.actionType().equals(ActionType.Remove)) { // ced
-								siteToRemove = action.to(); // ced
+							if (action.actionType().equals(ActionType.Remove)) { 
+								siteToRemove = action.to(); 
 							}
-							else if (action.actionType().equals(ActionType.Move)) { // ced
-								siteToRemove = action.from(); // ced
-//								System.out.println("From: " + action.from());
-//								System.out.println("To: " + action.to());
-//								System.out.println("--------");
+							else if (action.actionType().equals(ActionType.Move)) { 
+								siteToRemove = action.from(); 
 							}
+							
 							final ContainerState cs = context.containerState(context.containerId()[siteToRemove]);
 							if (cs.what(siteToRemove, SiteType.Vertex) != 0 && !context.equipment().containers()[context.containerId()[siteToRemove]].isHand())  // modif ced
 							{

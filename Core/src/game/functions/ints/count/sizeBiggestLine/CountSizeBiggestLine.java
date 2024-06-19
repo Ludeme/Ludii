@@ -23,7 +23,7 @@ import other.topology.TopologyElement;
 
 
 /**
- * Returns the number of groups.
+ * Returns the size of the biggest Line
  * 
  * @author Eric.Piette & Cedric.Antoine
  */
@@ -49,7 +49,7 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 	 * @param type       The graph element type [default SiteType of the board].
 	 * @param directions The directions of the connection between elements in the
 	 *                   group [Adjacent].
-	 * @param If         The condition on the pieces to include in the group.
+	 * @param If         The condition on the pieces to include in the line.
 	 */
 	public CountSizeBiggestLine
 	(
@@ -83,36 +83,30 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 				pivotsFn.add(element.index());
 		}
 	
-		final other.topology.Topology graph = context.topology(); //edges, cells and vertices of graph
+		final other.topology.Topology graph = context.topology();
 		final boolean playOnCell = (type != null && type.equals(SiteType.Cell)
-				|| (type == null && (context.game().board().defaultSite() != SiteType.Vertex))); //is true if graphType = Cell or Edge	
+				|| (type == null && (context.game().board().defaultSite() != SiteType.Vertex)));
 		
 		
 		final int[] pivots = pivotsFn.toArray();
 //		System.out.println("Pivots: " + Arrays.toString(pivots));
 		
-		for (int p = 0; p < pivots.length; p++) //iterate over pivots
+		for (int p = 0; p < pivots.length; p++)
 		{
 			
-			final int locn = pivots[p]; //locn = actual pivot
+			final int locn = pivots[p];
 			if (locn < 0) {
-//				System.out.println("Strange1");
 				return 0;
 			}
 			
-//			System.out.println("locn: " + locn);
-				
-
-			final int origTo = context.to();  //returns the actual Variable to iterate the 'to' locations
-			context.setTo(locn);  //sets the Variable used to iterate the 'to' locations to locn
+			final int origTo = context.to(); 
+			context.setTo(locn);
 
 			if (playOnCell && locn >= graph.cells().size()) {
-//				System.out.println("Strange2");
 				return -1;
 			}
 
 			if (!playOnCell && locn >= graph.vertices().size()) {
-//				System.out.println("Strange3");
 				return -1;
 			}
 	
@@ -133,12 +127,10 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 					
 					if (whats.contains(index))
 					{	
-//						System.out.println("I added");
 						count++;
 					}
 					else
 					{
-//						System.out.println("I interuppted");
 						break;
 					}
 				}
@@ -158,12 +150,10 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 							
 							if (whats.contains(index))
 							{	
-//								System.out.println("I added");
 								oppositeCount++;
 							}
 							else
 							{
-//								System.out.println("I interuppted");
 								break;
 							}
 						}

@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
 import annotations.Or;
@@ -29,11 +28,10 @@ import other.topology.Topology;
 import other.topology.TopologyElement;
 
 /**
- * Returns the number of groups.
+ * Returns the size of the biggest Group
  * 
  * @author Eric.Piette & Cedric.Antoine
  */
-@Hide
 public final class CountSizeBiggestGroup extends BaseIntFunction
 {
 	private static final long serialVersionUID = 1L;

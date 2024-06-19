@@ -303,9 +303,6 @@ public class IsLine extends BaseBooleanFunction
 			
 			if (!whats.contains(whatLocn))
 				continue;
-			
-			final TIntArrayList whoNumber = new TIntArrayList();	
-			whoNumber.add(state.what(locn, type));
 
 			final int len = length.eval(context);
 
@@ -317,6 +314,8 @@ public class IsLine extends BaseBooleanFunction
 //			System.out.println("Loc: " + locn);
 			for (final Radial radial : radials)
 			{
+				final TIntArrayList whoNumber = new TIntArrayList();	
+				whoNumber.add(state.what(locn, type));
 //				System.out.println("Radial: " + radial);
 				locnUpwards = new TIntArrayList();
 				indexUpwards = new TIntArrayList();
