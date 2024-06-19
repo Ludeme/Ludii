@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
@@ -44,6 +46,7 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.Constants;
 import main.DaemonThreadFactory;
+import main.UnixPrintWriter;
 import main.collections.ListUtils;
 import main.collections.MapUtils;
 import manager.utils.game_logs.MatchRecord;
@@ -76,6 +79,7 @@ import metrics.single.outcome.OutcomeUniformity;
 import metrics.single.outcome.Timeouts;
 import other.GameLoader;
 import other.concept.Concept;
+import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
 import other.concept.ConceptType;
 import other.context.Context;
@@ -451,7 +455,42 @@ public class ParallelComputeConceptsMultipleGames
 			}
 		}
 		
+		final List<Concept> ignoredConcepts = new ArrayList<Concept>();
+		ignoredConcepts.add(Concept.Behaviour);
+		ignoredConcepts.add(Concept.StateRepetition);
+		ignoredConcepts.add(Concept.Duration);
+		ignoredConcepts.add(Concept.Complexity);
+		ignoredConcepts.add(Concept.BoardCoverage);
+		ignoredConcepts.add(Concept.GameOutcome);
+		ignoredConcepts.add(Concept.StateEvaluation);
+		ignoredConcepts.add(Concept.Clarity);
+		ignoredConcepts.add(Concept.Decisiveness);
+		ignoredConcepts.add(Concept.Drama);
+		ignoredConcepts.add(Concept.MoveEvaluation);
+		ignoredConcepts.add(Concept.StateEvaluationDifference);
+		ignoredConcepts.add(Concept.BoardSitesOccupied);
+		ignoredConcepts.add(Concept.BranchingFactor);
+		ignoredConcepts.add(Concept.DecisionFactor);
+		ignoredConcepts.add(Concept.MoveDistance);
+		ignoredConcepts.add(Concept.PieceNumber);
+		ignoredConcepts.add(Concept.ScoreDifference);
+		
+		// Map from non-frequency-concept name to index of the frequency version of the concept
+		final Map<String, Integer> conceptToFrequencyIndexMap = new HashMap<String, Integer>();
+		for (int i = 0; i < Concept.values().length; ++i)
+		{
+			final Concept concept = Concept.values()[i];
+			final int frequencyStringIndex = concept.name().indexOf("");
+			
+			if (frequencyStringIndex >= 0)
+			{
+				final String nonFrequencyConceptName = concept.name().substring(0, frequencyStringIndex);
+				conceptToFrequencyIndexMap.put(nonFrequencyConceptName, Integer.valueOf(i));
+			}
+		}
+		
 		final BitSet gameBooleanConcepts = game.booleanConcepts();
+		final Map<Integer, String> nonBooleanConceptsValues = game.nonBooleanConcepts();
 		
 		// Split trials into batches, each to be processed by a different thread
 		final List<List<Trial>> trialsPerJob = ListUtils.split(allTrials, numThreads);
@@ -670,11 +709,11 @@ public class ParallelComputeConceptsMultipleGames
 								for (final Move legalMove : legalMoves.moves())
 								{
 									final BitSet moveConcepts = legalMove.moveConcepts(context);
-									for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+									
+									for (int conceptIdx = moveConcepts.nextSetBit(0); conceptIdx >= 0; conceptIdx = moveConcepts.nextSetBit(conceptIdx + 1))
 									{
-										final Concept concept = Concept.values()[indexConcept];
-										if (moveConcepts.get(concept.id()))
-											frequencyPlayout[indexConcept] += 1.0 / numLegalMoves;
+										final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(Concept.values()[conceptIdx].name()).intValue();
+										frequencyPlayout[frequencyConceptIdx] += 1.0 / numLegalMoves;
 									}
 								}
 
@@ -722,7 +761,8 @@ public class ParallelComputeConceptsMultipleGames
 											final Concept concept = Concept.values()[indexConcept];
 											if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
 											{
-												frequencyPlayouts[indexConcept]++; 
+												final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(concept.name()).intValue();
+												frequencyPlayouts[frequencyConceptIdx]++; 
 											}
 										}
 										break;
@@ -748,7 +788,8 @@ public class ParallelComputeConceptsMultipleGames
 										final Concept concept = Concept.values()[indexConcept];
 										if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
 										{
-											frequencyPlayouts[indexConcept]++; 
+											final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(concept.name()).intValue();
+											frequencyPlayouts[frequencyConceptIdx]++; 
 										}
 									}
 									break;
@@ -757,7 +798,7 @@ public class ParallelComputeConceptsMultipleGames
 
 							if (noEndFound)
 							{
-								frequencyPlayouts[Concept.Draw.ordinal()]++; 
+								frequencyPlayouts[Concept.DrawFrequency.ordinal()]++; 
 							}
 						}
 
@@ -786,8 +827,6 @@ public class ParallelComputeConceptsMultipleGames
 			// Final wrap-up which is not really nicely parallelisable
 			final Map<String, Double> conceptValues = ConceptsJobOutput.mergeResults(conceptsJobOutputs, trialsPerJob);
 			
-			// Compute playout estimation concepts
-			final Map<String, Double> playoutConceptValues = new HashMap<String, Double>();
 			// Computation of the p/s and m/s
 			final Trial trial = new Trial(game);
 			final Context context = new Context(game, trial);
@@ -830,8 +869,86 @@ public class ParallelComputeConceptsMultipleGames
 			conceptValues.put(Concept.PlayoutsPerSecond.name(), Double.valueOf(rate));
 			conceptValues.put(Concept.MovesPerSecond.name(), Double.valueOf(rateMove));
 			
-			// TODO write the file
-			// TODO don't forget about compilation concepts
+			// Write file with concepts for this game/ruleset
+			String conceptsFilepath = conceptsDir.getAbsolutePath();
+			conceptsFilepath = conceptsFilepath.replaceAll(Pattern.quote("\\"), "/");
+			if (!conceptsFilepath.endsWith("/"))
+				conceptsFilepath += "/";
+			conceptsFilepath += "Concepts.csv";
+			
+			final File conceptsFile = new File(conceptsFilepath);
+			conceptsFile.getParentFile().mkdirs();
+			try (final PrintWriter writer = new UnixPrintWriter(conceptsFile, "UTF-8"))
+			{
+				final DecimalFormat doubleFormatter = new DecimalFormat("##.##");
+				final Concept[] concepts = Concept.values();
+				
+				// Write the header
+				final StringBuilder header = new StringBuilder();
+				for (final Concept concept : concepts)
+				{
+					header.append(concept.name() + ",");
+				}
+				header.deleteCharAt(header.length() - 1);		// Remove the final comma
+				writer.println(header);
+				
+				// Now write the concept values
+				final StringBuilder conceptValuesLine = new StringBuilder();
+				for (int i = 0; i < concepts.length; ++i)
+				{
+					final Concept concept = concepts[i];
+					final String conceptName = concept.name();
+					
+					if (concept.dataType() == ConceptDataType.BooleanData)
+					{
+						// Boolean concept
+						if (ignoredConcepts.contains(concept))
+							conceptValuesLine.append("NULL");
+						else if (gameBooleanConcepts.get(concept.id()))
+							conceptValuesLine.append(1);
+						else
+							conceptValuesLine.append(0);
+					}
+					else
+					{
+						if (concept.computationType() == ConceptComputationType.Compilation)
+						{
+							// Non-boolean compilation concept
+							conceptValuesLine.append(nonBooleanConceptsValues.get(Integer.valueOf(concept.id())));
+						}
+						else
+						{
+							// Concept computed from playouts
+							if (conceptName.indexOf("Frequency") == Constants.UNDEFINED)
+							{
+								// Not a frequency concept
+								if (conceptValues.get(conceptName) == null)
+								{
+									conceptValuesLine.append("NULL");
+								}
+								else
+								{
+									final double value = conceptValues.get(conceptName).doubleValue();
+									conceptValuesLine.append(doubleFormatter.format(value));
+								}
+							}
+							else
+							{
+								// A frequency concept
+								// TODO
+							}
+						}
+					}
+					
+					if (i + 1 < concepts.length)
+						conceptValuesLine.append(",");
+				}
+				writer.println(conceptValuesLine);
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		catch (final Exception e)
 		{
@@ -911,6 +1028,9 @@ public class ParallelComputeConceptsMultipleGames
 						final Concept concept = Concept.values()[indexConcept];
 						MapUtils.add(mergedResults, concept.name(), jobOutput.frequenciesConcepts.getQuick(indexConcept));
 					}
+					
+					// TODO also add non-frequency things
+					// TODO fix the frequency things
 					
 					totalNumTrials += numTrials;
 				} 
