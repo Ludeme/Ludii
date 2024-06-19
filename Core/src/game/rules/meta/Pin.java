@@ -61,6 +61,7 @@ public class Pin extends MetaRule
 		final PinType pinType = metaRules.pinType();
 		if (pinType != null)
 		{
+//			System.out.println("Applying Pin");
 			if (pinType.equals(PinType.SupportMultiple))
 			{
 				for (int indexMove = legalMoves.moves().size() - 1; indexMove >= 0; indexMove--)
@@ -68,11 +69,23 @@ public class Pin extends MetaRule
 					final Move move = legalMoves.moves().get(indexMove);
 					boolean forbiddenMove = false;
 					for(final Action action : move.actions())
-						if (action != null && action.actionType().equals(ActionType.Remove))
-						{
-							final int siteToRemove = action.to();
+						if (action != null && (action.actionType().equals(ActionType.Remove)) || (action.actionType().equals(ActionType.Move)))
+						{			
+//							final int siteToRemove = action.to();
+
+							int siteToRemove = -1; // ced
+							
+							if (action.actionType().equals(ActionType.Remove)) { // ced
+								siteToRemove = action.to(); // ced
+							}
+							else if (action.actionType().equals(ActionType.Move)) { // ced
+								siteToRemove = action.from(); // ced
+//								System.out.println("From: " + action.from());
+//								System.out.println("To: " + action.to());
+//								System.out.println("--------");
+							}
 							final ContainerState cs = context.containerState(context.containerId()[siteToRemove]);
-							if (cs.what(siteToRemove, SiteType.Vertex) != 0)
+							if (cs.what(siteToRemove, SiteType.Vertex) != 0 && !context.equipment().containers()[context.containerId()[siteToRemove]].isHand())  // modif ced
 							{
 								final List<game.util.graph.Step> steps = game.board().topology().trajectories()
 										.steps(SiteType.Vertex, siteToRemove, SiteType.Vertex, AbsoluteDirection.Upward);
@@ -92,8 +105,9 @@ public class Pin extends MetaRule
 							}
 						}
 
-					if (forbiddenMove)
+					if (forbiddenMove) {
 						legalMoves.moves().remove(indexMove);
+					}
 				}
 			}
 		}

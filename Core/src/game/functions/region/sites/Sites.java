@@ -445,6 +445,7 @@ public final class Sites extends BaseRegionFunction
 	 * @param directions The directions of the connection between elements in the
 	 *                   group [Adjacent].
 	 * @param If         The condition on the pieces to include in the group.
+	 * @param If         Whether pieces of group have to be visible
 	 * 
 	 * @example (sites Group Vertex at:(site))
 	 */
@@ -455,7 +456,8 @@ public final class Sites extends BaseRegionFunction
 	  @Or      @Name  final IntFunction     at, 
 	  @Or      @Name  final RegionFunction  From,
 	      @Opt        final Direction       directions,
-	      @Opt @Name  final BooleanFunction If
+	      @Opt @Name  final BooleanFunction If,
+	      @Opt @Name  final BooleanFunction isVisible
 	)
 	{
 		int numNonNull = 0;
@@ -471,7 +473,7 @@ public final class Sites extends BaseRegionFunction
 		switch (regionType)
 		{
 		case Group:
-			return new SitesGroup(type, at, From, directions, If);
+			return new SitesGroup(type, at, From, directions, If, isVisible);
 		default:
 			break;
 		}

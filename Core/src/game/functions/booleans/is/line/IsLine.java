@@ -3,7 +3,8 @@ package game.functions.booleans.is.line;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-
+import java.util.Set;
+import java.util.HashSet;
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -23,6 +24,7 @@ import game.types.play.RoleType;
 import game.types.state.GameType;
 import game.util.directions.AbsoluteDirection;
 import game.util.graph.Radial;
+import game.util.graph.Step;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.concept.Concept;
@@ -83,27 +85,44 @@ public class IsLine extends BaseBooleanFunction
 	
 	/** Add on Cell/Edge/Vertex. */
 	private SiteType type;
+	
+	/** The number of minimum component types to compose the line */
+	private final IntFunction throughHowMuch;
+	
+	
+	/** If a line has to be visible from above (and not cut) */
+	private final BooleanFunction isVisibleFn;
+	
+	/** Whether to use the opposite radial to try and find line */
+	private final BooleanFunction useOppositesFn;
+	
+	
 
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param type       The graph element type [default SiteType of the board].
-	 * @param length     Minimum length of lines.
-	 * @param dirn       Direction category to which potential lines must belong
-	 *                   [Adjacent].
-	 * @param through    Location through which the line must pass. [(last To)]
-	 * @param throughAny The line must pass through at least one of these sites.
-	 * @param who        The owner of the pieces making a line.
-	 * @param what       The index of the component composing the line.
-	 * @param whats      The indices of the components composing the line.
-	 * @param exact      If true, then lines cannot exceed minimum length [False].
-	 * @param contiguous If true, the line has to be contiguous [True].
-	 * @param If         The condition on each site on the line [True].
-	 * @param byLevel    If true, then lines are detected in using the level in a
-	 *                   stack [False].
-	 * @param top        If true, then lines are detected in using only the top level 
-	 *                   in a stack [False].
+	 * @param type       		The graph element type [default SiteType of the board].
+	 * @param length     		Minimum length of lines.
+	 * @param dirn       		Direction category to which potential lines must belong
+	 *                   		[Adjacent].
+	 * @param through    		Location through which the line must pass. [(last To)]
+	 * @param throughAny 		The line must pass through at least one of these sites.
+	 * @param who        		The owner of the pieces making a line.
+	 * @param what       		The index of the component composing the line.
+	 * @param whats      		The indices of the components composing the line.
+	 * @param exact      		If true, then lines cannot exceed minimum length [False].
+	 * @param contiguous 		If true, the line has to be contiguous [True].
+	 * @param If         		The condition on each site on the line [True].
+	 * @param byLevel    		If true, then lines are detected in using the level in a
+	 *                   		stack [False].
+	 * @param top        		If true, then lines are detected in using only the top level 
+	 *                   		in a stack [False].
+	 * @param throughHowMuch 	Minimum number of ball IDs the line is made of 
+	 * @param isVisible         Whether components composing a line have to be visible or not (used in 3D games)  
+	 * @param useOpposites      Whether to use the opposites radial to find line
+	 * 
 	 */
+	
 	public IsLine
 	(
 		@Opt        	final SiteType          type,
@@ -118,8 +137,13 @@ public class IsLine extends BaseBooleanFunction
 		@Opt 	  @Name final BooleanFunction   contiguous,
 		@Opt  	  @Name final BooleanFunction   If, 
 		@Opt  	  @Name final BooleanFunction   byLevel,
-		@Opt  	  @Name final BooleanFunction   top
+		@Opt  	  @Name final BooleanFunction   top,
+		@Opt  	  @Name final IntFunction   	throughHowMuch,
+		@Opt      @Name final BooleanFunction   isVisible,
+		@Opt      @Name final BooleanFunction   useOpposites
 	)
+	
+	
 	{
 		this.length  = length;
 		this.dirn = (dirn == null) ? new Directions(AbsoluteDirection.Adjacent, null) : new Directions(dirn, null);
@@ -148,6 +172,10 @@ public class IsLine extends BaseBooleanFunction
 		byLevelFn = (byLevel == null) ? new BooleanConstant(false) : byLevel;
 		topFn = (top == null) ? new BooleanConstant(false) : top;
 		contiguousFn = (contiguous == null) ? new BooleanConstant(true) : contiguous;
+		this.throughHowMuch = throughHowMuch;
+		isVisibleFn = (isVisible == null) ? new BooleanConstant(false) : isVisible;
+		useOppositesFn = (useOpposites == null) ? new BooleanConstant(true) : useOpposites;
+		
 	} 
 
 	//-------------------------------------------------------------------------
@@ -162,7 +190,10 @@ public class IsLine extends BaseBooleanFunction
 			return evalDeductionPuzzle(context);
 
 		final boolean contiguous = contiguousFn.eval(context);
-
+		
+		final int throughnum;
+		throughnum = (throughHowMuch == null) ? 1 : throughHowMuch.eval(context);
+		
 		final int[] pivots;
 		if (throughAny != null)
 		{
@@ -184,6 +215,7 @@ public class IsLine extends BaseBooleanFunction
 						listPivots.removeAt(i);
 				}
 			}
+			
 			pivots = listPivots.toArray();
 		}
 		else
@@ -195,16 +227,20 @@ public class IsLine extends BaseBooleanFunction
 		final other.topology.Topology graph = context.topology();
 		final boolean playOnCell = (type != null && type.equals(SiteType.Cell)
 				|| (type == null && (context.game().board().defaultSite() != SiteType.Vertex)));
-
+		
+		TIntArrayList locnUpwards = new TIntArrayList();
+		TIntArrayList indexUpwards = new TIntArrayList();
+		
 		for (int p = 0; p < pivots.length; p++)
-		{
+		{	
+			
 			final int locn = pivots[p];
 			if (locn < 0)
 				return false;
 
 			final int origTo = context.to();
 			context.setTo(locn);
-			if (!condition.eval(context))
+			if (!condition.eval(context)) 
 			{
 				context.setTo(origTo);
 				return false;
@@ -218,8 +254,26 @@ public class IsLine extends BaseBooleanFunction
 	
 			final TopologyElement vertexLoc = playOnCell ? graph.cells().get(locn) : graph.vertices().get(locn);
 			final ContainerState state = context.state().containerStates()[context.containerId()[vertexLoc.index()]];
-			final TIntArrayList whats = new TIntArrayList();
+			final TIntArrayList whats = new TIntArrayList(); 
 			final int whatLocn = state.what(locn, type);
+			
+			if (isVisibleFn.eval(context) == true) {
+				if ((locn == 8 && state.what(9, SiteType.Vertex) != 0) || (locn == 10 && state.what(11, SiteType.Vertex) != 0) || (locn == 14 && state.what(15, SiteType.Vertex) != 0) || (locn == 18 && state.what(19, SiteType.Vertex) != 0) || (locn == 20 && state.what(21, SiteType.Vertex) != 0)) {
+					continue;
+				}
+				else {
+					final List<game.util.graph.Step> steps = context.game().board().topology().trajectories()
+							.steps(SiteType.Vertex, locn, SiteType.Vertex, AbsoluteDirection.Upward);
+	
+					for (final Step step : steps)
+					{
+						final int toSite = step.to().id();
+						if (state.what(toSite, SiteType.Vertex) != 0) {
+							locnUpwards.add(toSite);
+						}
+					}
+				}
+			}
 
 			if (whatFn == null)
 			{
@@ -249,27 +303,75 @@ public class IsLine extends BaseBooleanFunction
 			
 			if (!whats.contains(whatLocn))
 				continue;
+			
+			final TIntArrayList whoNumber = new TIntArrayList();	
+			whoNumber.add(state.what(locn, type));
 
 			final int len = length.eval(context);
+
 			final boolean exact = exactly.eval(context);
 
-			final List<Radial> radials = graph.trajectories().radials(type, locn)
-					.distinctInDirection(dirn.absoluteDirection());
-			
+			final List<Radial> radials = graph.trajectories().radials(type, locn).distinctInDirection(dirn.absoluteDirection());
+					
+//			System.out.println("-------------------");
+//			System.out.println("Loc: " + locn);
 			for (final Radial radial : radials)
 			{
+//				System.out.println("Radial: " + radial);
+				locnUpwards = new TIntArrayList();
+				indexUpwards = new TIntArrayList();
 				int count = 1;
 				for (int indexPath = 1; indexPath < radial.steps().length; indexPath++)
 				{
+					boolean isVisib = true; 
 					final int index = radial.steps()[indexPath].id();
+//					System.out.println("Index: " + index);
 					context.setTo(index);
-					if (whats.contains(state.what(index, type)) && condition.eval(context))
-					{
+					
+					if (isVisibleFn.eval(context) == true) { 
+						if ((index == 8 && state.what(9, SiteType.Vertex) != 0) || (index == 10 && state.what(11, SiteType.Vertex) != 0) || (index == 14 && state.what(15, SiteType.Vertex) != 0) || (index == 18 && state.what(19, SiteType.Vertex) != 0) || (index == 20 && state.what(21, SiteType.Vertex) != 0)) {
+							break;
+						}
+						else {
+							final List<game.util.graph.Step> steps = context.game().board().topology().trajectories() 
+									.steps(SiteType.Vertex, index, SiteType.Vertex, AbsoluteDirection.Upward); 
+							
+							for (final Step step : steps) 
+							{
+								final int toSite = step.to().id(); 
+								if (state.what(toSite, SiteType.Vertex) != 0) 
+									indexUpwards.add(toSite); 
+							}
+							
+							int[] locnUp = locnUpwards.toArray();	
+							int[] indexUp = indexUpwards.toArray();	
+							
+							if (getIntersectionLength(locnUp, indexUp) >= 2) { 
+								isVisib = false; 
+							}
+						}
+
+					}
+					
+					if (whats.contains(state.what(index, type)) && condition.eval(context) && isVisib)
+					{	
+						locnUpwards = indexUpwards;
+						indexUpwards = new TIntArrayList(); 
+
 						count++;
+//						System.out.println("count: " + count);
+						
+						if (!whoNumber.contains(state.what(index, type))) {	
+							whoNumber.add(state.what(index, type));	
+						}
+						
 						if (!exact)
 						{
-							if (count == len)
+							final int[] whoNum = whoNumber.toArray();	
+//							System.out.println("Wo number: " + Arrays.toString(whoNum));
+							if (count == len && throughnum <= whoNum.length)
 							{
+								
 								context.setTo(origTo);
 								return true;
 							}
@@ -282,21 +384,65 @@ public class IsLine extends BaseBooleanFunction
 				}
 
 				final List<Radial> oppositeRadials = radial.opposites();
-				if (oppositeRadials != null)
+//				System.out.println("Oppradial: " + oppositeRadials);
+
+				if (oppositeRadials != null && useOppositesFn.eval(context))
 				{
 					for (final Radial oppositeRadial : oppositeRadials)
 					{
+						locnUpwards = new TIntArrayList();
+						indexUpwards = new TIntArrayList();
 						int oppositeCount = count;
 						for (int indexPath = 1; indexPath < oppositeRadial.steps().length; indexPath++)
 						{
+							boolean isVisib = true;
 							final int index = oppositeRadial.steps()[indexPath].id();
+//							System.out.println("Index: " + index);
 							context.setTo(index);
-							if (whats.contains(state.what(index, type)) && condition.eval(context))
+							
+							if (isVisibleFn.eval(context) == true) { 
+								if ((index == 8 && state.what(9, SiteType.Vertex) != 0) || (index == 10 && state.what(11, SiteType.Vertex) != 0) || (index == 14 && state.what(15, SiteType.Vertex) != 0) || (index == 18 && state.what(19, SiteType.Vertex) != 0) || (index == 20 && state.what(21, SiteType.Vertex) != 0)) {
+									break;
+								}
+								else {
+									final List<game.util.graph.Step> steps = context.game().board().topology().trajectories() 
+											.steps(SiteType.Vertex, index, SiteType.Vertex, AbsoluteDirection.Upward); 
+									
+									for (final Step step : steps) 
+									{
+										final int toSite = step.to().id(); 
+										if (state.what(toSite, SiteType.Vertex) != 0) 
+											indexUpwards.add(toSite); 
+									}
+									
+									int[] locnUp = locnUpwards.toArray();	
+									int[] indexUp = indexUpwards.toArray();	
+									
+									if (getIntersectionLength(locnUp, indexUp) >= 2) { 
+										isVisib = false; 
+									}
+								}
+
+							}
+							
+							if (whats.contains(state.what(index, type)) && condition.eval(context) && isVisib)
 							{
+								
+								locnUpwards = indexUpwards; 
+								indexUpwards = new TIntArrayList(); 
+								
 								oppositeCount++;
+//								System.out.println("oppositeCount: " + oppositeCount);
+								
+								if (!whoNumber.contains(state.what(index, type))) {	
+										whoNumber.add(state.what(index, type));	
+								}								
+								
 								if (!exact)
 								{
-									if (oppositeCount == len)
+									final int[] whoNum = whoNumber.toArray();	
+//									System.out.println("Who numberOpp: " + Arrays.toString(whoNum));
+									if (oppositeCount == len && throughnum <= whoNum.length )	
 									{
 										context.setTo(origTo);
 										return true;
@@ -308,7 +454,8 @@ public class IsLine extends BaseBooleanFunction
 								break;
 							}
 						}
-						if (oppositeCount == len)
+						final int[] whoNum = whoNumber.toArray();	
+						if (oppositeCount == len && throughnum <= whoNum.length)	
 						{
 							context.setTo(origTo);
 							return true;
@@ -317,8 +464,11 @@ public class IsLine extends BaseBooleanFunction
 				}
 				else if (count == len)
 				{
-					context.setTo(origTo);
-					return true;
+					final int[] whoNum = whoNumber.toArray();	
+					if (throughnum <= whoNum.length) {	
+						context.setTo(origTo);
+						return true;
+					}
 				}
 			}
 			context.setTo(origTo);
@@ -464,7 +614,8 @@ public class IsLine extends BaseBooleanFunction
 							context.setTo(index);
 							if (whats.contains(state.what(index, type)) && (whatFn == null || index != from)
 									&& condition.eval(context))
-							{
+							{	
+								
 								oppositeCount++;
 								if (!exact)
 									if (oppositeCount == len)
@@ -886,7 +1037,35 @@ public class IsLine extends BaseBooleanFunction
 		return false;
 	}
 
+	
 	//-------------------------------------------------------------------------
+	
+	
+	/**
+     * function to compute length of intersection of two int arrays
+     */
+	private static int getIntersectionLength(int[] array1, int[] array2) {
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> intersection = new HashSet<>();
+        
+        // Add elements of the first array to the set
+        for (int num : array1) {
+            set1.add(num);
+        }
+        
+        // Check elements of the second array against the set
+        for (int num : array2) {
+            if (set1.contains(num)) {
+                intersection.add(num);
+            }
+        }
+        
+        return intersection.size();
+    }
+	
+	
+	//-------------------------------------------------------------------------
+	
 	
 	@Override
 	public String toString()

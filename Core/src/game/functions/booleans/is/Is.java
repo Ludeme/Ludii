@@ -868,7 +868,10 @@ public class Is extends BaseBooleanFunction
 		@Opt 	  @Name  final BooleanFunction   contiguous,
              @Opt @Name  final BooleanFunction   If,
  			 @Opt @Name  final BooleanFunction   byLevel,
- 			 @Opt @Name  final BooleanFunction   top
+ 			 @Opt @Name  final BooleanFunction   top,
+ 			 @Opt @Name  final IntFunction   	 throughHowMuch,
+			 @Opt @Name  final BooleanFunction   isVisible,
+			 @Opt @Name  final BooleanFunction   useOpposites
 	)
 	{
 		int numNonNull = 0;
@@ -896,7 +899,7 @@ public class Is extends BaseBooleanFunction
 		switch (isType)
 		{
 		case Line:
-			return new IsLine(type, length, dirn, through, throughAny, who, what, whats, exact, contiguous, If, byLevel, top);
+			return new IsLine(type, length, dirn, through, throughAny, who, what, whats, exact, contiguous, If, byLevel, top, throughHowMuch, isVisible, useOpposites);
 		default:
 			break;
 		}
