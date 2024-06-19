@@ -50,6 +50,7 @@ import game.rules.meta.Automove;
 import game.rules.meta.Gravity;
 import game.rules.meta.MetaRule;
 import game.rules.meta.Pin;
+import game.rules.meta.NoStackOn;
 import game.rules.meta.Swap;
 import game.rules.phase.NextPhase;
 import game.rules.phase.Phase;
@@ -2524,6 +2525,9 @@ public class Game extends BaseLudeme implements API, Serializable
 								null, 
 								null,
 								null,
+								null,
+								null,
+								null,
 								null
 							),
 							null,
@@ -2852,6 +2856,9 @@ public class Game extends BaseLudeme implements API, Serializable
 					
 					// Meta-rule: We apply the Pin meta-rule if existing.
 					Pin.apply(context,legalMoves);
+					
+					// Meta-rule:  We apply the NoStackOnFallen meta-rule if existing.
+					NoStackOn.apply(context, legalMoves);
 				}
 				else if (isSimulationMoveGame())
 				{

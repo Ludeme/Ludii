@@ -9,4 +9,6 @@ public enum CountGroupsType
 {
 	/** Number of groups of items belonging to a player on the board. */
 	Groups,
+	/** Size of the biggest Group on the board */
+	SizeBiggestGroup,
 }
