@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -919,23 +920,14 @@ public class ParallelComputeConceptsMultipleGames
 						else
 						{
 							// Concept computed from playouts
-							if (conceptName.indexOf("Frequency") == Constants.UNDEFINED)
+							if (conceptValues.get(conceptName) == null)
 							{
-								// Not a frequency concept
-								if (conceptValues.get(conceptName) == null)
-								{
-									conceptValuesLine.append("NULL");
-								}
-								else
-								{
-									final double value = conceptValues.get(conceptName).doubleValue();
-									conceptValuesLine.append(doubleFormatter.format(value));
-								}
+								conceptValuesLine.append("NULL");
 							}
 							else
 							{
-								// A frequency concept
-								// TODO
+								final double value = conceptValues.get(conceptName).doubleValue();
+								conceptValuesLine.append(doubleFormatter.format(value));
 							}
 						}
 					}
@@ -1029,9 +1021,16 @@ public class ParallelComputeConceptsMultipleGames
 						MapUtils.add(mergedResults, concept.name(), jobOutput.frequenciesConcepts.getQuick(indexConcept));
 					}
 					
-					// TODO also add non-frequency things
-					// TODO fix the frequency things
+					for (final Entry<String, Double> entry : jobOutput.metricsMap.entrySet())
+					{
+						MapUtils.add(mergedResults, entry.getKey(), entry.getValue().doubleValue());
+					}
 					
+					for (final Entry<String, Double> entry : jobOutput.mapStarting.entrySet())
+					{
+						MapUtils.add(mergedResults, entry.getKey(), entry.getValue().doubleValue());
+					}
+										
 					totalNumTrials += numTrials;
 				} 
 				catch (final InterruptedException | ExecutionException e) {
