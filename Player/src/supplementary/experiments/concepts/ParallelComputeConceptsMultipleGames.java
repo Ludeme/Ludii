@@ -149,16 +149,6 @@ public class ParallelComputeConceptsMultipleGames
 	 */
 	public void startExperiment()
 	{
-		final List<Concept> booleanConcepts = new ArrayList<Concept>();
-		final List<Concept> nonBooleanConcepts = new ArrayList<Concept>();
-		for (final Concept concept : Concept.values())
-		{
-			if (concept.dataType().equals(ConceptDataType.BooleanData))
-				booleanConcepts.add(concept);
-			else
-				nonBooleanConcepts.add(concept);
-		}
-		
 		final AtomicInteger numCoresAvailable = new AtomicInteger(numCoresTotal);
 		
 		@SuppressWarnings("resource")
