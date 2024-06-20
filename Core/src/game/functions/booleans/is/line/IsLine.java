@@ -3,7 +3,8 @@ package game.functions.booleans.is.line;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-
+import java.util.Set;
+import java.util.HashSet;
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -23,6 +24,7 @@ import game.types.play.RoleType;
 import game.types.state.GameType;
 import game.util.directions.AbsoluteDirection;
 import game.util.graph.Radial;
+import game.util.graph.Step;
 import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.concept.Concept;
@@ -83,27 +85,44 @@ public class IsLine extends BaseBooleanFunction
 	
 	/** Add on Cell/Edge/Vertex. */
 	private SiteType type;
+	
+	/** The number of minimum component types to compose the line */
+	private final IntFunction throughHowMuch;
+	
+	/** If a line has to be visible from above (and not cut by other components) (used in 3D games) */
+	private final BooleanFunction isVisibleFn;
+	
+	/** Whether to use the opposite radial to try and find line 
+	(i.e whether to iterate in both opposite directions of analyzed component to find line */
+	private final BooleanFunction useOppositesFn;
+	
+	
 
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param type       The graph element type [default SiteType of the board].
-	 * @param length     Minimum length of lines.
-	 * @param dirn       Direction category to which potential lines must belong
-	 *                   [Adjacent].
-	 * @param through    Location through which the line must pass. [(last To)]
-	 * @param throughAny The line must pass through at least one of these sites.
-	 * @param who        The owner of the pieces making a line.
-	 * @param what       The index of the component composing the line.
-	 * @param whats      The indices of the components composing the line.
-	 * @param exact      If true, then lines cannot exceed minimum length [False].
-	 * @param contiguous If true, the line has to be contiguous [True].
-	 * @param If         The condition on each site on the line [True].
-	 * @param byLevel    If true, then lines are detected in using the level in a
-	 *                   stack [False].
-	 * @param top        If true, then lines are detected in using only the top level 
-	 *                   in a stack [False].
+	 * @param type       		The graph element type [default SiteType of the board].
+	 * @param length     		Minimum length of lines.
+	 * @param dirn       		Direction category to which potential lines must belong
+	 *                   		[Adjacent].
+	 * @param through    		Location through which the line must pass. [(last To)]
+	 * @param throughAny 		The line must pass through at least one of these sites.
+	 * @param who        		The owner of the pieces making a line.
+	 * @param what       		The index of the component composing the line.
+	 * @param whats      		The indices of the components composing the line.
+	 * @param exact      		If true, then lines cannot exceed minimum length [False].
+	 * @param contiguous 		If true, the line has to be contiguous [True].
+	 * @param If         		The condition on each site on the line [True].
+	 * @param byLevel    		If true, then lines are detected in using the level in a
+	 *                   		stack [False].
+	 * @param top        		If true, then lines are detected in using only the top level 
+	 *                   		in a stack [False].
+	 * @param throughHowMuch 	Minimum number of ball IDs the line is made of 
+	 * @param isVisible         Whether components composing a line have to be visible or not (used in 3D games)  
+	 * @param useOpposites      Whether to use the opposites radial to find line
+	 * 
 	 */
+	
 	public IsLine
 	(
 		@Opt        	final SiteType          type,
@@ -118,8 +137,13 @@ public class IsLine extends BaseBooleanFunction
 		@Opt 	  @Name final BooleanFunction   contiguous,
 		@Opt  	  @Name final BooleanFunction   If, 
 		@Opt  	  @Name final BooleanFunction   byLevel,
-		@Opt  	  @Name final BooleanFunction   top
+		@Opt  	  @Name final BooleanFunction   top,
+		@Opt  	  @Name final IntFunction   	throughHowMuch,
+		@Opt      @Name final BooleanFunction   isVisible,
+		@Opt      @Name final BooleanFunction   useOpposites
 	)
+	
+	
 	{
 		this.length  = length;
 		this.dirn = (dirn == null) ? new Directions(AbsoluteDirection.Adjacent, null) : new Directions(dirn, null);
@@ -148,6 +172,10 @@ public class IsLine extends BaseBooleanFunction
 		byLevelFn = (byLevel == null) ? new BooleanConstant(false) : byLevel;
 		topFn = (top == null) ? new BooleanConstant(false) : top;
 		contiguousFn = (contiguous == null) ? new BooleanConstant(true) : contiguous;
+		this.throughHowMuch = throughHowMuch;
+		isVisibleFn = (isVisible == null) ? new BooleanConstant(false) : isVisible;
+		useOppositesFn = (useOpposites == null) ? new BooleanConstant(true) : useOpposites;
+		
 	} 
 
 	//-------------------------------------------------------------------------
@@ -162,7 +190,10 @@ public class IsLine extends BaseBooleanFunction
 			return evalDeductionPuzzle(context);
 
 		final boolean contiguous = contiguousFn.eval(context);
-
+		
+		final int throughnum;
+		throughnum = (throughHowMuch == null) ? 1 : throughHowMuch.eval(context);
+		
 		final int[] pivots;
 		if (throughAny != null)
 		{
@@ -184,6 +215,7 @@ public class IsLine extends BaseBooleanFunction
 						listPivots.removeAt(i);
 				}
 			}
+			
 			pivots = listPivots.toArray();
 		}
 		else
@@ -195,16 +227,24 @@ public class IsLine extends BaseBooleanFunction
 		final other.topology.Topology graph = context.topology();
 		final boolean playOnCell = (type != null && type.equals(SiteType.Cell)
 				|| (type == null && (context.game().board().defaultSite() != SiteType.Vertex)));
-
+		
+		TIntArrayList origlocnUpwards = new TIntArrayList();
+		TIntArrayList locnUpwards = new TIntArrayList();
+		TIntArrayList indexUpwards = new TIntArrayList();
+		TIntArrayList origlocnUpSites = new TIntArrayList();
+		TIntArrayList locnUpSites = new TIntArrayList();
+		TIntArrayList indexUpSites = new TIntArrayList();
+		
 		for (int p = 0; p < pivots.length; p++)
-		{
+		{	
+			
 			final int locn = pivots[p];
 			if (locn < 0)
 				return false;
 
 			final int origTo = context.to();
 			context.setTo(locn);
-			if (!condition.eval(context))
+			if (!condition.eval(context)) 
 			{
 				context.setTo(origTo);
 				return false;
@@ -218,8 +258,39 @@ public class IsLine extends BaseBooleanFunction
 	
 			final TopologyElement vertexLoc = playOnCell ? graph.cells().get(locn) : graph.vertices().get(locn);
 			final ContainerState state = context.state().containerStates()[context.containerId()[vertexLoc.index()]];
-			final TIntArrayList whats = new TIntArrayList();
+			final TIntArrayList whats = new TIntArrayList(); 
 			final int whatLocn = state.what(locn, type);
+			
+			final List<? extends TopologyElement> sites = context.topology().getGraphElements(type);
+			
+			/** If components need to be visible in line we first check that there is no other component right above the evaluated one (locn) then
+			 * store all other components above (on layer above) */
+			if (isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[locn]].isHand()) {
+				boolean covered = false;
+				for(final TopologyElement temp_elem : sites) {
+					TopologyElement locn_elem = sites.get(locn);
+					if (temp_elem.centroid3D().x() == locn_elem.centroid3D().x() && temp_elem.centroid3D().y() == locn_elem.centroid3D().y() && temp_elem.index() > locn_elem.index()) {
+						if(state.what(temp_elem.index(), type) != 0)
+							covered = true;
+					}
+				}
+				if (covered)
+					continue;
+				
+				final List<game.util.graph.Step> steps = context.game().board().topology().trajectories()
+						.steps(type, locn, type, AbsoluteDirection.Upward);
+	
+				for (final Step step : steps)
+				{
+					final int toSite = step.to().id();
+					locnUpSites.add(toSite);
+					if (state.what(toSite, type) != 0) {
+						locnUpwards.add(toSite);
+					}
+				}
+				origlocnUpwards = locnUpwards;
+				origlocnUpSites = locnUpSites;
+			}
 
 			if (whatFn == null)
 			{
@@ -251,25 +322,94 @@ public class IsLine extends BaseBooleanFunction
 				continue;
 
 			final int len = length.eval(context);
+
 			final boolean exact = exactly.eval(context);
 
-			final List<Radial> radials = graph.trajectories().radials(type, locn)
-					.distinctInDirection(dirn.absoluteDirection());
+			final List<Radial> radials = graph.trajectories().radials(type, locn).distinctInDirection(dirn.absoluteDirection());
+
+//			System.out.println("-------------------");
+//			System.out.println("Loc: " + locn);
 			
 			for (final Radial radial : radials)
 			{
+//				System.out.println("Radial: " + radial);
+				final TIntArrayList whoNumber = new TIntArrayList();	
+				whoNumber.add(state.what(locn, type));
+				
+				locnUpwards = origlocnUpwards;
+				locnUpSites = origlocnUpSites;
+				indexUpwards = new TIntArrayList();
+				indexUpSites = new TIntArrayList();
+				
 				int count = 1;
+				
 				for (int indexPath = 1; indexPath < radial.steps().length; indexPath++)
 				{
+					boolean isVisib = true; 
 					final int index = radial.steps()[indexPath].id();
+					
+//					System.out.println("Index: " + index);
+
 					context.setTo(index);
-					if (whats.contains(state.what(index, type)) && condition.eval(context))
-					{
+					
+					/** If components need to be visible in line we first check that there is no other component right above the evaluated one (index) then
+					 * store all other components above (on layer above) and compare them to the ones above the previous studied component */
+					if (isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[index]].isHand()) {
+						boolean covered = false;
+						for(final TopologyElement temp_elem : sites) {
+							TopologyElement index_elem = sites.get(index);
+							if (temp_elem.centroid3D().x() == index_elem.centroid3D().x() && temp_elem.centroid3D().y() == index_elem.centroid3D().y() && temp_elem.index() > index_elem.index()) {
+								if(state.what(temp_elem.index(), type) != 0)
+									covered = true;
+							}
+						}
+						if (covered)
+							break;
+						
+						final List<game.util.graph.Step> steps = context.game().board().topology().trajectories()
+								.steps(type, index, type, AbsoluteDirection.Upward);
+			
+						for (final Step step : steps)
+						{
+							final int toSite = step.to().id();
+							indexUpSites.add(toSite);
+							if (state.what(toSite, type) != 0) {
+								indexUpwards.add(toSite);
+							}
+						}
+						
+						int[] locnUp = locnUpwards.toArray();	
+						int[] indexUp = indexUpwards.toArray();	
+						int[] locnUpSite = locnUpSites.toArray();	
+						int[] indexUpSite = indexUpSites.toArray();	
+						
+						if (getIntersectionLength(locnUp, indexUp) != 0 && getIntersectionLength(locnUp, indexUp) == getIntersectionLength(locnUpSite, indexUpSite)) { 
+							isVisib = false;
+						}
+						
+					}
+					
+					if (whats.contains(state.what(index, type)) && condition.eval(context) && isVisib)
+					{	
+						locnUpwards = indexUpwards;
+						locnUpSites = indexUpSites;
+						indexUpwards = new TIntArrayList(); 
+						indexUpSites = new TIntArrayList(); 
+
 						count++;
+//						System.out.println("count: " + count);
+						
+						if (!whoNumber.contains(state.what(index, type))) {	
+							whoNumber.add(state.what(index, type));	
+						}
+						
 						if (!exact)
 						{
-							if (count == len)
+							final int[] whoNum = whoNumber.toArray();	
+
+							if (count == len && throughnum <= whoNum.length)
 							{
+								
 								context.setTo(origTo);
 								return true;
 							}
@@ -282,21 +422,87 @@ public class IsLine extends BaseBooleanFunction
 				}
 
 				final List<Radial> oppositeRadials = radial.opposites();
-				if (oppositeRadials != null)
+
+				if (oppositeRadials != null )
 				{
 					for (final Radial oppositeRadial : oppositeRadials)
 					{
-						int oppositeCount = count;
+//						System.out.println("Oppradial: " + oppositeRadials);
+						locnUpwards = origlocnUpwards;
+						locnUpSites = origlocnUpSites;
+						indexUpwards = new TIntArrayList();
+						indexUpSites = new TIntArrayList();
+						
+						int oppositeCount = 1;
+						if (useOppositesFn.eval(context)) {
+							oppositeCount = count;
+						}
+						
 						for (int indexPath = 1; indexPath < oppositeRadial.steps().length; indexPath++)
 						{
+							boolean isVisib = true;
 							final int index = oppositeRadial.steps()[indexPath].id();
+							
+//							System.out.println("Index: " + index);
+							
 							context.setTo(index);
-							if (whats.contains(state.what(index, type)) && condition.eval(context))
+							
+							/** If components need to be visible in line we first check that there is no other component right above the evaluated one (index) then
+							 * store all other components above (on layer above) and compare them to the ones above the previous studied component */
+							if (isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[index]].isHand()) {
+								boolean covered = false;
+								for(final TopologyElement temp_elem : sites) {
+									TopologyElement index_elem = sites.get(index);
+									if (temp_elem.centroid3D().x() == index_elem.centroid3D().x() && temp_elem.centroid3D().y() == index_elem.centroid3D().y() && temp_elem.index() > index_elem.index()) {
+										if(state.what(temp_elem.index(), type) != 0)
+											covered = true;
+									}
+								}
+								if (covered)
+									break;
+								
+								final List<game.util.graph.Step> steps = context.game().board().topology().trajectories()
+										.steps(type, index, type, AbsoluteDirection.Upward);
+					
+								for (final Step step : steps)
+								{
+									final int toSite = step.to().id();
+									if (state.what(toSite, type) != 0) {
+										indexUpwards.add(toSite);
+									}
+								}
+									
+								int[] locnUp = locnUpwards.toArray();	
+								int[] indexUp = indexUpwards.toArray();	
+								int[] locnUpSite = locnUpSites.toArray();	
+								int[] indexUpSite = indexUpSites.toArray();	
+								
+								if (getIntersectionLength(locnUp, indexUp) != 0 && getIntersectionLength(locnUp, indexUp) == getIntersectionLength(locnUpSite, indexUpSite)) { 
+									isVisib = false;
+								}
+								
+							}
+							
+							if (whats.contains(state.what(index, type)) && condition.eval(context) && isVisib)
 							{
+								
+								locnUpwards = indexUpwards; 
+								locnUpSites = indexUpSites;
+								indexUpwards = new TIntArrayList(); 
+								indexUpSites = new TIntArrayList(); 
+								
 								oppositeCount++;
+//								System.out.println("oppositeCount: " + oppositeCount);
+								
+								if (!whoNumber.contains(state.what(index, type))) {	
+										whoNumber.add(state.what(index, type));	
+								}								
+								
 								if (!exact)
 								{
-									if (oppositeCount == len)
+									final int[] whoNum = whoNumber.toArray();	
+									
+									if (oppositeCount == len && throughnum <= whoNum.length )	
 									{
 										context.setTo(origTo);
 										return true;
@@ -308,7 +514,8 @@ public class IsLine extends BaseBooleanFunction
 								break;
 							}
 						}
-						if (oppositeCount == len)
+						final int[] whoNum = whoNumber.toArray();	
+						if (oppositeCount == len && throughnum <= whoNum.length)	
 						{
 							context.setTo(origTo);
 							return true;
@@ -317,8 +524,11 @@ public class IsLine extends BaseBooleanFunction
 				}
 				else if (count == len)
 				{
-					context.setTo(origTo);
-					return true;
+					final int[] whoNum = whoNumber.toArray();	
+					if (throughnum <= whoNum.length) {	
+						context.setTo(origTo);
+						return true;
+					}
 				}
 			}
 			context.setTo(origTo);
@@ -464,7 +674,8 @@ public class IsLine extends BaseBooleanFunction
 							context.setTo(index);
 							if (whats.contains(state.what(index, type)) && (whatFn == null || index != from)
 									&& condition.eval(context))
-							{
+							{	
+								
 								oppositeCount++;
 								if (!exact)
 									if (oppositeCount == len)
@@ -886,7 +1097,35 @@ public class IsLine extends BaseBooleanFunction
 		return false;
 	}
 
+	
 	//-------------------------------------------------------------------------
+	
+	
+	/**
+     * function to compute length of intersection of two int arrays
+     */
+	private static int getIntersectionLength(int[] array1, int[] array2) {
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> intersection = new HashSet<>();
+        
+        // Add elements of the first array to the set
+        for (int num : array1) {
+            set1.add(num);
+        }
+        
+        // Check elements of the second array against the set
+        for (int num : array2) {
+            if (set1.contains(num)) {
+                intersection.add(num);
+            }
+        }
+        
+        return intersection.size();
+    }
+	
+	
+	//-------------------------------------------------------------------------
+	
 	
 	@Override
 	public String toString()
@@ -933,6 +1172,12 @@ public class IsLine extends BaseBooleanFunction
 		
 		if (throughAny != null)
 			flags |= throughAny.gameFlags(game);
+		if (throughHowMuch != null)
+			flags |= throughHowMuch.gameFlags(game);
+		if (isVisibleFn != null)
+			flags |= isVisibleFn.gameFlags(game);
+		if (useOppositesFn != null)
+			flags |= useOppositesFn.gameFlags(game);
 
 		return flags;
 	}
@@ -966,6 +1211,12 @@ public class IsLine extends BaseBooleanFunction
 
 		if (dirn != null)
 			concepts.or(dirn.concepts(game));
+		if (throughHowMuch != null)
+			concepts.or(throughHowMuch.concepts(game));
+		if (isVisibleFn != null)
+			concepts.or(isVisibleFn.concepts(game));
+		if (useOppositesFn != null)
+			concepts.or(useOppositesFn.concepts(game));
 
 		return concepts;
 	}
@@ -998,6 +1249,12 @@ public class IsLine extends BaseBooleanFunction
 
 		if (dirn != null)
 			writeEvalContext.or(dirn.writesEvalContextRecursive());
+		if (throughHowMuch != null)
+			writeEvalContext.or(throughHowMuch.writesEvalContextRecursive());
+		if (isVisibleFn != null)
+			writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
+		if (useOppositesFn != null)
+			writeEvalContext.or(useOppositesFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 
@@ -1029,6 +1286,12 @@ public class IsLine extends BaseBooleanFunction
 
 		if (dirn != null)
 			readEvalContext.or(dirn.readsEvalContextRecursive());
+		if (throughHowMuch != null)
+			readEvalContext.or(throughHowMuch.readsEvalContextRecursive());
+		if (isVisibleFn != null)
+			readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
+		if (useOppositesFn != null)
+			readEvalContext.or(useOppositesFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -1061,6 +1324,12 @@ public class IsLine extends BaseBooleanFunction
 		
 		if (throughAny != null)
 			throughAny.preprocess(game);
+		if (throughHowMuch != null)
+			throughHowMuch.preprocess(game);
+		if (isVisibleFn != null)			
+			isVisibleFn.preprocess(game);
+		if (useOppositesFn != null)
+			useOppositesFn.preprocess(game);
 	}
 
 	@Override
@@ -1093,6 +1362,12 @@ public class IsLine extends BaseBooleanFunction
 		
 		if (topFn != null)
 			missingRequirement |= topFn.missingRequirement(game);
+		if (throughHowMuch != null)
+			missingRequirement |= throughHowMuch.missingRequirement(game);
+		if (isVisibleFn != null)	
+			missingRequirement |= isVisibleFn.missingRequirement(game);
+		if (useOppositesFn != null)
+			missingRequirement |= useOppositesFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -1126,6 +1401,12 @@ public class IsLine extends BaseBooleanFunction
 		
 		if (topFn != null)
 			willCrash |= topFn.willCrash(game);
+		if (throughHowMuch != null)
+			willCrash |= throughHowMuch.willCrash(game);
+		if (isVisibleFn != null)	
+			willCrash |= isVisibleFn.willCrash(game);
+		if (useOppositesFn != null)
+			willCrash |= useOppositesFn.willCrash(game);
 		return willCrash;
 	}
 

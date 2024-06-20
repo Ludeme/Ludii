@@ -3,6 +3,7 @@ package other;
 import game.types.play.GravityType;
 import game.types.play.PinType;
 import game.types.play.RepetitionType;
+import game.types.play.NoStackOnType;
 
 /**
  * To store which meta rule is activated or not.
@@ -28,6 +29,9 @@ public class MetaRules
 	
 	/** To know if the metarule no suicide is on. */
 	private boolean usesNoSuicide = false;
+	
+	/** To know if the metarule NoStackOnFallen is activate for that game. */
+	private NoStackOnType noStackOnType = null;
 
 	//-------------------------------------------------------------------------
 
@@ -71,6 +75,27 @@ public class MetaRules
 
 	//-------------------------------------------------------------------------
 
+	/**
+	 * To set the pin meta rule.
+	 * 
+	 * @param type The NoStackOn type.
+	 */
+	public void setNoStackOnType(final NoStackOnType type)
+	{
+		noStackOnType = type;
+	}
+
+	/**
+	 * @return The type of the pin.
+	 */
+	public NoStackOnType noStackOnType()
+	{
+		return noStackOnType;
+	}
+
+	//-------------------------------------------------------------------------
+
+	
 	/**
 	 * To set the repetition meta rule.
 	 * 

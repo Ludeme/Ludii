@@ -17,7 +17,7 @@ import other.move.Move;
 import other.state.container.ContainerState;
 
 /**
- * To filter some remove moves in case some pieces can not be removed because of pieces on top of them.
+ * To filter some remove moves in case some pieces can not be removed/moved because of pieces on top of them.
  * 
  * @author Eric.Piette
  */
@@ -68,11 +68,20 @@ public class Pin extends MetaRule
 					final Move move = legalMoves.moves().get(indexMove);
 					boolean forbiddenMove = false;
 					for(final Action action : move.actions())
-						if (action != null && action.actionType().equals(ActionType.Remove))
-						{
-							final int siteToRemove = action.to();
+						if (action != null && (action.actionType().equals(ActionType.Remove)) || (action.actionType().equals(ActionType.Move)))
+						{			
+
+							int siteToRemove = -1; 
+							
+							if (action.actionType().equals(ActionType.Remove)) { 
+								siteToRemove = action.to(); 
+							}
+							else if (action.actionType().equals(ActionType.Move)) { 
+								siteToRemove = action.from(); 
+							}
+							
 							final ContainerState cs = context.containerState(context.containerId()[siteToRemove]);
-							if (cs.what(siteToRemove, SiteType.Vertex) != 0)
+							if (cs.what(siteToRemove, SiteType.Vertex) != 0 && !context.equipment().containers()[context.containerId()[siteToRemove]].isHand())
 							{
 								final List<game.util.graph.Step> steps = game.board().topology().trajectories()
 										.steps(SiteType.Vertex, siteToRemove, SiteType.Vertex, AbsoluteDirection.Upward);
@@ -92,8 +101,9 @@ public class Pin extends MetaRule
 							}
 						}
 
-					if (forbiddenMove)
+					if (forbiddenMove) {
 						legalMoves.moves().remove(indexMove);
+					}
 				}
 			}
 		}

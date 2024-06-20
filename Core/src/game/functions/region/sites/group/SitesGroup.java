@@ -1,7 +1,9 @@
 package game.functions.region.sites.group;
 
 import java.util.BitSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import annotations.Hide;
 import annotations.Name;
@@ -18,6 +20,7 @@ import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
 import game.util.directions.Direction;
 import game.util.equipment.Region;
+import game.util.graph.Step;
 import gnu.trove.list.array.TIntArrayList;
 import other.IntArrayFromRegion;
 import other.concept.Concept;
@@ -47,6 +50,9 @@ public final class SitesGroup extends BaseRegionFunction
 	
 	/** Direction chosen. */
 	private final DirectionsFunction dirnChoice;
+	
+	/** The condition */
+	private final BooleanFunction isVisibleFn;
 
 	/**
 	 * @param type       The type of the graph elements of the group.
@@ -55,6 +61,7 @@ public final class SitesGroup extends BaseRegionFunction
 	 * @param directions The directions of the connection between elements in the
 	 *                   group [Adjacent].
 	 * @param If         The condition on the pieces to include in the group.
+	 * @param isVisible  If all items of group have to be visible
 	 */
 	public SitesGroup
 	(
@@ -62,7 +69,8 @@ public final class SitesGroup extends BaseRegionFunction
 		@Or  @Name     final IntFunction     at,
 	    @Or	 @Name     final RegionFunction  From,
 		@Opt           final Direction       directions,
-		@Opt @Name     final BooleanFunction If
+		@Opt @Name     final BooleanFunction If,
+		@Opt @Name     final BooleanFunction isVisible
 	)
 	{ 
 		startLocationFn = new IntArrayFromRegion(at, From);
@@ -70,6 +78,7 @@ public final class SitesGroup extends BaseRegionFunction
 		condition = If;
 		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
+		this.isVisibleFn = isVisible;
 	}
 
 	//-------------------------------------------------------------------------
@@ -78,6 +87,7 @@ public final class SitesGroup extends BaseRegionFunction
 	public Region eval(final Context context)
 	{
 		final Topology topology = context.topology();
+		final List<? extends TopologyElement> sites = context.topology().getGraphElements(type);
 		final int[] froms = startLocationFn.eval(context);
 		final ContainerState cs = context.containerState(0);
 		final int origFrom = context.from();
@@ -104,11 +114,28 @@ public final class SitesGroup extends BaseRegionFunction
 				int i = 0;
 				while (sitesExplored.size() != groupSites.size())
 				{
+					
+					TIntArrayList locnUpwards = new TIntArrayList(); 
+					TIntArrayList indexUpwards = new TIntArrayList(); 
+					
 					final int site = groupSites.get(i);
 					final TopologyElement siteElement = topology.getGraphElements(type).get(site);
 					final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(type, siteElement, null, null,
 							null,
 							context);
+					
+					if (isVisibleFn != null && isVisibleFn.eval(context) == true) { 
+						final List<game.util.graph.Step> steps = context.game().board().topology().trajectories() 
+								.steps(SiteType.Vertex, site, SiteType.Vertex, AbsoluteDirection.Upward); 
+
+						for (final Step step : steps) 
+						{
+							final int toSite = step.to().id(); 
+							if (cs.what(toSite, SiteType.Vertex) != 0) { 
+								locnUpwards.add(toSite); 
+							}
+						}
+					}
 	
 					for (final AbsoluteDirection direction : directions)
 					{
@@ -118,7 +145,43 @@ public final class SitesGroup extends BaseRegionFunction
 	
 						for (final game.util.graph.Step step : steps)
 						{
+							
+							indexUpwards = new TIntArrayList();
 							final int to = step.to().id();
+							
+							if (isVisibleFn != null && isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[to]].isHand()) {
+								boolean covered = false;
+								for(final TopologyElement temp_elem : sites) {
+									TopologyElement to_elem = sites.get(to);
+									if (temp_elem.centroid3D().x() == to_elem.centroid3D().x() && temp_elem.centroid3D().y() == to_elem.centroid3D().y() && temp_elem.index() > to_elem.index()) {
+										if(cs.what(temp_elem.index(), type) != 0)
+											covered = true;
+									}
+								}
+								if (covered)
+									continue;
+							}
+							
+							
+							if (isVisibleFn != null && isVisibleFn.eval(context) == true) { 
+								final List<game.util.graph.Step> stepsbis = context.game().board().topology().trajectories() 
+										.steps(SiteType.Vertex, to, SiteType.Vertex, AbsoluteDirection.Upward); 
+								
+								for (final Step stepbis : stepsbis) 
+								{
+									final int toSite = stepbis.to().id(); 
+									if (cs.what(toSite, type) != 0) 
+										indexUpwards.add(toSite); 
+								}
+								
+								int[] locnUp = locnUpwards.toArray();	
+								int[] indexUp = indexUpwards.toArray();	
+								
+								if (getIntersectionLength(locnUp, indexUp) >= 2) { 
+									continue; 
+								}
+
+							}
 	
 							// If we already have it we continue to look the others.
 							if (groupSites.contains(to))
@@ -155,6 +218,30 @@ public final class SitesGroup extends BaseRegionFunction
 	}
 
 	//-------------------------------------------------------------------------
+	
+	/**
+     * function to compute length of intersection of two int arrays
+     */
+	private static int getIntersectionLength(int[] array1, int[] array2) {
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> intersection = new HashSet<>();
+        
+        // Add elements of the first array to the set
+        for (int num : array1) {
+            set1.add(num);
+        }
+        
+        // Check elements of the second array against the set
+        for (int num : array2) {
+            if (set1.contains(num)) {
+                intersection.add(num);
+            }
+        }
+        
+        return intersection.size();
+    }
+	
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()
@@ -172,6 +259,8 @@ public final class SitesGroup extends BaseRegionFunction
 		gameFlags |= startLocationFn.gameFlags(game);
 		if (condition != null)
 			gameFlags |= condition.gameFlags(game);
+		if (isVisibleFn != null)
+			gameFlags |= isVisibleFn.gameFlags(game);
 
 		return gameFlags;
 	}
@@ -188,7 +277,9 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			concepts.or(dirnChoice.concepts(game));
-
+		if (isVisibleFn != null)
+			concepts.or(isVisibleFn.concepts(game));
+		
 		return concepts;
 	}
 
@@ -202,6 +293,8 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			writeEvalContext.or(dirnChoice.writesEvalContextRecursive());
+		if (isVisibleFn != null)
+			writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 	
@@ -224,6 +317,8 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			readEvalContext.or(dirnChoice.readsEvalContextRecursive());
+		if (isVisibleFn != null)
+			readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -234,6 +329,8 @@ public final class SitesGroup extends BaseRegionFunction
 		missingRequirement |= startLocationFn.missingRequirement(game);
 		if (condition != null)
 			missingRequirement |= condition.missingRequirement(game);
+		if (isVisibleFn != null)
+			missingRequirement |= isVisibleFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -244,6 +341,8 @@ public final class SitesGroup extends BaseRegionFunction
 		willCrash |= startLocationFn.willCrash(game);
 		if (condition != null)
 			willCrash |= condition.willCrash(game);
+		if (isVisibleFn != null)
+			willCrash |= isVisibleFn.willCrash(game);
 		return willCrash;
 	}
 
@@ -254,6 +353,8 @@ public final class SitesGroup extends BaseRegionFunction
 		if (condition != null)
 			condition.preprocess(game);
 		startLocationFn.preprocess(game);
+		if (isVisibleFn != null)
+			isVisibleFn.preprocess(game);
 	}
 	
 	//-------------------------------------------------------------------------

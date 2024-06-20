@@ -832,23 +832,27 @@ public class Is extends BaseBooleanFunction
 	/**
 	 * For test relative to a line.
 	 * 
-	 * @param isType     The type of query to perform.
-	 * @param type       The graph element type [default SiteType of the board].
-	 * @param length     Minimum length of lines.
-	 * @param dirn       Direction category to which potential lines must belong
-	 *                   [Adjacent].
-	 * @param through    Location through which the line must pass.
-	 * @param throughAny The line must pass through at least one of these sites.
-	 * @param who        The owner of the pieces making a line [Mover].
-	 * @param what       The index of the component composing the line [(mover)].
-	 * @param whats      The indices of the components composing the line.
-	 * @param exact      If true, then lines cannot exceed minimum length [False].
-	 * @param contiguous If true, the line has to be contiguous [True].
-	 * @param If         The condition on each site on the line [True].
-	 * @param byLevel    If true, then lines are detected in using the level in a
-	 *                   stack [False].
-	 * @param top        If true, then lines are detected in using only the top level 
-	 *                   in a stack [False].
+	 * @param isType     		The type of query to perform.
+	 * @param type       		The graph element type [default SiteType of the board].
+	 * @param length     		Minimum length of lines.
+	 * @param dirn      		Direction category to which potential lines must belong
+	 *                   		[Adjacent].
+	 * @param through    		Location through which the line must pass.
+	 * @param throughAny 		The line must pass through at least one of these sites.
+	 * @param who        		The owner of the pieces making a line [Mover].
+	 * @param what       		The index of the component composing the line [(mover)].
+	 * @param whats      		The indices of the components composing the line.
+	 * @param exact      		If true, then lines cannot exceed minimum length [False].
+	 * @param contiguous 		If true, the line has to be contiguous [True].
+	 * @param If         		The condition on each site on the line [True].
+	 * @param byLevel    		If true, then lines are detected in using the level in a
+	 *                   		stack [False].
+	 * @param top        		If true, then lines are detected in using only the top level 
+	 *                   		in a stack [False].
+	 * @param throughHowMuch    The number of minimum component types to compose the line
+	 * @param isVisible			If a line has to be visible from above (and not cut by other components) (used in 3D games)
+	 * @param useOpposites		Whether to use the opposite radial to try and find line 
+	 *                          (i.e whether to iterate in both opposite directions of analyzed component to find line)
 	 * 
 	 * @example (is Line 3)
 	 * @example (is Line 5 Orthogonal if:(not (is In (to) (sites Mover))))
@@ -868,7 +872,10 @@ public class Is extends BaseBooleanFunction
 		@Opt 	  @Name  final BooleanFunction   contiguous,
              @Opt @Name  final BooleanFunction   If,
  			 @Opt @Name  final BooleanFunction   byLevel,
- 			 @Opt @Name  final BooleanFunction   top
+ 			 @Opt @Name  final BooleanFunction   top,
+ 			 @Opt @Name  final IntFunction   	 throughHowMuch,
+			 @Opt @Name  final BooleanFunction   isVisible,
+			 @Opt @Name  final BooleanFunction   useOpposites
 	)
 	{
 		int numNonNull = 0;
@@ -896,7 +903,7 @@ public class Is extends BaseBooleanFunction
 		switch (isType)
 		{
 		case Line:
-			return new IsLine(type, length, dirn, through, throughAny, who, what, whats, exact, contiguous, If, byLevel, top);
+			return new IsLine(type, length, dirn, through, throughAny, who, what, whats, exact, contiguous, If, byLevel, top, throughHowMuch, isVisible, useOpposites);
 		default:
 			break;
 		}
