@@ -279,7 +279,8 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 	{
 		long gameFlags = condition.gameFlags(game);
 		gameFlags |= SiteType.gameFlags(type);
-		gameFlags |= isVisibleFn.gameFlags(game);
+		if (isVisibleFn != null)
+			gameFlags |= isVisibleFn.gameFlags(game);
 		if (dirnChoice != null)
 			gameFlags |= dirnChoice.gameFlags(game);
 		return gameFlags;
@@ -293,7 +294,8 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		concepts.or(condition.concepts(game));
 		if (dirnChoice != null)
 			concepts.or(dirnChoice.concepts(game));
-		concepts.or(isVisibleFn.concepts(game));
+		if (isVisibleFn != null)
+			concepts.or(isVisibleFn.concepts(game));
 		
 		return concepts;
 	}
@@ -305,7 +307,8 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		writeEvalContext.or(condition.writesEvalContextRecursive());
 		if (dirnChoice != null)
 			writeEvalContext.or(dirnChoice.writesEvalContextRecursive());
-		writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
+		if (isVisibleFn != null)
+			writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 	
@@ -324,7 +327,8 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		readEvalContext.or(condition.readsEvalContextRecursive());
 		if (dirnChoice != null)
 			readEvalContext.or(dirnChoice.readsEvalContextRecursive());
-		readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
+		if (isVisibleFn != null)
+			readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -335,7 +339,8 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		condition.preprocess(game);
 		if (dirnChoice != null)
 			dirnChoice.preprocess(game);
-		isVisibleFn.preprocess(game);
+		if (isVisibleFn != null)
+			isVisibleFn.preprocess(game);
 	}
 
 	@Override
@@ -345,7 +350,8 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		missingRequirement |= condition.missingRequirement(game);
 		if (dirnChoice != null)
 			missingRequirement |= dirnChoice.missingRequirement(game);
-		missingRequirement |= isVisibleFn.missingRequirement(game);
+		if (isVisibleFn != null)
+			missingRequirement |= isVisibleFn.missingRequirement(game);
 		return missingRequirement;
 	}
 

@@ -245,7 +245,8 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 	{
 		type = SiteType.use(type, game);
 		condition.preprocess(game);
-		dirnChoice.preprocess(game);
+		if (dirnChoice != null)
+			dirnChoice.preprocess(game);
 	}
 
 	@Override
@@ -253,7 +254,8 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 	{
 		boolean missingRequirement = false;
 		missingRequirement |= condition.missingRequirement(game);
-		missingRequirement |= dirnChoice.missingRequirement(game);
+		if (dirnChoice != null)
+			missingRequirement |= dirnChoice.missingRequirement(game);
 		return missingRequirement;
 	}
 

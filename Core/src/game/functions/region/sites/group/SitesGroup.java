@@ -259,7 +259,8 @@ public final class SitesGroup extends BaseRegionFunction
 		gameFlags |= startLocationFn.gameFlags(game);
 		if (condition != null)
 			gameFlags |= condition.gameFlags(game);
-		gameFlags |= isVisibleFn.gameFlags(game);
+		if (isVisibleFn != null)
+			gameFlags |= isVisibleFn.gameFlags(game);
 
 		return gameFlags;
 	}
@@ -276,7 +277,8 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			concepts.or(dirnChoice.concepts(game));
-		concepts.or(isVisibleFn.concepts(game));
+		if (isVisibleFn != null)
+			concepts.or(isVisibleFn.concepts(game));
 		
 		return concepts;
 	}
@@ -291,7 +293,8 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			writeEvalContext.or(dirnChoice.writesEvalContextRecursive());
-		writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
+		if (isVisibleFn != null)
+			writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 	
@@ -314,7 +317,8 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			readEvalContext.or(dirnChoice.readsEvalContextRecursive());
-		readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
+		if (isVisibleFn != null)
+			readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -325,7 +329,8 @@ public final class SitesGroup extends BaseRegionFunction
 		missingRequirement |= startLocationFn.missingRequirement(game);
 		if (condition != null)
 			missingRequirement |= condition.missingRequirement(game);
-		missingRequirement |= isVisibleFn.missingRequirement(game);
+		if (isVisibleFn != null)
+			missingRequirement |= isVisibleFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -336,7 +341,8 @@ public final class SitesGroup extends BaseRegionFunction
 		willCrash |= startLocationFn.willCrash(game);
 		if (condition != null)
 			willCrash |= condition.willCrash(game);
-		willCrash |= isVisibleFn.willCrash(game);
+		if (isVisibleFn != null)
+			willCrash |= isVisibleFn.willCrash(game);
 		return willCrash;
 	}
 
@@ -347,7 +353,8 @@ public final class SitesGroup extends BaseRegionFunction
 		if (condition != null)
 			condition.preprocess(game);
 		startLocationFn.preprocess(game);
-		isVisibleFn.preprocess(game);
+		if (isVisibleFn != null)
+			isVisibleFn.preprocess(game);
 	}
 	
 	//-------------------------------------------------------------------------

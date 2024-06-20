@@ -1174,8 +1174,10 @@ public class IsLine extends BaseBooleanFunction
 			flags |= throughAny.gameFlags(game);
 		if (throughHowMuch != null)
 			flags |= throughHowMuch.gameFlags(game);
-		flags |= isVisibleFn.gameFlags(game);
-		flags |= useOppositesFn.gameFlags(game);
+		if (isVisibleFn != null)
+			flags |= isVisibleFn.gameFlags(game);
+		if (useOppositesFn != null)
+			flags |= useOppositesFn.gameFlags(game);
 
 		return flags;
 	}
@@ -1211,8 +1213,10 @@ public class IsLine extends BaseBooleanFunction
 			concepts.or(dirn.concepts(game));
 		if (throughHowMuch != null)
 			concepts.or(throughHowMuch.concepts(game));
-		concepts.or(isVisibleFn.concepts(game));
-		concepts.or(useOppositesFn.concepts(game));
+		if (isVisibleFn != null)
+			concepts.or(isVisibleFn.concepts(game));
+		if (useOppositesFn != null)
+			concepts.or(useOppositesFn.concepts(game));
 
 		return concepts;
 	}
@@ -1247,8 +1251,10 @@ public class IsLine extends BaseBooleanFunction
 			writeEvalContext.or(dirn.writesEvalContextRecursive());
 		if (throughHowMuch != null)
 			writeEvalContext.or(throughHowMuch.writesEvalContextRecursive());
-		writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
-		writeEvalContext.or(useOppositesFn.writesEvalContextRecursive());
+		if (isVisibleFn != null)
+			writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
+		if (useOppositesFn != null)
+			writeEvalContext.or(useOppositesFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 
@@ -1282,8 +1288,10 @@ public class IsLine extends BaseBooleanFunction
 			readEvalContext.or(dirn.readsEvalContextRecursive());
 		if (throughHowMuch != null)
 			readEvalContext.or(throughHowMuch.readsEvalContextRecursive());
-		readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
-		readEvalContext.or(useOppositesFn.readsEvalContextRecursive());
+		if (isVisibleFn != null)
+			readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
+		if (useOppositesFn != null)
+			readEvalContext.or(useOppositesFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -1318,8 +1326,10 @@ public class IsLine extends BaseBooleanFunction
 			throughAny.preprocess(game);
 		if (throughHowMuch != null)
 			throughHowMuch.preprocess(game);
-		isVisibleFn.preprocess(game);
-		useOppositesFn.preprocess(game);
+		if (isVisibleFn != null)			
+			isVisibleFn.preprocess(game);
+		if (useOppositesFn != null)
+			useOppositesFn.preprocess(game);
 	}
 
 	@Override
@@ -1354,8 +1364,10 @@ public class IsLine extends BaseBooleanFunction
 			missingRequirement |= topFn.missingRequirement(game);
 		if (throughHowMuch != null)
 			missingRequirement |= throughHowMuch.missingRequirement(game);
-		missingRequirement |= isVisibleFn.missingRequirement(game);
-		missingRequirement |= useOppositesFn.missingRequirement(game);
+		if (isVisibleFn != null)	
+			missingRequirement |= isVisibleFn.missingRequirement(game);
+		if (useOppositesFn != null)
+			missingRequirement |= useOppositesFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -1391,8 +1403,10 @@ public class IsLine extends BaseBooleanFunction
 			willCrash |= topFn.willCrash(game);
 		if (throughHowMuch != null)
 			willCrash |= throughHowMuch.willCrash(game);
-		willCrash |= isVisibleFn.willCrash(game);
-		willCrash |= useOppositesFn.willCrash(game);
+		if (isVisibleFn != null)	
+			willCrash |= isVisibleFn.willCrash(game);
+		if (useOppositesFn != null)
+			willCrash |= useOppositesFn.willCrash(game);
 		return willCrash;
 	}
 
