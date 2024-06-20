@@ -53,9 +53,9 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 	 */
 	public CountSizeBiggestLine
 	(
-		@Opt 	        final SiteType        type,
-		@Opt            final AbsoluteDirection       directions,
-		@Opt @Or @Name  final BooleanFunction If
+		@Opt 	        final SiteType        	type,
+		@Opt            final AbsoluteDirection directions,
+		@Opt @Or @Name  final BooleanFunction	If
 	)
 	{
 		this.type = type;
@@ -195,6 +195,8 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 	{
 		long gameFlags = condition.gameFlags(game);
 		gameFlags |= SiteType.gameFlags(type);
+		if (dirnChoice != null)
+			gameFlags |= dirnChoice.gameFlags(game);
 		return gameFlags;
 	}
 
@@ -243,6 +245,7 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 	{
 		type = SiteType.use(type, game);
 		condition.preprocess(game);
+		dirnChoice.preprocess(game);
 	}
 
 	@Override
@@ -250,6 +253,7 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 	{
 		boolean missingRequirement = false;
 		missingRequirement |= condition.missingRequirement(game);
+		missingRequirement |= dirnChoice.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -259,6 +263,8 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 		boolean willCrash = false;
 		if (condition != null)
 			willCrash |= condition.willCrash(game);
+		if (dirnChoice != null)
+			willCrash |= dirnChoice.willCrash(game);
 		return willCrash;
 	}
 	

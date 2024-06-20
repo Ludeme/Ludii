@@ -87,6 +87,7 @@ public final class SitesGroup extends BaseRegionFunction
 	public Region eval(final Context context)
 	{
 		final Topology topology = context.topology();
+		final List<? extends TopologyElement> sites = context.topology().getGraphElements(type);
 		final int[] froms = startLocationFn.eval(context);
 		final ContainerState cs = context.containerState(0);
 		final int origFrom = context.from();
@@ -148,11 +149,19 @@ public final class SitesGroup extends BaseRegionFunction
 							indexUpwards = new TIntArrayList();
 							final int to = step.to().id();
 							
-							if (isVisibleFn != null && isVisibleFn.eval(context) == true) {
-								if ((to == 8 && cs.what(9, type) != 0) || (to == 10 && cs.what(11, type) != 0) || (to == 14 && cs.what(15, type) != 0) || (to == 18 && cs.what(19, type) != 0) || (to == 20 && cs.what(21, type) != 0)) {
-									continue;
+							if (isVisibleFn != null && isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[to]].isHand()) {
+								boolean covered = false;
+								for(final TopologyElement temp_elem : sites) {
+									TopologyElement to_elem = sites.get(to);
+									if (temp_elem.centroid3D().x() == to_elem.centroid3D().x() && temp_elem.centroid3D().y() == to_elem.centroid3D().y() && temp_elem.index() > to_elem.index()) {
+										if(cs.what(temp_elem.index(), type) != 0)
+											covered = true;
+									}
 								}
+								if (covered)
+									continue;
 							}
+							
 							
 							if (isVisibleFn != null && isVisibleFn.eval(context) == true) { 
 								final List<game.util.graph.Step> stepsbis = context.game().board().topology().trajectories() 
@@ -250,6 +259,7 @@ public final class SitesGroup extends BaseRegionFunction
 		gameFlags |= startLocationFn.gameFlags(game);
 		if (condition != null)
 			gameFlags |= condition.gameFlags(game);
+		gameFlags |= isVisibleFn.gameFlags(game);
 
 		return gameFlags;
 	}
@@ -266,7 +276,8 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			concepts.or(dirnChoice.concepts(game));
-
+		concepts.or(isVisibleFn.concepts(game));
+		
 		return concepts;
 	}
 
@@ -280,6 +291,7 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			writeEvalContext.or(dirnChoice.writesEvalContextRecursive());
+		writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 	
@@ -302,6 +314,7 @@ public final class SitesGroup extends BaseRegionFunction
 
 		if (dirnChoice != null)
 			readEvalContext.or(dirnChoice.readsEvalContextRecursive());
+		readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -312,6 +325,7 @@ public final class SitesGroup extends BaseRegionFunction
 		missingRequirement |= startLocationFn.missingRequirement(game);
 		if (condition != null)
 			missingRequirement |= condition.missingRequirement(game);
+		missingRequirement |= isVisibleFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -322,6 +336,7 @@ public final class SitesGroup extends BaseRegionFunction
 		willCrash |= startLocationFn.willCrash(game);
 		if (condition != null)
 			willCrash |= condition.willCrash(game);
+		willCrash |= isVisibleFn.willCrash(game);
 		return willCrash;
 	}
 
@@ -332,6 +347,7 @@ public final class SitesGroup extends BaseRegionFunction
 		if (condition != null)
 			condition.preprocess(game);
 		startLocationFn.preprocess(game);
+		isVisibleFn.preprocess(game);
 	}
 	
 	//-------------------------------------------------------------------------

@@ -81,7 +81,7 @@ public class Pin extends MetaRule
 							}
 							
 							final ContainerState cs = context.containerState(context.containerId()[siteToRemove]);
-							if (cs.what(siteToRemove, SiteType.Vertex) != 0 && !context.equipment().containers()[context.containerId()[siteToRemove]].isHand())  // modif ced
+							if (cs.what(siteToRemove, SiteType.Vertex) != 0 && !context.equipment().containers()[context.containerId()[siteToRemove]].isHand())
 							{
 								final List<game.util.graph.Step> steps = game.board().topology().trajectories()
 										.steps(SiteType.Vertex, siteToRemove, SiteType.Vertex, AbsoluteDirection.Upward);

@@ -320,6 +320,7 @@ public final class Count extends BaseIntFunction
 	 *                   group [Adjacent].
 	 * @param If         The condition on the pieces to include in the group [(is Occupied (to))].
 	 * @param min        Minimum size of each group [0].
+	 * @param isVisible  Whether the group has to be visibly connected or not (a connection can not be hidden by another component)
 	 * 
 	 * @example (count Groups Orthogonal)
 	 */
@@ -352,21 +353,24 @@ public final class Count extends BaseIntFunction
 	 * For counting elements on a platform below another element
 	 * 
 	 * @param countType The property to count.
-	 * @param type     	The graph element type [default SiteType of the board].
-	 * @param who  		Player id the counted items belong to
+	 * @param type       The graph element type [default SiteType of the board].
 	 * @param site      The site to test.
+	 * @param who  		Player id the counted items belong to
+	 * 
+	 * @example (count SitesPlatformBelow Mover)
 	 */
 	public static IntFunction construct
 	(
-						final CountSitesPlatformBelowType countType,
-		@Opt 			final IntFunction site,
-						final RoleType who
+					final CountSitesPlatformBelowType 	countType,
+		@Opt 	   	final SiteType          			type,
+		@Opt 		final IntFunction 				  	site,
+					final RoleType 						who
 	)
 		{
 			switch (countType)
 			{
 			case SitesPlatformBelow:
-				return new CountSitesPlatformBelow(site, who);
+				return new CountSitesPlatformBelow(type, site, who);
 			default:
 				break;
 			}
@@ -384,13 +388,12 @@ public final class Count extends BaseIntFunction
 		 * @param directions The directions of the connection between elements in the
 		 *                   group [Adjacent].
 		 * @param If         The condition on the pieces to include in the group [(is Occupied (to))].
-		 * @param min        Minimum size of each group [0].
 		 * 
-		 * @example (count Groups Orthogonal)
+		 * @example (count SizeBiggestLine Orthogonal)
 		 */
 		public static IntFunction construct
 		(
-				       final CountLinesType     countType,
+				       final CountLinesType    countType,
 			@Opt 	   final SiteType          type,
 			@Opt       final AbsoluteDirection directions,
 			@Opt @Name final BooleanFunction   If

@@ -9,6 +9,7 @@ import annotations.Name;
 import annotations.Opt;
 import annotations.Or;
 import game.Game;
+import game.functions.booleans.BooleanConstant;
 import game.functions.booleans.BooleanFunction;
 import game.functions.booleans.is.site.IsOccupied;
 import game.functions.directions.Directions;
@@ -20,7 +21,6 @@ import game.util.directions.AbsoluteDirection;
 import game.util.directions.Direction;
 import game.util.graph.Step;
 import gnu.trove.list.array.TIntArrayList;
-import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
 import other.state.container.ContainerState;
@@ -40,15 +40,15 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 
 	/** The graph element type. */
 	private SiteType type;
-
+	
 	/** The condition */
 	private final BooleanFunction condition;
 	
-	/** The visibility condition */
-	private final BooleanFunction isVisibleFn;
-
 	/** Direction chosen. */
 	private final DirectionsFunction dirnChoice;
+	
+	/** The visibility condition */
+	private final BooleanFunction isVisibleFn;
 
 	//-------------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		dirnChoice = (directions != null) ? directions.directionsFunctions()
 				: new Directions(AbsoluteDirection.Adjacent, null);
 		condition = (If != null) ? If : new IsOccupied(type, To.construct());
-		isVisibleFn = isVisible;
+		isVisibleFn = (isVisible == null) ? new BooleanConstant(false) : isVisible;
 	}
 
 	//-------------------------------------------------------------------------
@@ -118,9 +118,20 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 			
 			context.setTo(from);
 			
-			if (isVisibleFn != null && isVisibleFn.eval(context) == true && ((from == 8 && cs.what(9, type) != 0) || (from == 10 && cs.what(11, type) != 0) || (from == 14 && cs.what(15, type) != 0) || (from == 18 && cs.what(19, type) != 0) || (from == 20 && cs.what(21, type) != 0)))
-				continue;
-			else if (condition.eval(context))
+			if (isVisibleFn != null && isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[from]].isHand()) {
+				boolean covered = false;
+				for(final TopologyElement temp_elem : sites) {
+					TopologyElement from_elem = sites.get(from);
+					if (temp_elem.centroid3D().x() == from_elem.centroid3D().x() && temp_elem.centroid3D().y() == from_elem.centroid3D().y() && temp_elem.index() > from_elem.index()) {
+						if(cs.what(temp_elem.index(), type) != 0)
+							covered = true;
+					}
+				}
+				if (covered)
+					continue;
+			}
+			
+			if (condition.eval(context))
 			{
 				groupSites.add(from);
 				groupSitesBS.set(from);
@@ -138,29 +149,28 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 							null, null, context);
 					
 					
-					TIntArrayList locnUpwards = new TIntArrayList(); // ced
-					TIntArrayList indexUpwards = new TIntArrayList(); // ced
+					TIntArrayList locnUpwards = new TIntArrayList(); 
+					TIntArrayList indexUpwards = new TIntArrayList(); 
 					
-					if (isVisibleFn != null && isVisibleFn.eval(context) == true) { // ced
-						final List<game.util.graph.Step> steps = context.game().board().topology().trajectories() // ced
-								.steps(SiteType.Vertex, site, SiteType.Vertex, AbsoluteDirection.Upward); // ced
+					if (isVisibleFn != null && isVisibleFn.eval(context) == true) { 
+						final List<game.util.graph.Step> steps = context.game().board().topology().trajectories() 
+								.steps(SiteType.Vertex, site, SiteType.Vertex, AbsoluteDirection.Upward); 
 
-						for (final Step step : steps) // ced
+						for (final Step step : steps) 
 						{
-							final int toSite = step.to().id(); // ced
-							if (cs.what(toSite, SiteType.Vertex) != 0) { // ced
-								locnUpwards.add(toSite); // ced
+							final int toSite = step.to().id(); 
+							if (cs.what(toSite, SiteType.Vertex) != 0) { 
+								locnUpwards.add(toSite); 
 							}
 						}
 					}
 
-//					System.out.println(directions);
 					for (final AbsoluteDirection direction : directions)
 					{
 						
 						final List<game.util.graph.Step> steps = topology.trajectories().steps(type,
 								siteElement.index(), type, direction);
-//						System.out.println(topology.trajectories().toString());
+
 						for (final game.util.graph.Step step : steps)
 						{
 							indexUpwards = new TIntArrayList();
@@ -169,37 +179,42 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 							int[] locnUp = new int[0];
 							int[] indexUp = new int[0];
 							
-							if (isVisibleFn != null && isVisibleFn.eval(context) == true) { // ced
-								final List<game.util.graph.Step> stepsbis = context.game().board().topology().trajectories() // ced
-										.steps(SiteType.Vertex, to, SiteType.Vertex, AbsoluteDirection.Upward); // ced
+							if (isVisibleFn != null && isVisibleFn.eval(context) == true) { 
+								final List<game.util.graph.Step> stepsbis = context.game().board().topology().trajectories() 
+										.steps(type, to, type, AbsoluteDirection.Upward); 
 								
-								for (final Step stepbis : stepsbis) // ced
+								for (final Step stepbis : stepsbis) 
 								{
-									final int toSite = stepbis.to().id(); // ced
-									if (cs.what(toSite, type) != 0) // ced
-										indexUpwards.add(toSite); // ced
+									final int toSite = stepbis.to().id(); 
+									if (cs.what(toSite, type) != 0) 
+										indexUpwards.add(toSite); 
 								}
 								
-								locnUp = locnUpwards.toArray();	// ced
-								indexUp = indexUpwards.toArray();	// ced
+								locnUp = locnUpwards.toArray();	
+								indexUp = indexUpwards.toArray();
 								
-//								System.out.println("locA: " + Arrays.toString(locnUp));
-//								System.out.println("indexA: " + Arrays.toString(indexUp));
 							}
 
 							// If we already have it we continue to look the others.
 							if (groupSitesBS.get(to))
 								continue;
-							
-//							System.out.println("-------------");
-//							System.out.println("From: " + site);
-//							System.out.println("To: " + to);
-//							System.out.println("inter: " + getIntersectionLength(locnUp, indexUp));
 
 							context.setTo(to);
-							if (condition.eval(context) && !(getIntersectionLength(locnUp, indexUp) >= 2) && !((to == 8 && cs.what(9, type) != 0) || (to == 10 && cs.what(11, type) != 0) || (to == 14 && cs.what(15, type) != 0) || (to == 18 && cs.what(19, type) != 0) || (to == 20 && cs.what(21, type) != 0)))
+							
+							boolean covered = false;
+							if (isVisibleFn != null && isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[to]].isHand()) {
+								
+								for(final TopologyElement temp_elem : sites) {
+									TopologyElement to_elem = sites.get(to);
+									if (temp_elem.centroid3D().x() == to_elem.centroid3D().x() && temp_elem.centroid3D().y() == to_elem.centroid3D().y() && temp_elem.index() > to_elem.index()) {
+										if(cs.what(temp_elem.index(), type) != 0)
+											covered = true;
+									}
+								}
+							}
+							
+							if (condition.eval(context) && !(getIntersectionLength(locnUp, indexUp) >= 2) && !covered)
 							{
-//								System.out.println(to);
 								groupSites.add(to);
 								groupSitesBS.set(to);
 							}
@@ -256,7 +271,7 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 	@Override
 	public String toString()
 	{
-		return "Groups()";
+		return "SizeBiggestGroup()";
 	}
 
 	@Override
@@ -264,6 +279,9 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 	{
 		long gameFlags = condition.gameFlags(game);
 		gameFlags |= SiteType.gameFlags(type);
+		gameFlags |= isVisibleFn.gameFlags(game);
+		if (dirnChoice != null)
+			gameFlags |= dirnChoice.gameFlags(game);
 		return gameFlags;
 	}
 
@@ -272,10 +290,11 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 	{
 		final BitSet concepts = new BitSet();
 		concepts.or(SiteType.concepts(type));
-		concepts.set(Concept.Group.id(), true);
 		concepts.or(condition.concepts(game));
 		if (dirnChoice != null)
 			concepts.or(dirnChoice.concepts(game));
+		concepts.or(isVisibleFn.concepts(game));
+		
 		return concepts;
 	}
 
@@ -286,6 +305,7 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		writeEvalContext.or(condition.writesEvalContextRecursive());
 		if (dirnChoice != null)
 			writeEvalContext.or(dirnChoice.writesEvalContextRecursive());
+		writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 	
@@ -304,6 +324,7 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		readEvalContext.or(condition.readsEvalContextRecursive());
 		if (dirnChoice != null)
 			readEvalContext.or(dirnChoice.readsEvalContextRecursive());
+		readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -312,6 +333,9 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 	{
 		type = SiteType.use(type, game);
 		condition.preprocess(game);
+		if (dirnChoice != null)
+			dirnChoice.preprocess(game);
+		isVisibleFn.preprocess(game);
 	}
 
 	@Override
@@ -319,6 +343,9 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 	{
 		boolean missingRequirement = false;
 		missingRequirement |= condition.missingRequirement(game);
+		if (dirnChoice != null)
+			missingRequirement |= dirnChoice.missingRequirement(game);
+		missingRequirement |= isVisibleFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -328,6 +355,8 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		boolean willCrash = false;
 		if (condition != null)
 			willCrash |= condition.willCrash(game);
+		if (isVisibleFn != null)
+			willCrash |= isVisibleFn.willCrash(game);
 		return willCrash;
 	}
 	
@@ -340,7 +369,7 @@ public final class CountSizeBiggestGroup extends BaseIntFunction
 		if (condition != null)
 			conditionString = " where " + condition.toEnglish(game);
 		
-		return "the number of " + type.name() + " groups" + conditionString;
+		return "the size of " + type.name() + " biggest group" + conditionString + "and is visible " + isVisibleFn.toString();
 	}
 	
 	//-------------------------------------------------------------------------

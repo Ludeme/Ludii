@@ -445,7 +445,7 @@ public final class Sites extends BaseRegionFunction
 	 * @param directions The directions of the connection between elements in the
 	 *                   group [Adjacent].
 	 * @param If         The condition on the pieces to include in the group.
-	 * @param If         Whether pieces of group have to be visible
+	 * @param IsVisible  Whether pieces of group have to be visibly connected
 	 * 
 	 * @example (sites Group Vertex at:(site))
 	 */
