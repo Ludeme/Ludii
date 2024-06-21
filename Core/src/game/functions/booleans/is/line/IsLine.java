@@ -423,7 +423,7 @@ public class IsLine extends BaseBooleanFunction
 
 				final List<Radial> oppositeRadials = radial.opposites();
 
-				if (oppositeRadials != null )
+				if (oppositeRadials != null && useOppositesFn.eval(context))
 				{
 					for (final Radial oppositeRadial : oppositeRadials)
 					{
@@ -433,10 +433,7 @@ public class IsLine extends BaseBooleanFunction
 						indexUpwards = new TIntArrayList();
 						indexUpSites = new TIntArrayList();
 						
-						int oppositeCount = 1;
-						if (useOppositesFn.eval(context)) {
-							oppositeCount = count;
-						}
+						int oppositeCount = count;
 						
 						for (int indexPath = 1; indexPath < oppositeRadial.steps().length; indexPath++)
 						{
