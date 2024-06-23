@@ -471,7 +471,7 @@ public class ParallelComputeConceptsMultipleGames
 		for (int i = 0; i < Concept.values().length; ++i)
 		{
 			final Concept concept = Concept.values()[i];
-			final int frequencyStringIndex = concept.name().indexOf("");
+			final int frequencyStringIndex = concept.name().indexOf("Frequency");
 			
 			if (frequencyStringIndex >= 0)
 			{
@@ -715,20 +715,6 @@ public class ParallelComputeConceptsMultipleGames
 											{
 												frequencyPlayout[concept.id()] += 1.0 / numLegalMoves;
 											}
-										}
-									}
-									
-									for (int conceptIdx = moveConcepts.nextSetBit(0); conceptIdx >= 0; conceptIdx = moveConcepts.nextSetBit(conceptIdx + 1))
-									{
-										final String conceptName = Concept.values()[conceptIdx].name();
-										if (conceptToFrequencyIndexMap.containsKey(conceptName))
-										{
-											final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(Concept.values()[conceptIdx].name()).intValue();
-											frequencyPlayout[frequencyConceptIdx] += 1.0 / numLegalMoves;
-										}
-										else
-										{
-											
 										}
 									}
 								}
