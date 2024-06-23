@@ -367,8 +367,17 @@ public abstract class MultiMetricFramework extends Metric
 	@Override
 	public double finaliseMetric(final Game game, final int numTrials)
 	{
-		final double[][] metricValues = metricValueLists.toArray(new double[0][0]);
-		return computeMultiMetric(metricValues).doubleValue();
+		final Double[][] metricValues = metricValueLists.toArray(new Double[0][0]);
+		final double[][] primitives = new double[metricValues.length][];
+		for (int i = 0; i < metricValues.length; ++i)
+		{
+			primitives[i] = new double[metricValues[i].length];
+			for (int j = 0; j < primitives[i].length; ++j)
+			{
+				primitives[i][j] = metricValues[i][j] == null ? Double.NaN : metricValues[i][j].doubleValue();
+			}
+		}
+		return computeMultiMetric(primitives).doubleValue();
 	}
 	
 	//-------------------------------------------------------------------------
