@@ -81,7 +81,8 @@ public class PlayerCLI
 					"--kilothon",
 					"--identify-top-features",
 					"--skill-trace-analysis",
-					"--parallel-eval-multi-games-multi-agents"
+					"--parallel-eval-multi-games-multi-agents",
+					"--parallel-compute-concepts-multiple-games"
 				)
 				.withNumVals(1)
 				.withType(OptionTypes.String));
