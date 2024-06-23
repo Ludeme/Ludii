@@ -701,10 +701,35 @@ public class ParallelComputeConceptsMultipleGames
 								{
 									final BitSet moveConcepts = legalMove.moveConcepts(context);
 									
+									for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
+									{
+										final Concept concept = Concept.values()[indexConcept];
+										if (moveConcepts.get(concept.id()))
+										{
+											if (conceptToFrequencyIndexMap.containsKey(concept.name()))
+											{
+												final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(concept.name()).intValue();
+												frequencyPlayout[frequencyConceptIdx] += 1.0 / numLegalMoves;
+											}
+											else
+											{
+												frequencyPlayout[concept.id()] += 1.0 / numLegalMoves;
+											}
+										}
+									}
+									
 									for (int conceptIdx = moveConcepts.nextSetBit(0); conceptIdx >= 0; conceptIdx = moveConcepts.nextSetBit(conceptIdx + 1))
 									{
-										final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(Concept.values()[conceptIdx].name()).intValue();
-										frequencyPlayout[frequencyConceptIdx] += 1.0 / numLegalMoves;
+										final String conceptName = Concept.values()[conceptIdx].name();
+										if (conceptToFrequencyIndexMap.containsKey(conceptName))
+										{
+											final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(Concept.values()[conceptIdx].name()).intValue();
+											frequencyPlayout[frequencyConceptIdx] += 1.0 / numLegalMoves;
+										}
+										else
+										{
+											
+										}
 									}
 								}
 
@@ -752,8 +777,15 @@ public class ParallelComputeConceptsMultipleGames
 											final Concept concept = Concept.values()[indexConcept];
 											if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
 											{
-												final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(concept.name()).intValue();
-												frequencyPlayouts[frequencyConceptIdx]++; 
+												if (conceptToFrequencyIndexMap.containsKey(concept.name()))
+												{
+													final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(concept.name()).intValue();
+													frequencyPlayouts[frequencyConceptIdx]++; 
+												}
+												else
+												{
+													frequencyPlayout[concept.id()]++;
+												}
 											}
 										}
 										break;
@@ -779,8 +811,15 @@ public class ParallelComputeConceptsMultipleGames
 										final Concept concept = Concept.values()[indexConcept];
 										if (concept.type().equals(ConceptType.End) && endConcepts.get(concept.id()))
 										{
-											final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(concept.name()).intValue();
-											frequencyPlayouts[frequencyConceptIdx]++; 
+											if (conceptToFrequencyIndexMap.containsKey(concept.name()))
+											{
+												final int frequencyConceptIdx = conceptToFrequencyIndexMap.get(concept.name()).intValue();
+												frequencyPlayouts[frequencyConceptIdx]++; 
+											}
+											else
+											{
+												frequencyPlayout[concept.id()]++;
+											}
 										}
 									}
 									break;
