@@ -992,7 +992,7 @@ public class Topology implements Serializable
 	 * @param type     The graph element type.
 	 * @param relation The relation type of the distance to compute.
 	 */
-	public void preGenerateDistanceToEachElementToEachOther(final SiteType type, final RelationType relation)
+	public synchronized void preGenerateDistanceToEachElementToEachOther(final SiteType type, final RelationType relation)
 	{
 		if (this.distanceToOtherSite.get(type) != null)
 			return;
@@ -1121,7 +1121,7 @@ public class Topology implements Serializable
 	 * @param game    The game.
 	 * @param regions The regions.
 	 */
-	public void preGenerateDistanceToRegionsCells(final Game game, final Regions[] regions)
+	public synchronized void preGenerateDistanceToRegionsCells(final Game game, final Regions[] regions)
 	{
 		final int numCells = cells.size();
 
@@ -1241,7 +1241,7 @@ public class Topology implements Serializable
 	 * @param game    The game.
 	 * @param regions The regions.
 	 */
-	public void preGenerateDistanceToRegionsVertices(final Game game, final Regions[] regions)
+	public synchronized void preGenerateDistanceToRegionsVertices(final Game game, final Regions[] regions)
 	{
 		final int numVertices = vertices.size();
 		final int[][] distances = new int[regions.length][];
@@ -1355,7 +1355,7 @@ public class Topology implements Serializable
 	 * Pre-generates tables of distances to precomputed regions such as centre, corners, sides, ...
 	 * @param type Site type for which we want to generate distances
 	 */
-	public void preGenerateDistanceTables(final SiteType type)
+	public synchronized void preGenerateDistanceTables(final SiteType type)
 	{
 		preGenerateDistanceToPrecomputed(type, centre, distanceToCentre);
 		preGenerateDistanceToPrecomputed(type, corners, distanceToCorners);
@@ -1368,7 +1368,7 @@ public class Topology implements Serializable
 	 * @param precomputed Map of precomputed regions to which we want to generate distances
 	 * @param distancesMap Map in which we want to store computed distances
 	 */
-	private void preGenerateDistanceToPrecomputed
+	private synchronized void preGenerateDistanceToPrecomputed
 	(
 		final SiteType type, 
 		final Map<SiteType, List<TopologyElement>> precomputed, 
