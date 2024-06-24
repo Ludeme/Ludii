@@ -1033,17 +1033,17 @@ public class ParallelComputeConceptsMultipleGames
 					for (int indexConcept = 0; indexConcept < Concept.values().length; indexConcept++)
 					{
 						final Concept concept = Concept.values()[indexConcept];
-						MapUtils.add(mergedResults, concept.name(), jobOutput.frequenciesConcepts.getQuick(indexConcept));
+						MapUtils.add(mergedResults, concept.name(), numTrials * jobOutput.frequenciesConcepts.getQuick(indexConcept));
 					}
 					
 					for (final Entry<String, Double> entry : jobOutput.metricsMap.entrySet())
 					{
-						MapUtils.add(mergedResults, entry.getKey(), entry.getValue().doubleValue());
+						MapUtils.add(mergedResults, entry.getKey(), numTrials * entry.getValue().doubleValue());
 					}
 					
 					for (final Entry<String, Double> entry : jobOutput.mapStarting.entrySet())
 					{
-						MapUtils.add(mergedResults, entry.getKey(), entry.getValue().doubleValue());
+						MapUtils.add(mergedResults, entry.getKey(), numTrials * entry.getValue().doubleValue());
 					}
 										
 					totalNumTrials += numTrials;

@@ -95,10 +95,13 @@ public class DurationTurnsNotTimeouts extends Metric
 	@Override
 	public void observeFinalState(final Context context)
 	{
-		final boolean trialTimedOut = context.trial().status().endType() == EndType.MoveLimit || context.trial().status().endType() == EndType.TurnLimit;
-		if (!trialTimedOut)
+		if (context.trial().status() != null) 
 		{
-			turnTally += context.trial().numTurns();
+			final boolean trialTimedOut = context.trial().status().endType() == EndType.MoveLimit || context.trial().status().endType() == EndType.TurnLimit;
+			if (!trialTimedOut)
+			{
+				turnTally += context.trial().numTurns();
+			}
 		}
 	}
 	
