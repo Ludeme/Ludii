@@ -80,7 +80,7 @@ public class Completion extends Metric
 	@Override
 	public void observeFinalState(final Context context)
 	{
-		if (context.trial().status().winner() != 0)
+		if (context.trial().status() != null && context.trial().status().winner() != 0)
 			completedGames++;
 	}
 	
