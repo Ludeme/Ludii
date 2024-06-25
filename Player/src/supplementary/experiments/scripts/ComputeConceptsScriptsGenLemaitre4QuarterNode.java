@@ -43,7 +43,7 @@ public class ComputeConceptsScriptsGenLemaitre4QuarterNode
 	private static final int MAX_REQUEST_MEM = 150;
 	
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 1500;
+	private static final int MAX_WALL_TIME = 1299;
 	
 	/** Number of cores per job (we take 25% of the 128 cores that each node on Lemaitre4 has) */
 	private static final int CORES_PER_JOB = 32;
