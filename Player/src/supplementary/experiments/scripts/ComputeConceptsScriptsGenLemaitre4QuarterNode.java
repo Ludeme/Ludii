@@ -389,7 +389,7 @@ public class ComputeConceptsScriptsGenLemaitre4QuarterNode
 					
 					if (gameNameIsPath)
 					{
-						conceptsOutDir = "/globalscratch/ucl/ingi/" + userName + "/ComputeConcepts/Concepts/Private" + filepathsGameName + filepathsRulesetName + "/";
+						conceptsOutDir = "/globalscratch/ucl/ingi/" + userName + "/ComputeConcepts/Concepts/Private/" + filepathsGameName + filepathsRulesetName + "/";
 					}
 					else
 					{
