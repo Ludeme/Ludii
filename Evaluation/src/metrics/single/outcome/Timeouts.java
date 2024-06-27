@@ -85,7 +85,7 @@ public class Timeouts extends Metric
 	public void observeFinalState(final Context context)
 	{
 		final Trial trial = context.trial();
-		final boolean trialTimedOut = trial.status().endType() == EndType.MoveLimit || trial.status().endType() == EndType.TurnLimit;
+		final boolean trialTimedOut = trial.status() == null || trial.status().endType() == EndType.MoveLimit || trial.status().endType() == EndType.TurnLimit;
 		
 		if (trialTimedOut)
 			timeouts++;

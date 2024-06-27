@@ -1,6 +1,7 @@
 package supplementary.experiments.game_files;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,7 @@ import main.CommandLineArgParse.ArgOption;
 import main.CommandLineArgParse.OptionTypes;
 import main.FileHandling;
 import main.StringRoutines;
+import main.UnixPrintWriter;
 import main.options.Ruleset;
 import other.GameLoader;
 
@@ -264,6 +266,15 @@ public class WriteRulesEnglishAndLud
 			final String filepathsGameName = StringRoutines.cleanGameName(gameName);
 			final String filepathsRulesetName = 
 					StringRoutines.cleanRulesetName(rulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
+			
+			try (final PrintWriter writer = new UnixPrintWriter(new File(outDir + filepathsGameName + filepathsRulesetName + "/Rules.csv"), "UTF-8"))
+			{
+				// TODO write the lines
+			}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	
