@@ -280,14 +280,16 @@ public class WriteRulesEnglishAndLud
 				writer.println("EnglishRules,LudRules");
 				
 				// Write the actual data
-				final String englishRules = StringRoutines.cleanWhitespace(StringRoutines.join(" ", game.metadata().info().getRules()).replaceAll(Pattern.quote("\n"), " "));
+				final String englishRules = 
+						StringRoutines.cleanWhitespace(StringRoutines.join(" ", game.metadata().info().getRules()).replaceAll(Pattern.quote("\n"), " "))
+						.replaceAll(Pattern.quote("'"), "\\'");
 				final String ludDescription = StringRoutines.cleanWhitespace(game.description().expanded().replaceAll(Pattern.quote("\n"), " "));
 				
-				if (englishRules.replaceAll(Pattern.quote("\""), "").isEmpty())
+				if (englishRules.isEmpty())
 				{
 					System.err.println("Empty English rules description for: " + gameName + " - " + rulesetName);
 				}
-				if (ludDescription.replaceAll(Pattern.quote("\""), "").isEmpty())
+				if (ludDescription.isEmpty())
 				{
 					System.err.println("Empty .lud description for: " + gameName + " - " + rulesetName);
 				}
@@ -309,7 +311,7 @@ public class WriteRulesEnglishAndLud
 					e.printStackTrace();
 				}
 				
-				writer.println(StringRoutines.quote(englishRules) + "," + StringRoutines.quote(ludDescription));
+				writer.println("'" + englishRules + "','" + ludDescription + "'");
 			}
 			catch (final Exception e)
 			{
