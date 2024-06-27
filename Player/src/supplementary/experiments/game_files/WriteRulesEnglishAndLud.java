@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import compiler.Compiler;
 import game.Game;
 import main.CommandLineArgParse;
 import main.CommandLineArgParse.ArgOption;
@@ -14,7 +15,10 @@ import main.CommandLineArgParse.OptionTypes;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
+import main.grammar.Description;
+import main.grammar.Report;
 import main.options.Ruleset;
+import main.options.UserSelections;
 import other.GameLoader;
 
 /**
@@ -267,9 +271,36 @@ public class WriteRulesEnglishAndLud
 			final String filepathsRulesetName = 
 					StringRoutines.cleanRulesetName(rulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
 			
-			try (final PrintWriter writer = new UnixPrintWriter(new File(outDir + filepathsGameName + filepathsRulesetName + "/Rules.csv"), "UTF-8"))
+			final File csvFile = new File(outDir + filepathsGameName + filepathsRulesetName + "/Rules.csv");
+			csvFile.getParentFile().mkdirs();
+			
+			try (final PrintWriter writer = new UnixPrintWriter(csvFile, "UTF-8"))
 			{
-				// TODO write the lines
+				// Write the header
+				writer.println("EnglishRules,LudRules");
+				
+				// Write the actual data
+				final String englishRules = StringRoutines.join(" ", game.metadata().info().getRules()).replaceAll(Pattern.quote("\n"), " ");
+				final String ludDescription = StringRoutines.cleanWhitespace(game.description().expanded().replaceAll(Pattern.quote("\n"), " "));
+				
+				try 
+				{
+					@SuppressWarnings("unused")
+					final Game testGame = (Game) Compiler.compile
+					(
+						new Description(ludDescription), 
+						new UserSelections(new ArrayList<String>()), 
+						new Report(),
+						false
+					);
+				}
+				catch (final Exception e)
+				{
+					System.out.println("Failed to compile game without newlines!");
+					e.printStackTrace();
+				}
+				
+				writer.println(StringRoutines.quote(englishRules) + "," + StringRoutines.quote(ludDescription));
 			}
 			catch (final Exception e)
 			{
@@ -289,8 +320,8 @@ public class WriteRulesEnglishAndLud
 				new CommandLineArgParse
 				(
 					true,
-					"Generate Lemaitre4 scripts to compute concepts."
-					);
+					"Write a CSV file with English rule descriptions and .lud rule descriptions."
+				);
 
 		argParse.addOption(new ArgOption()
 				.withNames("--out-dir")
