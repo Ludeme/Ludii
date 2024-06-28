@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import compiler.Compiler;
@@ -282,8 +283,9 @@ public class WriteRulesEnglishAndLud
 				// Write the actual data
 				final String englishRules = 
 						StringRoutines.cleanWhitespace(StringRoutines.join(" ", game.metadata().info().getRules()).replaceAll(Pattern.quote("\n"), " "))
-						.replaceAll(Pattern.quote("'"), "\\'");
-				final String ludDescription = StringRoutines.cleanWhitespace(game.description().expanded().replaceAll(Pattern.quote("\n"), " "));
+						.replaceAll(Pattern.quote("\""), Matcher.quoteReplacement("\\\""));
+				final String ludDescription = 
+						StringRoutines.cleanWhitespace(game.description().expanded().replaceAll(Pattern.quote("\n"), " "));
 				
 				if (englishRules.isEmpty())
 				{
@@ -311,7 +313,7 @@ public class WriteRulesEnglishAndLud
 					e.printStackTrace();
 				}
 				
-				writer.println("'" + englishRules + "','" + ludDescription + "'");
+				writer.println("\"" + englishRules + "\",\"" + ludDescription.replaceAll(Pattern.quote("\""), Matcher.quoteReplacement("\\\"")) + "\"");
 			}
 			catch (final Exception e)
 			{
