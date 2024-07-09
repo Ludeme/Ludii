@@ -308,6 +308,7 @@ public class EvalGamesSet
 							break;
 						}
 						
+						System.gc();
 						model.startNewStep(context, currentAIList, maxSeconds, maxIterations, maxSearchDepth, 0.0);
 					}
 
