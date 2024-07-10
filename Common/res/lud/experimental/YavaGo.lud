@@ -1,15 +1,15 @@
 (game "YavaGo" 
     (players 2)
-
+    
     (equipment {
-            (board 
-                (rotate 90 
-                    (hex 5)
-                )
+        (board 
+            (rotate 90 
+                (hex 5)
             )
-            (piece "Marker" Each)
+        )
+        (piece "Marker" Each)
     })
-
+    
     (rules 
         (meta 
             (no Repeat)
@@ -33,10 +33,10 @@
                 ))
             )
         )
-
+        
         (end {
-                (if (is Line 5) (result Next Loss) )
-                (if (is Line 4) (result Next Win))
+            (if (is Line 5) (result Next Loss) )
+            (if (is Line 4) (result Next Win))
         })
     )
 )
