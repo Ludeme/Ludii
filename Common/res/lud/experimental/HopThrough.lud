@@ -1,0 +1,60 @@
+(game "HopThrough" 
+    (players 2)
+
+    (equipment {
+            (board 
+                (square 8)
+            )
+            (piece "Counter" Each 
+                (move Hop 
+                    (between if:
+                        (is Occupied (between))
+                    )
+                    (to if:(is Empty (to)))
+                )
+            )
+            (regions P1 
+                (sites Top)
+            )
+            (regions P2 
+                (sites Bottom)
+            )
+    })
+
+    (rules 
+        (start {
+                (place "Counter1" 
+                    (expand 
+                        (sites Bottom)
+                    )
+                )
+                (place "Counter2" 
+                    (expand 
+                        (sites Top)
+                    )
+                )
+        })
+        (play 
+            (forEach Piece)
+        )
+
+        (end 
+            (if (is In (last To) (sites Mover)) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+	
+	(graphics {
+        (board Style Chess)
+    })
+    
+)
