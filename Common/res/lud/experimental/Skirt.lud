@@ -348,7 +348,7 @@
             
             The script has now been updated to calculate permanent territory and end the game promptly, instead of playing it out until there are no moves left.
             
-        The pie rule is of interest, in that the tiebreaker rule goes to the pie offerer, making the pie asymmetrical. On boards where a tie score can be forced, the choice can allow the first player to win, however the mere existence of equal scores, does not assure that they can be forced, or make it clear which pie offers might be wins for the offerer. For those who prefer a symmetrical pie, choose boards with odd numbers of cells.")
+        The pie rule is of interest, in that the tiebreaker rule goes to the pie offerer, making the pie asymmetrical. On boards where a tie score can be forced, the choice can allow the first player to win, however the mere existance of equal scores, does not assure that they can be forced, or make it clear which pie offers might be wins for the offerer. For those who prefer a symmetrical pie, choose boards with odd numbers of cells.")
         (rules "Materials: A hexagonal grid with an odd number of sites; stones in 2 colors, light and dark
             Goal: Prevent your opponent from completing a full turn.*
             
@@ -380,45 +380,17 @@ Place a stone on an empty location that neighbors more friendly stones than enem
 *Even-spaced board variant:  
 When playing on a board with an even number of spaces, the player who created the setup position wins when neither player is able to complete a full turn.
 
-In terms of territory, this extra rule means that the player who created the setup can also win by having territory equal to exactly half of the empty sites on the board after placement.
+In terms of territory, this extra rule means that the player who created the setup can also win by having territory equal to exacly half of the empty sites on the board after placement.
 
 An option for playing with alternating single turns is also provided.")
-(rules "
-    Materials: A hexagonal grid with an odd number of sites; stones in 2 colors, light and dark
-    Goal: Prevent your opponent from completing a full turn.*
-    
-    This can be known in advance from counting your 'territory', that is, the sites the other player can never reach, no matter how many moves they are allowed.  
-    
-    When your territory includes more than half of the empty sites on the board after you place a piece, you will win.
-    
-    Setup:
-    One player creates a setup offer, by placing 2 light stones anywhere on the board and then 1 dark stone next to one of them. The other player chooses a color. Dark goes first.
-    
-    Playing the Game:
-    On each turn, move twice. Each of your 2 moves has 2 parts:
-1) an optional skirting move
-2) a required stone placement
-
-In other words, in a turn the player makes two required placements, each optionally preceded by a skirting move. 
-
-Skirting Move
-
-'Skirting' means moving a piece in a series of steps around neighboring stones. A skirting move may have any number of steps, as long as each step follows these 2 rules:
-
-1) After each step of movement, the moving stone must neighbor at least 1 stone that it also neighbored before that step of movement. This neighboring stone may be either color, and it may change after each step. In other words, the moving stone cannot move away from all of its current neighbors: it must 'skirt' at least 1 neighboring stone during each step of its movement.
-
-2) The space into which you move your stone must neighbor at least as many friendly stones as enemy stones. Include the moving stone when counting friendly neighboring stones.
-
-Required Placement
-Place a stone on an empty location that neighbors more friendly stones than enemy stones before placement.
-
-*Even-spaced board variant:  
-When playing on a board with an even number of spaces, the player who created the setup position wins when neither player is able to complete a full turn.
-
-In terms of territory, this extra rule means that the player who created the setup can also win by having territory equal to exactly half of the empty sites on the board after placement.
-
-An option for playing with alternating single turns is also provided."
-) 
+(id "3962")
+(version "1.3.13")
+(classification "experimental")
+(author "Dale W. Walton")
+(credit "Script: Dale W. Walton; Rule review: Drew Edwards, Kanare Kato")
+(date "15-06-2023")
+}
+)
 (id "3962")
 (version "1.3.12")
 (classification "experimental")

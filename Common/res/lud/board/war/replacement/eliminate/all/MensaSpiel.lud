@@ -374,7 +374,7 @@ count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level))
             
             To CAPTURE an enemy, you need to be able to reach the same color of the enemy-piece in the opposite ring, then the possibility to directly capture the enemy on its board-position will be available.
             Capturing is not mandatory, you can also just go to the opposite-color position (move 'into the shadow'). Capturing with a start-move from the base is not possible.
-            Ring Capture: with step length 8 you could theoretically move in a circle to your own position, but as normal move this is not allowed.
+            Ring Capture: with step lenght 8 you could theoretically move in a circle to your own position, but as normal move this is not allowed.
             But if there is an enemy-piece on the opposite same color, the (ring-)capture-move is not allowed! For step lengths of 12 or 14 etc this is also possible from some other positions.
             
             The captured pieces remain under the attacker in a stack and have to be brought to the Transmitter (field in the middle of the board) with the according step length.
@@ -404,7 +404,7 @@ count:(count Stack at:(last To) if:(= (id "Cone" #3)(what at:(to) level:(level))
             But be aware: almost all moves change the step length and attack & defence-patterns, ie. the whole situation.
         This makes it complicated to calculate, but entertaining to play.")
         (id "2002")
-        (version "1.3.12")
+        (version "1.3.13")
         (classification "board/war/replacement/eliminate/all")
         (author "Andreas Pichler")
         (credit "Franz Pichler")
