@@ -1,0 +1,41 @@
+(game "Havabu" 
+    (players 2)
+
+    (equipment {
+            (board 
+                (square 8)
+            )
+            (piece "Marker" Each)
+    })
+
+    (rules 
+        (play 
+            (move Add 
+                (to (sites Empty) if:(not 
+                        (is In (to) (sites Around 
+                                (last To)
+                        ))
+                ))
+            )
+        )
+
+        (end 
+            (if (or {
+                        (no Moves Next)
+                        (is Connected 3 SidesNoCorners)
+                        (is Connected 2 Corners)
+            }) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)
