@@ -23,8 +23,7 @@ import main.collections.ListUtils;
 import main.options.Ruleset;
 import other.GameLoader;
 import search.mcts.MCTS;
-import utils.AIFactory;
-import utils.RandomAI;
+import supplementary.experiments.eval.ParallelEvalMultiGamesMultiAgents.TrialsBatchToRun;
 
 /**
  * Generates scripts to run on Snellius cluster to evaluate many different variants
@@ -37,14 +36,11 @@ public class EvalMCTSVariantsScriptsGen
 	/** Don't submit more than this number of jobs at a single time */
 	private static final int MAX_JOBS_PER_BATCH = 800;
 
-	/** Memory to assign to JVM, in MB (7GB per process --> give 6GB for heap) */
-	private static final String JVM_MEM = "6144";
+	/** Memory to assign to JVM */
+	private static final String JVM_MEM_MIN = "192g";
 	
-	/** Memory to assign per process (in GB) */
-	private static final int MEM_PER_PROCESS = 7;
-	
-	/** Memory available per node in GB (this is for Thin nodes on Snellius) */
-	private static final int MEM_PER_NODE = 256;
+	/** Memory to assign to JVM */
+	private static final String JVM_MEM_MAX = "192g";
 	
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
 	private static final int MAX_REQUEST_MEM = 224;
@@ -57,12 +53,6 @@ public class EvalMCTSVariantsScriptsGen
 	
 	/** Number of cores per Java call */
 	private static final int CORES_PER_PROCESS = 4;
-	
-	/** If we request more cores than this in a job, we get billed for the entire node anyway, so should request exclusive */
-	private static final int EXCLUSIVE_CORES_THRESHOLD = 96;
-	
-	/** If we have more processes than this in a job, we get billed for the entire node anyway, so should request exclusive  */
-	private static final int EXCLUSIVE_PROCESSES_THRESHOLD = EXCLUSIVE_CORES_THRESHOLD / CORES_PER_PROCESS;
 	
 	/**Number of processes we can put in a single job (on a single node) */
 	private static final int PROCESSES_PER_JOB = CORES_PER_NODE / CORES_PER_PROCESS;
@@ -101,7 +91,7 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				{"0.1", "0.6", "1.41421356237"},
 				{"ProgressiveHistory", "UCB1", "UCB1GRAVE", "UCB1Tuned"},
-				{"MAST", "NST", "Random200", "Random4", "Random0"},
+				{"MAST", "NST", "Random200"},
 				{"true", "false"}
 			};
 		
@@ -110,7 +100,7 @@ public class EvalMCTSVariantsScriptsGen
 			{
 				{true, true, true},
 				{true, true, true, true},
-				{true, true, true, true, true},
+				{true, true, true},
 				{false, true},
 			};
 	
@@ -189,7 +179,6 @@ public class EvalMCTSVariantsScriptsGen
 	{
 		final List<String> jobScriptNames = new ArrayList<String>();
 		final MCTS dummyUCT = MCTS.createUCT();
-		final RandomAI dummyRandom = (RandomAI) AIFactory.createAI("Random");
 		
 		final int[][] deterministicMCTSCombos = generateMCTSCombos(false);
 		final int[][] stochasticMCTSCombos = generateMCTSCombos(true);
@@ -234,17 +223,12 @@ public class EvalMCTSVariantsScriptsGen
 			case "Random200":
 				algStringParts.add("playout=random,playoutturnlimit=200");
 				break;
-			case "Random4":
-				algStringParts.add("playout=random,playoutturnlimit=4");
-				break;
-			case "Random0":
-				algStringParts.add("playout=random,playoutturnlimit=0");
-				break;
 			default:
 				System.err.println("Unrecognised playout type: " + playoutType);
 				break;
 			}
 			
+			nameParts.add(mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]]);
 			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
 				algStringParts.add("use_score_bounds=true");
 			
@@ -293,17 +277,12 @@ public class EvalMCTSVariantsScriptsGen
 			case "Random200":
 				algStringParts.add("playout=random,playoutturnlimit=200");
 				break;
-			case "Random4":
-				algStringParts.add("playout=random,playoutturnlimit=4");
-				break;
-			case "Random0":
-				algStringParts.add("playout=random,playoutturnlimit=0");
-				break;
 			default:
 				System.err.println("Unrecognised playout type: " + playoutType);
 				break;
 			}
 			
+			nameParts.add(mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]]);
 			if (mctsHyperParamValues[IDX_SCORE_BOUNDS][combo[IDX_SCORE_BOUNDS]].equals("true"))
 				System.err.println("Should never have score bounds in MCTSes for stochastic games!");
 			
@@ -387,6 +366,9 @@ public class EvalMCTSVariantsScriptsGen
 					game = gameNoRuleset;
 				}
 				
+				if (game.players().count() != 2)
+					continue;
+				
 				if (game.isDeductionPuzzle())
 					continue;
 				
@@ -398,11 +380,9 @@ public class EvalMCTSVariantsScriptsGen
 				
 				if (game.hasSubgames())
 					continue;
-								
-				final List<String> relevantNonMCTSAIs = new ArrayList<String>();
-
-				if (dummyRandom.supportsGame(game))
-					relevantNonMCTSAIs.add("Random");
+				
+				if (game.hiddenInformation())
+					continue;
 				
 				final int numPlayers = game.players().count();
 				
@@ -413,26 +393,24 @@ public class EvalMCTSVariantsScriptsGen
 					final String[] relevantMCTSStrings = (game.isStochasticGame()) ? mctsStringsStochastic : mctsStringsDeterministic;
 
 					for (int evalAgentIdxMCTS = 0; evalAgentIdxMCTS < relevantMCTSNames.length; ++evalAgentIdxMCTS)
-					{				
-						// ... against all non-MCTSes...
-						for (int oppIdx = 0; oppIdx < relevantNonMCTSAIs.size(); ++oppIdx)
+					{
+						final String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
+						
+						// ... against 2 randomly selected other MCTSes
+						final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
+						sampleIndices.removeAt(evalAgentIdxMCTS);
+						
+						for (int i = 0; i < 2; ++i)
 						{
-							// Take (k - 1) copies of same opponent for a k-player game
 							final String[] agentStrings = new String[numPlayers];
-							for (int i = 0; i < numPlayers - 1; ++i)
-							{
-								final String agent = relevantNonMCTSAIs.get(oppIdx);
-								final String agentCommandString = StringRoutines.quote(agent);
-
-								agentStrings[i] = agentCommandString;
-							}
-
-							// and finally add the eval agent
-							String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
-
-							evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
-
-							agentStrings[numPlayers - 1] = evalAgentCommandString;
+							agentStrings[0] = evalAgentCommandString;
+							
+							final int randIdx = ThreadLocalRandom.current().nextInt(sampleIndices.size());
+							final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
+							ListUtils.removeSwap(sampleIndices, randIdx);
+							
+							final String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
+							agentStrings[1] = agentCommandString;
 							
 							processDataList.add
 							(
@@ -443,50 +421,6 @@ public class EvalMCTSVariantsScriptsGen
 								)
 							);
 						}
-
-						// ... and once against a randomly selected set of (k - 1) other MCTSes for a k-player game
-						final String[] agentStrings = new String[numPlayers];
-						for (int i = 0; i < numPlayers - 1; ++i)
-						{
-							boolean success = false;
-
-							final TIntArrayList sampleIndices = ListUtils.range(relevantMCTSNames.length);
-							while (!success)
-							{
-								final int randIdx = ThreadLocalRandom.current().nextInt(sampleIndices.size());
-								final int otherMCTSIdx = sampleIndices.getQuick(randIdx);
-								ListUtils.removeSwap(sampleIndices, randIdx);
-								String agentCommandString = relevantMCTSStrings[otherMCTSIdx];
-
-								success = true;
-
-								agentCommandString = StringRoutines.quote(agentCommandString);
-
-								agentStrings[i] = agentCommandString;
-							}
-
-							if (!success)
-							{
-								System.err.println("No suitable MCTS found at all");
-								continue;
-							}
-						}
-
-						// add the eval agent
-						String evalAgentCommandString = relevantMCTSStrings[evalAgentIdxMCTS];
-
-						evalAgentCommandString = StringRoutines.quote(evalAgentCommandString);
-
-						agentStrings[numPlayers - 1] = evalAgentCommandString;
-
-						processDataList.add
-						(
-							new ProcessData
-							(
-								gameName, fullRulesetName, callID++, 
-								agentStrings
-							)
-						);
 					}
 				}
 			}
@@ -500,41 +434,62 @@ public class EvalMCTSVariantsScriptsGen
 		int processIdx = 0;
 		while (processIdx < processDataList.size())
 		{
-			// Start a new job script
+			// Start a new job script and collection of JSON files
 			final String jobScriptFilename = "EvalMCTSVariants_" + jobScriptNames.size() + ".sh";
 					
 			try (final PrintWriter writer = new UnixPrintWriter(new File(scriptsDir + jobScriptFilename), "UTF-8"))
 			{
 				writer.println("#!/bin/bash");
 				writer.println("#SBATCH -J EvalMCTSVariants");
-				writer.println("#SBATCH -p thin");
+				writer.println("#SBATCH -p rome");
 				writer.println("#SBATCH -o /home/" + userName + "/EvalMCTSVariants/Out/Out_%J.out");
-				writer.println("#SBATCH -e /home/" + userName + "/EvalMCTSVariants/Out/Err_%J.err");
+				writer.println("#SBATCH -e /home/" + userName + "/EvalMCTSVariants/Err/Err_%J.err");
 				writer.println("#SBATCH -t " + MAX_WALL_TIME);
 				writer.println("#SBATCH -N 1");		// 1 node, no MPI/OpenMP/etc
 				
 				// Compute memory and core requirements
 				final int numProcessesThisJob = Math.min(processDataList.size() - processIdx, PROCESSES_PER_JOB);
-				final boolean exclusive = (numProcessesThisJob > EXCLUSIVE_PROCESSES_THRESHOLD);
-				final int jobMemRequestGB;
-				if (exclusive)
-					jobMemRequestGB = Math.min(MEM_PER_NODE, MAX_REQUEST_MEM);	// We're requesting full node anyway, might as well take all the memory
-				else
-					jobMemRequestGB = Math.min(numProcessesThisJob * MEM_PER_PROCESS, MAX_REQUEST_MEM);
-				
-				writer.println("#SBATCH --cpus-per-task=" + numProcessesThisJob * CORES_PER_PROCESS);
+				final int jobMemRequestGB = MAX_REQUEST_MEM;
+
+				writer.println("#SBATCH --cpus-per-task=" + (numProcessesThisJob * CORES_PER_PROCESS));
 				writer.println("#SBATCH --mem=" + jobMemRequestGB + "G");		// 1 node, no MPI/OpenMP/etc
 				
 				totalRequestedCoreHours += (CORES_PER_NODE * (MAX_WALL_TIME / 60));
 				
-				if (exclusive)
-					writer.println("#SBATCH --exclusive");
+				writer.println("#SBATCH --exclusive");
 				
 				// load Java modules
-				writer.println("module load 2021");
-				writer.println("module load Java/11.0.2");
+				writer.println("module load 2022");
+				writer.println("module load Java/11.0.16");
 				
-				// Put up to PROCESSES_PER_JOB processes in this job
+				// Start writing the first part of the Java call line
+				writer.print
+				(
+					StringRoutines.join
+					(
+						" ",
+						"java",
+						"-Xms" + JVM_MEM_MIN,
+						"-Xmx" + JVM_MEM_MAX,
+						"-XX:+HeapDumpOnOutOfMemoryError",
+						"-XX:HeapDumpPath=" + StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Err/java_pid%p.hprof"),
+						"-da",
+						"-dsa",
+						"-XX:+UseStringDeduplication",
+						"-jar",
+						StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Ludii.jar"),
+						"--parallel-eval-multi-games-multi-agents",
+						"--max-wall-time",
+						String.valueOf(MAX_WALL_TIME),
+						"--num-cores-total",
+						String.valueOf(CORES_PER_NODE),
+						"--num-threads-per-trial",
+						String.valueOf(CORES_PER_PROCESS),
+						"--json-files"
+					)
+				);
+				
+				// Put up to PROCESSES_PER_JOB jsons in this job
 				int numJobProcesses = 0;
 				while (numJobProcesses < PROCESSES_PER_JOB && processIdx < processDataList.size())
 				{
@@ -544,27 +499,38 @@ public class EvalMCTSVariantsScriptsGen
 					final String filepathsRulesetName = 
 							StringRoutines.cleanRulesetName(
 									processData.rulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
-				
-					// Write Java call for this process
-					final String javaCall = 
-								generateJavaCall
-								(
-									userName,
-									processData.gameName,
-									processData.rulesetName,
-									processData.agentStrings.length * 10,
-									filepathsGameName,
-									filepathsRulesetName,
-									processData.callID,
-									processData.agentStrings,
-									numJobProcesses
-								);
 					
-					writer.println(javaCall);
+					final TrialsBatchToRun trialsBatch = 
+							new TrialsBatchToRun
+							(
+								processData.gameName + ".lud", 
+								processData.rulesetName, 
+								30, 650, 1.0, 75000, 10, 
+								"/home/" + userName + "/EvalMCTSVariants/Out/" + filepathsGameName + filepathsRulesetName + "/" + processData.callID, 
+								processData.agentStrings, 
+								false, false, true, false
+							);
+					
+					trialsBatch.toJson(scriptsDir + "TrialsBatch_" + processData.callID + ".json");
+					writer.print(" " + "/home/" + userName + "/EvalMCTSVariants/Scripts/" + "TrialsBatch_" + processData.callID + ".json");
 					
 					++processIdx;
 					++numJobProcesses;
 				}
+				
+				// Write the end of the Java call line
+				writer.println
+				(
+					" " + StringRoutines.join
+					(
+						" ",
+						">",
+						"/home/" + userName + "/EvalMCTSVariants/Out/Out_${SLURM_JOB_ID}" + ".out",
+						"2>",
+						"/home/" + userName + "/EvalMCTSVariants/Err/Err_${SLURM_JOB_ID}" + ".err",
+						"&"		// Run processes in parallel
+					)
+				);
 				
 				writer.println("wait");		// Wait for all the parallel processes to finish
 
@@ -616,88 +582,6 @@ public class EvalMCTSVariantsScriptsGen
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	/**
-	 * @param userName
-	 * @param gameName
-	 * @param fullRulesetName
-	 * @param numTrialsPerOpponent
-	 * @param filepathsGameName
-	 * @param filepathsRulesetName
-	 * @param callID
-	 * @param agentStrings
-	 * @param numJobProcesses
-	 * @return A complete string for a Java call
-	 */
-	public static String generateJavaCall
-	(
-		final String userName,
-		final String gameName,
-		final String fullRulesetName,
-		final int numTrialsPerOpponent,
-		final String filepathsGameName,
-		final String filepathsRulesetName,
-		final long callID,
-		final String[] agentStrings,
-		final int numJobProcesses
-	)
-	{
-		return StringRoutines.join
-				(
-					" ", 
-					"taskset",			// Assign specific core to each process
-					"-c",
-					StringRoutines.join
-					(
-						",", 
-						String.valueOf(numJobProcesses * 4), 
-						String.valueOf(numJobProcesses * 4 + 1),
-						String.valueOf(numJobProcesses * 4 + 2),
-						String.valueOf(numJobProcesses * 4 + 3)
-					),
-					"java",
-					"-Xms" + JVM_MEM + "M",
-					"-Xmx" + JVM_MEM + "M",
-					"-XX:+HeapDumpOnOutOfMemoryError",
-					"-da",
-					"-dsa",
-					"-XX:+UseStringDeduplication",
-					"-jar",
-					StringRoutines.quote("/home/" + userName + "/EvalMCTSVariants/Ludii.jar"),
-					"--eval-agents",
-					"--game",
-					StringRoutines.quote(gameName + ".lud"),
-					"--ruleset",
-					StringRoutines.quote(fullRulesetName),
-					"-n",
-					String.valueOf(numTrialsPerOpponent),
-					"--game-length-cap 1000",
-					"--thinking-time 1",
-					"--iteration-limit 100000",				// 100K iterations per move should be good enough
-					"--warming-up-secs 10",
-					"--out-dir",
-					StringRoutines.quote
-					(
-						"/home/" + 
-						userName + 
-						"/EvalMCTSVariants/Out/" + 
-						filepathsGameName + filepathsRulesetName +
-						"/" + callID + "/"
-					),
-					"--agents",
-					StringRoutines.join(" ", agentStrings),
-					"--max-wall-time",
-					String.valueOf(500),
-					"--output-raw-results",
-					"--no-print-out",
-					"--suppress-divisor-warning",
-					">",
-					"/home/" + userName + "/EvalMCTSVariants/Out/Out_${SLURM_JOB_ID}_" + callID + ".out",
-					"2>",
-					"/home/" + userName + "/EvalMCTSVariants/Out/Err_${SLURM_JOB_ID}_" + callID + ".err",
-					"&"		// Run processes in parallel
-				);
 	}
 	
 	//-------------------------------------------------------------------------

@@ -29,7 +29,6 @@ import main.Constants;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
-import manager.ai.AIRegistry;
 import other.AI;
 import other.GameLoader;
 import other.RankUtils;
@@ -37,6 +36,7 @@ import other.context.Context;
 import other.model.Model;
 import other.trial.Trial;
 import utils.AIFactory;
+import utils.AIRegistry;
 
 /**
  * To start a kilothon without a GUI (beat a weak ai on all games and send report to a mail).

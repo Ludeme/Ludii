@@ -2057,7 +2057,7 @@ public enum Concept
 	(
 		"3.1.2.2",
 		127, 
-		"No repeated states withing a single turn.",
+		"No repeated states within a single turn.",
 		ConceptType.Meta,
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -3190,7 +3190,7 @@ public enum Concept
 	(
 		"3.3.1.1.3.4.7",
 		204, 
-		"Hop an enemy to a enemy piece.",
+		"Hop an enemy to an enemy piece.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,
@@ -3274,7 +3274,7 @@ public enum Concept
 	(
 		"3.3.1.1.3.5.2",
 		210, 
-		"Move a piece from a site to another withing the board.",
+		"Move a piece from a site to another within the board.",
 		ConceptType.Play, 
 		ConceptDataType.BooleanData,
 		ConceptComputationType.Compilation,

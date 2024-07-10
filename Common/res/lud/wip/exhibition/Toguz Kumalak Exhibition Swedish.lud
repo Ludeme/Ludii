@@ -68,8 +68,20 @@
                         origin:(!= (count at:(last From)) 1)
                         (then
                             (and
-                                ("CaptureFromTuzOf" P1)
-                                ("CaptureFromTuzOf" P2)
+                                (and
+                                    ("CaptureFromTuzOf" P1)
+                                    ("CaptureFromTuzOf" P2)
+                                )
+                                (and
+                                    (set Score 
+                                        P1 
+                                        ("PiecesOwnedBy" P1)
+                                    )
+                                    (set Score 
+                                        P2
+                                        ("PiecesOwnedBy" P2) 
+                                    )
+                                )
                             )
                         )
                     )
@@ -87,7 +99,7 @@
     
     (info
         {
-        (rules "Det här är standardreglerna för Tokuz Korgool. >Räknare släpps en i taget i moturs riktning. När en räknare faller i en motståndares hål med ett udda antal räknare fångas dessa. När en spelare tappar en räknare i en motståndares hål med två räknare, äger spelaren nu detta hål. Varje räknare som faller in i den fångas. Den spelare som fångar flest räknare vinner.")
+        (rules "Det här är standardreglerna för Toguz Korgool. >Pjäser släpps en i taget i hålen i motsols riktning, inklusive i det valda hålet. När sista pjäsen faller i en av motspelarens hål med ett udda antal pjäser så fångas de. När en spelare släpper sista pjäsen i en av motspelarens hål, med exakt två pjäser i, tar spelaren kontroll av hålet. Varje pjäs som faller i hålet fångas. Spelaren som fångar flest pjäser vinner.")
         }
     )
     

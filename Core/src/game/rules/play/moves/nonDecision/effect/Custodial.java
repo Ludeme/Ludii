@@ -49,7 +49,7 @@ public final class Custodial extends Effect
 	/** Direction chosen. */
 	private final AbsoluteDirection dirnChoice;
 
-	/** Mininum to flank. */
+	/** Minimum to flank. */
 	private final IntFunction minimum;
 	
 	/** Limit to flank. */

@@ -305,7 +305,7 @@
 // HeuristicScoreC is used to guide the AI based on 
 // your actual permanent score vs opponent's max potential score, and is
 // offset (reduced) by the number of pieces you have played so as to stabilize it.
-// as mentioned Below, it is based on the heuristic win algorythm data.
+// as mentioned Below, it is based on the heuristic win algorithm data.
 
 (define "HeuristicScoreC" 
     (set Score P1
@@ -325,10 +325,10 @@
 //-------------------------------------------------------
 // -- rational for determining Heuristic wins, and AI scoring. --  scripts used continue below
 //-----------------------------------------------------
-// Empty and friend sites surrounded by enemies witout including live sites are permanently dead.
+// Empty and friend sites surrounded by enemies without including live sites are permanently dead.
 // And provide immortality to the enemy as long as they contain an empty locations between the group and a star.
 // Plus a special case where: line of sight across a singleton eye connects a separate group of the connecting pieces.
-// Note it is possible that their are dead pieces making up parts of the walls.  
+// Note it is possible that there are dead pieces making up parts of the walls.  
 
 // The algorithm is conservative. It does not see every possible LoS connected live group that is assured life, because some are very hard to distinguish from grouips that can later be cut-off.
 
@@ -523,7 +523,7 @@
             There is an option to turn these off, for practicing the Over-the-Board experience.
         There are also options for board size, and turn alternation protocol.")
         (id "4097")
-        (version "1.3.12")
+        (version "1.3.13")
         (classification "board/space/territory")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

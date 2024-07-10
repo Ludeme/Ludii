@@ -8,13 +8,13 @@ import app.DesktopApp;
 import app.PlayerApp;
 import app.views.players.PlayerViewUser;
 import main.Constants;
-import manager.ai.AIRegistry;
 import metadata.graphics.util.PieceStackType;
 import metadata.graphics.util.StackPropertyType;
 import other.context.Context;
 import other.location.Location;
 import other.state.container.ContainerState;
 import util.ContainerUtil;
+import utils.AIRegistry;
 
 
 /**

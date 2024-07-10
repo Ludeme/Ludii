@@ -30,7 +30,7 @@ public final class RobustChild implements FinalMoveSelectionStrategy
 		float bestActionPolicyPrior = Float.NEGATIVE_INFINITY;
 		final State rootState = rootNode.contextRef().state();
 		final int moverAgent = rootState.playerToAgent(rootState.mover());
-        int maxNumVisits = -1;
+        int maxNumVisits = Integer.MIN_VALUE;
         
         final FVector priorPolicy;
         if (mcts.learnedSelectionPolicy() == null)

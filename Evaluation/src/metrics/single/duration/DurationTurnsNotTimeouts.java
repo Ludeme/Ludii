@@ -8,6 +8,7 @@ import main.Status.EndType;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -17,6 +18,11 @@ import other.trial.Trial;
  */
 public class DurationTurnsNotTimeouts extends Metric
 {
+
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double turnTally = 0.0;
 
 	//-------------------------------------------------------------------------
 
@@ -72,6 +78,39 @@ public class DurationTurnsNotTimeouts extends Metric
 		return Double.valueOf(turnTally / numTrials);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		if (context.trial().status() != null) 
+		{
+			final boolean trialTimedOut = context.trial().status().endType() == EndType.MoveLimit || context.trial().status().endType() == EndType.TurnLimit;
+			if (!trialTimedOut)
+			{
+				turnTally += context.trial().numTurns();
+			}
+		}
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return turnTally / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

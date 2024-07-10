@@ -7,6 +7,7 @@ import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -16,6 +17,10 @@ import other.trial.Trial;
  */
 public class DurationMoves extends Metric
 {
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	double moveTally = 0.0;
 
 	//-------------------------------------------------------------------------
 
@@ -53,6 +58,32 @@ public class DurationMoves extends Metric
 		return Double.valueOf(moveTally / trials.length);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		moveTally += context.trial().numberRealMoves();
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return moveTally / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

@@ -20,7 +20,7 @@ import view.container.styles.board.TableStyle;
  */
 public class TableDesign extends BoardDesign
 {
-	/** The style of the the table board. */
+	/** The style of the table board. */
 	private final TableStyle tableStyle;
 
 	/** The placement in a table board. */

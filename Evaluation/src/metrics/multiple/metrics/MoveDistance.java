@@ -21,7 +21,12 @@ import other.trial.Trial;
  */
 public class MoveDistance extends MultiMetricFramework
 {
+	
+	//-------------------------------------------------------------------------
 
+	/** For incremental computation */
+	protected Topology boardTopology = null;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -80,6 +85,44 @@ public class MoveDistance extends MultiMetricFramework
 		return valueList.toArray(new Double[0]);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		boardTopology = context.board().topology();
+		if (context.game().booleanConcepts().get(Concept.Cell.id()))
+			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Cell, RelationType.Adjacent);
+		if (context.game().booleanConcepts().get(Concept.Edge.id()))
+			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Edge, RelationType.Adjacent);
+		if (context.game().booleanConcepts().get(Concept.Vertex.id()))
+			boardTopology.preGenerateDistanceToEachElementToEachOther(SiteType.Vertex, RelationType.Adjacent);
+		
+		currValueList = new ArrayList<Double>();
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		final Move m = context.trial().lastMove();
+		
+		final SiteType moveType = m.fromType();
+		
+		if 
+		(
+			m.fromType() == m.toType() 
+			&&
+			m.from() < boardTopology.numSites(moveType)
+			&&
+			m.to() < boardTopology.numSites(moveType)
+			&&
+			m.from() != m.to()
+		)	
+		{
+			currValueList.add(Double.valueOf(boardTopology.distancesToOtherSite(moveType)[m.from()][m.to()]));
+		}
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

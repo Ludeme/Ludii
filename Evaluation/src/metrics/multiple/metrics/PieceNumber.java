@@ -53,6 +53,21 @@ public class PieceNumber extends MultiMetricFramework
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		currValueList = new ArrayList<Double>();
+		currValueList.add(Double.valueOf(Utils.numPieces(context)));
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		currValueList.add(Double.valueOf(Utils.numPieces(context)));
+	}
+	
+	//-------------------------------------------------------------------------
 
 
 }

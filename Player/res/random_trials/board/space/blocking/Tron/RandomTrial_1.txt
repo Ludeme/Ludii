@@ -1,0 +1,20 @@
+game=../Common/res/lud/board/space/blocking/Tron.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-36,66,-13,-6,28,-89,-37,-120
+Move=[Move:mover=0,from=44,to=44,actions=[Add:type=Cell,to=44,what=1]]
+Move=[Move:mover=0,from=55,to=55,actions=[Add:type=Cell,to=55,what=2]]
+Move=[Move:mover=1,from=44,to=34,actions=[Move:typeFrom=Cell,from=44,typeTo=Cell,to=34,decision=true],[Add:type=Cell,to=44,what=3]]
+Move=[Move:mover=2,from=55,to=54,actions=[Move:typeFrom=Cell,from=55,typeTo=Cell,to=54,decision=true],[Add:type=Cell,to=55,what=4]]
+Move=[Move:mover=1,from=34,to=35,actions=[Move:typeFrom=Cell,from=34,typeTo=Cell,to=35,decision=true],[Add:type=Cell,to=34,what=3]]
+Move=[Move:mover=2,from=54,to=44,actions=[Trigger:event=Collision,player=2],[Move:typeFrom=Cell,from=54,typeTo=Cell,to=44,decision=true],[Add:type=Cell,to=54,what=4]]
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 4
+LEGAL MOVES LIST SIZE = 4
+numInitialPlacementMoves=2
+winner=1
+endtype=NaturalEnd
+rankings=0.0,1.0,2.0
+SANDBOX=false
+LUDII_VERSION=1.3.0

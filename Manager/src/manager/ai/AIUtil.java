@@ -8,6 +8,7 @@ import manager.Manager;
 import other.AI;
 import other.context.Context;
 import other.model.SimultaneousMove;
+import utils.AIRegistry;
 import utils.AIUtils;
 
 /**

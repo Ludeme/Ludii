@@ -51,5 +51,21 @@ public class BranchingFactor extends MultiMetricFramework
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		currValueList = new ArrayList<Double>();
+		currValueList.add(Double.valueOf(context.game().moves(context).moves().size()));
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		if (!context.trial().over())
+			currValueList.add(Double.valueOf(context.game().moves(context).moves().size()));
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

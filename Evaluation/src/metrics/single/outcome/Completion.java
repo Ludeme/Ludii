@@ -6,6 +6,7 @@ import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -16,6 +17,11 @@ import other.trial.Trial;
 public class Completion extends Metric
 {
 
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double completedGames = 0.0;
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -57,6 +63,33 @@ public class Completion extends Metric
 		return Double.valueOf(completedGames / trials.length);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		if (context.trial().status() != null && context.trial().status().winner() != 0)
+			completedGames++;
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return completedGames / numTrials;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

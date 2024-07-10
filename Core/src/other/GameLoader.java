@@ -175,6 +175,32 @@ public final class GameLoader
 	}
 	
 	/**
+	 * Load game from file (+ ruleset).
+	 * @param file .lud file to load game from
+	 * @param rulesetName Name of the ruleset to load.
+	 * @return Loads game for the given name
+	 */
+	public static Game loadGameFromFile(final File file, final String rulesetName)
+	{
+		if (rulesetName.length() == 0)
+			return loadGameFromFile(file);
+		
+		final Game tempGame = GameLoader.loadGameFromFile(file);
+		final List<Ruleset> rulesets = tempGame.description().rulesets();
+		if (rulesets != null && !rulesets.isEmpty())
+		{
+			for (int rs = 0; rs < rulesets.size(); rs++)
+				if (rulesets.get(rs).heading().equals(rulesetName))
+					return loadGameFromFile(file, rulesets.get(rs).optionSettings());
+		}
+		
+		System.err.println("ERROR: Ruleset name not found, loading default game options");
+		System.err.println("Game file = " + file.getAbsolutePath());
+		System.err.println("Ruleset name = " + rulesetName);
+		return loadGameFromFile(file);
+	}
+	
+	/**
 	 * @param file .lud file to load game from
 	 * @param options List of options to select
 	 * @return Game loaded from file

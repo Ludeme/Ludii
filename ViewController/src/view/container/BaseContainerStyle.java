@@ -304,7 +304,7 @@ public abstract class BaseContainerStyle implements ContainerStyle
 		if (bridge.settingsVC().thisFrameIsAnimated() || context.game().isDeductionPuzzle())
 			return;
 		
-		final int transparencyAmount = 125; // between 0 and 255
+		final int transparencyAmount = 63;  //125; // between 0 and 255
 		final int sz = Math.min(16, (int)(0.4 * containerPlacement.cellRadiusPixels()));
 
 		// Possible consequence move locations

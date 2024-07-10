@@ -242,7 +242,7 @@ public class Context
 	/**
 	 * @param other
 	 * @return A copy of the given other context, with a new RNG that has
-	 * 	a copied interal state (i.e., seed etc.)
+	 * 	a copied internal state (i.e., seed etc.)
 	 */
 	public static Context copyWithSeed(final Context other)
 	{
@@ -328,7 +328,7 @@ public class Context
 	}
 	
 	/**
-	 * @return The object used to evalutate the ludemes.
+	 * @return The object used to evaluate the ludemes.
 	 */
 	public EvalContext evalContext()
 	{

@@ -28,12 +28,24 @@
                     if:(> (count at:(from)) 0)		
                 )
                 (then
-                    (sow
-                        apply:(if (= 6 (count at:(to)))
-                            (fromTo
-                                (from (to))
-                                (to (mapEntry Mover))
-                                count:6
+                    (and
+                        (sow
+                            apply:(if (= 6 (count at:(to)))
+                                (fromTo
+                                    (from (to))
+                                    (to (mapEntry Mover))
+                                    count:6
+                                )
+                            )
+                        )
+                        (and
+                            (set Score 
+                                P1 
+                                ("PiecesOwnedBy" P1)
+                            )
+                            (set Score 
+                                P2
+                                ("PiecesOwnedBy" P2) 
                             )
                         )
                     )
@@ -50,7 +62,7 @@
 (metadata 
     (info
         {
-        (rules "These rules were observed in Ghana in the 1900s. >Players pick up the counters in a hole and drop them one-by-one in a counter clockwise direction. When the player drops a counter into one of their opponent's holes with five counters, the player captures these counters. The player who captures the most counters wins.​")
+        (rules "These rules were observed in Ghana in the 1900s. >Players pick up the counters in a hole and drop them one-by-one in a counter clockwise direction. When the player drops the last counter into a hole with five counters, the player captures these counters. The player who captures the most counters wins.")
         }
     )
     

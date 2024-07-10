@@ -28,7 +28,7 @@ import app.utils.AnimationVisualsType;
 import app.utils.PuzzleSelectionType;
 import main.Constants;
 import manager.ai.AIDetails;
-import manager.ai.AIRegistry;
+import utils.AIRegistry;
 
 /**
  * The values of various options and settings that are to be retained throughout multiple loadings of the application.

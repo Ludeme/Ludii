@@ -76,5 +76,19 @@ public class Drama extends MultiMetricFramework
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for Drama.");
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for Drama.");
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

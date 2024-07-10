@@ -241,7 +241,7 @@ public class AbsoluteFeature extends SpatialFeature
 	@Override
 	public List<SpatialFeature> generateGeneralisers(final Game game, final Set<RotRefInvariantFeature> generalisers, final int numRecursions)
 	{
-		System.err.println("ERRROR: AbsoluteFeature::generateGeneralisers(Game) not yet implemented!");
+		System.err.println("ERROR: AbsoluteFeature::generateGeneralisers(Game) not yet implemented!");
 		return null;
 	}
 	

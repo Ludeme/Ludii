@@ -256,7 +256,7 @@ public class EvalGamesSet
 				if (printOut)
 					System.out.println("Finished warming up!");
 				
-				// prepare results writing
+				// Prepare results writing
 				final List<String> agentStrings = new ArrayList<String>();
 				for (final AI ai : agents)
 				{
@@ -308,6 +308,7 @@ public class EvalGamesSet
 							break;
 						}
 						
+						System.gc();
 						model.startNewStep(context, currentAIList, maxSeconds, maxIterations, maxSearchDepth, 0.0);
 					}
 

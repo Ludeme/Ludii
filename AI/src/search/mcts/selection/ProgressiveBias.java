@@ -48,7 +48,7 @@ public final class ProgressiveBias implements SelectionStrategy
 	{
 		assert(mcts.heuristics() != null);
 		
-		int bestIdx = -1;
+		int bestIdx = 0;
         double bestValue = Double.NEGATIVE_INFINITY;
         int numBestFound = 0;
         
@@ -75,7 +75,7 @@ public final class ProgressiveBias implements SelectionStrategy
         	else
         	{
         		exploit = child.exploitationScore(moverAgent);
-        		final int numVisits = child.numVisits() + child.numVirtualVisits();
+        		final int numVisits = Math.max(child.numVisits() + child.numVirtualVisits(), 1);
         		explore = Math.sqrt(parentLog / numVisits);
         		
         		// No idea what kind of weight we should use, just guessing 10.0 for now based on nothing

@@ -49,6 +49,7 @@ import game.rules.end.Result;
 import game.rules.meta.Automove;
 import game.rules.meta.Gravity;
 import game.rules.meta.MetaRule;
+import game.rules.meta.NoStackOn;
 import game.rules.meta.Pin;
 import game.rules.meta.Swap;
 import game.rules.phase.NextPhase;
@@ -1024,7 +1025,7 @@ public class Game extends BaseLudeme implements API, Serializable
 	}
 
 	/**
-	 * @return True if the game uses somes decks.
+	 * @return True if the game uses some decks.
 	 */
 	public boolean hasHandDeck()
 	{
@@ -2524,6 +2525,9 @@ public class Game extends BaseLudeme implements API, Serializable
 								null, 
 								null,
 								null,
+								null,
+								null,
+								null,
 								null
 							),
 							null,
@@ -2852,6 +2856,21 @@ public class Game extends BaseLudeme implements API, Serializable
 					
 					// Meta-rule: We apply the Pin meta-rule if existing.
 					Pin.apply(context,legalMoves);
+					
+					// Meta-rule:  We apply the NoStackOnFallen meta-rule if existing.
+					NoStackOn.apply(context, legalMoves);
+					
+					if (metaRules.automove() || metaRules.gravityType() != null)
+					{
+						for (final Move legalMove : legalMoves.moves())
+						{
+							// Meta-rule: We apply the auto move rules if existing.
+							Automove.apply(context, legalMove);
+		
+							// Meta-rule: We apply the gravity rules if existing.
+							Gravity.apply(context, legalMove);
+						}
+					}
 				}
 				else if (isSimulationMoveGame())
 				{
@@ -2989,12 +3008,6 @@ public class Game extends BaseLudeme implements API, Serializable
 		{
 			// Save data before applying end rules (for undo).
 			context.storeCurrentData();
-			
-			// Meta-rule: We apply the auto move rules if existing.
-			Automove.apply(context, move);
-
-			// Meta-rule: We apply the gravity rules if existing.
-			Gravity.apply(context,move);
 			
 			// If a decision was done previously we reset it.
 			if (context.state().isDecided() != Constants.UNDEFINED)

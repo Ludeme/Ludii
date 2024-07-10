@@ -49,7 +49,7 @@ public final class UCB1Tuned implements SelectionStrategy
 	@Override
 	public int select(final MCTS mcts, final BaseNode current)
 	{
-		int bestIdx = -1;
+		int bestIdx = 0;
         double bestValue = Double.NEGATIVE_INFINITY;
         int numBestFound = 0;
 
@@ -75,7 +75,7 @@ public final class UCB1Tuned implements SelectionStrategy
         	else
         	{
         		exploit = child.exploitationScore(moverAgent);
-        		final int numChildVisits = child.numVisits() + child.numVirtualVisits();
+        		final int numChildVisits = Math.max(child.numVisits() + child.numVirtualVisits(), 1);
         		sampleVariance = Math.max(child.sumSquaredScores(moverAgent) / numChildVisits - exploit*exploit, 0.0);
         		visitsFraction = parentLog / numChildVisits;
         	}

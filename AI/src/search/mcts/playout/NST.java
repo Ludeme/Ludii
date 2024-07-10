@@ -181,7 +181,7 @@ public class NST implements PlayoutStrategy
 								)
 							);
 					
-					if (nGramStats == null)
+					if (nGramStats == null || nGramStats.visitCount <= 0)
 						break;
 					
 					++numNGramsConsidered;

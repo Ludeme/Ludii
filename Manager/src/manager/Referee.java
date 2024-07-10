@@ -186,7 +186,7 @@ public class Referee
 			return false;
 		}
 
-		// If the move was valid, try and apply it.
+		// If the move was valid, try to apply it.
 		applyHumanMoveToGame(manager, realMoveToApply);
 		
 		return true;
@@ -677,7 +677,7 @@ public class Referee
 	//-------------------------------------------------------------------------
 	
 	/** 
-	 * Checks if a pass move should be applied instantly, if its the only legal move and the game is stochastic. 
+	 * Checks if a pass move should be applied instantly, if it's the only legal move and the game is stochastic. 
 	 */
 	private void checkInstantPass(final Manager manager) 
 	{

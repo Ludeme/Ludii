@@ -6,6 +6,8 @@ import java.util.Random;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
 import game.functions.ints.IntConstant;
+import game.rules.meta.Automove;
+import game.rules.meta.Gravity;
 import game.rules.phase.Phase;
 import game.rules.play.Play;
 import game.rules.play.moves.Moves;
@@ -233,6 +235,18 @@ public class PlayoutFilter implements Playout
 				}
 				
 				final FastArrayList<Move> moves = legalMoves.moves();
+				
+				if (currentGame.metaRules().automove() || currentGame.metaRules().gravityType() != null)
+				{
+					for (final Move legalMove : moves)
+					{
+						// Meta-rule: We apply the auto move rules if existing.
+						Automove.apply(context, legalMove);
+	
+						// Meta-rule: We apply the gravity rules if existing.
+						Gravity.apply(context, legalMove);
+					}
+				}
 				
 				// Functor to filter out illegal moves
 				final IsMoveReallyLegal isMoveReallyLegal = (final Move m) -> { 

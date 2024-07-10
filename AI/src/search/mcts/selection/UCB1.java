@@ -43,7 +43,7 @@ public final class UCB1 implements SelectionStrategy
 	@Override
 	public int select(final MCTS mcts, final BaseNode current)
 	{
-		int bestIdx = -1;
+		int bestIdx = 0;
         double bestValue = Double.NEGATIVE_INFINITY;
         int numBestFound = 0;
 
@@ -67,7 +67,7 @@ public final class UCB1 implements SelectionStrategy
         	else
         	{
         		exploit = child.exploitationScore(moverAgent);
-        		final int numVisits = child.numVisits() + child.numVirtualVisits();
+        		final int numVisits = Math.max(child.numVisits() + child.numVirtualVisits(), 1);
         		explore = Math.sqrt(parentLog / numVisits);
         	}
 

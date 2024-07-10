@@ -10,6 +10,7 @@ import main.Constants;
 import metrics.Evaluation;
 import metrics.Metric;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -20,6 +21,11 @@ import other.trial.Trial;
 public class DurationTurnsStdDev extends Metric
 {
 
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected List<Integer> turnTally = new ArrayList<>();
+	
 	//-------------------------------------------------------------------------
 
 	/**
@@ -75,6 +81,32 @@ public class DurationTurnsStdDev extends Metric
 		return Double.valueOf(calculateSD(turnTally));
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		turnTally.add(Integer.valueOf(context.trial().numTurns()));
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return calculateSD(turnTally);
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

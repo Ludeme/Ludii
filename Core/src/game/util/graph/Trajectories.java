@@ -858,7 +858,7 @@ public class Trajectories
 		}
 		
 		/**
-		 * Add a element to the steps.
+		 * Add an element to the steps.
 		 * 
 		 * @param to The element.
 		 */

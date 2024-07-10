@@ -278,7 +278,7 @@ public class LInputField extends JComponent
     private void constructTerminal(NodeArgument nodeArgument, boolean removable)
     {
 
-        // check whether a input already exists to auto-fill it
+        // check whether an input already exists to auto-fill it
         Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
 
         fieldComponent = generateTerminalComponent(nodeArgument);
@@ -641,7 +641,7 @@ public class LInputField extends JComponent
 
     private void constructCollectionTerminal(NodeArgument nodeArgument)
     {
-        // check whether a input already exists to auto-fill it
+        // check whether an input already exists to auto-fill it
         Object input = inputArea().LNC().node().providedInputsMap().get(nodeArgument);
 
         fieldComponent = generateTerminalComponent(nodeArgument);

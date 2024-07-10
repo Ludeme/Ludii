@@ -5,6 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.multiple.MultiMetricFramework.MultiMetricValue;
 import other.concept.Concept;
+import other.context.Context;
 import other.trial.Trial;
 
 //-----------------------------------------------------------------------------
@@ -104,6 +105,35 @@ public abstract class Metric
 		final Trial[] trials,
 		final RandomProviderState[] randomProviderStates
 	);
+	
+	/**
+	 * Start processing a new trial.
+	 * @param context Initial state.
+	 * @param fullTrial The complete trial (not just the stage we're at with stepping through it).
+	 */
+	public abstract void startNewTrial(final Context context, final Trial fullTrial);
+	
+	/**
+	 * Observe the next state for incrementally computing metrics.
+	 * @param context
+	 */
+	public abstract void observeNextState(final Context context);
+	
+	/**
+	 * Observe the final state for incrementally computing metrics
+	 * (NOTE: we will have also already observed this same state via observeNextState()).
+	 * @param context
+	 */
+	public abstract void observeFinalState(final Context context);
+	
+	/**
+	 * Finalise incremental computation of metric (i.e., signal that we have seen
+	 * the last of the final trial).
+	 * @param game
+	 * @param numTrials
+	 * @return The metric value.
+	 */
+	public abstract double finaliseMetric(final Game game, final int numTrials);
 	
 	//-------------------------------------------------------------------------
 

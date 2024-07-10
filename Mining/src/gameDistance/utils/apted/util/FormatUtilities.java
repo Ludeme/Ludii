@@ -43,20 +43,20 @@ public class FormatUtilities
     {
     }
 
-    public static String getField(final int fieldNr, final String line, final char seperator)
+    public static String getField(final int fieldNr, final String line, final char separator)
     {
         if(line != null)
         {
             int pos = 0;
             for(int i = 0; i < fieldNr; i++)
             {
-                pos = line.indexOf(seperator, pos);
+                pos = line.indexOf(separator, pos);
                 if(pos == -1)
                     return null;
                 pos++;
             }
 
-            final int pos2 = line.indexOf(seperator, pos);
+            final int pos2 = line.indexOf(separator, pos);
             String res;
             if(pos2 == -1)
                 res = line.substring(pos);

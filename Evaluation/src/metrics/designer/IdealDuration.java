@@ -5,6 +5,7 @@ import org.apache.commons.rng.RandomProviderState;
 import game.Game;
 import metrics.Evaluation;
 import metrics.Metric;
+import other.context.Context;
 import other.trial.Trial;
 
 /**
@@ -86,6 +87,33 @@ public class IdealDuration extends Metric
 		this.maxTurn = maxTurn;
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for IdealDuration.");
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for IdealDuration.");
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for IdealDuration.");
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for IdealDuration.");
+		return Double.NaN;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

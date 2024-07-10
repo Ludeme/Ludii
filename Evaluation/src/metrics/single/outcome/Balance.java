@@ -20,6 +20,11 @@ public class Balance extends Metric
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double[] wins = null;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -52,7 +57,7 @@ public class Balance extends Metric
 			return null;
 		
 		// Count number of wins per player
-		final int[] wins = new int[numPlayers + 1];		
+		final double[] wins = new double[numPlayers + 1];		
 		for (int i = 0; i < trials.length; i++)
 		{
 			final Trial trial = trials[i];
@@ -83,6 +88,54 @@ public class Balance extends Metric
 		return Double.valueOf(1.0 - maxDisc);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		if (wins == null)
+			wins = new double[context.game().players().count() + 1];
+		
+		for (int p = 1; p < wins.length; p++) 
+			wins[p] += (RankUtils.agentUtilities(context)[p] + 1.0) / 2.0;
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		// Get mean win rate over all players
+		final int numPlayers = game.players().count();
+		final double[] rate = new double[numPlayers + 1];
+		for (int p = 1; p <= numPlayers; p++)
+			rate[p] = wins[p] / (double)numTrials;
+
+		// Find maximum discrepancy
+		double maxDisc = 0.0;
+		for (int pa = 1; pa <= numPlayers; pa++)
+		{
+			for (int pb = pa+1; pb <= numPlayers; pb++)
+			{
+				final double disc = Math.abs(rate[pa] - rate[pb]);
+				if (disc > maxDisc)
+					maxDisc = disc;
+			}
+		}
+
+		return 1.0 - maxDisc;
+	}
+	
 	//-------------------------------------------------------------------------
 
 }

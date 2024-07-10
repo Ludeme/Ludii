@@ -402,7 +402,7 @@
     )
 )
 
-(define "BuyVehiculeMove" 
+(define "BuyVehicleMove" 
     ("BuyMove" components:{"Speeder" "Shooter" "Tank" "Boss" "Antiair" "Launcher" "Artillery"} 
         (difference 
             (sites Around (sites Occupied by:Mover component:"Factory") Orthogonal)
@@ -729,7 +729,7 @@
                     ("BuyHumanMove") 
                     ("BuyBoatMove") 
                     ("BuyAircraftMove") 
-                    ("BuyVehiculeMove") 
+                    ("BuyVehicleMove") 
                     }
                     (then 
                         (and 

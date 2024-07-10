@@ -93,7 +93,7 @@
 )
 
 //----------------------------------
-// For each mover group find out how many matching groups there are and if that is less then the group multiply it by the group size and add to the score, otherwise square the group size and add it to the score
+// For each mover group find out how many matching groups there are and if that is less than the group multiply it by the group size and add to the score, otherwise square the group size and add it to the score
 
 (define "GroupSize" 
     (size Group at:(var "KeySite"))
@@ -297,9 +297,9 @@
             
         For example, if a brood consists of 2 groups of size 3, it is worth 12 points. Its order is 3, its size is 2 and its mass is 6. Since 2 is smaller than 3, the brood is worth 6*2 = 12.")
         (id "1998")
-        (version "1.3.12")
+        (version "1.3.13")
         (classification "board/space/group")
-        (author "Michael Admundsen")
+        (author "Michael Amundsen")
         (credit "Dale Walton")
         (date "2022")
         }

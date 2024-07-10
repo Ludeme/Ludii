@@ -54,7 +54,7 @@ public class ProgressiveHistory implements SelectionStrategy
 	@Override
 	public int select(final MCTS mcts, final BaseNode current)
 	{
-		int bestIdx = -1;
+		int bestIdx = 0;
         double bestValue = Double.NEGATIVE_INFINITY;
         int numBestFound = 0;
         
@@ -72,7 +72,7 @@ public class ProgressiveHistory implements SelectionStrategy
         	final double explore;
         	final double meanScore;
         	final double meanGlobalActionScore;
-        	final int childNumVisits = child == null ? 0 : child.numVisits() + child.numVirtualVisits();
+        	final int childNumVisits = child == null ? 0 : Math.max(child.numVisits() + child.numVirtualVisits(), 1);
 
         	final Move move = current.nthLegalMove(i);
         	final ActionStatistics actionStats = mcts.getOrCreateActionStatsEntry(new MoveKey(move, current.contextRef().trial().numMoves()));

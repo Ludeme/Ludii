@@ -23,76 +23,81 @@ public class IdRuleset
 {
 	/** The path of the csv with the id of the rulesets for each game. */
 	private static final String GAME_RULESET_PATH = "/concepts/input/GameRulesets.csv";
+	
+	private static boolean readFile = false;
+	private static final List<String> gameNames = new ArrayList<String>();
+	private static final List<String> rulesetsNames = new ArrayList<String>();
+	private static final TIntArrayList ids = new TIntArrayList();
 
 	/**
 	 * @param game The game object.
 	 * @return The id from the csv exported from the db.
 	 */
-	public static int get(final Game game)
+	public static synchronized int get(final Game game)
 	{
-		final List<String> gameNames = new ArrayList<String>();
-		final List<String> rulesetsNames = new ArrayList<String>();
-		final TIntArrayList ids = new TIntArrayList();
-		String rulesetName = null;
-		try
-		(
-			final InputStream in = ExportDbCsvConcepts.class.getResourceAsStream(GAME_RULESET_PATH);
-			final BufferedReader reader = new BufferedReader(new InputStreamReader(in));		
-		)
+		if (!readFile)
 		{
-			String line = reader.readLine();
-			while (line != null)
+			try
+			(
+				final InputStream in = ExportDbCsvConcepts.class.getResourceAsStream(GAME_RULESET_PATH);
+				final BufferedReader reader = new BufferedReader(new InputStreamReader(in));		
+			)
 			{
-				String lineNoQuote = line.replaceAll(Pattern.quote("\""), "");
+				String line = reader.readLine();
+				while (line != null)
+				{
+					String lineNoQuote = line.replaceAll(Pattern.quote("\""), "");
 
-				int separatorIndex = lineNoQuote.indexOf(',');
-				final String gameName = lineNoQuote.substring(0, separatorIndex);
-				gameNames.add(gameName);
-				lineNoQuote = lineNoQuote.substring(gameName.length() + 1);
+					int separatorIndex = lineNoQuote.indexOf(',');
+					final String gameName = lineNoQuote.substring(0, separatorIndex);
+					gameNames.add(gameName);
+					lineNoQuote = lineNoQuote.substring(gameName.length() + 1);
 
-				separatorIndex = lineNoQuote.indexOf(',');
-				rulesetName = lineNoQuote.substring(0, separatorIndex);
-				rulesetsNames.add(rulesetName);
-				lineNoQuote = lineNoQuote.substring(rulesetName.length() + 1);
-				final int id = Integer.parseInt(lineNoQuote);
-				ids.add(id);
-				// System.out.println(gameName + " --- " + rulesetName + " --- " + id);
+					separatorIndex = lineNoQuote.indexOf(',');
+					String rulesetName = lineNoQuote.substring(0, separatorIndex);
+					rulesetsNames.add(rulesetName);
+					lineNoQuote = lineNoQuote.substring(rulesetName.length() + 1);
+					final int id = Integer.parseInt(lineNoQuote);
+					ids.add(id);
+					// System.out.println(gameName + " --- " + rulesetName + " --- " + id);
 
-				line = reader.readLine();
+					line = reader.readLine();
+				}
+				reader.close();
 			}
-			reader.close();
+			catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
+			catch (final NullPointerException e)
+			{
+				System.err.println("Try cleaning your Eclipse projects!");
+				e.printStackTrace();
+			}
 			
-			final Ruleset ruleset = game.getRuleset();
-			rulesetName = (ruleset == null) ? null : ruleset.heading();
+			readFile = true;
+		}
+		
+		final Ruleset ruleset = game.getRuleset();
+		final String rulesetName = (ruleset == null) ? null : ruleset.heading();
+		
+		if (rulesetName == null)
+		{
+			for (int i = 0; i < gameNames.size(); i++)
+				if (gameNames.get(i).equals(game.name()))
+					return ids.get(i);
+		}
+		else
+		{
+			final String name_ruleset = ruleset.heading();
+			final String startString = "Ruleset/";
+			final String name_ruleset_csv = name_ruleset.substring(startString.length(),
+					ruleset.heading().lastIndexOf('(') - 1);
 			
-			if (rulesetName == null)
-			{
-				for (int i = 0; i < gameNames.size(); i++)
-					if (gameNames.get(i).equals(game.name()))
-						return ids.get(i);
-			}
-			else
-			{
-				final String name_ruleset = ruleset.heading();
-				final String startString = "Ruleset/";
-				final String name_ruleset_csv = name_ruleset.substring(startString.length(),
-						ruleset.heading().lastIndexOf('(') - 1);
-				
-				for (int i = 0; i < gameNames.size(); i++)
-					if (gameNames.get(i).equals(game.name()) && rulesetsNames.get(i).equals(name_ruleset_csv))
-						return ids.get(i);
-			}
+			for (int i = 0; i < gameNames.size(); i++)
+				if (gameNames.get(i).equals(game.name()) && rulesetsNames.get(i).equals(name_ruleset_csv))
+					return ids.get(i);
 		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final NullPointerException e)
-		{
-			System.err.println("Try cleaning your Eclipse projects!");
-			e.printStackTrace();
-		}
-
 		
 		System.err.println("NOT FOUND");
 		System.err.println("gameName = " + game.name());

@@ -92,7 +92,7 @@ public class UpdateTabMessages
 				if (context.computeNextDrawRank() > trial.ranking()[i])
 					statusString += context.getPlayerName(i) + " has achieved a win.\n";
 				else if (context.computeNextDrawRank() < context.trial().ranking()[i])
-					statusString += context.getPlayerName(i) + " has sufferred a loss.\n";	
+					statusString += context.getPlayerName(i) + " has suffered a loss.\n";	
 				else
 					statusString += context.getPlayerName(i) + " has been given a draw.\n";	
 			}

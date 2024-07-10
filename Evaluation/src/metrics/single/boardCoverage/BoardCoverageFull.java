@@ -22,6 +22,14 @@ import other.trial.Trial;
  */
 public class BoardCoverageFull extends Metric
 {
+	
+	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected double numSitesCovered = 0.0;
+	
+	/** For incremental computation */
+	protected Set<TopologyElement> sitesCovered = null;
 
 	//-------------------------------------------------------------------------
 
@@ -76,5 +84,34 @@ public class BoardCoverageFull extends Metric
 
 		return Double.valueOf(numSitesCovered / trials.length);
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		sitesCovered = new HashSet<TopologyElement>();
+		sitesCovered.addAll(Utils.boardAllSitesCovered(context));
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		sitesCovered.addAll(Utils.boardAllSitesCovered(context));
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		numSitesCovered += ((double) sitesCovered.size()) / context.board().topology().getAllGraphElements().size();
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		return numSitesCovered / numTrials;
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

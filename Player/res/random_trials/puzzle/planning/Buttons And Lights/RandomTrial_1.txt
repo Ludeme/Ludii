@@ -1,0 +1,25 @@
+game=../Common/res/lud/puzzle/planning/Buttons And Lights.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=51,114,83,-66,56,110,-34,-1
+Move=[Move:mover=0,from=3,to=3,actions=[Add:type=Cell,to=3,what=1]]
+Move=[Move:mover=0,from=4,to=4,actions=[Add:type=Cell,to=4,what=1]]
+Move=[Move:mover=0,from=5,to=5,actions=[Add:type=Cell,to=5,what=1]]
+Move=[Move:mover=1,from=2,to=2,actions=[Select:typeFrom=Cell,from=2,decision=true],[Move:typeFrom=Cell,from=4,typeTo=Cell,to=5],[Add:type=Cell,to=4,what=1]]
+Move=[Move:mover=1,from=2,to=2,actions=[Select:typeFrom=Cell,from=2,decision=true],[Move:typeFrom=Cell,from=4,typeTo=Cell,to=5],[Add:type=Cell,to=4,what=1]]
+Move=[Move:mover=1,from=0,to=0,actions=[Select:typeFrom=Cell,from=0,decision=true],[SetState:type=Cell,to=3,state=1]]
+Move=[Move:mover=1,from=1,to=1,actions=[Select:typeFrom=Cell,from=1,decision=true],[Move:typeFrom=Cell,from=3,typeTo=Cell,to=4],[Add:type=Cell,to=3,what=1]]
+Move=[Move:mover=1,from=0,to=0,actions=[Select:typeFrom=Cell,from=0,decision=true],[SetState:type=Cell,to=3,state=1]]
+Move=[Move:mover=1,from=1,to=1,actions=[Select:typeFrom=Cell,from=1,decision=true],[Move:typeFrom=Cell,from=3,typeTo=Cell,to=4],[Add:type=Cell,to=3,what=1]]
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 3
+LEGAL MOVES LIST SIZE = 3
+numInitialPlacementMoves=3
+winner=0
+endtype=NaturalEnd
+rankings=0.0,0.0
+SANDBOX=false
+LUDII_VERSION=1.3.0

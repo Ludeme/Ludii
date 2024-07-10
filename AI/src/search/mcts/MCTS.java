@@ -540,44 +540,6 @@ public class MCTS extends ExpertPolicy
 			// decay statistics gathered in the entire subtree here
 		}
 		
-		if (globalActionStats != null)
-		{
-			// Decay global action statistics
-			final Set<Entry<MoveKey, ActionStatistics>> entries = globalActionStats.entrySet();
-			final Iterator<Entry<MoveKey, ActionStatistics>> it = entries.iterator();
-			
-			while (it.hasNext())
-			{
-				final Entry<MoveKey, ActionStatistics> entry = it.next();
-				final ActionStatistics stats = entry.getValue();
-				stats.visitCount *= globalActionDecayFactor;
-				
-				if (stats.visitCount < 1.0)
-					it.remove();
-				else
-					stats.accumulatedScore *= globalActionDecayFactor;
-			}
-		}
-		
-		if (globalNGramActionStats != null)
-		{
-			// Decay global N-gram action statistics
-			final Set<Entry<NGramMoveKey, ActionStatistics>> entries = globalNGramActionStats.entrySet();
-			final Iterator<Entry<NGramMoveKey, ActionStatistics>> it = entries.iterator();
-			
-			while (it.hasNext())
-			{
-				final Entry<NGramMoveKey, ActionStatistics> entry = it.next();
-				final ActionStatistics stats = entry.getValue();
-				stats.visitCount *= globalActionDecayFactor;
-				
-				if (stats.visitCount < 1.0)
-					it.remove();
-				else
-					stats.accumulatedScore *= globalActionDecayFactor;
-			}
-		}
-		
 		if (heuristicStats != null)
 		{
 			// Clear all heuristic stats
@@ -813,6 +775,61 @@ public class MCTS extends ExpertPolicy
 				{
 					rootNode.setParent(null);
 					++lastActionHistorySize;
+				}
+			}
+		}
+		
+		if (globalActionStats != null)
+		{
+			if (!treeReuse)
+			{
+				// Completely clear statistics if we're not reusing the tree
+				globalActionStats.clear();
+			}
+			else
+			{
+				// Otherwise, decay statistics
+				final Set<Entry<MoveKey, ActionStatistics>> entries = globalActionStats.entrySet();
+				final Iterator<Entry<MoveKey, ActionStatistics>> it = entries.iterator();
+				
+				while (it.hasNext())
+				{
+					final Entry<MoveKey, ActionStatistics> entry = it.next();
+					final ActionStatistics stats = entry.getValue();
+					stats.visitCount *= globalActionDecayFactor;
+					
+					if (stats.visitCount < 10.f)
+						it.remove();
+					else
+						stats.accumulatedScore *= globalActionDecayFactor;
+				}
+			}
+		}
+		
+		if (globalNGramActionStats != null)
+		{
+			
+			if (!treeReuse)
+			{
+				// Completely clear statistics if we're not reusing the tree
+				globalNGramActionStats.clear();
+			}
+			else
+			{
+				// Otherwise, decay statistics
+				final Set<Entry<NGramMoveKey, ActionStatistics>> entries = globalNGramActionStats.entrySet();
+				final Iterator<Entry<NGramMoveKey, ActionStatistics>> it = entries.iterator();
+				
+				while (it.hasNext())
+				{
+					final Entry<NGramMoveKey, ActionStatistics> entry = it.next();
+					final ActionStatistics stats = entry.getValue();
+					stats.visitCount *= globalActionDecayFactor;
+					
+					if (stats.visitCount < 10.f)
+						it.remove();
+					else
+						stats.accumulatedScore *= globalActionDecayFactor;
 				}
 			}
 		}
@@ -1616,10 +1633,10 @@ public class MCTS extends ExpertPolicy
     public static class ActionStatistics
     {
     	/** Visit count (not int because we want to be able to decay) */
-    	public double visitCount = 0.0;
+    	public float visitCount = 0.f;
     	
     	/** Accumulated score */
-    	public double accumulatedScore = 0.0;
+    	public float accumulatedScore = 0.f;
     	
     	@Override
     	public String toString()

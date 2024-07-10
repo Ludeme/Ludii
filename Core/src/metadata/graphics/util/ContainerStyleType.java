@@ -45,7 +45,7 @@ public enum ContainerStyleType implements MetadataItem
 	/** General style for games played on a spiral board, e.g. Mehen. */
 	Spiral,
 	
-	/** General style for games played on a isometric board. */
+	/** General style for games played on an isometric board. */
 	Isometric,
 	
 	//---------- General styles for puzzles ----------

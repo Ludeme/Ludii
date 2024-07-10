@@ -192,7 +192,7 @@ public class MoveHandler
 	//-------------------------------------------------------------------------
 	
 	/**
-	 * Try and carry out a move for the puzzle.
+	 * Try to carry out a move for the puzzle.
 	 */
 	public static void tryPuzzleMove(final PlayerApp app, final Location locnFromInfo, final Location locnToInfo)
 	{

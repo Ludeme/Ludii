@@ -11,6 +11,9 @@ import game.functions.ints.IntFunction;
 import game.functions.ints.count.component.CountPieces;
 import game.functions.ints.count.component.CountPips;
 import game.functions.ints.count.groups.CountGroups;
+import game.functions.ints.count.sizeBiggestGroup.CountSizeBiggestGroup;
+import game.functions.ints.count.sizeBiggestLine.CountSizeBiggestLine;
+import game.functions.ints.count.sitesPlatformBelow.CountSitesPlatformBelow;
 import game.functions.ints.count.liberties.CountLiberties;
 import game.functions.ints.count.simple.CountActive;
 import game.functions.ints.count.simple.CountCells;
@@ -42,6 +45,7 @@ import game.types.board.RelationType;
 import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.util.directions.Direction;
+import game.util.directions.AbsoluteDirection;
 import game.util.directions.StackDirection;
 import other.IntArrayFromRegion;
 import other.context.Context;
@@ -316,6 +320,7 @@ public final class Count extends BaseIntFunction
 	 *                   group [Adjacent].
 	 * @param If         The condition on the pieces to include in the group [(is Occupied (to))].
 	 * @param min        Minimum size of each group [0].
+	 * @param isVisible  Whether the group has to be visibly connected or not (a connection can not be hidden by another component)
 	 * 
 	 * @example (count Groups Orthogonal)
 	 */
@@ -325,19 +330,85 @@ public final class Count extends BaseIntFunction
 		@Opt 	   final SiteType          type,
 		@Opt       final Direction         directions,
 		@Opt @Name final BooleanFunction   If,
-		@Opt @Name final IntFunction       min
+		@Opt @Name final IntFunction       min,
+		@Opt @Name final BooleanFunction   isVisible
 	)
 	{
 		switch (countType)
 		{
 		case Groups:
 			return new CountGroups(type, directions, If, min);
+		case SizeBiggestGroup:
+			return new CountSizeBiggestGroup(type, directions, If, isVisible);
 		default:
 			break;
 		}
 		// We should never reach that except if we forget some codes.
 		throw new IllegalArgumentException("Count(): A CountGroupsType is not implemented.");
 	}
+	
+	//-------------------------------------------------------------------------
+
+	/**
+	 * For counting elements on a platform below another element
+	 * 
+	 * @param countType The property to count.
+	 * @param type       The graph element type [default SiteType of the board].
+	 * @param site      The site to test.
+	 * @param who  		Player id the counted items belong to
+	 * 
+	 * @example (count SitesPlatformBelow Mover)
+	 */
+	public static IntFunction construct
+	(
+					final CountSitesPlatformBelowType 	countType,
+		@Opt 	   	final SiteType          			type,
+		@Opt 		final IntFunction 				  	site,
+					final RoleType 						who
+	)
+		{
+			switch (countType)
+			{
+			case SitesPlatformBelow:
+				return new CountSitesPlatformBelow(type, site, who);
+			default:
+				break;
+			}
+			// We should never reach that except if we forget some codes.
+			throw new IllegalArgumentException("Count(): A CountGroupsType is not implemented.");
+		}
+	
+	//-------------------------------------------------------------------------
+
+		/**
+		 * For counting elements in a group.
+		 * 
+		 * @param countType  The property to count.
+		 * @param type       The graph element type [default SiteType of the board].
+		 * @param directions The directions of the connection between elements in the
+		 *                   group [Adjacent].
+		 * @param If         The condition on the pieces to include in the group [(is Occupied (to))].
+		 * 
+		 * @example (count SizeBiggestLine Orthogonal)
+		 */
+		public static IntFunction construct
+		(
+				       final CountLinesType    countType,
+			@Opt 	   final SiteType          type,
+			@Opt       final AbsoluteDirection directions,
+			@Opt @Name final BooleanFunction   If
+		)
+		{
+			switch (countType)
+			{
+			case SizeBiggestLine:
+				return new CountSizeBiggestLine(type, directions, If);
+			default:
+				break;
+			}
+			// We should never reach that except if we forget some codes.
+			throw new IllegalArgumentException("Count(): A CountLineType is not implemented.");
+		}
 	
 	//-------------------------------------------------------------------------
 

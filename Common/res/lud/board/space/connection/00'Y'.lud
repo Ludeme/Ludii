@@ -109,13 +109,13 @@
     {
     (item "All colors, Cascading (00'Y')" <(or ("FlipFromTo" Next Mover) ("FlipFromTo" Mover Next))> "All, Cascading (00'Y')")**
     (item "Opponents into Friends" <("FlipFromTo" Next Mover)> "Opponent pieces become friends (Defector Y)")  // if alternating
-    (item "Friends into Enemies" <("FlipFromTo" Mover Next)>  "Freinly pieces become Opponent's pieces")  // if alternating
+    (item "Friends into Enemies" <("FlipFromTo" Mover Next)>  "Friendly pieces become Opponent's pieces")  // if alternating
     }
 )
 
 (option "Winning" <Winning> args:{<player>}
     {
-    (item "At begining of turn" <Next> "Win with connections before you start your move.")**
+    (item "At beginning of turn" <Next> "Win with connections before you start your move.")**
     (item "At end of turn" <Mover> "Win with connections at the end of your last move in your last turn")
     }
 )
@@ -193,7 +193,7 @@
             
         The first player to connect all 3 sides after the all flips have been made is the winner.")
         (id "4035")
-        (version "1.3.12")
+        (version "1.3.13")
         (classification "board/space/connection")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

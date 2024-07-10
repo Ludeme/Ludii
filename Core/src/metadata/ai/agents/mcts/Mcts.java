@@ -12,7 +12,7 @@ import metadata.ai.agents.mcts.selection.Ucb1;
  */
 public class Mcts implements Agent
 {
-	// WARNING: The weird capitalisation of of the class name is INTENTIONAL!
+	// WARNING: The weird capitalisation of the class name is INTENTIONAL!
 	// This makes the type name in the grammar and documentation look better,
 	// as just "<mcts>" instead of the really silly "<mCTS>" that we would get 
 	// otherwise.

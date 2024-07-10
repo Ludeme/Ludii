@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * This is a recursive representation of an ordered tree. Each node stores a
  * list of pointers to its children. The order of children is significant and
- * must be observed while implmeneting a custom input parser.
+ * must be observed while implementing a custom input parser.
  *
  * @param <D> the type of node data (node label).
  */

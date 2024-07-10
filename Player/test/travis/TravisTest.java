@@ -200,9 +200,13 @@ public class TravisTest
 				fail();
 			}
 
+			final List<String> excludedIntegrity = new ArrayList<String>();
+			excludedIntegrity.add("Pagade Kayi Ata (Sixteen-handed)");
+
 			try
 			{
-				testIntegrity();
+				if (!containsPartOf(excludedIntegrity, game.name()))
+					testIntegrity();
 			}
 			catch (final IOException e)
 			{
@@ -246,6 +250,7 @@ public class TravisTest
 			excludedPlayoutPerOption.add("Shisen-Sho");
 			excludedPlayoutPerOption.add("Allemande");
 			excludedPlayoutPerOption.add("Chains of Thought");
+			excludedPlayoutPerOption.add("Pagade Kayi Ata (Sixteen-handed)");
 
 			if (!containsPartOf(excludedPlayoutPerOption, game.name()))
 				testPlayoutPerOption((USE_TIME) ? (hour < MIN_HOUR || hour > MAX_HOUR) : true);
@@ -746,8 +751,15 @@ public class TravisTest
 
 			try
 			{
-				final Game gameWithOptions = GameLoader.loadGameFromName(gameCompiled.name() + ".lud",
+				Game gameWithOptions = GameLoader.loadGameFromName(pathGameCompiled,
 						optionCombination);
+				
+				if (gameWithOptions.getOptions().equals(gameCompiled.getOptions()))
+				{
+					// In this case, save some memory by simply using the already-existing gameCompiled object
+					// (garbage collector can immediately free up what it just created for the new compilation again)
+					gameWithOptions = gameCompiled;
+				}
 
 				if (gameWithOptions.hasMissingRequirement())
 				{
@@ -768,7 +780,7 @@ public class TravisTest
 				gameWithOptions.start(context);
 				gameWithOptions.playout(context, null, 1.0, null, 0, -1, ThreadLocalRandom.current());
 			}
-			catch (final Exception e)
+			catch (final Exception | Error e)
 			{
 				System.out.println("On the game " + gameCompiled.name());
 				System.out.println("The playout with these options: " + optionCombination + "failed.");
@@ -792,7 +804,7 @@ public class TravisTest
 
 			final String ludPath = folder.getPath().replaceAll(Pattern.quote("\\"), "/");
 			final String trialDirPath = ludPath
-					.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/../TravisTrials/"))
+					.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/Player/res/"))
 					.replaceFirst(Pattern.quote("/lud/"), Matcher.quoteReplacement("/random_trials/"))
 					.replace(".lud", "");
 

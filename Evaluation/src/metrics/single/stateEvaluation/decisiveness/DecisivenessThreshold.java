@@ -90,5 +90,34 @@ public class DecisivenessThreshold extends Metric
 		
 		return decisivenessThreshold;
 	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessThreshold.");
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessThreshold.");
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessThreshold.");
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		System.err.println("Incrementally computing metric not yet implemented for DecisivenessThreshold.");
+		return Double.NaN;
+	}
+
+	//-------------------------------------------------------------------------
 
 }

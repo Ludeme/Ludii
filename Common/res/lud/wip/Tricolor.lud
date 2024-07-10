@@ -1,0 +1,110 @@
+(define "PiecesOnStack" (count Stack to:(sites {#1}) if:(= (who at:#1) (who at:#1 level:(level)))))
+
+(define "OnWhite" (is In #1 (sites "White")))
+(define "OnBlack" (is In #1 (sites "Black")))
+
+(define "Strength" 
+    (* (min 3 ("PiecesOnStack" #1))
+        (if ("OnWhite" #1) 1 (if ("OnBlack" #1) 2 3))
+    )
+)
+
+(define "PieceCaptureMove"
+    (forEach Direction
+        Orthogonal
+        (between
+            (max (min 3 ("PiecesOnStack" (from))))
+        )
+        (to
+            if:(and 
+                (is Enemy (who at:(to)))
+                (> ("Strength" (from)) ("Strength" (to)))
+            )
+            (apply
+                (do
+                    (if (and 
+                            (is Enemy (who at:(to)))
+                            (> ("Strength" (from)) (* 2 ("Strength" (to))))
+                        )
+                        (forEach Level (to) (remove (to) level:(level)))
+                    )
+                    next:(move  
+                        (from)
+                        (to)
+                        stack:True
+                    )
+                )
+            )
+        )	
+    )	
+)
+
+(define "PieceMove"
+    (slide 
+        (between
+            (max (min 3 ("PiecesOnStack" (from))))
+        )
+        (to
+            if:(or 
+                (is Friend (who at:(to)))
+                (and 
+                    (is Enemy (who at:(to)))
+                    (> ("Strength" (from)) ("Strength" (to)))
+                )
+            )
+            (apply
+                (if (and 
+                        (is Enemy (who at:(to)))
+                        (> ("Strength" (from)) (* 2 ("Strength" (to))))
+                    )
+                    (forEach Level (to) (remove (to) level:(level)))
+                )
+            )
+        )	
+        stack:True
+    )	
+)
+
+//-------------------------------------------------------------------------
+
+(game "Tricolor" 
+    (players 2) 
+    (equipment { 
+        (board (hex 5))
+        (piece "Counter" Each)
+        (regions "Black" (sites Phase 0))
+        (regions "White" (sites Phase 1))
+        (regions "Red" (sites Phase 2))
+    }) 
+    (rules
+        (start {	
+            (place "Counter1" (expand (sites Bottom) steps:2))
+            (place "Counter2" (expand (sites Top) steps:2))
+        })
+        
+        (play 
+            (priority {
+                (forEach Piece "PieceCaptureMove" top:True)
+                (forEach Piece "PieceMove" top:True)
+            })
+        )
+        
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info {
+        
+    })
+    
+    (graphics {
+        (region Colour "Black" regionSiteType:Cell (colour Black))
+        (region Colour "White" regionSiteType:Cell (colour White))
+        (region Colour "Red" regionSiteType:Cell (colour Red))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+)

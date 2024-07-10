@@ -22,6 +22,11 @@ public class OutcomeUniformity extends Metric
 {
 	
 	//-------------------------------------------------------------------------
+	
+	/** For incremnetal computation */
+	protected Stats[] playerStats = null;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -82,6 +87,55 @@ public class OutcomeUniformity extends Metric
 		}
 		
 		return Double.valueOf(1.0 - (accum / numPlayers));
+	}
+	
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		// Do nothing
+	}
+	
+	@Override
+	public void observeFinalState(final Context context)
+	{
+		if (playerStats == null)
+		{
+			final int numPlayers = context.game().players().count();
+			playerStats = new Stats[numPlayers + 1];
+			for (int p = 1; p <= numPlayers; ++p)
+			{
+				playerStats[p] = new Stats();
+			}
+		}
+		
+		final double[] utils = RankUtils.agentUtilities(context);
+		
+		for (int p = 1; p < playerStats.length; ++p)
+		{
+			playerStats[p].addSample(utils[p]);
+		}
+	}
+	
+	@Override
+	public double finaliseMetric(final Game game, final int numTrials)
+	{
+		final int numPlayers = game.players().count();
+		double accum = 0.0;
+		for (int p = 1; p <= numPlayers; ++p)
+		{
+			playerStats[p].measure();
+			accum += playerStats[p].varn();
+		}
+		
+		return 1.0 - (accum / numPlayers);
 	}
 	
 	//-------------------------------------------------------------------------

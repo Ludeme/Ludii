@@ -20,6 +20,11 @@ public class BoardSitesOccupied extends MultiMetricFramework
 {
 
 	//-------------------------------------------------------------------------
+	
+	/** For incremental computation */
+	protected int numberDefaultBoardSites = 0;
+	
+	//-------------------------------------------------------------------------
 
 	/**
 	 * Constructor
@@ -53,6 +58,22 @@ public class BoardSitesOccupied extends MultiMetricFramework
 		return valueList.toArray(new Double[0]);
 	}
 
+	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		currValueList = new ArrayList<Double>();
+		numberDefaultBoardSites = context.board().topology().getGraphElements(context.board().defaultSite()).size();
+		currValueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		currValueList.add(Double.valueOf(Double.valueOf(Utils.boardDefaultSitesCovered(context).size()).doubleValue() / numberDefaultBoardSites));
+	}
+	
 	//-------------------------------------------------------------------------
 
 

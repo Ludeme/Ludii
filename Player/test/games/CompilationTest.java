@@ -197,7 +197,6 @@ public class CompilationTest
 //			fail();
 //	}
 
-	@SuppressWarnings("static-method")
 	@Test
 	public void testCompilingLudFromMemory()
 	{

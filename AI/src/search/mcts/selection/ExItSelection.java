@@ -58,7 +58,7 @@ public final class ExItSelection implements SelectionStrategy
 	@Override
 	public int select(final MCTS mcts, final BaseNode current)
 	{
-		int bestIdx = -1;
+		int bestIdx = 0;
         double bestValue = Double.NEGATIVE_INFINITY;
         int numBestFound = 0;
         
@@ -87,7 +87,7 @@ public final class ExItSelection implements SelectionStrategy
         	else
         	{
         		exploit = child.exploitationScore(moverAgent);
-        		numVisits = child.numVisits() + child.numVirtualVisits();
+        		numVisits = Math.max(child.numVisits() + child.numVirtualVisits(), 1);
         		explore = Math.sqrt(parentLog / numVisits);
         	}
 

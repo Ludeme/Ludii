@@ -47,7 +47,7 @@ public class ContainerGraphState extends ContainerFlatState
 	/** State of a vertex. */
 	private final HashedChunkSet stateVertex;
 
-	/** Rotation of a edge. */
+	/** Rotation of an edge. */
 	private final HashedChunkSet rotationEdge;
 
 	/** Rotation of a vertex. */
@@ -56,7 +56,7 @@ public class ContainerGraphState extends ContainerFlatState
 	/** Value of the piece on a vertex. */
 	private final HashedChunkSet valueVertex;
 
-	/** Value of the piece on a edge. */
+	/** Value of the piece on an edge. */
 	private final HashedChunkSet valueEdge;
 
 	/** Which vertex has some hidden properties for each player. */

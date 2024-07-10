@@ -72,7 +72,7 @@ public class UCB1GRAVE implements SelectionStrategy
 	@Override
 	public int select(final MCTS mcts, final BaseNode current)
 	{
-		int bestIdx = -1;
+		int bestIdx = 0;
         double bestValue = Double.NEGATIVE_INFINITY;
         int numBestFound = 0;
         
@@ -117,7 +117,7 @@ public class UCB1GRAVE implements SelectionStrategy
 //        			System.out.println("current context legal moves = " + current.contextRef().activeGame().moves(current.contextRef()));
 //        		}
         		
-        		final int childVisits = child.numVisits() + child.numVirtualVisits();
+        		final int childVisits = Math.max(child.numVisits() + child.numVirtualVisits(), 1);
         		
         		if (graveStats == null)
         		{

@@ -19,7 +19,7 @@ public class EditorMenuBar extends JMenuBar {
 
 	public EditorMenuBar() {
 
-        JMenu settings = new JMenu("Settings"); // adjust editor settings e.g. font size, colors ect.
+        JMenu settings = new JMenu("Settings"); // adjust editor settings e.g. font size, colors etc.
         // adding settings menu items
         addJMenuItem(settings, "Open settings...", null);
 

@@ -53,5 +53,23 @@ public class DecisionFactor extends MultiMetricFramework
 	}
 
 	//-------------------------------------------------------------------------
+	
+	@Override
+	public void startNewTrial(final Context context, final Trial fullTrial)
+	{
+		currValueList = new ArrayList<Double>();
+		
+		if (context.game().moves(context).moves().size() > 1)
+			currValueList.add(Double.valueOf(context.game().moves(context).moves().size()));
+	}
+	
+	@Override
+	public void observeNextState(final Context context)
+	{
+		if (!context.trial().over() && context.game().moves(context).moves().size() > 1)
+			currValueList.add(Double.valueOf(context.game().moves(context).moves().size()));
+	}
+	
+	//-------------------------------------------------------------------------
 
 }

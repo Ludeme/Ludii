@@ -1,0 +1,48 @@
+game=../Common/res/lud/board/race/escape/Ketch-Dolt.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=12,-82,109,108,78,60,43,46
+Move=[Move:mover=0,from=28,to=28,actions=[Add:type=Cell,to=28,level=0,what=1]]
+Move=[Move:mover=0,from=29,to=29,actions=[Add:type=Cell,to=29,level=0,what=2]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=0,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=1,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=2,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=3,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=4,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=5,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=6,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=7,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=8,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=9,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=10,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=11,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=12,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=13,what=3,stack=true]]
+Move=[Move:mover=0,from=26,to=26,actions=[Add:type=Cell,to=26,level=14,what=3,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=0,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=1,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=2,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=3,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=4,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=5,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=6,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=7,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=8,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=9,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=10,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=11,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=12,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=13,what=4,stack=true]]
+Move=[Move:mover=0,from=27,to=27,actions=[Add:type=Cell,to=27,level=14,what=4,stack=true]]
+Move=[Move:mover=1,from=26,to=12,levelMin=14,levelMax=14,actions=[SetStateAndUpdateDice:site=28,state=1],[SetStateAndUpdateDice:site=29,state=0],[SetDiceAllEqual:value=false],[Move:typeFrom=Cell,from=26,typeTo=Vertex,to=12,decision=true],[UseDie:indexHandDice=0,indexDie=1,site=29],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=26,to=11,levelMin=13,levelMax=13,actions=[Move:typeFrom=Cell,from=26,typeTo=Vertex,to=11,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=28]]
+Move=[Move:mover=2,from=27,to=24,actions=[SetStateAndUpdateDice:site=28,state=1],[SetStateAndUpdateDice:site=29,state=2],[SetDiceAllEqual:value=false],[Trigger:event=ShouldCapture,player=2],[Move:typeFrom=Cell,from=27,typeTo=Vertex,to=24,decision=true],[UseDie:indexHandDice=0,indexDie=0,site=28],[SetNextPlayer:player=2]]
+LEGAL MOVES LIST SIZE = 30
+LEGAL MOVES LIST SIZE = 15
+LEGAL MOVES LIST SIZE = 45
+numInitialPlacementMoves=32
+winner=1
+endtype=NaturalEnd
+rankings=0.0,1.0,2.0
+SANDBOX=false
+LUDII_VERSION=1.3.0

@@ -67,7 +67,7 @@ public enum ConceptKeyword
 	/** to step a piece. */
 	Step(21, "Step move concepts."),
 
-	/** Related to a empty site. */
+	/** Related to an empty site. */
 	Empty(22, "Empty site concepts."),
 
 	/** To leap a piece. */

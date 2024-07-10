@@ -319,7 +319,12 @@ public class AIFactory
 		if (string.equalsIgnoreCase("One-Ply (No Heuristic)"))
 			return new OnePlyNoHeuristic();
 		
-		// try to interpret the given string as a resource or some other 
+		// See if this AI was registered
+		final AI registeredAI = AIRegistry.fromRegistry(string);
+		if (registeredAI != null)
+			return registeredAI;
+		
+		// Try to interpret the given string as a resource or some other 
 		// kind of file
 		final URL aiURL = AIFactory.class.getResource(string);
 		File aiFile = null;

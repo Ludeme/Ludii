@@ -50,7 +50,7 @@ public class TileStyle extends PieceStyle
 		
 		final int numEdges = component.numSides();
 		
-		// Secondary image for a tile also includes a outline.
+		// Secondary image for a tile also includes an outline.
 		if(secondary)
 		{
 			final Graph tileGraph = new Regular(null, new DimConstant(numEdges)).eval(context, SiteType.Cell);

@@ -31,7 +31,6 @@ import other.trial.Trial;
  * 
  * @author Eric.Piette
  */
-@SuppressWarnings("static-method")
 public class TestTrialsIntegrityPuzzle
 {
 	/**
@@ -72,12 +71,14 @@ public class TestTrialsIntegrityPuzzle
 			{
 				final String ludPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
 				final String trialDirPath = ludPath
-						.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/../TravisTrials/"))
+						.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/Player/res/"))
 						.replaceFirst(Pattern.quote("/lud/"), Matcher.quoteReplacement("/random_trials/"))
 						.replace(".lud", "");
 
 				final File trialsDir = new File(trialDirPath);
 
+				System.out.println(ludPath);
+				
 				if (!trialsDir.exists())
 				{
 					System.err.println("WARNING: No directory of trials exists at: " + trialsDir.getAbsolutePath());
