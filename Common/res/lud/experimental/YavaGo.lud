@@ -1,0 +1,52 @@
+(game "YavaGo" 
+    (players 2)
+
+    (equipment {
+            (board 
+                (rotate 90 
+                    (hex 5)
+                )
+            )
+            (piece "Marker" Each)
+    })
+
+    (rules 
+        (meta 
+            (no Repeat)
+        )
+        (play 
+            (move Add 
+                (to (sites Empty))
+                (then (enclose 
+                        (from (last To))
+                        Orthogonal 
+                        (between if:
+                            (is Enemy (who at:
+                                    (between)
+                            ))
+                            (apply 
+                                (remove 
+                                    (between)
+                                )
+                            )
+                        )
+                ))
+            )
+        )
+
+        (end {
+                (if (is Line 5) (result Next Loss) )
+                (if (is Line 4) (result Next Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata   
+    (info
+        {
+        }
+    )
+    
+)
