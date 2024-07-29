@@ -49,7 +49,7 @@ public final class Min extends BaseFloatFunction
 	}
 
 	/**
-	 * To get the maximum value in a list.
+	 * To get the minimum value in a list.
 	 * 
 	 * @param list The list of the values.
 	 * @example (min {10.1 2.8 5.1})
@@ -71,11 +71,11 @@ public final class Min extends BaseFloatFunction
 			return Math.min(a.eval(context),b.eval(context));
 		}
 
-		float max = list[0].eval(context);
+		float min = list[0].eval(context);
 		for (int i = 1 ; i < list.length; i++)
-			max = Math.min(max, list[i].eval(context));
+			min = Math.min(min, list[i].eval(context));
 
-		return max;
+		return min;
 	}
 
 	@Override
