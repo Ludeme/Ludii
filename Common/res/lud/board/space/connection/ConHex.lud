@@ -1,5 +1,10 @@
-(define "CellOfLastVertex" 
-    (sites Incident Cell of:Vertex at:(last To)) 
+(define "CellOfLastVertex"
+    (union
+        (sites Incident Cell of:Vertex at:(last To))
+        (if (= (last To) (centrePoint Vertex))
+            (sites Centre)
+        )
+    )
 )
 
 (define "AllHolesOfCell"
@@ -94,7 +99,7 @@
         
         (end {
             (if (is Triggered "Connected" Mover) (result Mover Win))
-            (if (<= 52 (count Moves)) (result Mover Draw))
+            (if (<= 100 (count Moves)) (result Mover Draw))
         }) 
     )
 )
