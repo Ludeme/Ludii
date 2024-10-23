@@ -1,0 +1,130 @@
+(define "PlayableHeight"
+    (results
+        from:(sites Occupied by:#1)
+        to:(sites Around (from))
+        (if (= (size Stack at:(from)) (size Stack at:(to)))
+            (size Stack at:(from))
+            Infinity
+        )
+    )
+)
+(define "SizesStack"
+    (results
+        from:0
+        to:(sites Occupied by:#1)
+        (size Stack at:(to))
+    )
+)
+(define "HighestStackCascading"
+    (max 
+        (difference ("SizesStack" #1) ("SizesStack" #2)) 
+    )         
+)
+(define "ShowScore"
+    (if
+        (!= (+ (score P1) (score P2)) -1)
+        (max (score #1) 0)
+        (if
+            (= (score #1) 0)
+            (max ("SizesStack" #1))
+            (- (max ("SizesStack" #1)))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Stairs" 
+    (players 2) 
+    (equipment 
+        {
+        (board (square <Board>))
+        (piece "Square" Each
+            (move
+                (from
+                    (sites Occupied by:Mover)
+                    if:(= (size Stack at:(from)) (min ("PlayableHeight" Mover)))
+                )
+                (to 
+                    (sites Around (from))
+                    if:(= (size Stack at:(from)) (size Stack at:(to)))
+                )
+                count:1
+                stack:True
+            )
+        )
+        }
+    ) 
+    (rules
+        <Pie>
+        (start
+            {
+            (place "Square1" (sites Phase 0))
+            (place "Square2" (sites Phase 1))
+            }
+        )
+        (play
+            (forEach Piece
+                (then
+                    (if 
+                        (or
+                            (= ("HighestStackCascading" P1 P2) (max ("SizesStack" P1)))
+                            (= ("HighestStackCascading" P2 P1) (max ("SizesStack" P2)))
+                        )
+                        (and
+                            (set Score P1 ("HighestStackCascading" P1 P2))
+                            (set Score P2 ("HighestStackCascading" P2 P1))
+                        )
+                        (if
+                            (or
+                                (= (score P1) (max ("SizesStack" P1)))
+                                (= (score P2) (max ("SizesStack" P2)))
+                            )
+                            (and
+                                (set Score Mover -1)
+                                (set Score Next 0)
+                            )
+                        )
+                    )
+                )
+            )
+        )    
+        (end
+            (if
+                (all Passed)
+                (byScore)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4" <4> "Played on a size 4 board.")
+    (item "6" <6> "Played on a size 6 board.")*
+    (item "8" <8> "Played on a size 8 board.")
+    }
+)
+(option "Pie" <Pie> args:{ <type> }
+    {
+    (item "On" <(meta (swap))> "Pie:On.")
+    (item "Off" <> "Pie:Off.")*
+    }
+)
+
+//-------------------------------------------------------------------------
+
+(metadata 
+	(info {
+		
+	})
+    (graphics
+        {
+        (stackType DefaultAndCount 0.8)
+        (show Score P1 ("ShowScore" P1))
+        (show Score P2 ("ShowScore" P2))
+        }
+    )
+)
