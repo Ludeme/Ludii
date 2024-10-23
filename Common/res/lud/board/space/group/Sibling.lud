@@ -1,0 +1,106 @@
+(define "SitesPlayable"
+    (difference
+        (intersection
+            (sites Direction from:#1)
+            (sites Empty)
+        )
+        (sites Around #1)
+    )
+)
+(define "SecondLargestGroup"
+    (max (difference (sizes Group #1) (max (sizes Group #1))))
+)
+(define "LargestGroupCascading"
+    (max 
+        (difference (sizes Group #1) (sizes Group #2)) 
+    )
+)
+(define "Score"
+    (if (!= ("SecondLargestGroup" #1) ("SecondLargestGroup" #2))
+        ("SecondLargestGroup" #1)
+        ("LargestGroupCascading" #1 #2)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Sibling" 
+    (players 2) 
+    (equipment 
+        { 
+        (board (hex <Board>))
+        (piece "Disc" Each)
+        }
+    ) 
+    (rules
+        phases:{
+        (phase "First" 
+            (play
+                (move Add
+                    (to (sites Board))
+                )
+            )
+            (nextPhase "Play")
+        )
+        (phase "Play"
+            (play
+                (if (= (count MovesThisTurn) 0)
+                    (move Add
+                        (to (sites Empty)
+                            if:(!=
+                                ("SitesPlayable" (to))
+                                (sites {})
+                            )
+                        )
+                        (then (moveAgain))
+                    )
+                    (move Add
+                        (to
+                            ("SitesPlayable" (last To))
+                        )
+                    )
+                )
+            )
+        )   
+        }
+        (end
+            (if
+                (no Moves Mover) 
+                (byScore
+                    {
+                    (score P1 ("Score" P1 P2))
+                    (score P2 ("Score" P2 P1))
+                    }
+                )
+            )
+        )
+    )
+)
+
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "3" <3> "Played on a size 3 board.")
+    (item "4" <4> "Played on a size 4 board.")
+    (item "5" <5> "Played on a size 5 board.")*
+    (item "6" <6> "Played on a size 6 board.")
+    (item "7" <7> "Played on a size 7 board.")
+    (item "8" <8> "Played on a size 8 board.")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+	(info {
+		
+	})
+    (graphics
+        {
+        (show Score P1 ("Score" P1 P2))
+        (show Score P2 ("Score" P2 P1))
+        }
+    )
+)
