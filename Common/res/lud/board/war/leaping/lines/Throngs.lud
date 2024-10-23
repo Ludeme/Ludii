@@ -2,766 +2,755 @@
 // Move is a series of hops of a total distance equal to the Influence of the pieces around the starting location.
 // I start by defining the individual hop and the resulting destinations it yields after any previous hop.
 // Care is needed to avoid steps without state changes, as the remaining steps would then not be executed.
+// this takes a minute+ to compile!
+//-------------------------------------------------
+// Fast compile - slow execute defines
+// use for long range moves
+(define "SwitchLevel" <Depth:switchAfter>)
+(define "FastDestinations" <Depth:fastDestinations>)
+(define "SwitchLevelDestinations"
+ (if
+  (< "SwitchLevel" (state at:(var "LastTo"))) 
+  ("FastDestinations")
+  (sites (values Remembered "All"))
+))
+
+(define "UpdateStep"
+ (if 
+  (is Empty (ahead (site) #2)) 
+  (remember Value "All" (ahead (site) #2) unique:True)  // adding to the destination list
+  (remember Value #1 (ahead (site) #2) unique:True)     // adding to the jumping over pieces in a direction lists
+))
+
+(define "ForwardSteps"   
+ (if
+  (is In
+   (site)  // this should be fixed at the start of the (forEach Value
+   (union {(values Remembered #1) (values Remembered "All")})  // filtering for the given direction
+  )
+  (seq
+   {
+   ("UpdateStep" #1 #2)
+   ("UpdateStep" #1 #3)
+   }
+)))
+
+(define "NextSites"
+ (do
+  (set Pending 
+   (sites
+    (union 
+     {
+     (values Remembered "All")
+     (values Remembered "NNE_SSW")
+     (values Remembered "NNW_SSE")
+     (values Remembered "E_W")
+     }
+  ))) 
+  next:(forEach Site
+   (sites Pending)
+   (and
+    {
+    (remember Value (site))
+    ("ForwardSteps" "NNE_SSW" NNE SSW)
+    ("ForwardSteps" "NNW_SSE" NNW SSE)
+    ("ForwardSteps" "E_W" E W)
+    }
+))))
+
+(define "FindDestinations"
+ (seq
+  {
+  (set Var "StepCount" (state at:(var "LastTo")))
+  (remember Value "All" (var "LastTo"))
+  (while
+   (< 0 (var "StepCount"))
+   (seq 
+    {
+    (set Var "StepCount" (- (var "StepCount") 1))
+    ("NextSites")
+    }
+  ))
+  }
+))
+
+
+//-------------------------------------------------
+// slow compile - fast execute defines
+// use for short range moves to ease the compile time.
+(define "AHop"
+ (sites
+  (results 
+   from:#1
+   to:(sites To
+    (hop
+     (from (from)) 
+     Adjacent 
+     (between (exact #2) if:(< 0 (who at:(between)))) 
+     (to if:(is Empty (to)))
+   ))
+   (to)
+)))
 
 (define "AStep"
-    (results 
-        from:(sites (values Remembered #1))
-        to:(sites To (hop (from (from)) Adjacent (between #2 if:True) (to if:(is Empty (to)))))
-        (to)
-    )
+ (sites
+  (results 
+   from:#1
+   to:(sites Around (from) if:(is Empty (to)) includeSelf:True)
+   (to)
+)))
+
+(define "Dist1"
+ (if (<= 1 (state at:(var "LastTo"))) ("AStep" (sites {(var "LastTo")})))
 )
 
-(define "Yields6"
-    (forEach Value 
-        (union
-            ("AStep" "S7" (exact 0))
-            (values Remembered "S7") // These are to make sure that something is always yielded
-        )
-        (remember Value "S6" (value) unique:True)
-        (then ("Yields5"))
-    )
-) 
+(define "Dist2"
+ (if
+  (> 2 (state at:(var "LastTo")))
+  ("Dist1")
+  (union
+   ("AStep" "Dist1")
+   ("AHop" (sites {(var "LastTo")}) 1)
+)))
 
-(define "Yields5"
-    (forEach Value
-        (union {
-            ("AStep" "S7" (exact 1))
-            ("AStep" "S6" (exact 0))
-            (values Remembered "S6")
-        })
-        (remember Value "S5" (value) unique:True)
-        (then ("Yields4"))
-    )
-) 
+(define "Dist3"
+ (if
+  (> 3 (state at:(var "LastTo"))) 
+  ("Dist2")
+  (union
+   {
+   ("AStep" "Dist2")
+   ("AHop" "Dist1" 1)
+   ("AHop" (sites {(var "LastTo")}) 2)
+   }
+)))
 
-(define "Yields4"
-    (forEach Value
-        (union {
-            ("AStep" "S7" (exact 2))
-            ("AStep" "S6" (exact 1))
-            ("AStep" "S5" (exact 0))
-            (values Remembered "S5")
-        })
-        (remember Value "S4" (value) unique:True)
-        (then ("Yields3"))
-    )
-) 
+(define "Dist4"
+ (if (> 4 (state at:(var "LastTo")))
+  ("Dist3")
+  (union 
+   {
+   ("AStep" "Dist3")
+   ("AHop" "Dist2" 1)
+   ("AHop" "Dist1" 2)
+   ("AHop" (sites {(var "LastTo")}) 3)
+   }
+))) 
 
-(define "Yields3"
-    (forEach Value
-        (union {
-            ("AStep" "S7" (exact 3))
-            ("AStep" "S6" (exact 2))
-            ("AStep" "S5" (exact 1))
-            ("AStep" "S4" (exact 0))
-            (values Remembered "S4")
-        })
-        (remember Value "S3" (value) unique:True)
-        (then ("Yields2"))
-    )
-)
+(define "Dist5"
+ (if (> 5 (state at:(var "LastTo")))
+  ("Dist4")
+  (union
+   {
+   ("AStep" "Dist4")
+   ("AHop" "Dist3" 1)
+   ("AHop" "Dist2" 2)
+   ("AHop" "Dist1" 3)
+   ("AHop" (sites {(var "LastTo")}) 4)
+   }
+))) 
 
-(define "Yields2"
-    (forEach Value
-        (union {
-            ("AStep" "S7" (exact 4))
-            ("AStep" "S6" (exact 3))
-            ("AStep" "S5" (exact 2))
-            ("AStep" "S4" (exact 1))
-            ("AStep" "S3" (exact 0))
-            (values Remembered "S3")
-        })
-        (remember Value "S2" (value) unique:True)
-        (then ("Yields1"))
-    )
-)
+(define "Dist6"
+ (if (> 6 (state at:(var "LastTo")))
+  ("Dist5")
+  (union
+   {
+   ("AStep" "Dist5")
+   ("AHop" "Dist4" 1)
+   ("AHop" "Dist3" 2)
+   ("AHop" "Dist2" 3)
+   ("AHop" "Dist1" 4)
+   ("AHop" (sites {(var "LastTo")}) 5)
+   }
+))) 
 
-(define "Yields1" 
-    (forEach Value
-        (union {
-            ("AStep" "S7" (exact 5))
-            ("AStep" "S6" (exact 4))
-            ("AStep" "S5" (exact 3))
-            ("AStep" "S4" (exact 2))
-            ("AStep" "S3" (exact 1))
-            ("AStep" "S2" (exact 0))
-            (values Remembered "S2")
-        })
-        (remember Value "S1" (value) unique:True)
-        (then ("Yields0"))
-    )
-)
+(define "AllowedDestinations"
+ (if (> 7 (state at:(var "LastTo")))
+  ("Dist6")
+  (union
+   {
+   ("AStep" "Dist6")
+   ("AHop" "Dist5" 1)
+   ("AHop" "Dist4" 2)
+   ("AHop" "Dist3" 3)
+   ("AHop" "Dist2" 4) 
+   ("AHop" "Dist1" 5) 
+   ("AHop" (sites {(var "LastTo")}) 6)
+   }
+))) 
 
-(define "Yields0"
-    (forEach Value
-        (union {
-            ("AStep" "S7" (exact 6))
-            ("AStep" "S6" (exact 5))
-            ("AStep" "S5" (exact 4))
-            ("AStep" "S4" (exact 3))
-            ("AStep" "S3" (exact 2))
-            ("AStep" "S2" (exact 1))
-            ("AStep" "S1" (exact 0))
-            (values Remembered "S1")   
-        })
-        (remember Value "S0" (value) unique:True)
-    )
-)
 
-// Key concept: PowerLeft is Influence at the starting position of a move. 
+// Key concept: Influence at a location (the starting position of a move) 
 // It determines where to start the hopping process.
 // Care is needed to avoid steps without state changes, as the remaining step would then not be executed.
 
-(define "FindDestinations" 
-    (if 
-        (= 7 (var "PowerLeft")) 
-        (remember Value "S7" (var "LastTo") unique:True (then ("Yields6")))
-        (if 
-            (= 6 (var "PowerLeft")) 
-            (remember Value "S6" (var "LastTo") unique:True (then ("Yields5")))
-            (if
-                (= 5 (var "PowerLeft")) 
-                (remember Value "S5" (var "LastTo") unique:True (then ("Yields4")))
-                (if
-                    (= 4 (var "PowerLeft")) 
-                    (remember Value "S4" (var "LastTo") unique:True (then ("Yields3")))
-                    (if
-                        (= 3 (var "PowerLeft")) 
-                        (remember Value "S3" (var "LastTo") unique:True (then ("Yields2")))
-                        (if 
-                            (= 2 (var "PowerLeft")) 
-                            (remember Value "S2" (var "LastTo") unique:True (then ("Yields1")))
-                            (if 
-                                (= 1 (var "PowerLeft")) 
-                                (remember Value "S1" (var "LastTo") unique:True (then ("Yields0")))
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        #1 // Handles the "then" clauses passed into the define.
-    )
-)
 
-(define "InfluenceAt"
-    (-
-        (count Pieces Mover in:(sites Around (#1) includeSelf:True))
-        (count Pieces Next in:(sites Around (#1) includeSelf:True))
-    )
-)
+(define "InfluenceOfAt"
+ (-
+  (count Pieces of:#1 in:(sites Around (#2) includeSelf:True))
+  (count Pieces of:(- 3 #1) in:(sites Around (#2) includeSelf:True))  
+  // can't use  Next in above, as sometimes this is used when the mover is also next to play.
+))
 
 // Processing individual move choices
+(define "OriginalAddException"
+ (or
+  (= 1 ("InfluenceOfAt" (mover) (to)))
+  (and
+   (= 0 ("InfluenceOfAt" (mover) (to)))
+   (= 0 (count Sites in:(difference (sites Around (to)) (sites Occupied by:All))))
+)))
 
-(define "AddOnly" // Two cases: fully surrounded and influence of 1 consumed in placement. The latter is for efficiency in handling the moves.
-    (move Add
-        (to 
-            (sites Empty)
-            if:(or
-                (= 1 ("InfluenceAt" (to)))
-                (and
-                    (= 0 ("InfluenceAt" (to)))
-                    (= 0 (count Sites in:(difference (sites Around (to)) (sites Occupied by:All))))
-                )
-            )
-        ) 
-        (then 
-            (and
-                (set Var "PowerLeft" 0)
-                (set Value Mover 0)
-            )
-        )
-    )
-)
+(define "SimplifiedAddCondition" (= 1 ("InfluenceOfAt" (mover) (to))))
 
-(define "CanMoveElsewhere" // Test to prevent selecting null moves when all destinations are blocked
-    (can Move 
-        (add
-            (to 
-                (difference
-                    (sites (values Remembered "S0"))
-                    (var "LastTo")
-                )
-            )
-        )
-    )
-)
+(define "AddOnly" 
+ (move Add
+  (to 
+   (sites Empty)
+   if:<Version:addCondition>
+  )
+  (then 
+   (set Value Mover 0)
+)))
+
+(define "Capture" // Opponent piece captures, including those without subsequent movement.
+ (forEach Site
+  (sites Occupied by:Next)
+  (if 
+   (le 2 ("InfluenceOfAt" (mover) (site)))
+   (move Remove (site)
+    (then
+     (add
+      (to (last From))
+      #1
+))))))
+
+(define "OriginalCaptureConsequenses"
+ (seq
+  {
+   (set Var "LastTo" (last To))
+   (set Value at:(var "LastTo") 1)
+   (set Value Mover 0)
+   (set State at:(var "LastTo") (max 0 (- ("InfluenceOfAt" (mover) (var "LastTo")) 4)))
+   (forEach Site
+    (difference (sites Occupied by:Mover) (sites {(var "LastTo")})) 
+    (set State at:(site) 0)
+   )
+   (if
+    (= 0 (state at:(var "LastTo")))
+    ("Prepare4NextPhase" #1 #2)
+    (and
+     (if
+      (< "SwitchLevel" (state at:(var "LastTo"))) 
+      ("FindDestinations")
+     )
+     (if 
+      (can Move "CompleteTheMove")  // usecan Move "CompleteTheMove") 
+      (moveAgain)
+   )))
+  }
+))
+
+(define "SimplifiedCaptureConsequences"
+ (seq
+  {
+   (set State at:(last To) 0)
+   ("Prepare4NextPhase" #1 #2)
+  }
+))
 
 (define "AddThenMove" // Remaining piece placement cases
-    (move Add
-        (to 
-            (sites Empty) 
-            if:(<= 2 ("InfluenceAt" (to)))
-        )
-        (then 
-            (do
-                (and {
-                    (set Var "LastTo" (last To))
-                    (set Var "PowerLeft" (- ("InfluenceAt" (last To)) 2))
-                    (set State at:(last To) (- ("InfluenceAt" (last To)) 2))
-                    (set Value Mover 0)
-                })
-                next:("FindDestinations" //remove the last two characters to restore the included then conditions
-                    (then 
-                        (if 
-                            (not ("CanMoveElsewhere")) 
-                            (set Var "PowerLeft" 0)
-                        )
-                    )
-                )
-            )
-        )
-    )
-)
+ (move Add
+  (to 
+   (sites Empty) 
+   if:(<= 2 ("InfluenceOfAt" (mover) (to)))
+   (apply
+    (set Var "LastTo" (to))
+  ))
+  (then 
+   (seq
+    {
+     (set Value at:(var "LastTo") 1)
+     (set Value Mover 0)
+     (set State at:(var "LastTo") (- ("InfluenceOfAt" (mover) (var "LastTo")) 2))
+     (forEach Site
+      (difference (sites Occupied by:Mover) (sites {(var "LastTo")})) 
+      (set State at:(site) 0)
+     )
+     (and
+      (if
+       (< "SwitchLevel" (state at:(var "LastTo"))) 
+       ("FindDestinations")
+      )
+      (if 
+       (can Move "CompleteTheMove")  // usecan Move "CompleteTheMove") 
+       (moveAgain)
+     ))
+    }
+))))
 
-(define "CaptureThenMove" // Opponent piece captures, including those without subsequent movement.
-    (forEach Site
-        (sites Occupied by:Next)
-        (if 
-            (<= 2 ("InfluenceAt" (site)))
-            (move Remove (site)
-                (then
-                    (add
-                        (to (last From))
-                        (then 
-                            (and {
-                                (set Var "LastTo" (last To))
-                                (set Var "PowerLeft" (- ("InfluenceAt" (last To)) 4))
-                                (set State at:(last To) (- ("InfluenceAt" (last To)) 4))
-                            })
-                        )
-                    )
-                )
-            )
-        )
-        (then
-            ("FindDestinations"
-                (then 
-                    (if 
-                        (not ("CanMoveElsewhere")) 
-                        (set Var "PowerLeft" 0)
-                    )
-                )
-            )
-        )
-    )
-)
 
-(define "MoveFriendly" // Selects the piece to move - shows in the listing as a removal, as it is followed by a destination selection on the next turn. 
-    (do
-        (forEach Piece
-            (if 
-                (< 0 (("InfluenceAt" (from))))
-                (move Remove
-                    (from)
-                    (then
-                        (add
-                            (to (last From))  
-                            (then
-                                (and {
-                                    (set Var "LastTo" (last To))
-                                    (set State at:(last To) ("InfluenceAt" (last To))) 
-                                    (set Var "PowerLeft" ("InfluenceAt" (last To))) 
-                                })
-                            )
-                        )
-                    )
-                )
-            )
-            Mover
-            (then 
-                ("FindDestinations" 
-                    (then 
-                        (forget Value "S0" (var "LastTo"))
-                    )
-                )
-            )
-        )
-        ifAfterwards:("CanMoveElsewhere")
-    )
-) 
+(define "MoveFriendlyFar" // Selects the piece to move - shows in the listing as a removal, as it is followed by a destination selection on the next turn.
+ (do
+  (seq
+   {
+   (set Var "LastTo" (from))
+   ("FindDestinations")
+   }
+  )
+  next:(move 
+   (from (var "LastTo"))
+   (to (sites (values Remembered "All")) if:(!= (to) (from)))
+)))
 
+(define "MoveFriendlyFast" // Selects the piece to move - shows in the listing as a removal, as it is followed by a destination selection on the next turn.
+ (do
+  (set Var "LastTo" (from))
+  next:(move 
+   (from (var "LastTo"))
+   (to ("FastDestinations") if:(!= (to) (from)))
+)))
+
+(define "MoveFriendly"
+ (forEach Piece
+  (if
+   (!= 0 (state at:(from)))
+   (if
+    (< "SwitchLevel" ("InfluenceOfAt" (mover) (from))) 
+    ("MoveFriendlyFar")
+    ("MoveFriendlyFast")
+))))
+    
 // Continuation of the moves based on remaining influence
 
-(define "CompleteTheMove" // shows as a destination selection in the listing for consistency
-    (do (remove (var "LastTo"))
-        next:(move Select
-            (from (sites (values Remembered "S0")))
-            (then
-                (add
-                    (to (last To))  
-                    (then (set Var "PowerLeft" 0))
-                )
-            )
-        )
-    )
-)
+(define "CompleteTheMoveFar"
+ (move Add
+  (to
+   (sites (values Remembered "All")) 
+   (apply
+    (seq
+     {
+     (set State at:(to) 0)
+     (remove (var "LastTo"))
+     }
+  )))
+  #1
+))
 
-// Defining the structure of each individual Move: ie movement selection, plus handling follow-up movement
-// First some utilities: clearing the remembered values 
+(define "CompleteTheMoveFast"  
+ (move Add
+  (to
+   ("FastDestinations") 
+   (apply
+    (seq
+     {
+     (set State at:(to) 0)
+     (remove (var "LastTo"))
+     }
+  )))
+  #1
+))
+
+(define "CompleteTheMove"
+ (if
+  (< "SwitchLevel" (state at:(var "LastTo")))
+  ("CompleteTheMoveFar" #1) 
+  ("CompleteTheMoveFast" #1) 
+))
+
+(define "Prepare4NextPhase"
+ (seq
+  {
+  (#2) // determines next player
+  (forEach Site
+   (sites Occupied by:(player (- 3 (next))))
+   (set State at:(site) 0) 
+  )
+  (forEach Site
+   (sites Occupied by:(player (next)))
+   (set State at:(site) (max 0 ("InfluenceOfAt" (next) (site))))
+  )
+  (set Value at:(var "LastTo") 0)
+  (set Var "MovePhase" #1)
+  (set Value Mover (+ 1 (value Player Mover))) // counter for forcing a placement
+  ("SetScores" P1 P2) 
+  ("SetScores" P2 P1)
+  (forget Value "All" All)
+  (forget Value "NNE_SSW" All)
+  (forget Value "NNW_SSE" All)
+  (forget Value "E_W" All)
+  }
+))
+
+// Defining the structure of each individual Move: ie  movement selection, plus handling follow-up movement
 // and testing for move restrictions that prevent cycling:- After a passed turn at least one player must place a piece.
 
-(define "ForgetAll"
-    (and {
-        (forget Value "S7" All)
-        (forget Value "S6" All) 
-        (forget Value "S5" All) 
-        (forget Value "S4" All) 
-        (forget Value "S3" All) 
-        (forget Value "S2" All) 
-        (forget Value "S1" All) 
-        (forget Value "S0" All) 
-    })
-) 
-
-(define "IsEdge" (> 5 (count Sites in:(sites Around #1))))
-
-(define "SetScores"
-    (set Score #1
-        (+
-            (+
-                (+ // Sum of #1 sites that cannot be taken by #2 
-                    (results 
-                        from:(sites Occupied by:#1) 
-                        to:(from) 
-                        (if 
-                            ("IsEdge" (from))
-                            (if
-                                (or
-                                    (< 0 (count Pieces #1 in:(sites Around (from)))) 
-                                    (< 2 (count Sites in:(sites Around (from) if:(is Empty (to)))))
-                                ) 
-                                1
-                                0
-                            )
-                            (if
-                                (or
-                                    (< 1 (count Pieces #1 in:(sites Around (from))))
-                                    (> 2 
-                                        (-
-                                            (count Pieces #2 in:(sites Around (from)))
-                                            (count Pieces #1 in:(sites Around (from)))
-                                        )
-                                    )
-                                )
-                                1
-                                0
-                            )
-                        )
-                    )
-                )
-                (+ // Sum of Empty sites that after adding 2 pieces, can only be taken by #1
-                    // special test of empty edges where placing a piece in the interior links the empty edge to another piece at distance 2.
-                    (results 
-                        from:(sites Empty)
-                        to:(from)
-                        (if
-                            ("IsEdge" (from))
-                            (if
-                                (and
-                                    {
-                                    (< 2 (count Pieces #1 in:(sites Around (from))))
-                                    (no Pieces #2 in:(sites Around (sites Around (from) if:(is Empty (to)))))
-                                    (= 
-                                        0
-                                        (count Sites in:(sites Around (from) if:(and (is Empty (to)) ("IsEdge" (to)))))
-                                    )
-                                    }
-                                )
-                                1 
-                                0
-                            )
-                            // If secure for you, but not if opponent could secure by placing there and adjacent
-                            (if
-                                (or
-                                    (and
-                                        (< 3 (count Pieces #1 in:(sites Around (from))))
-                                        (no Pieces #2 in:(sites Around (sites Around (from) if:(is Empty (to)))))
-                                    )
-                                    (and
-                                        (< 2 (count Pieces #1 in:(sites Around (from))))
-                                        (> 1 (count Pieces #2 in:(sites Around (from))))
-                                    )
-                                )
-                                1
-                                0
-                            )
-                        )
-                    )
-                )
-            )
-            // enemy sites that the enemy never can secure
-            (+
-                (results 
-                    from:(sites Occupied by:#2)
-                    to:(from)
-                    (if
-                        (< 
-                            (+ 2 (count Sites in:(sites Around (from))))
-                            (* 2 (count Pieces #1 in:(sites Around (from))))
-                        )
-                        1 
-                        0
-                    )
-                )
-            )
-            
-        )
-    )
-)
-
 (define "TheMove"
-    (if
-        (< 0 (var "PowerLeft")) 
-        ("CompleteTheMove")
-        (or
-            { // Add a piece at least once in 2 turns.
-            (if 
-                (> 4 (value Player Mover))
-                (or
-                    ("MoveFriendly")
-                    (move Pass)
-            ))
-            ("CaptureThenMove") 
-            ("AddThenMove")
-            ("AddOnly")
-        })
-        (then 
-            (if 
-                (< 0 (var "PowerLeft"))
-                (moveAgain)
-                (and {
-                    (set Var "MovePhase" #1)
-                    (set Value Mover (+ 1 (value Player Mover))) // counter for forcing a placement
-                    (#2)
-                    ("SetScores" P1 P2) 
-                    ("SetScores" P2 P1)
-                    (forEach Piece (if (!= 0 (state at:(from))) (set State at:(from) 0)))
-                    ("ForgetAll")
-                })
-            )
-        )
+ (if
+  (= 0 (value Player Mover))  // A placement was just made without a preparation for the next turn
+  ("CompleteTheMove" (then ("Prepare4NextPhase" #1 #2))) 
+  (or
+   {
+    ("AddThenMove")
+    ("Capture" (then <Version:captureConsequences>)) 
+    (or
+     { // Add a piece at least once in 2 turns.
+      (if 
+       (> 4 (value Player Mover))
+       (or
+        ("MoveFriendly") 
+        (move Pass)
+      ))
+      ("AddOnly")
+     }
+     (then ("Prepare4NextPhase" #1 #2))
     )
-)
+   }
+)))
 
 // Each turn - Flow control for the double moves, passing and end considerations:
 
 (define "FirstTurnPhase"
-    (phase "FirstTurn" 
-        (play
-            ("TheMove" 1 (set NextPlayer (player (mover))))
-        )
-        (nextPhase (= 1 (var "MovePhase")) "SecondTurn")
+ (phase "FirstTurn" 
+  (play
+   ("TheMove" 1 (set NextPlayer (player (mover))))
+  )
+  (nextPhase (= 1 (var "MovePhase")) "SecondTurn")
 ))
 
 (define "SecondTurnPhase"
-    (phase "SecondTurn" 
-        (play
-            ("TheMove" 2 (set NextPlayer (player (next))))
-        )
-        (nextPhase (= 2 (var "MovePhase")) "FirstTurn")
+ (phase "SecondTurn" 
+  (play
+   ("TheMove" 2 (set NextPlayer (player (next))))
+  )
+  (nextPhase (= 2 (var "MovePhase")) "FirstTurn")
 ))
 
-// Structure of play for the game: Double turns and pass conditions
-
-(define "IncludingPiePhases"
-    phases:{
-    "PiePhase"
-    "FirstTurnPhase"
-    "SecondTurnPhase"
-    }
-)
-
-(define "WithoutPiePhases"
-    phases:{
-    "FirstTurnPhase"
-    "SecondTurnPhase"
-    }
-)
-
+//-----------------------------------
 // Defining the option for a pie phase
 
 (define "PiePhase"
-    (phase "Pie"
-        (play 
-            (if 
-                (is Mover P1)
-                (move Add 
-                    (piece (+ 1 (% (+ 1 (counter)) 2)))
-                    (to (sites Empty)) 
-                    stack:False
-                    (then
-                        (if 
-                            (< 0 (counter)) 
-                            (set NextPlayer (player (next)))
-                            (moveAgain)
-                        )
-                    )
-                ) 
-                (or 
-                    (move Propose "Accept Pie Offer and Move" 
-                        (then (set NextPlayer (player (mover))))
-                    )
-                    (move Propose "Swap Pieces" 
-                        (then 
-                            (do 
-                                (forEach Site 
-                                    (sites Occupied by:P1) 
-                                    (remember Value (site)) 
-                                ) 
-                                next:(forEach Site 
-                                    (sites Occupied by:P2)
-                                    (and
-                                        (remove (site))
-                                        (add (piece "Ball1") (to (site)) stack:False)
-                                    )
-                                    (then
-                                        (forEach Value (values Remembered)
-                                            (and
-                                                (remove (value))
-                                                (add (piece "Ball2") (to (value)) stack:False)
-                                            )
-                                            (then 
-                                                (and 
-                                                    (forget Value All)
-                                                    (set NextPlayer (player (next)))
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+ (phase "Pie"
+  (play 
+   (if 
+    (is Mover P1)
+    (move Add 
+     (piece (+ 1 (% (+ 1 (counter)) 2)))
+     (to (sites Empty)) 
+     stack:False
+     (then
+      (if 
+       (< 0 (counter)) 
+       (set NextPlayer (player (next)))
+       (moveAgain)
+    ))) 
+    (or 
+     (move Propose "Accept Pie Offer and Move" 
+      (then (set NextPlayer (player (mover))))
+     )
+     (move Propose "Swap Pieces" 
+      (then 
+       (do 
+        (forEach Site 
+         (sites Occupied by:P1) 
+         (remember Value (site)) 
         ) 
-        (nextPhase 
-            (or 
-                (is Proposed "Swap Pieces")
-                (is Proposed "Accept Pie Offer and Move")
-            )
-            "FirstTurn"
-        )
-    )
-)
-
-(define "SafetyFigure" 3)
+        next:(forEach Site 
+         (sites Occupied by:P2)
+         (and
+          (remove (site))
+          (add (piece "Ball1") (to (site)) stack:False)
+         )
+         (then
+          (forEach Value (values Remembered)
+           (and
+            (remove (value))
+            (add (piece "Ball2") (to (value)) stack:False)
+           )
+           (then 
+            (set NextPlayer (player (next)))
+  )))))))))) 
+  (nextPhase 
+   (or 
+    (is Proposed "Swap Pieces")
+    (is Proposed "Accept Pie Offer and Move")
+   )
+   "FirstTurn"
+)))
 
 //---------------------------------------------
 
 (game "Throngs" 
-    (players 2)
-    (equipment {
-        <Board:type>
-        (piece "Ball" P1)
-        (piece "Ball" P2)
-    })
-    (rules 
-        (meta (passEnd NoEnd))
-        <Variants:starting>
-        <Variants:pieOrNot>
-        (end
-            (if
-                (or
-                    // Game goes to the end
-                    (all Passed)
-                    
-                    // A player starts their turn with more than half the board currently controlled 
-                    // note: rarely this result could be wrong due to a backlog of non-immediate captures available to the previous player
-                    // Setting the safetyfigure higher reduces this possibility, but requires very close games to be fully played out.
-                    (<
-                        (count Sites in:(sites Board))
-                        (* 2 (- (score Next) ("SafetyFigure")))
-                    )
-                )
-                (byScore) 
-            )
-        )
-    )
+ (players 2)
+ (equipment  
+  {
+   <Board:type>
+   (piece "Ball" P1 maxState:7)
+   (piece "Ball" P2 maxState:7)
+  }
+ )
+ (rules 
+  (meta (passEnd NoEnd))
+  <Variants:starting>
+  
+  phases:{
+   <Variants:pieOrNot>
+   "FirstTurnPhase"
+   "SecondTurnPhase"
+  }  
+  (end
+   (if
+    (or
+    // Game goes to the end
+     (all Passed)
+       
+     // A player starts their turn with more than half the board currently controlled 
+     // note: rarely this result could be wrong due to a backlog of non-immediate captures available to the previous player
+     // Setting the safety figure higher reduces this possibility, but requires very close games to be fully played out.
+     (<
+      (count Sites in:(sites Board))
+      (- (* 2 (score Next)) ("SafetyFigure"))
+    ))
+    (byScore)   
+ )))
 )
+ 
+(define "SafetyFigure" 2)
+//------------------
+// Scoring
 
+(define "IsEdge" (> 5 (count Sites in:(sites Around #1))))
+
+(define "SetScores"
+ (set Score #1
+  (+
+   (+
+    (+ // Sum of #1 sites that cannot be taken by #2 
+     (results 
+      from:(sites Occupied by:#1) 
+      to:(from) 
+      (if 
+       ("IsEdge" (from))
+       (if
+        (or
+         (< 0 (count Pieces #1 in:(sites Around (from)))) 
+         (< 2 (count Sites in:(sites Around (from) if:(is Empty (to)))))
+        ) 
+        1
+        0
+       )
+       (if
+        (or
+         (< 1 (count Pieces #1 in:(sites Around (from))))
+         (> 2 
+          (-
+           (count Pieces #2 in:(sites Around (from)))
+           (count Pieces #1 in:(sites Around (from)))
+        )))
+        1
+        0
+    ))))
+    // Sum of Empty sites that after adding 2 pieces, can only be taken by #1
+    // special test of empty edges where placing a piece in the interior 
+    // links the empty edge to another piece at distance 2.
+    (+
+     (results 
+      from:(sites Empty)
+      to:(from)
+      (if
+       ("IsEdge" (from))
+       (if
+        (and
+         {
+          (< 2 (count Pieces #1 in:(sites Around (from))))
+          (no Pieces #2 in:(sites Around (sites Around (from) if:(is Empty (to)))))
+          (= 
+           0
+           (count Sites in:(sites Around (from) if:(and (is Empty (to)) ("IsEdge" (to)))))
+          )
+         }
+        )
+        1 
+        0
+       )
+       // If secure for you, but not if opponent could secure by placing there and adjacent
+        (if
+        (or
+         (and
+          (< 3 (count Pieces #1 in:(sites Around (from))))
+          (no Pieces #2 in:(sites Around (sites Around (from) if:(is Empty (to)))))
+         )
+         (and
+          (< 2 (count Pieces #1 in:(sites Around (from))))
+          (> 1 (count Pieces #2 in:(sites Around (from))))
+        ))
+        1
+        0
+   )))))
+   // enemy sites that the enemy never can secure
+   (+
+    (results 
+     from:(sites Occupied by:#2)
+     to:(from)
+     (if
+      (< 
+       (+ 2 (count Sites in:(sites Around (from))))
+       (* 2 (count Pieces #1 in:(sites Around (from))))
+      )
+      1  
+      0
+))))))
+
+//------------------------------------
 // Structure of play for the game: Start options
 
 (define "StdPieceStart"
-    (start {
-        (set Score P1 1)
-        (set Score P2 2)
-        (place "Ball1" <Board:startP1>)
-        (place "Ball2" <Board:startP2>)
-        (place "Ball1" state:7)
-        (place "Ball2" state:7)
-    })
-)
+ (start 
+  {
+   (set Score P1 1)
+   (set Score P2 2)
+   (place "Ball1" <Board:startP1>)
+   (place "Ball2" <Board:startP2>)
+  }
+))
 
 (define "PieStart"
-    (start {
-        (set Score P1 0)
-        (set Score P2 0)
-        (place "Ball1" state:7)
-        (place "Ball2" state:7) 
-    })
-)
+ (start 
+  {
+   (set Score P1 0)
+   (set Score P2 0)
+  }
+))
+
 // Definitions of different Boards the game may be played on
 
 (define "ThrongsBoard"
-    (board 
-        (remove (tri Hexagon 7) 
-            vertices:{2 3 4 15 23 24 33 57 69 70 71 80 81 82 83 91 92 93 94 101 102 103 111 112 115 116 119 120 121 122 123 124 125 126}
-        )
-        use:Vertex
-    )
-)
+ (board 
+  (remove (tri Hexagon 7) 
+   vertices:{2 3 4 15 23 24 33 57 69 70 71 80 81 82 83 91 92 93 94 101 102 103 111 112 115 116 119 120 121 122 123 124 125 126}
+  )
+  use:Vertex
+))
 
-(define "RaggedHex63"
-    (board
-        (remove (tri Limping 5 6)
-            vertices:{0 1 5 6 29 30 39 48 64 70 71 74}
-        ) 
-        use:Vertex
-    )
-)
+(define  "RaggedHex63"
+ (board
+  (remove (tri Limping  5 6)
+   vertices:{0 1 5 6 29 30 39 48 64 70 71 74}
+  ) 
+  use:Vertex
+))
+(define  "RaggedHex87"
+ (board
+  (trim
+   (remove (tri Limping 6 7)  
+    vertices:{0 1 2 6 7 8 15 33 44 45 55 56 67 77 87 95 96 102 103 104 107}
+  )) 
+  use:Vertex
+))
 
-(define "RaggedHex87"
-    (board
-        (trim
-            (remove (tri Limping 6 7) 
-                vertices:{0 1 2 6 7 8 15 33 44 45 55 56 67 77 87 95 96 102 103 104 107}
-            )
-        ) 
-        use:Vertex
-    )
-)
 
-(define "RaggedHex153"
-    (board
-        (remove (tri {8 9 8 12 6}) 
-            vertices:{0 1 2 3 7 8 9 10 11 18 19 20 30 54 68 69 82 83 84 98 99 100 113 114 128 141 154 165 166 175 176 177 183 184 185 186 187 190 191}
-        ) 
-        use:Vertex
-    )
-)
+(define  "RaggedHex153"
+ (board
+  (remove (tri {8 9 8 12 6})  
+   vertices:{0 1 2 3 7 8 9 10 11 18 19 20 30 54 68 69 82 83 84 98 99 100 113 114 128 141 154 165 166 175 176 177 183 184 185 186 187 190 191}
+  ) 
+  use:Vertex
+))
+
 
 // ---------------------------------------------
 // Options for Board and Set-up/Pie
-// Hex 7-8 variants: <{143}> <{27 37}> ; <{127}> <{40 47}> and not as good - <{12}> <{103 111}> ;
+// Hex 7-8  variants: <{143}> <{27 37}> ;  <{127}> <{40 47}>  and not as good - <{12}> <{103 111}> ;
 // ---------------------------------------------
 
 (option "Boards" <Board> args:{ <type> <startP1> <startP2> <centering> }
     {
-    (item "RaggedHex 63-Node" <("RaggedHex63")> <{13}> <{35 46}> <0.03> "Ragged edged centerless board for shorter plays.")**** //<{58}> <{15 18 }>
-    (item "Throngs 93-Node" <("ThrongsBoard")> <{85}> <{6 9}> <0.03> "Original board.")**
-    (item "Ragged Hex 87-Node" <("RaggedHex87")> <{70}> <{13 47}> <0.03> "Ragged edged centerless board.")
-    (item "Ragged Hex 153-Node" <("RaggedHex153")> <{36}> <{82 112}> <0.03> "Ragged edged centerless board for longer plays.") //<{13}> <{93 125}>
+    (item "RaggedHex 63-Node" <("RaggedHex63")>  <{13} state:1> <{35 46}> <0.03> "Ragged edged centerless board for shorter plays.")**** //<{58}> <{15 18 }>
+    (item "Throngs 93-Node" <("ThrongsBoard")> <{85} state:1> <{6 9}> <0.03> "Original board.")**
+    (item "Ragged Hex 87-Node" <("RaggedHex87")>  <{70} state:1> <{13 47}> <0.03> "Ragged edged centerless board.")
+    (item "Ragged Hex 153-Node" <("RaggedHex153")>  <{36} state:1> <{82 112}> <0.03> "Ragged edged centerless board for longer plays.") //<{13} state:1> <{93 125}>
     }
 )
 
 (option "Starting" <Variants> args:{ <starting> <pieOrNot> }
     {
-    (item "3-stone Pie rule" <("PieStart")> <("IncludingPiePhases")> "Black places 2 Black and one White as Pie offer, White can chose to move or to change their colors and pass.")
-    (item "Standard set-up" <("StdPieceStart")> <("WithoutPiePhases")> "Standard set-up for learning (may change in future)")***
+    (item "3-stone Pie rule" <("PieStart")> <("PiePhase")> "Before play begins, Black places 2 Black and one White as Pie offer. 
+    Then White can chose to move or to exchange the colors of the stones and pass.")
+    (item "Standard set-up" <("StdPieceStart")> < >  "Standard set-up for learning (may change in future)")***
     }
 )
+(option "Action-Potential" <Graphics> args:{<showPotentials>}
+ {
+  (item "Show" 
+  <(piece Foreground state:1 text:"1" scale:.5)
+   (piece Foreground state:2 text:"2" scale:.5)
+   (piece Foreground state:3 text:"3" scale:.5)
+   (piece Foreground state:4 text:"4" scale:.5)
+   (piece Foreground state:5 text:"5" scale:.5)
+   (piece Foreground state:6 text:"6" scale:.5)
+   (piece Foreground state:7 text:"7" scale:.5)>
+   "Mover's pieces are labled with their action potential"
+  )
+  (item "No Show" < > "Action potentials are not shown")
+ }
+)
 
-// -------------------------------------
+(option "Version" <Version> args:{<captureConsequences> <addCondition> <rules>}
+ {
+  (item "Original"
+   <("OriginalCaptureConsequenses" #1)> 
+   <"OriginalAddException">
+   <"OriginalRules">
+   "Original rules 2019"
+  )
+  (item "Simplified"
+   <("SimplifiedCaptureConsequences" #1)> 
+   <"SimplifiedAddCondition">
+   <"SimplifiedRuleText">
+   "Simplified Rules 2023"
+  )**
+ }
+)
 
+// compile time goes up with factorial of SwitchAfter value -1 range about 1 sec, 4 sec and 20 sec for 3,4,5 respectively
+// playouts increase more from 3 to 4 than from 4 to 5.
+// AI plays with few blunders at lookahead 4 moves+ which, on the small board is about 10 seconds with whitch value 5.
+// if the count steps ludeme worked with a conditional direction (Adjacent / SameDirection) for the (step <direction> (to)) portion
+// the fast calculation could be implemented without a slow compile.
+ 
+(option "AI Depth" <Depth> args:{<switchAfter> <fastDestinations>}
+ {
+  (item "Fast Compile" <3> <"Dist3"> "Fast compile, slow calculation for distances 4+")
+  (item "Compromise" <4> <"Dist4"> "Moderate compile, slow calculation for distances 5+")
+  (item "Fast AI - recommended" <5> <"Dist5"> "Slow compile, slow calculation for distances 6+")
+ }
+)
+
+(rulesets
+ {
+  (ruleset "Ruleset/Original" { "Version/Original"})
+  (ruleset "Ruleset/Simplified" { "Version/Simplified"})*
+ }
+)
 (metadata
     (info
         {
-        (description "Throngs a highly abstracted wargame (territorial invasion game) for two players. It is typically played on the intersections of a triangular grid, using Go stones. It is a double-move game: each player takes 2 full turns in succession before the next player takes control.                         Movement: The game is distinguished by the way the power of a moving piece is determined according to the surrounding pieces: A piece can move as far as the difference in count of the friends and enemies in its immediate vicinity.                         Removing an enemy and adding one's own piece take one power unit each. Remaining power goes into a series of steps or hops that may change direction at empty locations.                         Strategy: Power to travel up to seven units per move can be developed during the game. As the offensive capacity develops, defensive measures are needed, first starting with limiting the mobility of enemy stones by approaching them, then by building walls, and thickening them along the axes of the opponent's catapulting sites (empty locations surrounded by many of that player's own stones.) These sites allow adding a stone and catapulting it up to a distance of 5, and are re-useable. In addition to these methods, defence is by scattering stones behind one's own lines to immobilise enemy stones that invade.                        The majority of turns naturally involve placement as well as movement, due to the benefit of gaining material; even though newly placed stones travel a reduced distance due to the cost of their placement. Occasional moves without placement are used mainly to initiate difficult invasions, as they risk simultaneously opening up positional weaknesses.                          Individual stones may be captured by replacement when they are sufficiently out-numbered at a location, which means that towards the end of the game, chains of stones not anchored to a triangle, loop, or board edge will be consumed one-by-one by captures. Thus the shape and nature of territorial walls is worth contesting.                        Boards: The standard board is centerless, designed to allow maximal distance moves from the centre, while minimizing the size of the board. The hexagonal corner regions help to stabilize invasions in outlying areas. The reverse angles along the edge are slightly less defensible than the other parts, breaking the edges into strategic zones.                        The game is easily adapted not only to different size and shape boards, but also to different grid topologies, while remaining interesting and playable. A 'perforated' grid is included to demonstrate this, but there are many other possibilities as well.                         The centre of the board is very advantageous, and a pie rule or balanced starting positions are needed. The standard starting position places the initial pieces near the edges to allow players a wider variety of strategies. Placing multiple starting stones, and or playing on torus boards, leads to finer grained, denser, highly tactical games, while using few starting pieces and larger boards or boards with less connectivity (e.g. boards with holes, and boards on semi-regular grids) lead to a more territorial game.                    Play on a torus also eliminates the advantage of a board centre, but requires a larger board because invasion is no longer from a single direction.")
-        (rules "Objective
-            Each player tries to achieve a majority of territory.
-            Objectively, territory means a player's pieces on a filled board when no captures are left to be made. 
-            
-            However, as implemented, territory is a score which is based on a reading of each occupied cell and its neighbors to see who would own that cell if the opponent were allowed a neighboring placement and a chance to capture there. 
-            Empty cells are scored as a player's territory that player's piece would be safe there, but the opponent's stone would not, even with another stone added to help it.
-            
-            In general this underestimates objective territory except in the case of chain captures. 
-            To prevent ending the game while chain captures are pending, a player must exceed the majority count by 3 to win, unless no moves are left.
-            
-            Definitions:
-            - The vicinity of a site is that site, together with all the sites immediately adjacent to it.
-            - The action-potential of a site is the number of the moving player's stones in the site's vicinity minus the number of the opponent's stones there. For example, the action-potential of a site on Black's move is 3 if its vicinity contains either: 5 Black and 2 White, 4 Black and 1 White, or 3 Black and no White.
-            
-            The structure of the game:
-            Before play begins, one player places a Black stone and two White stones on three different sites. 
-            Then the other player decides to play either as Black or as White. 
-            
-            A standard setup is provided by default. To choose other positions, select the Pie option from the menu.
-            
-            After the player's colors are determined, player alternate turns with each taking two moves in succession on their turn, beginning with Black.  
-            
-            Moves:
-            A move begins on a site that has sufficient action-potential to be completed (calculated as described above). 
-            Before movement, the following amounts are deducted from the action-potential, based on the site's contents:
-            
-            -- No deduction is taken if the site is already occupied by your own stone.
-            -- If the site is occupied by the enemy, you deduct 2 actions to remove and replace it with your stone.
-            -- If the site is empty, you deduct one action to add one of your own stones, with the following exception:
-            ---- The empty-site deduction is waived if there is no other empty site next to the chosen site and the action-potential at that site is zero.
-            
-            When you select a site, the application will calculate these deductions for you, and if there is any remaining action potential, it will be shown on the transparent stone.
-            
-            You may use this leftover actions potential, to move the stone at that site, in a sequence of steps and jumps; spending one action for each space moved during the sequence.
-            -- A step is a move to an adjacent empty site.
-            -- A jump is a movement in a straight line over occupied sites.
-            The distance along the path traveled may not exceed the number of actions that remain.
-            
-            The application accepts a click on the final destination of the stone. It calculates whether the destination can be reached according to the rules. If you click on the current site or a site at an intermediate distance, the move will end there.
-            
-            Voluntary passing and partial passing are allowed.
-            
-            The following rule to keep the game progressing must be obeyed when ever possible:
-            -- A player must add or capture whenever that player has not added a piece within the last 3 moves (i.e. at least once in 2 turns.)
-            
-            Ending the game:
-            The game ends when the two scores add up to the size of the board, or when the score of one player exceeds half the board plus a safety factor of 3. 
-            The score is based on:
-            1 point for each friendly piece unless: 
-            A. It could be captured by the opponent if an opponent's piece were added next to it, or 
-            B. It could not be defended against capture by adding a friendly piece after 2 opponent's pieces were added next to it.
-            
-            1 point for each opponent's piece that can be captured, even if all the rest of the empty sites around it are filled with opponent's pieces
-            (this purposely underestimates the territory)
-            
-            1 point for each empty space where both A: and B: below are true,
-            A: if a friendly piece were placed there, it would be secure no matter how many additional opponent's pieces were placed next to it. 
-            B: if an opponent's piece were placed there and on an adjacent empty site, one of them could be captured if the remaining sites around them were filled with friendly pieces.
-            
-        This method ends the game when one player has a clear advantage.")
-        (id "1224")
-        (source "<a href=\"https://boardgamegeek.com/thread/2452882/throngs-new-attempt-describe-how-play\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG Forum</a>")
-        (version "1.3.13")
-        (classification "board/war/leaping/lines")
-        (author "Dale W. Walton")
-        (credit "Dale W. Walton 2020-11-11")
-        (date "18-11-2019")
         }
     )
-    
-    (graphics {
+    (graphics
+        {
         (board Style Graph)
-        (show Piece State Middle)
         (player Colour P1 (colour DarkGrey))
         (player Colour P2 (colour White))
         (piece Scale P1 "Ball" 0.93)
         (piece Scale P2 "Ball" 0.93)
-        (piece Colour P1 "Ball" state:0 fillColour:(colour 90 90 90) secondaryColour:(colour 0 0 0 0))
-        (piece Colour P2 "Ball" state:0 fillColour:(colour White) secondaryColour:(colour 0 0 0 0))
-        (piece Colour P1 "Ball" state:1 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
-        (piece Colour P2 "Ball" state:1 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:2 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
-        (piece Colour P2 "Ball" state:2 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:3 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
-        (piece Colour P2 "Ball" state:3 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:4 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
-        (piece Colour P2 "Ball" state:4 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:5 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
-        (piece Colour P2 "Ball" state:5 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:6 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
-        (piece Colour P2 "Ball" state:6 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
-        (piece Colour P1 "Ball" state:7 fillColour:(colour 40 40 40 80) secondaryColour:(colour 0 0 0))
-        (piece Colour P2 "Ball" state:7 fillColour:(colour 255 255 255 110) secondaryColour:(colour 0 0 0))
+        // next to lines are used to suppress showing the 0 state
+//        (piece Colour P1 "Ball" state:0 fillColour:(colour 90 90 90) secondaryColour:(colour 0 0 0 0))
+//        (piece Colour P2 "Ball" state:0 fillColour:(colour White) secondaryColour:(colour 0 0 0 0))
+//        (show Piece State Middle)  // buggy
+        <Graphics:showPotentials>
+        (piece Colour P1 "Ball" value:1 fillColour:(colour 30 30 30 30 ) secondaryColour:(colour 0 0 0) )
+        (piece Colour P2 "Ball" value:1 fillColour:(colour 255 255 255 30) secondaryColour:(colour 0 0 0))
         (board Background image:"Disc.svg" fillColour:(colour 230 230 230) edgeColour:(colour 230 230 230) scale:1.26 rotation:150 offsetX:-.01 offsetY:<Board:centering>)
         (board StyleThickness InnerEdges 1.75)
         (board StyleThickness OuterEdges 4.0)
@@ -772,10 +761,8 @@
         (board Colour InnerEdges (colour 200 200 200 255))
         (board Colour OuterEdges (colour Grey))
         (no Sunken)
-    })
-    
-    (ai
-        "Throngs_ai"
+        }
     )
-    
 )
+
+
