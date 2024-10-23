@@ -1,0 +1,647 @@
+// Site definitions for scoring
+(define "EmptyRegionPerimeter" (sites Around (sites Group at:(site) if:(is Empty (to)))))
+
+(define "AllUnreachableSites"
+ (difference
+  (sites Board)
+  (sites
+   (union 
+    {
+     (values Remembered "R-P2")
+     (values Remembered "R-P1")
+     (values Remembered "RMax-P2")
+     (values Remembered "RMax-P1")
+    }
+))))
+
+(define "BlockedSites"   //sites
+ (forEach 
+  ("AllUnreachableSites")
+  if:(and 
+   (=
+    (count Sites
+     in:(intersection
+      ("EmptyRegionPerimeter")
+      (sites State 2)
+    ))
+    (count Orthogonal at:(site))
+   )
+   (all Sites
+    (sites Group at:(site) if:(is Empty (to)))
+    if:(=
+     (count Sites in:(sites Around (site) if:(= 1 (who at:(to)))))
+     (count Sites in:(sites Around (site) if:(= 2 (who at:(to)))))
+)))))
+
+//------------------------
+// Utilities
+//Mappings
+
+(define "OpponentOf" (- 3 #1))
+
+// Booleans
+
+(define "IsPlaceableByAt" // (mover) (next)
+ (> 
+  (+
+   (count Pieces of:#1 in:(sites Around #2))
+   (count Pieces of:#1
+    in:(sites Around #2 if:(= 2 (state at:(to))))
+  ))
+  (+
+   (count Pieces of:("OpponentOf" #1) in:(sites Around #2 includeSelf:True))
+   (count Pieces of:("OpponentOf" #1)
+    in:(sites Around #2 if:(= 2 (state at:(to))) includeSelf:True)
+))))
+
+(define "MaintainsContact"  // The original location must be treated as empty.
+ (not
+  (no Pieces
+   in:(difference
+    (intersection
+    (sites Around (from) Orthogonal)
+     (sites Around (to) Orthogonal)
+    )
+    (var "LF")
+))))
+
+// the moving piece dynamically affects the territory count.  
+(define "CanSkirtTo" // for mover during move
+ (and 
+  ("MaintainsContact")
+  (>=
+   (+ 
+    {
+     (if (is In (var "LF") (sites Around (from))) 0 1)   // For the moving piece without double counting at origin
+     (count Pieces of:(mover)
+      in:(sites Around (from))
+     )
+     (count Pieces of:(mover)
+      in:(sites Around (from) if:(= 2 (state at:(to))))
+     )
+    }
+   )
+   (+
+    (count Pieces of:(next)
+     in:(sites Around (from))
+    )
+    (count Pieces of:(next)
+     in:(sites Around (from) if:(= 2 (state at:(to))))
+)))))
+
+//------------------------------------------
+// Moves
+(define "Placement"
+ (move Add 
+  (piece (id "Disc" Mover))
+  (to 
+   (sites Empty)
+   if:("IsPlaceableByAt" (mover) (to))
+   (apply (set State at:(to) 1))
+)))
+ 
+(define "Skirting"
+ (forEach Piece 
+  (do
+   (set Var "LF" (from))
+   next:(if
+    (= 1 (state at:(from)))
+    (move
+     (from)
+     (to
+      (sites Empty) 
+      if:(!= Infinity
+       (count Steps Orthogonal
+        (step Orthogonal
+         (to
+          if:(and
+           (is Empty (from)) 
+           ("CanSkirtTo")
+        ))) 
+        (to) 
+        (var "LF") // switch direction to test 
+    ))))
+    (then
+     (set Var "SkirtCount" (+ (var "SkirtCount") 1)
+      (then (set State at:(last To) 2))
+    ))
+)))) 
+
+(define  "PieRefusal" 
+ (move Swap Players 1 2
+  (then
+   (set Var "Offerer" 2)
+)))
+       
+(define "Place3rdPiePiece"
+ (move Add (piece (next)) 
+  (to (sites Empty) (apply (set State at:(to) 1)))
+ )
+ (then (set Var "Offerer" 1))
+)
+
+(define "PlacePiePiece"
+ (move Add (to (sites Empty) (apply (set State at:(to) 1)))
+  (then
+   (seq
+    {
+     (set Value P1 0)
+     (set Value P2 0)
+     (set Var "SkirtCount" 0)
+     (set Var "PlacementCount" 0)
+     (moveAgain)
+    }
+))))
+
+//-------------------
+// Game structure
+
+(define "MoveOrPlace"
+ (do
+  (if
+   ("NewTurn")
+   (and 
+    (set Var "SkirtCount" 0)
+    (set Var "PlacementCount" 0)
+  ))
+  next:(or
+   ("Placement")
+   ("Skirting")
+  ) 
+  (then 
+   (set Var "PlacementCount"
+    (+ 1 (var "PlacementCount")) 
+    (then
+     (if
+      (>
+       <Moves:perTurn>
+       (var "PlacementCount")
+      )
+      (moveAgain)
+))))))
+
+(define "TheGame" 
+ (if
+  (= 1 (mover))
+  (do
+   (and
+    (forget Value "R-P1" All) 
+    (forget Value "RMax-P2" All)
+   )
+   next:"MoveOrPlace"  // ("OriginalGame") // ("TwoPlusOneSkirtGame")
+  )
+  (do
+   (and
+    (forget Value "R-P2" All) 
+    (forget Value "RMax-P1" All)
+   )
+   next:"MoveOrPlace"  // ("OriginalGame") // ("TwoPlusOneSkirtGame")
+)))
+
+(define "WithPie"
+ (if
+  (> 2 (counter))
+  (if
+   (= -1 (counter))
+   ("PlacePiePiece" 0)
+   (if
+    (= 0 (counter))
+    ("PlacePiePiece" 1)
+    ("Place3rdPiePiece")
+  ))
+  (or
+   (if
+    (= 2 (counter))
+    ("PieRefusal")
+   )
+   ("TheGame")
+  )
+  (then
+   ("Score")
+  ) 
+))
+
+(define "WithoutPie"
+ (if
+  (> 1 (counter))
+  (move Add
+   (to (sites Empty)
+    (apply (set State at:(to) 1))
+   )
+  )
+  ("TheGame")
+  (then
+   ("Score")
+))) 
+
+ 
+(define "MoveTrigger" (% (+ 1 (var "PlacementCount")) #1))
+//---------------------------------------
+// Main routine
+//---------------------------------------
+  
+(game "Garrisons"
+ (players 2)
+ (equipment
+  {
+   (board <Board:size> use:Vertex)
+   (piece "Disc" Each)
+  }
+ )
+ (rules 
+  (play
+   <Starting:method>  // "WithPie" / "WithoutPie"
+  )
+  (end 
+   (if
+    (and
+     (< 3 (counter))
+     (<
+      (- 
+       (count Vertices)
+       (var "CountOfBlockedSites") //set in the Scoring defines below
+      )
+      (max
+       (array
+        {
+         (* 2 (score P1))  // P1 win
+         (* 2 (score P2))  // P2 win
+         (+ {1 (score P1) (score P2)}) // Tie
+        }
+    ))))
+    (byScore)
+))))
+
+//----------------------------------------
+// Scoring and End conditions
+// Finding Reachable Sites for each player
+// On a turn find the sites reachable considering everything as 1 stacks for the minimal case
+// and the opponent's reachable sites considering all as 2 stacks for the maximal case.
+// then subtract  the opponent's sites to get the mover's assured sites.
+
+(define "CountOfPiecesOfAround"   // an integer  // arguments: <skirter:int>; <reachable sites so far> 
+ // This is a work around for (count Pieces ... ) 
+ // as iterator 'from' has distinct meaning in (count Steps (step ...))
+ // and I need all pieces, not just sites.
+ (+
+  (count Sites
+   in:(intersection
+    (sites Occupied by:(player #1)) 
+    (sites Around #2)
+  ))
+  (count Sites
+   in:(intersection
+    (sites Occupied by:(player #1)) 
+    (sites Around #2 if:(= 2 (state at:(to))))
+))))
+ 
+// No placing can happen at sites where opponent has enough actual piece to foever block entry even using stacks 
+
+(define "NotExcludedToSite" // boolean  // arguments: <Stack height:int>, <skirter:int>
+// This prevents including sites that could be blocked later in the game, from inclusion in the minimal list
+ (or
+  (!= 2 #1)
+  (>
+   (count Sites
+    in:(sites Around #3
+     if:(not
+      (is In (to) (sites Occupied by:(player ("OpponentOf" #2))))
+   )))
+   (/ ("CountOfPiecesOfAround" ("OpponentOf" #2) #3) 2)
+)))
+
+(define "StepRestrictionForSkirting" // boolean // arguments: e.g.  "SitesSoFarOf" or (sites {(from)}), 1 <i.e. player index>, Stack height
+// This enforces the skirting movement destination influence requirement for sites to be added to the list using skirting. 
+ (>=
+  (+ 1 
+   (- 
+    (*
+     #3
+     (size Array
+      (array
+       (intersection #1
+        (difference
+         (sites Around (from))
+         (sites {(to)})
+    )))))
+    (if
+     (= 1 #3)
+     0
+     // subtract 1 fo each actual neighboring single
+     (size Array
+      (array
+       (difference
+        (sites Around (from)
+         if:(and
+          (is In (to) (sites Occupied by:(player #2)))
+          (= 1 (state at:(to))) // restricted to real stacks of 1
+        ))
+        (sites {(to)}) // not counting the source site 
+        // from which the moving piece came
+  ))))))
+  ("CountOfPiecesOfAround" ("OpponentOf" #2) (from))
+))
+
+(define "AdjacencyRestrictionForSkirting"  // boolean // arguments:  e.g.  "SitesSoFarOf" or (sites {(from)})
+// This enforces the skirting movement adjacency requirement for sites to be added to the list using skirting.
+ (< 0
+  (count Sites 
+   in:(intersection
+    (sites Around (from)) 
+    (sites Around (to)
+     if:(or
+      (not (is Empty (to))) 
+      (is In (to) #1)
+))))))
+
+(define "CanBeReachedBySkirting"  // boolean // arguments: e.g.  "SitesSoFarOf" or (sites {(from)}), 1 <i.e. player index> , Stack height
+// This enforces all the restrictions for finding sites that can be added to the list by Skirting
+ (and
+  {
+   (or
+    {    
+     (is Empty (to)) // not yet traced back to source
+     (and
+      (is In (to) #1) // traced back to friendly potential source
+      (!= 2 (state at:(to))) // that is not an existing stack
+     )
+    }
+   )
+   // Meets skirting restrictions
+   ("AdjacencyRestrictionForSkirting" #1)  
+   ("StepRestrictionForSkirting" #1 #2 #3)
+  }
+))
+
+(define "AppendReachOf"  // boolean // arguments: e.g.  "R-P1", 1, ("SitesSoFarOf" "R-P1"), maxStack height
+// This adds reachable sites to the list for placements and for skirting, 
+// when enforcing all relavent restrictions 
+ (forEach Site
+  (difference (sites Empty) #3)
+  (if
+   (or
+    // can be reached by placements where skirting is not possible
+    (and
+     {
+      ("NotExcludedToSite" #4 #2 (site)) 
+      (>
+       (+
+        (* #4 (size Array (array (intersection #3 (sites Around (site))))))
+        (if
+         (= 1 #4)
+         // for use by "R-Pn"  with 2 stacks (#4 is 1 so that potential sites are assumed minimal) 
+         (count Pieces of:#2 in:(sites Around (site) if:(= 2 (state at:(to)))))
+         // for use by "RMax-Pn" with 2 stacks (#4 is 2 so that potential sites are assumed maximal)       
+         (- 0 (count Pieces of:#2 in:(sites Around (site) if:(= 1 (state at:(to))))))
+       ))
+       ("CountOfPiecesOfAround" ("OpponentOf" #2) (site))
+      )
+     }
+    )
+    (!=
+     Infinity
+     (count Steps
+      (step
+       (to      
+        if:(or
+        { 
+         // can be reached by placements where skirting is not possible
+         (no Pieces in:(sites Around (from)))
+         
+         // can be reached by skirting
+         ("CanBeReachedBySkirting" #3 #2 #4)
+        }
+      )))
+      (site)
+       #3
+   )))
+   (remember Value #1 (site) unique:True)
+  )
+  
+))
+
+(define "SitesSoFarOf" (sites (values Remembered #1)))  // Readability aid
+
+(define "ReachLoop" 
+// Starting with the piece locations as a basis, 
+// this loop adds sites to the reachable sites list until noe are left to add.
+ (seq
+  { 
+   ("AppendReachOf" #1 #2 ("SitesSoFarOf" #1) #3)
+   (while
+    (>
+     (size Array (values Remembered #1)) 
+     (var #1)
+    )
+    (seq
+     {
+      (set Var #1 (size Array (values Remembered #1)))
+      ("AppendReachOf" #1 #2 ("SitesSoFarOf" #1) #3)
+     }  
+   ))
+  }
+))
+
+(define "RememberReachOf" // e.g.  "R-P1" or "RMax-1", <player>, stack height to consider  1 or 2
+// This regenerates the potential reach lists
+ (forEach Site
+  (sites Occupied by:(player #2))
+  (remember Value #1 (site) unique:True) 
+  (then
+   (set Var #1 (size Array (values Remembered #1))
+   (then ("ReachLoop" #1 #2 #3)))
+)))
+
+//-------------
+// Find the territories (used for Scoring, display, and ending the game)
+
+(define "BlockableSites" // <region> // args: Stack height, skirter
+// This lists the sites that could be become blocked later 
+// in order to exclude them from the players confirmed territory
+ (forEach
+  (sites Empty)
+  if:(and 
+   (=
+    (count Orthogonal at:(site)) 
+    ("CountOfPiecesOfAround" #1 (site))
+   )
+   (=
+    (count Orthogonal at:(site))
+    (* 2
+     (count Sites
+      in:(sites Around (site)
+       if:(is In (to) (sites (values Remembered #2)))
+)))))))
+
+
+(define "TerritoryOf" // <region> //args: 1 or 2
+// This defines territory as the difference between assured reachable sites
+// (i.e. from which potentially blockable sites have been excluded) 
+// and the opponent's maximal reachable sites
+
+ (if
+  (= 1 #1)
+  (sites
+   (difference
+    (values Remembered "R-P1")
+    (union
+     {
+      (array ("BlockableSites" #1 "RMax-P2"))
+      (values Remembered "RMax-P2")
+     }
+  )))
+  (sites
+   (difference
+    (values Remembered "R-P2")
+    (union
+     {
+      (array ("BlockableSites" #1 "RMax-P1"))
+      (values Remembered "RMax-P1")
+     }
+))))) 
+
+//-------------------------------
+// Main Territory update routines
+
+(define "UpdateScore"  // subrountine to update territory and scores
+ (do
+  (seq
+   {
+    ("RememberReachOf" #1 #2 1)  // 1 for "R-"
+    ("RememberReachOf" #3 #4 2)  // 2 for  "RMax-"
+   }
+  )
+  next:(set Score (player #2)
+   (size Array (array ("TerritoryOf" #2)))
+)))
+
+(define "Score" 
+// This drives the territory calculations for the appropriate player
+// Including making a count of the actual blocked sites as of the last turn
+ (if
+  (= 1 (mover))
+  ("UpdateScore" "R-P1" 1 "RMax-P2" 2)  
+  ("UpdateScore" "R-P2" 2 "RMax-P1" 1)
+  (then
+   (set Var "CountOfBlockedSites"
+    (count Sites in:("BlockedSites")) // note: only updates after opponents turn, since RMax is not recalculated until then
+))))
+
+
+//------------------------------------------------------
+
+//---------------------------------------
+
+(define "Tri46Bug"  (tri {4 6 4 7 4}))
+(define "Tri56Bug"  (tri {5 6 5 7 5}))
+(define "Tri57Bug"  (tri {5 7 5 8 5}))
+(define "Tri67Bug"  (tri {6 7 6 9 5}))
+(define "Tri68Bug"  (tri {6 8 6 10 5}))
+(define "Tri78Bug"  (tri {7 8 7 10 6}))
+(define "Tri910Bug" (tri {9 10 10 13 7}))
+
+(option "Board Size" <Board> args:{ <size> <diag> }
+ {   
+  (item "H 3 (19)"      <(tri Hexagon 3)>   <Hidden> "Board & size: Hexhex 3")
+  (item "H1 3-4 (27)"   <(tri {3 4 3 4 3})> <Hidden> "Board & size: H1 Hexhex with edges alternating 3 and 4")
+  (item "H 4 (37)"      <(tri Hexagon 4)>   <Hidden> "Board & size: Hexhex 4")
+  (item "H 5 (61)"      <(tri Hexagon 5)>   <Hidden> "Board & size: Hexhex 5") 
+  (item "H1 5-6 (75)"   <"Tri56Bug">        <Hidden> "Board & size: H1 Hexhex with edges alternating 5 and 6")
+  (item "H 6 (91)"      <(tri Hexagon 6)>   <Hidden> "Board & size: Hexhex 6") 
+  (item "H 7 (127)"     <(tri Hexagon 7)>   <Hidden> "Board & size: Hexhex 7")
+  (item "H1 7-8 (147)"  <"Tri78Bug">        <Hidden> "Board & size: H1 Hexhex with edges alternating 9 and 10")
+  (item "H1 9-10 (243)"  <"Tri910Bug">        <Hidden> "Board & size: H1 Hexhex with edges alternating 9 and 10")
+  (item "H1 2-3 (12)"   <(tri {2 3 2 3 2})> <Hidden> "Board & size: H1 Hexhex with edges alternating 2 and 4")
+  (item "H2 2-4 (18)"   <(tri {2 4 2 4 2})> <Hidden> "Board & size: H2 Hexhex with edges alternating 2 and 4")
+  (item "H2 3-5 (36)"   <(tri {3 5 3 5 3})> <Hidden> "Board & size: H2 Hexhex with edges alternating 3 and 5")****
+  (item "H1 4-5 (48)"   <(tri {4 5 4 5 4})> <Hidden> "Board & size: H1 Hexhex with edges alternating 4 and 5")
+  (item "H2 4-6 (60)"   <"Tri46Bug">        <Hidden> "Board & size: H2 Hexhex with edges alternating 4 and 6")
+  (item "Special (78)"   <(trim (remove (tri Hexagon 7) vertices:{0..34 42 43 44 45 54 55 56 57 67 68 69 80 81 92}))> <Hidden> "Board & size: Hexhex with opposing edges 4, 6 and 7")
+  (item "H2 5-7 (90)"   <"Tri57Bug">        <Hidden> "Board & size: H2 Hexhex with edges alternating 5 and 7")
+  (item "H2 5-7 truncated (84)"   <(trim (remove ("Tri57Bug") vertices:{0 6 34 44 85 89}))>        <Hidden> "Board & size: H2 Hexhex with edges alternating 5 and 7")
+  (item "H1 6-7 (108)"  <"Tri67Bug">        <Hidden> "Board & size: Hexhex with edges alternating 6 and 7")
+  (item "H2 6-8 (126)"  <"Tri68Bug">        <Hidden> "Board & size: H2 Hexhex with edges alternating 6 and 8")
+ }
+)
+
+(option "Alternation" <Moves> args:{<perTurn>}
+ {
+  (item "Pure Single Turns"
+   <1>  
+  "
+  Using triple turn rules: 
+  "
+  )
+  (item "Pure Double Turns"
+   <2>  
+  "
+  Using triple turn rules: 
+  "
+  )
+  (item "Pure Triple Turns"
+   <3>  
+  "
+  Using triple turn rules: 
+  "
+  )
+ }
+)
+(option "Start" <Starting> args:{ <method> }
+ {
+  (item "Empty Placement" <"WithoutPie">
+   "A player's first piec is placed on any empty space.")
+  (item "Pie" <"WithPie">
+   "Start by placing 2 Dark and one Light piece as a 'pie' offer.") 
+ }
+)
+
+(rulesets
+ {
+  (ruleset "Ruleset/Garrisons" { "Board Size/H2 5-7 (90)" "Alternation/Pure Single Turns" "Start/Empty Placement" })
+ }
+)
+//----------------------------------------------------------
+
+(metadata
+ (info 
+  {
+  }
+ )
+
+ (graphics 
+    {
+    (board Style Graph)
+    (board Colour InnerEdges (colour 62 72 55 150))
+    (board Colour OuterEdges (colour 62 72 55 150))
+    (board Colour InnerVertices (colour LightGrey)) // (colour 170 160 140))
+    (board Colour OuterVertices (colour LightGrey)) // (colour 170 160 140))
+    (board StyleThickness OuterEdges .15)
+    (board StyleThickness InnerEdges .15)
+    (board Background fillColour:(colour HumanLight) edgeColour:(colour 170 160 140) scale:1.3)
+   
+    (show Edges Diagonal <Board:diag> (colour 62 72 55))
+    (player Colour P1 (colour Black))    
+    (player Colour P2 (colour Cream))
+    (piece Scale "Disc" 0.7)
+    (region Colour ("TerritoryOf" 1) regionSiteType:Vertex (colour DarkGrey))
+    (region Colour ("TerritoryOf" 2) regionSiteType:Vertex (colour Cream))
+    (region Colour ("BlockedSites") regionSiteType:Vertex (colour Blue))
+    (show Piece State Middle)
+   }
+ )
+ (ai
+  (bestAgent "Alpha-Beta")
+//  (heuristics
+//   {
+//    (centreProximity weight:.1) //to avoid piecemeal gains by following the edges
+//    (score weight:.2) //to prevent the abandonment of large scoring regions
+//    (lineCompletionHeuristic weight:-.3 targetLength:2) // to encourage diagonal arrangements
+//    (material weight:-.5) // to encourage taking the optional movement
+////    influence weight:0.2)
+////    (mobilitySimple weight:0.05)
+//   }
+ ))
+  
+//)
+
+
