@@ -1,0 +1,361 @@
+// Rascal
+
+(define "NextTo" Orthogonal)
+(define "TheEnemy" (- 3 (mover)))
+(define "Inward" (> (var "OriginFromCenter") (count Steps "NextTo" (last To) (centrePoint))))
+(define "CanPass" (or "Inward" (= 1 (var "CaptureFlag"))))
+
+(define "PassOption" 
+ (if <Pass:option>
+  (move Pass)
+  (do (remove (last To)) next:(move Pass))
+))
+
+(define "IsOverPowered" 
+ (if "IsDiamondBoard"
+  (<=
+   (count Sites in:(sites Around (to) "NextTo" if:(is Empty (to))))
+   (+ #1 (var "ML"))
+  )
+  (<=
+   (count Sites in:(sites Around (to) "NextTo" if:(is Empty (to))))
+   (+ #1 (var "ML"))
+)))
+ 
+(define "IsBelow" 
+ (< 
+  (count Steps "NextTo" (last To) (centrePoint))
+  (count Steps "NextTo" (to) (centrePoint))
+))
+
+(define "IsAbove" 
+ (>
+  (count Steps "NextTo" (last To) (centrePoint))
+  (count Steps "NextTo" (to) (centrePoint))
+))
+
+(define "MoveAStep"
+ (if
+  ("NewTurn")
+  (move 
+   (from #1)
+   (to
+    (sites Around (from) "NextTo" if:(is Empty (to)))
+    (apply
+     (and
+      {
+       (remember Value (from))
+       (set Var "ML" (value Piece at:(from)))
+       (set Var "OriginFromCenter" (count Steps "NextTo" (from) (centrePoint)))
+      }
+  ))))
+  (move 
+   (from (last To))
+   (to
+    (sites Around (last To) "NextTo" if:(and {(is Empty (to)) <Retrace:option>}))
+  ))
+  (then
+   (if
+    (not (no Pieces of:"TheEnemy" in:(<Capture:sites>)))
+    (set Var "CaptureFlag" 1
+     (then
+      (remove (<Capture:sites>))
+    ))
+    (if
+     (and (>= 0 (var "ML")) (not ("CanPass")))
+     (remove (last To) at:StartOfTurn)
+)))))
+
+(define "TakeNextStep" 
+ (set Var "ML" (- (var "ML") 1)
+  (then
+   (if
+    (<= 0 (var "ML")) 
+    (remember Value (last To) (then (moveAgain)))
+))))
+
+//---------------------------------------------- 
+  
+(game "Rascals"
+ (players 2)
+ (equipment
+  {
+   ("Board")
+   (piece "Disc" Each)
+  } 
+ ) 
+ (rules
+  
+  (start
+   <BoardShape:placements>
+  )
+  
+  (play
+   (if
+    ("NewTurn") 
+    (do 
+     (set Var "CaptureFlag" 0
+      (then
+       (forEach Piece
+        (set Value at:(from)
+         (count Pieces Mover
+          in:(sites Around (from) "NextTo") // experiment with this...
+//          in:(if
+//           ("IsDiamondBoard")
+//           (sites Around (from) Diagonal)
+//           (sites Around (from) Orthogonal) // experiment with this...
+//          ) 
+        ))
+        (then
+         (if  // (if ... ) so that the following (then ...) always happens
+          (< 0 (size Array (values Remembered))) 
+          (forget Value All) 
+     )))))
+     next:("MoveAStep" (sites Occupied by:Mover))
+     (then ("TakeNextStep"))
+    )
+    (or
+     {
+      "PassOption" // <Pass:option>
+      (or //  or is used just to hold the consequence
+       { ("MoveAStep" (last To)) } // Brackets allow or with on argument
+       (then ("TakeNextStep"))
+      )
+     }
+  )))
+
+  (end 
+   (if 
+    (no Pieces Mover)
+    (result Mover Loss)
+   )
+)))
+//---------------------------------------------------
+
+(define "Board" (board (<BoardShape:type>) use:Cell))
+(define "BoardDiameter" (+ 1 (row of:(- (count Cells) 1))))
+(define "IsDiamondBoard" (= (/ (^ "BoardDiameter" 2) 2) (- (count Cells) 1)))
+(define "BoardCorners"
+ (union {(sites Column 0) (sites Row 0) (sites Column (- ("BoardDiameter") 1)) (sites Row (- ("BoardDiameter") 1))})
+)
+
+(define "LowestCorners" (union (sites Row 0) (sites Column 0)))
+(define "FirstLast" (sites {0 (- (count Cells) 1)}))
+(define "DiamondPlacements"
+ {
+  (place "Disc1" 
+   (forEach  
+    (difference (sites Board) (sites Phase 1))
+    if:(= 0 (% (site) 2))
+  ))
+  (place "Disc2"
+   (forEach   
+    (difference (sites Board) (sites Phase 1))
+    if:(= 1 (% (site) 2))
+  ))
+ }
+)
+(define "DiamondPlacements4"
+ {
+  (place "Disc1" 
+   (sites {0 2 9..10 14..15 22 24})
+  )
+  (place "Disc2"
+   (sites {1 3 7..8 16..17 21 23})
+  )
+ }
+)
+
+(define "DiamondPlacements6x"
+ {
+  (place "Disc1" 
+   (sites {2 5 7 9 12 15 16 18 22 24 29 31 36 38 42 44 45 48 51 53 55 58})
+  )
+  (place "Disc2"
+   (sites { 1 3 4 8 11 13 15 17 20 23 26 28 32 34 37 40 43 47 49 52 56 57 59})
+  )
+ }
+)
+
+(define "DiamondPlacements6"
+ {
+  (place "Disc1" 
+   (sites {0 2 4 13 15..16 22..24 36..38 44..45 47 56 58 60})
+  )
+  (place "Disc2"
+   (sites {1 3 5 11..12 14 25..27 33..35 46 48..49 55 57 59})
+  )
+ }
+)
+(define "DiamondPlacements8xfor use with unrenumbered board"
+ {
+  (place "Disc1" 
+   (sites {6 11 13 16 18 22 24 25 29 31 35 36 39 42 45 48 52 54 58 60 64 67 70 73 76 77 81 83 87 88 90 94 96 99 101 106})
+  )
+  (place "Disc2"
+   (sites {1 3 4 8 9 12 15 19 21 27 30 33 38 40 44 46 51 55 57 61 66 68 72 74 79 82 85 91 93 97 100 103 104 108 109 111})
+  )
+ }
+)
+
+(define "DiamondPlacements8"
+ {
+  (place "Disc1" 
+   (sites {0 2 4 6 17 19 21..22 30..32 34 49..52 60..63 78 80..82 90..91 93 95 106 108 110 112 })
+  )
+  (place "Disc2"
+   (sites {1 3 5 7 15..16 18 20 33 35..37 45..48 64..67 75..77 79 92 94 96..97 105 107 109 111})
+  )
+ }
+)
+
+(define "DiamondPlacements10"
+ {
+  (place "Disc2" 
+   (sites {0 2 4 6 8 21 23 25 27..28 38..40 42 44 44 61 63..66 76..80 100..104 114..117 119 136 138 140..142 152..153 155 157 159 172 174 176 178 180})
+  )
+  (place "Disc1"
+   (sites {0 1 3 5 7 9 19..20 22 24 26  41 43 45..47 57..60 62 81..85 95..99 118 120..123 133..135 137 139 154 156 158 160..161 171 173 175 177 179})
+  )
+ }
+)
+
+(define "HexPlacements"
+ {
+  (place "Disc2" 
+   (forEach (sites Board) if:(= (% (+ 2 (phase of:(centrePoint))) 3) (phase of:(site))))
+  )
+  (place "Disc1"
+   (forEach (sites Board) if:(= (% (+ 1 (phase of:(centrePoint))) 3) (phase of:(site))))
+  )
+ }
+)
+
+(option "Board" <BoardShape> args:{ <type> <placements> }
+ {
+ (item "4 Diamond" <(rotate 45 (renumber (rotate 45 (square Diamond 4)))) > <"DiamondPlacements4"> "Played on 4x4 Diamond-shaped board.
+ ")
+ (item "6 Diamond" <(rotate 45 (renumber (rotate 45 (square Diamond 6))))> <"DiamondPlacements6"> "Played on 6x6 Diamond-shaped board.
+ ")
+ (item "8 Diamond" <(rotate 45 (renumber (rotate 45 (square Diamond 8))))> <"DiamondPlacements8"> "Played on 8x8 Diamond-shaped board.
+ ")
+ (item "10 Diamond" <(rotate 45 (renumber (rotate 45 (square Diamond 10))))> <"DiamondPlacements10"> "Played on 10x10 Diamond-shaped board.
+ ")
+ (item "4 Hex"     <(hex 4)>   <"HexPlacements">  "Played on order 4 Hexagonal-shaped board.
+ ")
+ (item "5 Hex"     <(hex 5)>   <"HexPlacements">  "Played on order 5 Hexagonal-shaped board.
+ ")
+ (item "6 Hex"     <(hex 6)>   <"HexPlacements">  "Played on order 6 Hexagonal-shaped board.
+ ")*
+ (item "7 Hex"     <(hex 7)>   <"HexPlacements">  "Played on order 7 Hexagonal-shaped board.
+ ")
+ (item "8 Hex"     <(hex 8)>   <"HexPlacements">  "Played on order 8 Hexagonal-shaped board.
+ ")
+ }
+)
+
+(option "Capture" <Capture> args:{ <sites> }
+ {
+ (item "Ahead of Step"
+  <(if
+   (= "TheEnemy"
+    (who at:(ahead (last To) (directions Cell from:(last From) to:(last To))))
+   )
+   (sites {(ahead (last To) (directions Cell from:(last From) to:(last To)))})
+  )>
+  "Capture Rule: Throw every enemy rascal off the hill when it in front the moving rascal's step.
+  
+  (This is the standard game, is clear and gives reasonable balance and tactics.)
+  "
+ )***
+ (item "Step Power >= liberties"
+  <(sites Around (last To) "NextTo" if:(and (= "TheEnemy" (who at:(to))) ("IsOverPowered" 1)))> 
+  "Capture Rule: At each step, the moving rascal overpowers every adjacent enemy rascal if the number of steps it was allowed when moving there is at least as many as the number of empty spaces around the enemy.
+  
+  (This variant gives an interesting, highly tactical game, that requires bookkeeping and multiple decisions per turn. - works better on hex boards than square boards.)
+  "
+ )
+ (item "Step Power > liberties"
+  <(sites Around (last To) "NextTo" if:(and (= "TheEnemy" (who at:(to))) ("IsOverPowered" 0)))>   
+  "Capture Rule: At each step, the moving rascal overpowers every adjacent enemy rascal if the number of steps it was allowed when moving there is more than the number of empty spaces around the enemy.
+  
+  (This variant gives an interesting, but opaque tactical game, that requires bookkeeping and multiple decisions per turn.) 
+  "
+ )
+ (item "Adjacent"
+  <(sites Around (last To) "NextTo" if:(= "TheEnemy" (who at:(to))))>
+  "Capture Rule: Throw every enemy rascal off the hill when it is next to where the moving rascal steps.
+  
+  (This variant leads to early clearing of the board, followed by an end game. Games are short.)
+  "
+ )
+ (item "Not Below"
+  <(sites Around (last To) "NextTo" if:(and (= "TheEnemy" (who at:(to))) (not ("IsBelow"))))> 
+  "Capture Rule: Throw each enemy rascal that is at the same level or above, off the hill when the moving rascal steps next to it.
+  
+  (This variant works reasonably, but may have balance issues.)
+  "
+ )
+ (item "Above"
+  <(sites Around (last To) "NextTo" if:(and (= "TheEnemy" (who at:(to))) ("IsAbove")))> 
+  "Capture Rule: Throw each enemy rascal on the level above the moving rascal, off the hill when the moving rascal steps next to it.
+  
+  (This variant tends to confine much of the play to the edges of the board)
+  "
+ )
+ }
+)
+
+(option "Retrace" <Retrace> args:{ <option> }
+ {
+ (item "NotAllowed"
+  <(not (is In (to) (sites (values Remembered))))> 
+  "No Step Retracing Rule: The moving rascal must not return to any space moved from during the turn.
+  "
+ )
+ (item "Allowed"
+  <>
+  "Allowed Step Retracing Rule: The moving rascal may move to any open space, including spaces already visited.
+  "
+ )
+ }
+)
+
+(option "Distance" <Pass> args:{ <option> }
+ {
+ (item "Full"
+  <False>
+  "Distance Rule: The moving rascal must take the full count of steps available to it."
+ )
+ (item "Partial"
+  <("CanPass")> 
+  "Distance Rule: The moving rascal is allowed to take less than the full count of steps available to it."
+ )
+ }
+)
+
+//-----------------------------------------------------------------------------
+
+(metadata
+ (info {
+ })
+ 
+ (graphics {
+  (player Colour P1 (colour White))
+  (player Colour P2 (colour DarkBlue))
+  (region Colour (expand origin:(centrePoint) steps:9 "NextTo") (colour 130 170 245))
+  (region Colour (expand origin:(centrePoint) steps:8 "NextTo") (colour 160 195 250))
+  (region Colour (expand origin:(centrePoint) steps:7 "NextTo") (colour 190 220 255))
+  (region Colour (expand origin:(centrePoint) steps:6 "NextTo") (colour 255 250 150))
+  (region Colour (expand origin:(centrePoint) steps:5 "NextTo") (colour 230 240 120))
+  (region Colour (expand origin:(centrePoint) steps:4 "NextTo") (colour 195 230 90))
+  (region Colour (expand origin:(centrePoint) steps:3 "NextTo") (colour 160 220 60))
+  (region Colour (expand origin:(centrePoint) steps:2 "NextTo") (colour 125 210 30))
+  (region Colour (expand origin:(centrePoint) "NextTo") (colour 90 200 0))
+  (region Colour (sites {(centrePoint)}) (colour HumanLight))
+  (board Colour OuterEdges (colour DarkGrey))
+  (board Colour InnerEdges (colour White)) 
+  (board StyleThickness OuterEdges 2.7)
+  (board StyleThickness InnerEdges 1.2)
+ })
+)
