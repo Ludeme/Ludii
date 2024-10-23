@@ -9,7 +9,6 @@
     )
 )
 
-// Fixed CanNotMove by RubixOne
 (define "CanNotMove"
     (not 
         (can Move 
@@ -21,21 +20,19 @@
                     ("PlaceKnight" #1) 
                     (forEach Piece #1) 
                 })
-                ifAfterwards:(not ("IsInCheck" "Osho" #1))
+                ifAfterwards:(not ("IsInCheck" "King" #1))
             ) 
         )
     )
 )
 
-// Old CanNotMove, now used to check for Drop Pawn Mate violations
 (define "CheckPawnDropMate"
-    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player (id #1)))) ifAfterwards:(not ("IsInCheck" "Osho" #1)))))
+    (not (can Move (do (and (forEach Piece #1) (set NextPlayer (player (id #1)))) ifAfterwards:(not ("IsInCheck" "King" #1)))))
 )
 
-// PlaceUnrestrictedPiece by RubixOne
 (define "PlaceUnrestrictedPiece"
     (move 
-        (from (sites Occupied by:#1 container:"Hand" components:{"Ginsho" "Kinsho" "Kakugyo" "Hisha"})) 
+        (from (sites Occupied by:#1 container:"Hand" components:{"SilverGeneral" "GoldGeneral" "Bishop" "Rook"})) 
         (to (sites Empty))
     ) 
 )
@@ -45,26 +42,26 @@
     (if
         (= 0 (% (id #1) 2))  // #1 is even   
         (=
-            (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
-            (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Row (row of:(to)))))
+            (count Sites in:(sites Occupied by:#1 container:"Board" component:"Pawn"))
+            (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Pawn") (sites Row (row of:(to)))))
         )
         (=
-            (count Sites in:(sites Occupied by:#1 container:"Board" component:"Fuhyo"))
-            (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Fuhyo") (sites Column (column of:(to)))))
+            (count Sites in:(sites Occupied by:#1 container:"Board" component:"Pawn"))
+            (count Sites in:(difference (sites Occupied by:#1 container:"Board" component:"Pawn") (sites Column (column of:(to)))))
         )
     )
 )
 
 (define "PlaceKnight" 
     (move 
-        (from (sites Occupied by:#1 container:"Hand" component:"Keima")) 
+        (from (sites Occupied by:#1 container:"Hand" component:"Knight")) 
         (to (difference (sites Empty) (sites #1 "TwoFurthestRank")))
     )
 )
 
 (define "PlaceLance" 
     (move 
-        (from (sites Occupied by:#1 container:"Hand" component:"Kyosha")) 
+        (from (sites Occupied by:#1 container:"Hand" component:"Lance")) 
         (to (difference (sites Empty) (sites #1 "LastRank")))
     )
 )
@@ -73,16 +70,16 @@
 (define "PlacePawn" 
     (do 
         (move 
-            (from (sites Occupied by:#1 container:"Hand" component:"Fuhyo")) 
+            (from (sites Occupied by:#1 container:"Hand" component:"Pawn")) 
             (to (difference (sites Empty) (sites #1 "LastRank")) 
                 if:("OnePawnPerColumn" #1)
             )
         ) 
         ifAfterwards:(not (or {
-                (and ("IsInCheck" "Osho" P1) ("CheckPawnDropMate" P1))
-                (and ("IsInCheck" "Osho" P2) ("CheckPawnDropMate" P2))
-                (and ("IsInCheck" "Osho" P3) ("CheckPawnDropMate" P3))
-                (and ("IsInCheck" "Osho" P4) ("CheckPawnDropMate" P4))
+                (and ("IsInCheck" "King" P1) ("CheckPawnDropMate" P1))
+                (and ("IsInCheck" "King" P2) ("CheckPawnDropMate" P2))
+                (and ("IsInCheck" "King" P3) ("CheckPawnDropMate" P3))
+                (and ("IsInCheck" "King" P4) ("CheckPawnDropMate" P4))
         }))
     )
 ) 
@@ -100,7 +97,7 @@
 )
 
 (define "Promote"
-    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))) #1)	
 )
 
 (define "CanPromote"
@@ -128,35 +125,62 @@
     ) 	
 )
 
+(define "TwoStepLeap" 
+    (forEach Direction 
+        #1 
+        (to 
+            if:True 
+            (apply 
+                (forEach Direction 
+                    (from (to)) 
+                    #2 
+                    (if (not ("IsFriendAt" (to))) 
+                        (move 
+                            (from) 
+                            (to 
+                                ("CapturePiece")
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        #3
+    )
+)
+
 (define "Captured"
     (if (is Mover P1)
-        (if (or {(= #1 (id "Fuhyo" P2)) (= #1 (id "Fuhyo" P3)) (= #1 (id "Fuhyo" P4))})
-            (id "Fuhyo" P1)
-            (if (or {(= #1 (id "Keima" P2)) (= #1 (id "Keima" P3)) (= #1 (id "Keima" P4))})
-                (id "Keima" P1)
-                (if (or {(= #1 (id "Hisha" P2)) (= #1 (id "Hisha" P3)) (= #1 (id "Hisha" P4))})
-                    (id "Hisha" P1)
-                    (if (or {(= #1 (id "Ginsho" P2)) (= #1 (id "Ginsho" P3)) (= #1 (id "Ginsho" P4))})
-                        (id "Ginsho" P1)
-                        (if (or {(= #1 (id "Kakugyo" P2)) (= #1 (id "Kakugyo" P3)) (= #1 (id "Kakugyo" P4))})
-                            (id "Kakugyo" P1)
-                            (if (or {(= #1 (id "Kyosha" P2)) (= #1 (id "Kyosha" P3)) (= #1 (id "Kyosha" P4))})
-                                (id "Kyosha" P1)
-                                (if (or {(= #1 (id "Kinsho" P2)) (= #1 (id "Kinsho" P3)) (= #1 (id "Kinsho" P4))})
-                                    (id "Kinsho" P1)
+        (if (or {(= #1 (id "Pawn" P2)) (= #1 (id "Pawn" P3)) (= #1 (id "Pawn" P4))})
+            (id "Pawn" P1)
+            (if (or {(= #1 (id "Knight" P2)) (= #1 (id "Knight" P3)) (= #1 (id "Knight" P4))})
+                (id "Knight" P1)
+                (if (or {(= #1 (id "Rook" P2)) (= #1 (id "Rook" P3)) (= #1 (id "Rook" P4))})
+                    (id "Rook" P1)
+                    (if (or {(= #1 (id "SilverGeneral" P2)) (= #1 (id "SilverGeneral" P3)) (= #1 (id "SilverGeneral" P4))})
+                        (id "SilverGeneral" P1)
+                        (if (or {(= #1 (id "Bishop" P2)) (= #1 (id "Bishop" P3)) (= #1 (id "Bishop" P4))})
+                            (id "Bishop" P1)
+                            (if (or {(= #1 (id "Lance" P2)) (= #1 (id "Lance" P3)) (= #1 (id "Lance" P4))})
+                                (id "Lance" P1)
+                                (if (or {(= #1 (id "GoldGeneral" P2)) (= #1 (id "GoldGeneral" P3)) (= #1 (id "GoldGeneral" P4))})
+                                    (id "GoldGeneral" P1)
                                     (if (or {(= #1 (id "Tokin" P2)) (= #1 (id "Tokin" P3)) (= #1 (id "Tokin" P4))})
-                                        (id "Fuhyo" P1)
-                                        (if (or {(= #1 (id "Narigin" P2)) (= #1 (id "Narigin" P3)) (= #1 (id "Narigin" P4))})
-                                            (id "Ginsho" P1)
-                                            (if (or {(= #1 (id "Ryuo" P2)) (= #1 (id "Ryuo" P3)) (= #1 (id "Ryuo" P4))})
-                                                (id "Hisha" P1)
-                                                (if (or {(= #1 (id "Ryuma" P2)) (= #1 (id "Ryuma" P3)) (= #1 (id "Ryuma" P4))})
-                                                    (id "Kakugyo" P1)
-                                                    (if (or {(= #1 (id "Narikei" P2)) (= #1 (id "Narikei" P3)) (= #1 (id "Narikei" P4))})
-                                                        (id "Keima" P1)
-                                                        (if (or {(= #1 (id "Narikyo" P2)) (= #1 (id "Narikyo" P3)) (= #1 (id "Narikyo" P4))})
-                                                            (id "Kyosha" P1)
-                                                            (id "Osho" P1)
+                                        (id "Pawn" P1)
+                                        (if (or {(= #1 (id "RunningWolf" P2)) (= #1 (id "RunningWolf" P3)) (= #1 (id "RunningWolf" P4))})
+                                            (id "SilverGeneral" P1)
+                                            (if (or {(= #1 (id "DragonKing" P2)) (= #1 (id "DragonKing" P3)) (= #1 (id "DragonKing" P4))})
+                                                (id "Rook" P1)
+                                                (if (or {(= #1 (id "DragonHorse" P2)) (= #1 (id "DragonHorse" P3)) (= #1 (id "DragonHorse" P4))})
+                                                    (id "Bishop" P1)
+                                                    (if (or {(= #1 (id "HeavenlyHorse" P2)) (= #1 (id "HeavenlyHorse" P3)) (= #1 (id "HeavenlyHorse" P4))})
+                                                        (id "Knight" P1)
+                                                        (if (or {(= #1 (id "FreeTiger" P2)) (= #1 (id "FreeTiger" P3)) (= #1 (id "FreeTiger" P4))})
+                                                            (id "Lance" P1)
+                                                            (if (or {(= #1 (id "GreatElephant" P2)) (= #1 (id "GreatElephant" P3)) (= #1 (id "GreatElephant" P4))})
+                                                                (id "GoldGeneral" P1)
+                                                                (id "King" P1)
+                                                            )
                                                         )
                                                     )
                                                 )
@@ -171,33 +195,36 @@
             )
         )
         (if (is Mover P2)
-            (if (or {(= #1 (id "Fuhyo" P1)) (= #1 (id "Fuhyo" P3)) (= #1 (id "Fuhyo" P4))})
-                (id "Fuhyo" P2)
-                (if (or {(= #1 (id "Keima" P1)) (= #1 (id "Keima" P3)) (= #1 (id "Keima" P4))})
-                    (id "Keima" P2)
-                    (if (or {(= #1 (id "Hisha" P1)) (= #1 (id "Hisha" P3)) (= #1 (id "Hisha" P4))})
-                        (id "Hisha" P2)
-                        (if (or {(= #1 (id "Ginsho" P1)) (= #1 (id "Ginsho" P3)) (= #1 (id "Ginsho" P4))})
-                            (id "Ginsho" P2)
-                            (if (or {(= #1 (id "Kakugyo" P1)) (= #1 (id "Kakugyo" P3)) (= #1 (id "Kakugyo" P4))})
-                                (id "Kakugyo" P2)
-                                (if (or {(= #1 (id "Kyosha" P1)) (= #1 (id "Kyosha" P3)) (= #1 (id "Kyosha" P4))})
-                                    (id "Kyosha" P2)
-                                    (if (or {(= #1 (id "Kinsho" P1)) (= #1 (id "Kinsho" P3)) (= #1 (id "Kinsho" P4))})
-                                        (id "Kinsho" P2)
+            (if (or {(= #1 (id "Pawn" P1)) (= #1 (id "Pawn" P3)) (= #1 (id "Pawn" P4))})
+                (id "Pawn" P2)
+                (if (or {(= #1 (id "Knight" P1)) (= #1 (id "Knight" P3)) (= #1 (id "Knight" P4))})
+                    (id "Knight" P2)
+                    (if (or {(= #1 (id "Rook" P1)) (= #1 (id "Rook" P3)) (= #1 (id "Rook" P4))})
+                        (id "Rook" P2)
+                        (if (or {(= #1 (id "SilverGeneral" P1)) (= #1 (id "SilverGeneral" P3)) (= #1 (id "SilverGeneral" P4))})
+                            (id "SilverGeneral" P2)
+                            (if (or {(= #1 (id "Bishop" P1)) (= #1 (id "Bishop" P3)) (= #1 (id "Bishop" P4))})
+                                (id "Bishop" P2)
+                                (if (or {(= #1 (id "Lance" P1)) (= #1 (id "Lance" P3)) (= #1 (id "Lance" P4))})
+                                    (id "Lance" P2)
+                                    (if (or {(= #1 (id "GoldGeneral" P1)) (= #1 (id "GoldGeneral" P3)) (= #1 (id "GoldGeneral" P4))})
+                                        (id "GoldGeneral" P2)
                                         (if (or {(= #1 (id "Tokin" P1)) (= #1 (id "Tokin" P3)) (= #1 (id "Tokin" P4))})
-                                            (id "Fuhyo" P2)
-                                            (if (or {(= #1 (id "Narigin" P1)) (= #1 (id "Narigin" P3)) (= #1 (id "Narigin" P4))})
-                                                (id "Ginsho" P2)
-                                                (if (or {(= #1 (id "Ryuo" P1)) (= #1 (id "Ryuo" P3)) (= #1 (id "Ryuo" P4))})
-                                                    (id "Hisha" P2)
-                                                    (if (or {(= #1 (id "Ryuma" P1)) (= #1 (id "Ryuma" P3)) (= #1 (id "Ryuma" P4))})
-                                                        (id "Kakugyo" P2)
-                                                        (if (or {(= #1 (id "Narikei" P1)) (= #1 (id "Narikei" P3)) (= #1 (id "Narikei" P4))})
-                                                            (id "Keima" P2)
-                                                            (if (or {(= #1 (id "Narikyo" P1)) (= #1 (id "Narikyo" P3)) (= #1 (id "Narikyo" P4))})
-                                                                (id "Kyosha" P2)
-                                                                (id "Osho" P2)
+                                            (id "Pawn" P2)
+                                            (if (or {(= #1 (id "RunningWolf" P1)) (= #1 (id "RunningWolf" P3)) (= #1 (id "RunningWolf" P4))})
+                                                (id "SilverGeneral" P2)
+                                                (if (or {(= #1 (id "DragonKing" P1)) (= #1 (id "DragonKing" P3)) (= #1 (id "DragonKing" P4))})
+                                                    (id "Rook" P2)
+                                                    (if (or {(= #1 (id "DragonHorse" P1)) (= #1 (id "DragonHorse" P3)) (= #1 (id "DragonHorse" P4))})
+                                                        (id "Bishop" P2)
+                                                        (if (or {(= #1 (id "HeavenlyHorse" P1)) (= #1 (id "HeavenlyHorse" P3)) (= #1 (id "HeavenlyHorse" P4))})
+                                                            (id "Knight" P2)
+                                                            (if (or {(= #1 (id "FreeTiger" P1)) (= #1 (id "FreeTiger" P3)) (= #1 (id "FreeTiger" P4))})
+                                                                (id "Lance" P2)
+                                                                (if (or {(= #1 (id "GreatElephant" P1)) (= #1 (id "GreatElephant" P3)) (= #1 (id "GreatElephant" P4))})
+                                                                    (id "GoldGeneral" P2)
+                                                                    (id "King" P2)
+                                                                )
                                                             )
                                                         )
                                                     )
@@ -212,33 +239,36 @@
                 )
             )
             (if (is Mover P3)
-                (if (or {(= #1 (id "Fuhyo" P1)) (= #1 (id "Fuhyo" P2)) (= #1 (id "Fuhyo" P4))})
-                    (id "Fuhyo" P3)
-                    (if (or {(= #1 (id "Keima" P1)) (= #1 (id "Keima" P2)) (= #1 (id "Keima" P4))})
-                        (id "Keima" P3)
-                        (if (or {(= #1 (id "Hisha" P1)) (= #1 (id "Hisha" P2)) (= #1 (id "Hisha" P4))})
-                            (id "Hisha" P3)
-                            (if (or {(= #1 (id "Ginsho" P1)) (= #1 (id "Ginsho" P2)) (= #1 (id "Ginsho" P4))})
-                                (id "Ginsho" P3)
-                                (if (or {(= #1 (id "Kakugyo" P1)) (= #1 (id "Kakugyo" P2)) (= #1 (id "Kakugyo" P4))})
-                                    (id "Kakugyo" P3)
-                                    (if (or {(= #1 (id "Kyosha" P1)) (= #1 (id "Kyosha" P2)) (= #1 (id "Kyosha" P4))})
-                                        (id "Kyosha" P3)
-                                        (if (or {(= #1 (id "Kinsho" P1)) (= #1 (id "Kinsho" P2)) (= #1 (id "Kinsho" P4))})
-                                            (id "Kinsho" P3)
+                (if (or {(= #1 (id "Pawn" P1)) (= #1 (id "Pawn" P2)) (= #1 (id "Pawn" P4))})
+                    (id "Pawn" P3)
+                    (if (or {(= #1 (id "Knight" P1)) (= #1 (id "Knight" P2)) (= #1 (id "Knight" P4))})
+                        (id "Knight" P3)
+                        (if (or {(= #1 (id "Rook" P1)) (= #1 (id "Rook" P2)) (= #1 (id "Rook" P4))})
+                            (id "Rook" P3)
+                            (if (or {(= #1 (id "SilverGeneral" P1)) (= #1 (id "SilverGeneral" P2)) (= #1 (id "SilverGeneral" P4))})
+                                (id "SilverGeneral" P3)
+                                (if (or {(= #1 (id "Bishop" P1)) (= #1 (id "Bishop" P2)) (= #1 (id "Bishop" P4))})
+                                    (id "Bishop" P3)
+                                    (if (or {(= #1 (id "Lance" P1)) (= #1 (id "Lance" P2)) (= #1 (id "Lance" P4))})
+                                        (id "Lance" P3)
+                                        (if (or {(= #1 (id "GoldGeneral" P1)) (= #1 (id "GoldGeneral" P2)) (= #1 (id "GoldGeneral" P4))})
+                                            (id "GoldGeneral" P3)
                                             (if (or {(= #1 (id "Tokin" P1)) (= #1 (id "Tokin" P2)) (= #1 (id "Tokin" P4))})
-                                                (id "Fuhyo" P3)
-                                                (if (or {(= #1 (id "Narigin" P1)) (= #1 (id "Narigin" P2)) (= #1 (id "Narigin" P4))})
-                                                    (id "Ginsho" P3)
-                                                    (if (or {(= #1 (id "Ryuo" P1)) (= #1 (id "Ryuo" P2)) (= #1 (id "Ryuo" P4))})
-                                                        (id "Hisha" P3)
-                                                        (if (or {(= #1 (id "Ryuma" P1)) (= #1 (id "Ryuma" P2)) (= #1 (id "Ryuma" P4))})
-                                                            (id "Kakugyo" P3)
-                                                            (if (or {(= #1 (id "Narikei" P1)) (= #1 (id "Narikei" P2)) (= #1 (id "Narikei" P4))})
-                                                                (id "Keima" P3)
-                                                                (if (or {(= #1 (id "Narikyo" P1)) (= #1 (id "Narikyo" P2)) (= #1 (id "Narikyo" P4))})
-                                                                    (id "Kyosha" P3)
-                                                                    (id "Osho" P3)
+                                                (id "Pawn" P3)
+                                                (if (or {(= #1 (id "RunningWolf" P1)) (= #1 (id "RunningWolf" P2)) (= #1 (id "RunningWolf" P4))})
+                                                    (id "SilverGeneral" P3)
+                                                    (if (or {(= #1 (id "DragonKing" P1)) (= #1 (id "DragonKing" P2)) (= #1 (id "DragonKing" P4))})
+                                                        (id "Rook" P3)
+                                                        (if (or {(= #1 (id "DragonHorse" P1)) (= #1 (id "DragonHorse" P2)) (= #1 (id "DragonHorse" P4))})
+                                                            (id "Bishop" P3)
+                                                            (if (or {(= #1 (id "HeavenlyHorse" P1)) (= #1 (id "HeavenlyHorse" P2)) (= #1 (id "HeavenlyHorse" P4))})
+                                                                (id "Knight" P3)
+                                                                (if (or {(= #1 (id "FreeTiger" P1)) (= #1 (id "FreeTiger" P2)) (= #1 (id "FreeTiger" P4))})
+                                                                    (id "Lance" P3)
+                                                                    (if (or {(= #1 (id "GreatElephant" P1)) (= #1 (id "GreatElephant" P2)) (= #1 (id "GreatElephant" P4))})
+                                                                        (id "GoldGeneral" P3)
+                                                                        (id "King" P3)
+                                                                    )
                                                                 )
                                                             )
                                                         )
@@ -252,33 +282,36 @@
                         )
                     )
                 )
-                (if (or {(= #1 (id "Fuhyo" P1)) (= #1 (id "Fuhyo" P2)) (= #1 (id "Fuhyo" P3))})
-                    (id "Fuhyo" P4)
-                    (if (or {(= #1 (id "Keima" P1)) (= #1 (id "Keima" P2)) (= #1 (id "Keima" P3))})
-                        (id "Keima" P4)
-                        (if (or {(= #1 (id "Hisha" P1)) (= #1 (id "Hisha" P2)) (= #1 (id "Hisha" P3))})
-                            (id "Hisha" P4)
-                            (if (or {(= #1 (id "Ginsho" P1)) (= #1 (id "Ginsho" P2)) (= #1 (id "Ginsho" P3))})
-                                (id "Ginsho" P4)
-                                (if (or {(= #1 (id "Kakugyo" P1)) (= #1 (id "Kakugyo" P2)) (= #1 (id "Kakugyo" P3))})
-                                    (id "Kakugyo" P4)
-                                    (if (or {(= #1 (id "Kyosha" P1)) (= #1 (id "Kyosha" P2)) (= #1 (id "Kyosha" P3))})
-                                        (id "Kyosha" P4)
-                                        (if (or {(= #1 (id "Kinsho" P1)) (= #1 (id "Kinsho" P2)) (= #1 (id "Kinsho" P3))})
-                                            (id "Kinsho" P4)
+                (if (or {(= #1 (id "Pawn" P1)) (= #1 (id "Pawn" P2)) (= #1 (id "Pawn" P3))})
+                    (id "Pawn" P4)
+                    (if (or {(= #1 (id "Knight" P1)) (= #1 (id "Knight" P2)) (= #1 (id "Knight" P3))})
+                        (id "Knight" P4)
+                        (if (or {(= #1 (id "Rook" P1)) (= #1 (id "Rook" P2)) (= #1 (id "Rook" P3))})
+                            (id "Rook" P4)
+                            (if (or {(= #1 (id "SilverGeneral" P1)) (= #1 (id "SilverGeneral" P2)) (= #1 (id "SilverGeneral" P3))})
+                                (id "SilverGeneral" P4)
+                                (if (or {(= #1 (id "Bishop" P1)) (= #1 (id "Bishop" P2)) (= #1 (id "Bishop" P3))})
+                                    (id "Bishop" P4)
+                                    (if (or {(= #1 (id "Lance" P1)) (= #1 (id "Lance" P2)) (= #1 (id "Lance" P3))})
+                                        (id "Lance" P4)
+                                        (if (or {(= #1 (id "GoldGeneral" P1)) (= #1 (id "GoldGeneral" P2)) (= #1 (id "GoldGeneral" P3))})
+                                            (id "GoldGeneral" P4)
                                             (if (or {(= #1 (id "Tokin" P1)) (= #1 (id "Tokin" P2)) (= #1 (id "Tokin" P3))})
-                                                (id "Fuhyo" P4)
-                                                (if (or {(= #1 (id "Narigin" P1)) (= #1 (id "Narigin" P2)) (= #1 (id "Narigin" P3))})
-                                                    (id "Ginsho" P4)
-                                                    (if (or {(= #1 (id "Ryuo" P1)) (= #1 (id "Ryuo" P2)) (= #1 (id "Ryuo" P3))})
-                                                        (id "Hisha" P4)
-                                                        (if (or {(= #1 (id "Ryuma" P1)) (= #1 (id "Ryuma" P2)) (= #1 (id "Ryuma" P3))})
-                                                            (id "Kakugyo" P4)
-                                                            (if (or {(= #1 (id "Narikei" P1)) (= #1 (id "Narikei" P2)) (= #1 (id "Narikei" P3))})
-                                                                (id "Keima" P4)
-                                                                (if (or {(= #1 (id "Narikyo" P1)) (= #1 (id "Narikyo" P2)) (= #1 (id "Narikyo" P3))})
-                                                                    (id "Kyosha" P4)
-                                                                    (id "Osho" P4)
+                                                (id "Pawn" P4)
+                                                (if (or {(= #1 (id "RunningWolf" P1)) (= #1 (id "RunningWolf" P2)) (= #1 (id "RunningWolf" P3))})
+                                                    (id "SilverGeneral" P4)
+                                                    (if (or {(= #1 (id "DragonKing" P1)) (= #1 (id "DragonKing" P2)) (= #1 (id "DragonKing" P3))})
+                                                        (id "Rook" P4)
+                                                        (if (or {(= #1 (id "DragonHorse" P1)) (= #1 (id "DragonHorse" P2)) (= #1 (id "DragonHorse" P3))})
+                                                            (id "Bishop" P4)
+                                                            (if (or {(= #1 (id "HeavenlyHorse" P1)) (= #1 (id "HeavenlyHorse" P2)) (= #1 (id "HeavenlyHorse" P3))})
+                                                                (id "Knight" P4)
+                                                                (if (or {(= #1 (id "FreeTiger" P1)) (= #1 (id "FreeTiger" P2)) (= #1 (id "FreeTiger" P3))})
+                                                                    (id "Lance" P4)
+                                                                    (if (or {(= #1 (id "GreatElephant" P1)) (= #1 (id "GreatElephant" P2)) (= #1 (id "GreatElephant" P3))})
+                                                                        (id "GoldGeneral" P4)
+                                                                        (id "King" P4)
+                                                                    )
                                                                 )
                                                             )
                                                         )
@@ -297,45 +330,90 @@
     )
 )
 
-// Fixed RemoveKingIfCheckmate by RubixOne
+(define "DetectNonMoverInCheck"
+    (and 
+        (not ("IsInCheck" "King" Mover))
+        (or {
+            (and {(is Active P1) (not (is Mover P1)) ("IsInCheck" "King" P1) (not ("CanNotMove" P1))})
+            (and {(is Active P2) (not (is Mover P2)) ("IsInCheck" "King" P2) (not ("CanNotMove" P2))})
+            (and {(is Active P3) (not (is Mover P3)) ("IsInCheck" "King" P3) (not ("CanNotMove" P3))})
+            (and {(is Active P4) (not (is Mover P4)) ("IsInCheck" "King" P4) (not ("CanNotMove" P4))})
+        })
+    )
+)
+
 (define "RemoveKingIfCheckmate"
-    (if (and (is Active #1) (not (is Mover #1)))
+    (if (and {(is Active #1) (not (is Mover #1))})
         (if 
             (and 
-                ("IsInCheck" "Osho" #1)
+                ("IsInCheck" "King" #1)
                 ("CanNotMove" #1)
             )
-            (remove (where (id "Osho" #1)))
+            ("ReappropriatePieces" #1 Mover)
         )
     )		
 )
 
-// RemoveKingIfStalemate by RubixOne
-(define "RemoveKingIfStalemate"
-    (if 
-        (and 
-            (no Moves Next) 
-            (not ("IsOffBoard" (where "Osho" Next)))
-        ) 
-        (remove (where (id "Osho" Next)))
+// Reappropriates pieces in the hand of #1 to #2
+(define "ReappropriatePieces"
+    (and {        
+        (remove (where (id "King" #1)))
+        ("AddToHand" #1 #2 "Pawn")
+        ("AddToHand" #1 #2 "Lance")
+        ("AddToHand" #1 #2 "Knight")
+        ("AddToHand" #1 #2 "SilverGeneral")
+        ("AddToHand" #1 #2 "GoldGeneral")
+        ("AddToHand" #1 #2 "Bishop")
+        ("AddToHand" #1 #2 "Rook")
+        (remove (sites Occupied by:#1 container:"Hand"))
+    })
+)
+
+(define "AddToHand"
+    (add (piece (id #3 #2)) (to (mapEntry "Where" (id #3 #2))) count:(count Pieces in:(sites Occupied by:#1 container:"Hand" components:{#3})))
+)
+
+(define "MakeMove"
+    (if ("SameTurn")
+        (or
+            ("Promote")
+            (move Pass)
+        )
+        (do 
+            (or {
+                ("PlaceUnrestrictedPiece" Mover) 
+                ("PlacePawn" Mover)
+                ("PlaceLance" Mover)
+                ("PlaceKnight" Mover) 
+                (forEach Piece) 
+            })
+            ifAfterwards:(not ("IsInCheck" "King" Mover))
+        )
+        (then
+            (and {
+                ("RemoveKingIfCheckmate" P1)
+                ("RemoveKingIfCheckmate" P2)
+                ("RemoveKingIfCheckmate" P3)
+                ("RemoveKingIfCheckmate" P4)
+            })
+        )
     )
 )
 
 //------------------------------------------------------------------------------
 
-(game "Yonin Shogi" 
-    (players {(player N) (player W) (player S) (player E)}) 
+(game "Yonin Seireigi" 
+    (players {(player N) (player E) (player S) (player W)}) 
     
     (equipment { 
         (board (square 9))
         
         // King
-        (piece "Osho" Each ("StepMove"))
+        (piece "King" Each ("StepMove"))
         
         // Pawn 
-        (piece "Fuhyo" Each 
-            ("StepMove" 
-                Forward 
+        (piece "Pawn" Each 
+            ("StepMove" Forward 
                 (then 
                     (if ("InPromotionZone" (last To))
                         (if ("InLastRank" (last To)) 
@@ -347,123 +425,107 @@
             )
         )
         
-        // Silver General
-        (piece "Ginsho" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
-        
-        // Rook
-        (piece "Hisha" Each ("SlideMove" Orthogonal "CanPromote"))
-        
-        // Bishop
-        (piece "Kakugyo" Each ("SlideMove" Diagonal "CanPromote"))
-        
-        // Knight
-        (piece "Keima" Each 
-            (forEach Direction 
-                Forward 
-                (to 
-                    if:True 
-                    (apply 
-                        (forEach Direction 
-                            (from (to)) 
-                            (directions {FR FL}) 
-                            (if (not ("IsFriendAt" (to))) 
-                                (move 
-                                    (from) 
-                                    (to 
-                                        (apply 
-                                            if:("IsEnemyAt" (to))
-                                            (add 
-                                                (piece ("Captured" (what at:(to)))) 
-                                                (to (mapEntry "Where" ("Captured" (what at:(to)))))
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                ) 
-                (then 
-                    (if ("InPromotionZone" (last To))
-                        (if ("InTwoFurthestRank" (last To)) 
-                            "Promote" 
-                            (moveAgain) 
-                        ) 
-                    ) 
-                ) 
-            ) 
-        )
-        
         // Lance
-        (piece "Kyosha" Each
-            ("SlideMove" 
-                Forward 
-                (then 
+        (piece "Lance" Each 
+            ("SlideMove" Forward 
+                (then  
                     (if ("InPromotionZone" (last To))
                         (if ("InLastRank" (last To)) 
-                            "Promote" 
+                            ("Promote") 
                             (moveAgain) 
                         ) 
                     ) 
                 )
-            ) 
+            )
+        )       
+        
+        // Knight
+        (piece "Knight" Each 
+            ("TwoStepLeap" Forward (directions {FL FR})
+                (then 
+                    (if ("InPromotionZone" (last To))
+                        (if ("InTwoFurthestRank" (last To)) 
+                            ("Promote") 
+                            (moveAgain) 
+                        ) 
+                    ) 
+                )
+            )
         )
         
+        // Silver General
+        (piece "SilverGeneral" Each ("StepMove" (directions {Forward BL BR FL FR}) "CanPromote"))
+        
         // Gold General
-        ("ShogiGold" "Kinsho" "CapturePiece")
+        (piece "GoldGeneral" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR}) "CanPromote"))
+        
+        // Bishop
+        (piece "Bishop" Each ("SlideMove" Diagonal "CanPromote"))
+        
+        // Rook
+        (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
         
         // Promoted Pawn
-        ("ShogiGold" "Tokin" "CapturePiece")
-        
-        // Promoted Silver
-        ("ShogiGold" "Narigin" "CapturePiece")
-        
-        // Promoted Rook
-        (piece "Ryuo" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
-        
-        // Promoted Bishop
-        (piece "Ryuma" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
-        
-        // Promoted Knight
-        ("ShogiGold" "Narikei" "CapturePiece")
+        (piece "Tokin" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR})))
         
         // Promoted Lance
-        ("ShogiGold" "Narikyo" "CapturePiece")
+        (piece "FreeTiger" Each (or {("SlideMove" (directions {Leftward Rightward})) ("TwoStepLeap" (directions {Leftward Rightward}) (directions {FL FR})) ("StepMove" (directions {Forward Backward}))}))
         
+        // Promoted Knight
+        (piece "HeavenlyHorse" Each (or {("StepMove" (directions {Forward BL BR FL FR})) ("TwoStepLeap" Backward (directions {FL FR})) ("TwoStepLeap" (directions {Forward FL FR}) Forward)}))
+        
+        // Promoted Silver General
+        (piece "RunningWolf" Each (or ("SlideMove" (directions {Forward Backward})) ("StepMove" (directions {FL FR Leftward Rightward}))))
+        
+        // Promoted Gold General
+        (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
+        
+        // Promoted Bishop
+        (piece "DragonHorse" Each (or ("SlideMove" Diagonal) ("StepMove" Orthogonal)))
+        
+        // Promoted Rook
+        (piece "DragonKing" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
+        
+        (regions "HandP1" P1 { 81..87 })
+        (regions "HandP2" P2 { 88..94 })
+        (regions "HandP3" P3 { 95..101 })
+        (regions "HandP4" P1 { 102..108 })
         (regions "LastRankP1" P1 (sites Top))
-        (regions "LastRankP2" P2 (sites Left))
+        (regions "LastRankP2" P2 (sites Right))
         (regions "LastRankP3" P3 (sites Bottom))
-        (regions "LastRankP4" P4 (sites Right))
+        (regions "LastRankP4" P4 (sites Left))
         (regions "TwoFurthestRankP1" P1 (expand (sites Top)))
-        (regions "TwoFurthestRankP2" P2 (expand (sites Left)))
+        (regions "TwoFurthestRankP2" P2 (expand (sites Right)))
         (regions "TwoFurthestRankP3" P3 (expand (sites Bottom)))
-        (regions "TwoFurthestRankP4" P4 (expand (sites Right)))
+        (regions "TwoFurthestRankP4" P4 (expand (sites Left)))
         (regions "Promotion" P1 (expand (sites Top) steps:2))
-        (regions "Promotion" P2 (expand (sites Left) steps:2))
+        (regions "Promotion" P2 (expand (sites Right) steps:2))
         (regions "Promotion" P3 (expand (sites Bottom) steps:2))
-        (regions "Promotion" P4 (expand (sites Right) steps:2))
+        (regions "Promotion" P4 (expand (sites Left) steps:2))
         (map "Where" {
-            (pair (id "Fuhyo" P1) (handSite P1)) (pair (id "Fuhyo" P2) (handSite P2)) (pair (id "Fuhyo" P3) (handSite P3)) (pair (id "Fuhyo" P4) (handSite P4)) 
-            (pair (id "Ginsho" P1) (handSite P1 1)) (pair (id "Ginsho" P2) (handSite P2 1)) (pair (id "Ginsho" P3) (handSite P3 1)) (pair (id "Ginsho" P4) (handSite P4 1)) 
-            (pair (id "Hisha" P1) (handSite P1 2)) (pair (id "Hisha" P2) (handSite P2 2)) (pair (id "Hisha" P3) (handSite P3 2)) (pair (id "Hisha" P4) (handSite P4 2)) 
-            (pair (id "Kakugyo" P1) (handSite P1 3)) (pair (id "Kakugyo" P2) (handSite P2 3)) (pair (id "Kakugyo" P3) (handSite P3 3)) (pair (id "Kakugyo" P4) (handSite P4 3)) 
-            (pair (id "Keima" P1) (handSite P1 4)) (pair (id "Keima" P2) (handSite P2 4)) (pair (id "Keima" P3) (handSite P3 4)) (pair (id "Keima" P4) (handSite P4 4)) 
-            (pair (id "Kyosha" P1) (handSite P1 5)) (pair (id "Kyosha" P2) (handSite P2 5)) (pair (id "Kyosha" P3) (handSite P3 5)) (pair (id "Kyosha" P4) (handSite P4 5)) 
-            (pair (id "Kinsho" P1) (handSite P1 6)) (pair (id "Kinsho" P2) (handSite P2 6)) (pair (id "Kinsho" P3) (handSite P3 6)) (pair (id "Kinsho" P4) (handSite P4 6)) 
+            (pair (id "Pawn" P1) (handSite P1)) (pair (id "Pawn" P2) (handSite P2)) (pair (id "Pawn" P3) (handSite P3)) (pair (id "Pawn" P4) (handSite P4)) 
+            (pair (id "Lance" P1) (handSite P1 1)) (pair (id "Lance" P2) (handSite P2 1)) (pair (id "Lance" P3) (handSite P3 1)) (pair (id "Lance" P4) (handSite P4 1)) 
+            (pair (id "Knight" P1) (handSite P1 2)) (pair (id "Knight" P2) (handSite P2 2)) (pair (id "Knight" P3) (handSite P3 2)) (pair (id "Knight" P4) (handSite P4 2)) 
+            (pair (id "SilverGeneral" P1) (handSite P1 3)) (pair (id "SilverGeneral" P2) (handSite P2 3)) (pair (id "SilverGeneral" P3) (handSite P3 3)) (pair (id "SilverGeneral" P4) (handSite P4 3)) 
+            (pair (id "GoldGeneral" P1) (handSite P1 4)) (pair (id "GoldGeneral" P2) (handSite P2 4)) (pair (id "GoldGeneral" P3) (handSite P3 4)) (pair (id "GoldGeneral" P4) (handSite P4 4)) 
+            (pair (id "Bishop" P1) (handSite P1 5)) (pair (id "Bishop" P2) (handSite P2 5)) (pair (id "Bishop" P3) (handSite P3 5)) (pair (id "Bishop" P4) (handSite P4 5)) 
+            (pair (id "Rook" P1) (handSite P1 6)) (pair (id "Rook" P2) (handSite P2 6)) (pair (id "Rook" P3) (handSite P3 6)) (pair (id "Rook" P4) (handSite P4 6)) 
             (pair (id "Tokin" P1) (handSite P1)) (pair (id "Tokin" P2) (handSite P2)) (pair (id "Tokin" P3) (handSite P3)) (pair (id "Tokin" P4) (handSite P4)) 
-            (pair (id "Narigin" P1) (handSite P1 1)) (pair (id "Narigin" P2) (handSite P2 1)) (pair (id "Narigin" P3) (handSite P3 1)) (pair (id "Narigin" P4) (handSite P4 1)) 
-            (pair (id "Ryuo" P1) (handSite P1 2)) (pair (id "Ryuo" P2) (handSite P2 2)) (pair (id "Ryuo" P3) (handSite P3 2)) (pair (id "Ryuo" P4) (handSite P4 2)) 
-            (pair (id "Ryuma" P1) (handSite P1 3)) (pair (id "Ryuma" P2) (handSite P2 3)) (pair (id "Ryuma" P3) (handSite P3 3)) (pair (id "Ryuma" P4) (handSite P4 3)) 
-            (pair (id "Narikei" P1) (handSite P1 4)) (pair (id "Narikei" P2) (handSite P2 4)) (pair (id "Narikei" P3) (handSite P3 4)) (pair (id "Narikei" P4) (handSite P4 4)) 
-            (pair (id "Narikyo" P1) (handSite P1 5)) (pair (id "Narikyo" P2) (handSite P2 5)) (pair (id "Narikyo" P3) (handSite P3 5)) (pair (id "Narikyo" P4) (handSite P4 5)) 
+            (pair (id "FreeTiger" P1) (handSite P1 1)) (pair (id "FreeTiger" P2) (handSite P2 1)) (pair (id "FreeTiger" P3) (handSite P3 1)) (pair (id "FreeTiger" P4) (handSite P4 1)) 
+            (pair (id "HeavenlyHorse" P1) (handSite P1 2)) (pair (id "HeavenlyHorse" P2) (handSite P2 2)) (pair (id "HeavenlyHorse" P3) (handSite P3 2)) (pair (id "HeavenlyHorse" P4) (handSite P4 2)) 
+            (pair (id "RunningWolf" P1) (handSite P1 3)) (pair (id "RunningWolf" P2) (handSite P2 3)) (pair (id "RunningWolf" P3) (handSite P3 3)) (pair (id "RunningWolf" P4) (handSite P4 3)) 
+            (pair (id "GreatElephant" P1) (handSite P1 4)) (pair (id "GreatElephant" P2) (handSite P2 4)) (pair (id "GreatElephant" P3) (handSite P3 4)) (pair (id "GreatElephant" P4) (handSite P4 4)) 
+            (pair (id "DragonHorse" P1) (handSite P1 5)) (pair (id "DragonHorse" P2) (handSite P2 5)) (pair (id "DragonHorse" P3) (handSite P3 5)) (pair (id "DragonHorse" P4) (handSite P4 5)) 
+            (pair (id "DragonKing" P1) (handSite P1 6)) (pair (id "DragonKing" P2) (handSite P2 6)) (pair (id "DragonKing" P3) (handSite P3 6)) (pair (id "DragonKing" P4) (handSite P4 6)) 
         })
         (map "Promoted" { 
-            (pair (id "Fuhyo" P1) (id "Tokin" P1)) (pair (id "Fuhyo" P2) (id "Tokin" P2)) (pair (id "Fuhyo" P3) (id "Tokin" P3)) (pair (id "Fuhyo" P4) (id "Tokin" P4)) 
-            (pair (id "Ginsho" P1) (id "Narigin" P1)) (pair (id "Ginsho" P2) (id "Narigin" P2)) (pair (id "Ginsho" P3) (id "Narigin" P3)) (pair (id "Ginsho" P4) (id "Narigin" P4)) 
-            (pair (id "Hisha" P1) (id "Ryuo" P1)) (pair (id "Hisha" P2) (id "Ryuo" P2)) (pair (id "Hisha" P3) (id "Ryuo" P3)) (pair (id "Hisha" P4) (id "Ryuo" P4)) 
-            (pair (id "Kakugyo" P1) (id "Ryuma" P1)) (pair (id "Kakugyo" P2) (id "Ryuma" P2)) (pair (id "Kakugyo" P3) (id "Ryuma" P3)) (pair (id "Kakugyo" P4) (id "Ryuma" P4)) 
-            (pair (id "Keima" P1) (id "Narikei" P1)) (pair (id "Keima" P2) (id "Narikei" P2)) (pair (id "Keima" P3) (id "Narikei" P3)) (pair (id "Keima" P4) (id "Narikei" P4)) 
-            (pair (id "Kyosha" P1) (id "Narikyo" P1)) (pair (id "Kyosha" P2) (id "Narikyo" P2)) (pair (id "Kyosha" P3) (id "Narikyo" P3)) (pair (id "Kyosha" P4) (id "Narikyo" P4)) 
+            (pair (id "Pawn" P1) (id "Tokin" P1)) (pair (id "Pawn" P2) (id "Tokin" P2)) (pair (id "Pawn" P3) (id "Tokin" P3)) (pair (id "Pawn" P4) (id "Tokin" P4)) 
+            (pair (id "Lance" P1) (id "FreeTiger" P1)) (pair (id "Lance" P2) (id "FreeTiger" P2)) (pair (id "Lance" P3) (id "FreeTiger" P3)) (pair (id "Lance" P4) (id "FreeTiger" P4)) 
+            (pair (id "Knight" P1) (id "HeavenlyHorse" P1)) (pair (id "Knight" P2) (id "HeavenlyHorse" P2)) (pair (id "Knight" P3) (id "HeavenlyHorse" P3)) (pair (id "Knight" P4) (id "HeavenlyHorse" P4)) 
+            (pair (id "SilverGeneral" P1) (id "RunningWolf" P1)) (pair (id "SilverGeneral" P2) (id "RunningWolf" P2)) (pair (id "SilverGeneral" P3) (id "RunningWolf" P3)) (pair (id "SilverGeneral" P4) (id "RunningWolf" P4)) 
+            (pair (id "GoldGeneral" P1) (id "GreatElephant" P1)) (pair (id "GoldGeneral" P2) (id "GreatElephant" P2)) (pair (id "GoldGeneral" P3) (id "GreatElephant" P3)) (pair (id "GoldGeneral" P4) (id "GreatElephant" P4)) 
+            (pair (id "Bishop" P1) (id "DragonHorse" P1)) (pair (id "Bishop" P2) (id "DragonHorse" P2)) (pair (id "Bishop" P3) (id "DragonHorse" P3)) (pair (id "Bishop" P4) (id "DragonHorse" P4)) 
+            (pair (id "Rook" P1) (id "DragonKing" P1)) (pair (id "Rook" P2) (id "DragonKing" P2)) (pair (id "Rook" P3) (id "DragonKing" P3)) (pair (id "Rook" P4) (id "DragonKing" P4)) 
         })
         
         (hand Each size:7)
@@ -475,36 +537,59 @@
         })
         
         (play
-            (if ("SameTurn")
+            // If a player is in check and that player is not the player to move, force pass
+            (if 
+                ("SameTurn")
                 (or
-                    ("Promote")
+                    ("Promote"
+                        (then
+                            (and {
+                                ("RemoveKingIfCheckmate" P1)
+                                ("RemoveKingIfCheckmate" P2)
+                                ("RemoveKingIfCheckmate" P3)
+                                ("RemoveKingIfCheckmate" P4)
+                            })
+                        )
+                    )
+                    (move Pass
+                        (then
+                            (and {
+                                ("RemoveKingIfCheckmate" P1)
+                                ("RemoveKingIfCheckmate" P2)
+                                ("RemoveKingIfCheckmate" P3)
+                                ("RemoveKingIfCheckmate" P4)
+                            })
+                        )
+                    )
+                )
+                (if 
+                    ("DetectNonMoverInCheck")
                     (move Pass)
-                )
-                (do 
-                    (or {
-                        ("PlaceUnrestrictedPiece" Mover) 
-                        ("PlacePawn" Mover)
-                        ("PlaceLance" Mover)
-                        ("PlaceKnight" Mover) 
-                        (forEach Piece) 
-                    })
-                    ifAfterwards:(not ("IsInCheck" "Osho" Mover))
-                )
-                (then
-                    (and {
-                        ("RemoveKingIfCheckmate" P1)
-                        ("RemoveKingIfCheckmate" P2)
-                        ("RemoveKingIfCheckmate" P3)
-                        ("RemoveKingIfCheckmate" P4)
-                        ("RemoveKingIfStalemate")
-                    })
+                    (do 
+                        (or {
+                            ("PlaceUnrestrictedPiece" Mover) 
+                            ("PlacePawn" Mover)
+                            ("PlaceLance" Mover)
+                            ("PlaceKnight" Mover) 
+                            (forEach Piece) 
+                        })
+                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    )
+                    (then
+                        (and {
+                            ("RemoveKingIfCheckmate" P1)
+                            ("RemoveKingIfCheckmate" P2)
+                            ("RemoveKingIfCheckmate" P3)
+                            ("RemoveKingIfCheckmate" P4)
+                        })
+                    )
                 )
             )
         )
         
         (end {
             (forEach NonMover
-                if:("IsOffBoard" (where "Osho" Player)) 
+                if:("IsOffBoard" (where "King" Player)) 
                 (result Player Loss)
             ) 
         })
@@ -513,23 +598,23 @@
 
 (option "Setup" <PiecePlacement> args:{ <PiecePlacement> }
     {
-    (item "1993" 	
+    (item "Compact" 	
         <
-        (place "Osho1" coord:"E1") (place "Kinsho1" {"D1" "F1"}) (place "Ginsho1" {"C1" "G1"}) (place "Fuhyo1" {"D2" "F2" "E3"}) (place "Hisha1" coord:"E2")
-        (place "Osho2" coord:"I5") (place "Kinsho2" {"I4" "I6"}) (place "Ginsho2" {"I3" "I7"}) (place "Fuhyo2" {"H4" "H6" "G5"}) (place "Hisha2" coord:"H5")
-        (place "Osho3" coord:"E9") (place "Kinsho3" {"D9" "F9"}) (place "Ginsho3" {"C9" "G9"}) (place "Fuhyo3" {"D8" "F8" "E7"}) (place "Hisha3" coord:"E8")
-        (place "Osho4" coord:"A5") (place "Kinsho4" {"A4" "A6"}) (place "Ginsho4" {"A3" "A7"}) (place "Fuhyo4" {"B4" "B6" "C5"}) (place "Hisha4" coord:"B5")
+        (place "King1" coord:"E1") (place "GoldGeneral1" {"D1" "F1"}) (place "SilverGeneral1" {"C1" "G1"}) (place "Pawn1" {"D2" "F2" "E3"}) (place "Rook1" coord:"E2")
+        (place "King2" coord:"A5") (place "GoldGeneral2" {"A4" "A6"}) (place "SilverGeneral2" {"A3" "A7"}) (place "Pawn2" {"B4" "B6" "C5"}) (place "Rook2" coord:"B5")
+        (place "King3" coord:"E9") (place "GoldGeneral3" {"D9" "F9"}) (place "SilverGeneral3" {"C9" "G9"}) (place "Pawn3" {"D8" "F8" "E7"}) (place "Rook3" coord:"E8")
+        (place "King4" coord:"I5") (place "GoldGeneral4" {"I4" "I6"}) (place "SilverGeneral4" {"I3" "I7"}) (place "Pawn4" {"H4" "H6" "G5"}) (place "Rook4" coord:"H5")
         >
-    "Setup by Ota Mitsuyasu in 1993")**
+    "This setup can be played using a single standard Shogi set. Knights, Lances, Bishops, and doubly-stacked Pawns represent the extra Silver Generals, Gold Generals, Rooks, and Kings, respectively. Based on Ota Mitsuyasu's Yonin Shogi setup.")**
     
-    (item "1991" 	
+    (item "Complete" 	
         <
-        (place "Osho1" coord:"E1") (place "Kinsho1" {"D1" "F1"}) (place "Ginsho1" {"C1" "G1"}) (place "Keima1" {"B1" "H1"}) (place "Kyosha1" coord:"A1") (place "Fuhyo1" {"D3" "F3" "E3" "G3" "H3"}) (place "Hisha1" coord:"G2") (place "Kakugyo1" coord:"B2")
-        (place "Osho2" coord:"I5") (place "Kinsho2" {"I4" "I6"}) (place "Ginsho2" {"I3" "I7"}) (place "Keima2" {"I2" "I8"}) (place "Kyosha2" coord:"I1") (place "Fuhyo2" {"G4" "G5" "G6" "G7" "G8"}) (place "Hisha2" coord:"H7") (place "Kakugyo2" coord:"H2")
-        (place "Osho3" coord:"E9") (place "Kinsho3" {"D9" "F9"}) (place "Ginsho3" {"C9" "G9"}) (place "Keima3" {"B9" "H9"}) (place "Kyosha3" coord:"I9") (place "Fuhyo3" {"B7" "C7" "D7" "E7" "F7"}) (place "Hisha3" coord:"C8") (place "Kakugyo3" coord:"H8")
-        (place "Osho4" coord:"A5") (place "Kinsho4" {"A4" "A6"}) (place "Ginsho4" {"A3" "A7"}) (place "Keima4" {"A2" "A8"}) (place "Kyosha4" coord:"A9") (place "Fuhyo4" {"C2" "C3" "C4" "C5" "C6"}) (place "Hisha4" coord:"B3") (place "Kakugyo4" coord:"B8")
+        (place "King1" coord:"E1") (place "GoldGeneral1" {"D1" "F1"}) (place "SilverGeneral1" {"C1" "G1"}) (place "Knight1" {"B1" "H1"}) (place "Lance1" coord:"A1") (place "Pawn1" {"D3" "F3" "E3" "G3" "H3"}) (place "Rook1" coord:"G2") (place "Bishop1" coord:"B2")
+        (place "King2" coord:"A5") (place "GoldGeneral2" {"A4" "A6"}) (place "SilverGeneral2" {"A3" "A7"}) (place "Knight2" {"A2" "A8"}) (place "Lance2" coord:"A9") (place "Pawn2" {"C2" "C3" "C4" "C5" "C6"}) (place "Rook2" coord:"B3") (place "Bishop2" coord:"B8")
+        (place "King3" coord:"E9") (place "GoldGeneral3" {"D9" "F9"}) (place "SilverGeneral3" {"C9" "G9"}) (place "Knight3" {"B9" "H9"}) (place "Lance3" coord:"I9") (place "Pawn3" {"B7" "C7" "D7" "E7" "F7"}) (place "Rook3" coord:"C8") (place "Bishop3" coord:"H8")
+        (place "King4" coord:"I5") (place "GoldGeneral4" {"I4" "I6"}) (place "SilverGeneral4" {"I3" "I7"}) (place "Knight4" {"I2" "I8"}) (place "Lance4" coord:"I1") (place "Pawn4" {"G4" "G5" "G6" "G7" "G8"}) (place "Rook4" coord:"H7") (place "Bishop4" coord:"H2")
         >
-    "Setup in weekly children’s magazine in February 1991")
+    "Requires two Shogi sets. Based on a Yonin Shogi setup from a Japanese children's magazine in 1991.")
 })
 
 //------------------------------------------------------------------------------
@@ -538,16 +623,6 @@
     
     (info
         {
-        (description "A version of 4-player Shogi.")
-        (rules "Pieces move the same as in normal Shogi. Ranks (rows) and files (columns) are defined relative to the direction of the moving player's pieces. Once a player is mated their Osho is removed, but all their other pieces remain on the board as neutral obstacles. Neutral pieces cannot move until they are captured, but will still give check.
-        ")
-        (id "1586")
-        (source "<a href=\\"http://wikipedia.org/wiki/Yonin_shogi/\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />Yonin shogi</a>")
-        (version "1.3.13")
-        (classification "board/war/replacement/checkmate/shogi")
-        (author "Ota Mitsuyasu")
-        (credit "Matthew Stephenson (and fixed by RubixOne)")
-        (date "1995")
         }
     )
     
