@@ -1,0 +1,50 @@
+(define "ConnectedEdges"
+    (or (is Connected Orthogonal Mover) (is Connected Diagonal Mover))
+)
+
+//-----------------------------------------------
+// Main routine
+(game "Weave"
+    (players 2)
+    (equipment {
+        (board (square <Board:size>) use:Vertex)
+        (piece "Ball" Each)
+        (hand Each)
+        (regions P1 {(sites Left) (sites Right)})
+        (regions P2 {(sites Top) (sites Bottom)})
+    })
+    (rules
+        (play (move Add (to (sites Empty))))
+        (end (if "ConnectedEdges" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4" <4> "The game is played on a 4x4 board.")
+    (item "6" <6> "The game is played on a 6x6 board.")
+    (item "8" <8> "The game is played on a 8x8 board.")
+    (item "10" <10> "The game is played on a 10x10 board.")*
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+
+    (info
+        {
+        
+        }
+    )
+
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "square" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+)
