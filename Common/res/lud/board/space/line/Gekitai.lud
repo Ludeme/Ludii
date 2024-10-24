@@ -1,0 +1,88 @@
+(define "IsAdjacentInPerimeter"
+	(or {
+		(and (is In (site) (sites Perimeter)) (not (is In (last To) (sites Perimeter))))
+		(and (is In (site) (sites Top)) (is In (last To) (difference (sites Left) (sites Corners))))
+		(and (is In (site) (sites Left)) (is In (last To) (difference (sites Top) (sites Corners))))
+		(and (is In (site) (sites Top)) (is In (last To) (difference (sites Right) (sites Corners))))
+		(and (is In (site) (sites Right)) (is In (last To) (difference (sites Top) (sites Corners))))
+		(and (is In (site) (sites Bottom)) (is In (last To) (difference (sites Left) (sites Corners))))
+		(and (is In (site) (sites Left)) (is In (last To) (difference (sites Bottom) (sites Corners))))
+		(and (is In (site) (sites Bottom)) (is In (last To) (difference (sites Right) (sites Corners))))
+		(and (is In (site) (sites Right)) (is In (last To) (difference (sites Bottom) (sites Corners))))
+	})
+)
+
+//------------------------------------------------------------------------------
+
+(game "Gekitai" 
+    (players 2) 
+    (equipment { 
+        (board (square 6))
+        (hand Each)
+        (piece "Marker" Each) 
+    })
+    
+    (rules 
+    	(start (place "Marker" "Hand" count:8))
+        (play 
+        	(move 
+        		(from (handSite Mover)) 
+                (to (sites Empty))
+        		(then
+        			(forEach
+						Site
+							(sites Around (last To))
+							(if 
+								(not (is Empty (site)))
+								(if  
+									"IsAdjacentInPerimeter"
+									(if 
+										(= (what at:(site)) (id "Marker1"))
+										(move 
+											(from (site)) 
+											(to (handSite 1))
+										)
+										(move 
+											(from (site)) 
+											(to (handSite 2))
+										)
+									)
+									(move Step
+										(from (site))
+										(directions Cell from:(last To) to:(site))
+										(to if: 
+											(is Empty (to))
+										)
+									)
+								)
+							)
+					)
+        		)
+			)
+        ) 
+	
+        (end {
+        	(if (and (is Line 3 throughAny:(sites Occupied by:Mover) Mover) (is Line 3 throughAny:(sites Occupied by:Next) Next)) (result All Draw))
+        	(if (and (= (count Pieces Mover in:(sites Occupied by:Mover container:"Board")) 8) (is Line 3 throughAny:(sites Occupied by:Next) Next)) (result All Draw))
+        	(if (is Line 3 throughAny:(sites Occupied by:Mover) Mover) (result Mover Win))
+        	(if (is Line 3 throughAny:(sites Occupied by:Next) Next) (result Next Win))
+            (if (= (count Pieces Mover in:(sites Occupied by:Mover container:"Board")) 8) (result Mover Win)) 
+        }) 
+    )
+)
+
+
+//------------------------------------------------------------------------------
+
+(metadata 
+  
+  (info
+      {
+      }
+  )
+  
+  (graphics {
+	  (piece Colour P1 fillColour:(colour Red))
+  })
+  
+)
