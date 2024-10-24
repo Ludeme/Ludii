@@ -354,12 +354,6 @@
   (item "No Zombies" <Next> <Mover> <> <("PieceMoves" True ~)>
    "Dead pieces are removed."
   )
-  (item "Zombie Attackers" <Mover> <Mover> < > <("PieceMoves" ~)>
-   "Attackers become Zombies that must be placed when no other moves can be made."
-  )
-  (item "Zombies Defenders" <Next> <Next> < > <("PieceMoves" ~)> 
-   "Defenders become Zombies that must be placed when no other moves can be made."
-  )
 //  (item "Bluffing with Zombies" <Mover> <Next> 
 //   <(set Hidden Value (sites Hand P1) to:P2) 
 //    (set Hidden Value (sites Hand P2) to:P1)
