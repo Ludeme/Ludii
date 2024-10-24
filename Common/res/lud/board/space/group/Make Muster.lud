@@ -47,24 +47,45 @@
 
 (option "Board Size" <Board> args:{ <poly> <limit> } 
     {
-    (item "Muster 2" <"Order2"> <{0..19}> "Board: Muster order 2 board - 20 positions")
-    (item "Muster 3" <"Order3"> <{0..44}> "Board: Muster order 3 board - 45 positions")**
-    (item "Muster 4" <"Order4"> <{0..79}> "Board: Muster order 4 board - 80 positions")
-    (item "Muster 5" <"Order5"> <{0..124}> "Board: Muster order 5 board - 125 positions")
-    (item "Muster 6" <"Order6"> <{0..179}> "Board: Muster order 6 board - 180 positions")
+    (item "Muster 2"  <"Order2"> <{0..19}> "Board: Muster order 2 board - 20 positions")
+    (item "Muster 2+" <"Order2plus"> <{0..32}> "Board: Muster order 2+ board - 33 positions")
+    (item "Muster 3"  <"Order3"> <{0..44}> "Board: Muster order 3 board - 45 positions")**
+    (item "Muster 3+" <"Order3plus"> <{0..63}> "Board: Muster order 3+ board - 64 positions")
+    (item "Muster 4"  <"Order4"> <{0..79}> "Board: Muster order 4 board - 80 positions")
+    (item "Muster 4+" <"Order4plus"> <{0..104}> "Board: Muster order 4+ board - 105 positions")
+    (item "Muster 5"  <"Order5"> <{0..136}> "Board: Muster order 5 board - 137 positions")
+    (item "Muster 5+" <"Order5plus"> <{0..143}> "Board: Muster order 5+ board - 144 positions")
+    (item "Muster 6"  <"Order6"> <{0..179}> "Board: Muster order 6 board - 180 positions")
+    (item "Muster 6+" <"Order6plus"> <{0..216}> "Board: Muster order 6+ board - 217 positions")
+    (item "Diagonal 3+" <"Diag3plus"> <{0..23}> "Board: Diagonal order 3+ board - 24 positions")
+    (item "Diagonal 4+" <"Diag4plus"> <{0..39}> "Board: Diagonal order 4+ board - 40 positions")
+    (item "Diagonal 5+" <"Diag5plus"> <{0..59}> "Board: Diagonal order 5+ board - 60 positions")
+    (item "Diagonal 6+" <"Diag6plus"> <{0..83}> "Board: Diagonal order 6+ board - 84 positions")
+    (item "Diagonal 7+" <"Diag7plus"> <{0..111}> "Board: Diagonal order 6+ board - 112 positions")
     }
 )
 
-(define "Order2" (poly { { 1 4 } { 2 3 } { 6 1 } { 7 2 } { 9 6 } { 8 7 } { 4 9 } { 3 8 } })) 
-(define "Order3" (poly { { 1 5 } { 2 4 } { 8 1 } { 9 2 } { 12 8 } { 11 9 } { 5 12 } { 4 11 } }))
-(define "Order4" (poly { { 1 6 } { 2 5 } { 10 1 } { 11 2 } { 15 10 } { 14 11 } { 6 15 } { 5 14 } }))
-(define "Order5" (poly { { 1 7 } { 2 6 } { 12 1 } { 13 2 } { 18 12 } { 17 13 } { 7 18 } { 6 17 } }))
-(define "Order6" (poly { { 1 8 } { 2 7 } { 14 1 } { 15 2 } { 21 14 } { 20 15 } { 8 21 } { 7 20 } }))
+(define "Order2"     (poly { {1 4} {2 3} {6 1}  {7  2}  {9  6}  {8 7}  {4  9} {3  8} })) 
+(define "Order2plus" (poly { {1 5} {2 3} {6 1}  {8  2} {10  7}  {9 8}  {5 10} {3  9} })) 
+(define "Order3"     (poly { {1 5} {2 4} {8 1}  {9  2} {12  8} {11 9}  {5 12} {4 11} }))
+(define "Order3plus" (poly { {1 6} {2 4} {8 1}  {10 2} {13  9} {12 10} {6 13} {4 12} }))
+(define "Order4"     (poly { {1 6} {2 5} {10 1} {11 2} {15 10} {14 11} {6 15} {5 14} }))
+(define "Order4plus" (poly { {1 7} {2 5} {10 1} {12 2} {16 11} {15 12} {7 16} {5 15} }))
+(define "Order5"     (poly { {1 7} {2 6} {12 1} {13 2} {18 12} {17 13} {7 18} {6 17} }))
+(define "Order5plus" (poly { {1 8} {2 6} {12 1} {14 2} {19 13} {18 14} {8 19} {6 18} }))
+(define "Order6"     (poly { {1 8} {2 7} {14 1} {15 2} {21 14} {20 15} {8 21} {7 20} }))
+(define "Order6plus" (poly { {1 9} {2 7} {14 1} {16 2} {22 15} {21 16} {9 22} {7 21} }))
+(define "Diag3plus"  (poly { {0 3} {3 0}  {5 0}  {8 3}  {8  5}  {5  8} {3  8}  {0 5} }))
+(define "Diag4plus"  (poly { {0 4} {4 0}  {6 0} {10 4} {10  6}  {6 10} {4 10}  {0 6} }))
+(define "Diag5plus"  (poly { {0 5} {5 0}  {7 0} {12 5} {12  7}  {7 12} {5 12}  {0 7} }))
+(define "Diag6plus"  (poly { {0 6} {6 0}  {8 0} {14 6} {14  8}  {8 14} {6 14}  {0 8} }))
+(define "Diag7plus"  (poly { {0 7} {7 0}  {9 0} {16 7} {16  9}  {9 16} {7 16}  {0 9} }))
 
 (option "Orientation" <Orient> args:{<amount>}
     {
     (item "Orthogonal" <0> "Orthogonal")
     (item "Angled" <62> "Angled cells")**
+    (item "Diagonal" <45> "Diagonal boards")
     } 
 )
 
@@ -72,7 +93,8 @@
 (metadata
     (info
         {
-        (description "Make Muster is one of several unification games that can be played on the Muster board. The Muster board is a rotated square board with ragged edges and 8 directions of connectivity. Standard sizes are order 2 through order 6. Each order board has 5 x the order squared playing positions.")
+        (description "Make Muster is one of several unification games that can be played on the Muster board. The Muster board is a rotated square board with ragged edges and 8 directions of connectivity. Standard sizes are order 2 through order 6. Each order board has 5 x the order squared playing positions.
+        New '+' sizes with 'double corners' have been added, as some may be used in an upcoming release, and this serves to reduce the ease of executing  'corner traps' (Dec 2023)  ")
         (rules "On your turn, place a single piece of your color on an empty position that is not next to another friendly piece. This is compulsory whenever it is possible to do so.
             
             When it is not possible to place a piece; then instead, step one of your pieces to an adjacent empty position. 
@@ -81,7 +103,7 @@
             -- when all your pieces become connected, or
         -- when you cut-off your opponent from being able to connect theirs.")
         (id "1669")
-        (version "1.3.13")
+        (version "1.3.12")
         (classification "board/space/group")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")
@@ -94,6 +116,7 @@
         (board Colour InnerEdges (colour 232 229 212))
         (board Colour OuterEdges (colour 232 229 212))
         (board StyleThickness OuterEdges 8)
+        (board Background image:"Square.svg" fillColour:(colour 218 215 200 ) edgeColour:(colour  218 215 200) scale:1.1)
         (show Edges All Adjacent connection:true Thick (colour 157 155 141))
         (show Symbol "square-alt1.svg" 
             <Board:limit> 
@@ -113,3 +136,4 @@
         "Make Muster_ai"
     )
 )
+
