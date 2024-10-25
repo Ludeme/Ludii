@@ -1,0 +1,124 @@
+(define "FirstMove"
+	(if (= (mover) 1)
+		(move 
+			(from 30) 
+			(to 
+            	(sites Empty)
+            	if:(is Flat)
+            )
+			(then (moveAgain))
+		)
+		(if (= (mover) 2)
+			(move 
+				(from 31) 
+				(to 
+                	(sites Empty)
+                	if:(is Flat)
+                )
+				(then (moveAgain))
+			)
+			(if (= (mover) 3)
+				(move 
+					(from 32) 
+					(to 
+	                	(sites Empty)
+	                	if:(is Flat)
+	                )
+					(then (moveAgain))
+				)					
+			)
+		)
+	)
+)
+
+(define "SecondMove"
+	(if (= (mover) 1)
+		(move 
+			(from 32) 
+			(to 
+	            (sites Empty)
+	            if:(is Flat)
+	        )				
+		)
+		(if (= (mover) 2)
+			(move 
+				(from 30) 
+				(to 
+	                (sites Empty)
+	                if:(is Flat)
+	            )
+			)
+			(if (= (mover) 3)
+				(move 
+					(from 31) 
+					(to 
+		                (sites Empty)
+		                if:(is Flat)
+		            )
+				)					
+			)
+		)
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(game "Spaniel" 
+    (players 3) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+        (hand Shared size:3)
+    }) 
+    
+    (rules  
+    	(start {
+    		(place "Ball1" 30 count:16)
+    		(place "Ball2" 31 count:16)
+    		(place "Ball3" 32 count:16)
+    	})
+    	                   
+        (play 
+        		(if "SameTurn"
+        			"SecondMove"
+        			"FirstMove"
+                )
+        )
+                  
+        (end {        	
+        	(if
+        		(is Line 3 SameLayer what:(who at:(last To)) isVisible:True)
+                (result Mover Win)
+            )
+        	
+        	(if
+        		(is Line 3 Downward what:(who at:(last To)) isVisible:True useOpposites:False)
+                (result Mover Win)
+            )
+        	(forEach NonMover
+            	if:(= (count Active) 2) 
+            	(result Player Loss)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+		
+	(info
+		{
+		(rules "This is a 3-player game, using 3 colours (Black, White & Red), but with no colour representing any one player. The winner is the player that connects 3 of any colour in a visible straight line (“visible” meaning that, for instance, a 3-in-a-row going through the middle of the pyramid, with stones all round, blocking one or more stones from sight, is not a win). The board starts empty. The board starts empty. Each player places 2 stones each turn, in this order: P1:B, W; P2:R, B; P3:W, R. Passing is not allowed, and the stones must be played in this specific order. There is no removal of stones in this game.")
+		}
+	)
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+		(piece Colour P1 fillColour:(colour Black))
+		(piece Colour P2 fillColour:(colour Red))
+		(piece Colour P3 fillColour:(colour White))
+    })
+       
+)
