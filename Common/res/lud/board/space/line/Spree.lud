@@ -1,0 +1,138 @@
+(define "ChooseBallNext"
+	(or {
+		(if (= (what at:(last To)) 3)
+			(or {
+				(move 
+					(from 33) 
+					(to (handSite Next))
+				)
+				(move 
+					(from 34) 
+					(to (handSite Next))
+				)
+			})
+		)
+		(if (= (what at:(last To)) 1)
+			(or {
+				(move 
+					(from 32) 
+					(to (handSite Next))
+				)
+				(move 
+					(from 34) 
+					(to (handSite Next))
+				)
+			})
+		)	
+		(if (= (what at:(last To)) 2)
+			(or {
+				(move 
+					(from 32) 
+					(to (handSite Next))
+				)
+				(move 
+					(from 33) 
+					(to (handSite Next))
+				)
+			})
+		)     			
+	})
+)
+
+//------------------------------------------------------------------------------
+
+
+(game "Spree" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+        (piece "Ball" Neutral)
+        (hand Each)
+        (hand Shared size:3)
+    }) 
+    
+    (rules  
+    	(start {
+    		(place "Ball0" 32 count:16)
+    		(place "Ball1" 33 count:16)
+    		(place "Ball2" 34 count:16)
+    	})
+    	
+    	phases:{
+            (phase "Init"
+                (play
+                	(or {
+            			(move 
+            				(from 32) 
+            				(to (handSite Next))
+            			)
+            			(move 
+            				(from 33) 
+            				(to (handSite Next))
+            			)
+            			(move 
+            				(from 34) 
+            				(to (handSite Next))
+            			)
+            		})
+                ) 
+                (nextPhase Next (not (is Empty (handSite Next))) "Rounds")
+            )
+            
+            (phase "Rounds" 
+                (play 
+                    (if "SameTurn"
+                    	"ChooseBallNext"
+                    	(move 
+                			(from (handSite Mover)) 
+                			(to 
+                				(sites Empty)
+                				if:(is Flat)
+                			)
+                			(then (moveAgain))
+                    	)
+                    )
+                )
+            )
+        }    
+    	        
+        (end {        	
+        	(if
+        		(is Line (- (count Rows) (layer of:(last To))) SameLayer whats:{(id "Ball" Mover) (id "Ball" Neutral)} throughHowMuch:2)
+                (result Mover Win)
+            )
+        	(if
+            	(is Line (- (count Rows) (layer of:(last To))) SameLayer whats:{(id "Ball" Prev) (id "Ball" Neutral)} throughHowMuch:2)
+                (result Mover Win)
+            )
+        	(if
+            	(is Line (- (count Rows) (layer of:(last To))) SameLayer what:1)
+                (result Mover Win)
+            )
+        	(if
+            	(is Line (- (count Rows) (layer of:(last To))) SameLayer what:2)
+                (result Mover Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+		
+	(info
+		{
+		}
+	)
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour Neutral fillColour:(colour Red))
+		(piece Colour P1 fillColour:(colour White))
+		(piece Colour P2 fillColour:(colour Black))
+    })
+       
+)
