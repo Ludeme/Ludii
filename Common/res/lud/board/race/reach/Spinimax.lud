@@ -1,0 +1,104 @@
+(define "MinMajStacking"
+	(if 
+		(and (is Flat (site)) (and {(< (count SitesPlatformBelow P1) (count SitesPlatformBelow P2)) (< (count SitesPlatformBelow P1) (count SitesPlatformBelow P3))}))
+		(add (piece "Ball1") (to (site)))
+		(if 
+			(and (is Flat (site)) (and {(< (count SitesPlatformBelow P2) (count SitesPlatformBelow P1)) (< (count SitesPlatformBelow P2) (count SitesPlatformBelow P3))}))
+			(add (piece "Ball2") (to (site)))
+			(if 
+				(and (is Flat (site)) (and {(< (count SitesPlatformBelow P3) (count SitesPlatformBelow P1)) (< (count SitesPlatformBelow P3) (count SitesPlatformBelow P2))}))
+				(add (piece "Ball3") (to (site)))
+				(if 
+					(and (is Flat (site)) (and {(> (count SitesPlatformBelow P1) (count SitesPlatformBelow P2)) (> (count SitesPlatformBelow P1) (count SitesPlatformBelow P3))}))
+					(add (piece "Ball1") (to (site)))
+					(if 
+						(and (is Flat (site)) (and {(> (count SitesPlatformBelow P2) (count SitesPlatformBelow P1)) (> (count SitesPlatformBelow P2) (count SitesPlatformBelow P3))}))
+						(add (piece "Ball2") (to (site)))
+						(if 
+							(and (is Flat (site)) (and {(> (count SitesPlatformBelow P3) (count SitesPlatformBelow P1)) (> (count SitesPlatformBelow P3) (count SitesPlatformBelow P2))}))
+							(add (piece "Ball3") (to (site)))
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+(define "StackIfPlatform"
+
+	(forEach Site
+		(sites Layer 1)
+		"MinMajStacking"
+		(then 
+			(forEach Site
+				(sites Layer 2)
+				"MinMajStacking"
+				(then 
+					(forEach Site
+						(sites Layer 3)
+						"MinMajStacking"
+					)
+				)
+			)
+		)
+	)	
+)
+
+//------------------------------------------------------------------------------
+
+(game "Spinimax" 
+    (players 3) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+    }) 
+    
+    (rules 
+    	(play 
+			(move Add
+	    		(to 
+	    			(sites Empty) 
+	    			if:(is Flat)
+	    		)
+	    		(then
+    				"StackIfPlatform"
+    			)
+	    	)
+    	)
+
+    	(end {
+    		(if 
+    			(and (= (count Pieces in:(sites Occupied by:All)) 30) (= (who at:15) 1))
+        		(result P1 Win)
+            )
+    		(if 
+    			(and (= (count Pieces in:(sites Occupied by:All)) 30) (= (who at:15) 2))
+        		(result P2 Win)
+            )
+    		(if 
+    			(and (= (count Pieces in:(sites Occupied by:All)) 30) (= (who at:15) 3))
+        		(result P3 Win)
+            )
+    	})
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+		
+		(info
+				{
+				}
+			)
+    
+		(graphics {
+	        (piece Scale "Ball" 1.0)
+	        (board Style Shibumi)
+	        (piece Colour P1 fillColour:(colour White))
+	        (piece Colour P2 fillColour:(colour Black))
+	        (piece Colour P3 fillColour:(colour Red))
+	    })
+       
+)
