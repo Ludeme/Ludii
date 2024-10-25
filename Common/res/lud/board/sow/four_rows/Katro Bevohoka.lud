@@ -1,0 +1,112 @@
+(define "Columns" <Board:rowSize>)
+
+(define "WasInStore" (is Pending))
+(define "LastCounterInTheStore" (set Pending))
+(define "SowingEndInMyStore" (= (to) (mapEntry Mover)))
+(define "LastHoleSowed" (sites {(var)}))
+(define "StoreLastHoleSowed" (set Var (to)))
+
+//------------------------------------------------------------------------------
+
+(game "Katro Bevohoka" 
+    (players 2) 
+    
+    (equipment { 
+        (mancalaBoard 4 "Columns" store:None
+            { 
+            (track "TrackCCW1" "0,E,N1,W" loop:True P1)
+            (track "TrackCCW2" <Board:CCW2> loop:True P2)
+            }
+        )
+        (regions "Home" P1 (sites Track "TrackCCW1")) // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2")) // P2 home
+        (regions "Normal" P1 (difference (sites P1 "Home") (sites { <Board:R1> <Board:S1> <Board:T1> } )))
+        (regions "Normal" P2 (difference (sites P2 "Home") (sites { <Board:R2> <Board:S2> <Board:T2> } )))
+        (map {(pair P1 <Board:R1>) (pair P2 <Board:R2>)}) // rumas (storage pits)
+        (piece "Seed" Shared)
+    }) 
+    (rules 
+        
+        (start 
+			{
+				(set Count 2 to:(union (sites P1 "Normal") (sites P2 "Normal")))
+				(set Count 3 to: (sites { <Board:S1> <Board:T1> <Board:S2> <Board:T2> } ))
+			}
+		)
+        (play
+            (move Select
+              (from 
+                    (if 
+                        (and 
+                            ("SameTurn") 
+                            (not ("WasInStore"))
+                        ) 
+                        "LastHoleSowed" 
+                        (difference
+							(sites Mover)
+							(mapEntry (mover))
+						)
+                    )
+                    if:(< 0 (count at:(from)))
+               )
+               (then
+                   (sow
+                        "TrackCCW"
+                        owner:(mover)
+						apply:
+							(if ("SowingEndInMyStore")
+                                (and
+                                    (moveAgain)
+                                    ("LastCounterInTheStore")
+                                )
+                                (if (> (count at:(to)) 1)
+                                    (and
+                                        (moveAgain)
+                                        ("StoreLastHoleSowed")
+                                    )
+                                )
+                            )
+					)
+				)
+			)
+        )
+        
+        (end (if (= (count Sites in:(difference (sites Mover) (sites Empty))) 1)
+                 (result Mover Win)
+             )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <rowSize> <R1><S1><T1><R2><S2><T2> <CCW2> }
+    {
+    (item "2" <2> <3><2><1><4><5><6> <"4,E,N1,W"> "Each player has 2 holes on each row.") 
+    (item "3" <3> <5><4><3><6><7><8> <"6,E,N1,W"> "Each player has 3 holes on each row.") 
+    (item "4" <4> <7><6><5><8><9><10> <"8,E,N1,W"> "Each player has 4 holes on each row.")** 
+    (item "5" <5> <9><8><7><10><11><12> <"10,E,N1,W"> "Each player has 5 holes on each row.") 
+    (item "6" <6> <11><10><9><12><13><14> <"12,E,N1,W"> "Each player has 6 holes on each row.")*** 
+    (item "7" <7> <13><12><11><14><15><16> <"14,E,N1,W"> "Each player has 7 holes on each row.") 
+    (item "8" <8> <15><14><13><16><17><18> <"16,E,N1,W"> "Each player has 8 holes on each row.")* 
+    (item "9" <9>  <17><16><15><18><19><20> <"18,E,N1,W"> "Each player has 9 holes on each row.") 
+    (item "10" <10> <19><18><17><20><21><22> <"20,E,N1,W"> "Each player has 10 holes on each row.") 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+        (show AsHoles {<Board:R1> <Board:R2>} Square)
+    })
+    
+)
+
+
