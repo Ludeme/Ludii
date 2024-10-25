@@ -1,0 +1,48 @@
+(game "Splade" 
+    (players 3) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each) 
+    }) 
+    (rules 
+        (play 
+            (move Add 
+                (to (sites Empty) 
+                    if:(is Flat)
+                )
+            )
+        )
+        (end {
+            (if 
+            	(is Line (- (count Rows) (layer of:(last To))) SameLayer whats:{(id "Ball" Mover) (id "Ball" Next)} throughHowMuch:2)
+            	(result Next Win)
+            )
+            (if 
+            	(is Line (- (count Rows) (layer of:(last To))) SameLayer whats:{(id "Ball" Mover) (id "Ball" Prev)} throughHowMuch:2)
+                (result Mover Win)
+            )
+            (forEach NonMover
+            	if:(= (count Active) 2) 
+            	(result Player Loss)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+
+(info
+    {
+    }
+)
+
+(graphics {
+    (piece Scale "Ball" 1.0)
+    (board Style Shibumi)
+    (piece Colour P1 fillColour:(colour White))
+    (piece Colour P2 fillColour:(colour Black))
+    (piece Colour P3 fillColour:(colour Red))
+})
+)
