@@ -1,0 +1,68 @@
+(game "Splice" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+        (piece "Ball" Neutral)
+        (hand Each)
+        (hand Shared)
+    }) 
+    
+    (rules 
+    	(start {
+    		(place "Ball" "Hand" count:16)
+    		(place "Ball0" 32 count:16)
+    	})
+        (play 
+            (or
+            	(move 
+            		(from (handSite Mover))
+                	(to 
+                		(sites Empty) 
+                    	if:
+                    		(and
+                    			(is Flat)
+                    			(is Within (id "Ball" Neutral) in:(sites Layer (layer of:(to))))
+                    		)
+                	)
+            	)
+            	(move
+            		(from (handSite Shared))
+            		(to
+            			(sites Empty)
+            			if: (is Flat)
+            		)
+            	)
+            )
+        )
+        (end {
+            (if
+                (is Line (- (count Rows) (layer of:(last To))) SameLayer whats:{(id "Ball" Mover) (id "Ball" Neutral)} throughHowMuch:2)
+                (result Mover Win)
+            )
+            (if
+                (is Line (- (count Rows) (layer of:(last To))) SameLayer whats:{(id "Ball" Next) (id "Ball" Neutral)} throughHowMuch:2)
+                (result Next Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+		
+	(info
+		{
+		}
+	)
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour Neutral fillColour:(colour Red))
+		(piece Colour P1 fillColour:(colour White))
+		(piece Colour P2 fillColour:(colour Black))
+    })
+       
+)
