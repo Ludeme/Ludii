@@ -1,0 +1,65 @@
+(game "Sponnect" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+        (piece "Ball" Neutral)
+    }) 
+    
+    (rules 
+    	(start {
+        	(place "Ball0" {8 10 14 18 20})
+        })
+    	(play
+    		(or
+    			(move Add 
+    				(to 
+    					(sites Empty) 
+    					if:(is Flat)
+    				)
+    			)
+    			(if
+    				(not (was Pass))
+    				(move Pass)
+    			)
+    		)
+    	)
+        (end {
+            (if
+            	(and {
+            		(= (who at:(last To)) 2) 
+            		(> (size Array (array (intersection (sites Top) (sites Group Vertex at:(last To))))) 0) 
+            		(> (size Array (array (intersection (sites Bottom) (sites Group Vertex at:(last To))))) 0)
+            	})
+            	(result Mover Win)
+            )
+            (if
+                (and {
+                	(= (who at:(last To)) 1) 
+                	(> (size Array (array (intersection (sites Right) (sites Group Vertex at:(last To))))) 0) 
+                	(> (size Array (array (intersection (sites Left) (sites Group Vertex at:(last To))))) 0)
+                })
+                (result Mover Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+		
+	(info
+		{
+		}
+	)
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour Neutral fillColour:(colour Red))
+		(piece Colour P1 fillColour:(colour White))
+		(piece Colour P2 fillColour:(colour Black))
+    })
+       
+)
