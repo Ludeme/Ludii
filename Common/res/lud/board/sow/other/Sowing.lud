@@ -1,0 +1,60 @@
+(game "Sowing" 
+    (players 2) 
+    (equipment { 
+        (board (rectangle 1 8)
+            {
+            (track "Track1" "0,E" P1 directed:True)
+            (track "Track2" "7,W" P2 directed:True)
+            }
+            use: Vertex
+        )
+        (regions P1 (sites Top))      // P1 home
+        (regions P2 (sites Top))      // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+    }) 
+    
+    (rules 
+        (start (place Stack "Seed" (sites { 0..7 }) counts:{1 2 2 1 1 2 2 1}))        
+        (play 
+            (move Select 
+                (from 
+                    (sites Mover) 
+                    if:(
+                        (and
+                            {
+                            (is Occupied (from))
+                            (is Occupied (trackSite Move Mover steps:(size Stack at:(from))))
+                            }
+                        )
+                    )
+                )
+                (then (sow "Track" owner:(mover)))
+            )
+        )
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
+
+
+
+
+
+
+
+
+
