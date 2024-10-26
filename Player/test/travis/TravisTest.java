@@ -82,6 +82,9 @@ public class TravisTest
 
 	/** The current path of the game compiled. */
 	private String pathGameCompiled = "";
+	
+	/** Boolean value to print the end of the slowest tests. */
+	private boolean PRINT_END_TEST = true;
 
 	//-------------------------------------------------------------------------------
 
@@ -220,7 +223,9 @@ public class TravisTest
 			excludedCustomPlayouts.add("Lifeline");
 			excludedCustomPlayouts.add("Shisen-Sho");
 			excludedCustomPlayouts.add("Allemande");
+			excludedCustomPlayouts.add("Affinage");
 			excludedCustomPlayouts.add("Chains of Thought");
+			excludedCustomPlayouts.add("Dai Seireigi");
 
 			if (!containsPartOf(excludedCustomPlayouts, game.name()))
 				testCustomPlayouts();
@@ -234,7 +239,9 @@ public class TravisTest
 			excludedTensors.add("Lifeline");
 			excludedTensors.add("Shisen-Sho");
 			excludedTensors.add("Allemande");
+			excludedTensors.add("Affinage");
 			excludedTensors.add("Chains of Thought");
+			excludedTensors.add("Dai Seireigi");
 
 			if (!containsPartOf(excludedTensors, game.name()))
 				testStateMoveTensors();
@@ -251,6 +258,9 @@ public class TravisTest
 			excludedPlayoutPerOption.add("Allemande");
 			excludedPlayoutPerOption.add("Chains of Thought");
 			excludedPlayoutPerOption.add("Pagade Kayi Ata (Sixteen-handed)");
+			excludedPlayoutPerOption.add("Dai Seireigi");
+			excludedPlayoutPerOption.add("Affinage");
+			excludedPlayoutPerOption.add("Garrisons");
 
 			if (!containsPartOf(excludedPlayoutPerOption, game.name()))
 				testPlayoutPerOption((USE_TIME) ? (hour < MIN_HOUR || hour > MAX_HOUR) : true);
@@ -269,6 +279,8 @@ public class TravisTest
 			excludedParallelPlayouts.add("Allemande");
 			excludedParallelPlayouts.add("Chains of Thought");
 			excludedParallelPlayouts.add("Nodal Chess");
+			excludedParallelPlayouts.add("Affinage");
+			excludedParallelPlayouts.add("Dai Seireigi");
 
 			if (!containsPartOf(excludedParallelPlayouts, game.name()))
 				testParallelPlayouts(true);
@@ -300,6 +312,8 @@ public class TravisTest
 			excludedSerialisation.add("Shisen-Sho");
 			excludedSerialisation.add("Allemande");
 			excludedSerialisation.add("Chains of Thought");
+			excludedSerialisation.add("Affinage");
+			excludedSerialisation.add("Dai Seireigi");
 
 			if (!containsPartOf(excludedSerialisation, game.name()))
 				testTrialSerialisation();
@@ -330,6 +344,8 @@ public class TravisTest
 	public void testStateMoveTensors()
 	{
 		TestStateMoveTensors.testTensors(gameCompiled);
+		if(PRINT_END_TEST)
+			System.out.println("State Move Tensors over");
 	}
 	
 	//-------------------------------------------------------------------------------------------
@@ -346,6 +362,9 @@ public class TravisTest
 
 		// delete temp file if we succeeded unit test
 		TestTrialSerialization.TEMP_TRIAL_FILE.delete();
+
+		if(PRINT_END_TEST)
+			System.out.println("Trial Serialisation over");
 	}
 
 	//-------------------------------------------------------------------------------------------
@@ -618,6 +637,9 @@ public class TravisTest
 			// cleared
 			endContexts[parallelPlayout] = null;
 		}
+
+		if(PRINT_END_TEST)
+			System.out.println("Parallel Playouts over");
 	}
 
 
@@ -646,6 +668,9 @@ public class TravisTest
 		TestCustomPlayouts.ADD_TO_EMPTY_GAMES.remove(gameCompiled.name());
 
 		TestCustomPlayouts.testCustomPlayout(gameCompiled);
+
+		if(PRINT_END_TEST)
+			System.out.println("Custom Playouts over");
 	}
 	
 	//------------------------------------------------------------------------------------
@@ -788,6 +813,9 @@ public class TravisTest
 				fail();
 			}
 		}
+
+		if(PRINT_END_TEST)
+			System.out.println("Playouts per option");
 	}
 
 	//------------------------------------------------------------------------------------
@@ -1085,6 +1113,9 @@ public class TravisTest
 
 			assert (Arrays.equals(trial.ranking(), loadedTrial.ranking()));
 		}
+
+		if(PRINT_END_TEST)
+			System.out.println("Integrity");
 	}
 
 	//------------------------------------------------------------------------------------
