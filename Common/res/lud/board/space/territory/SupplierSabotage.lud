@@ -3,227 +3,223 @@
 // 1  Place a piece or pass.
 // 2  Converet all 120 degree sites to warehouses.
 // 3  Remove one warehouse at a time, converting  surrounding warehouses (back) to suppliers where applicable until the number of Foreign suppliers >= to the number of warehouses in each chain. (note that the piece placed, may not be removed - which may limit some placements.
-// 4  One at a time, remove warehouses from your opponent's chains where they are in excess of your suppliers, and convert surrounding pieces back to suppliers as appropriate.
-// Game ends when both players pass consecutively (including if there are no moves left.
-// Score 1 point per warehouse.
-
-// Essential Booleans
-
-(define "IsSupplierAt"
- (and
-  (not (is Empty #1)) 
-  (not ("IsWarehouseAt" #1))
-))
-
-(define "IsWarehouseAt" (is Pattern <Board:pattern1> from:#1))
-
-(define "AllWarehousesOf"
- (forEach (sites Occupied by:#1)
-  if:("IsWarehouseAt" (site))
-))
-
-(define "ChainAt" (sites Group at:#1 <Grid:dirChains>))
-
-(define "SuppliersAroundChainAt"
- (sites Around ("ChainAt" #1) <Grid:dirChains>
-  if:("IsSupplierAt" (to))
-))
-
-(define "WarehousesinChainAt"
- (forEach 
-  ("ChainAt" #1) 
-  if:("IsWarehouseAt" (site))
-))
-
-(define "IsDeficitInChainAt" 
- (< 
-  (size Array (array ("SuppliersAroundChainAt" #1)))
-  (size Array (array ("WarehousesinChainAt" #1)))
-))
-
-(define "DeficitWarehousesOf"
- (forEach (sites Occupied by:#1)
-  if:(and
-   ("IsWarehouseAt" (site))
-   ("IsDeficitInChainAt" (site))
-)))
-
-
-//-----------------------
-// Display utilities
-
-(define "SurplusGoodsChainAt"
- (-
-  (size Array (array ("SuppliersAroundChainAt" #1)))
-  (size Array (array ("WarehousesinChainAt" #1)))
-))
-
-(define "UpdateSurplusesToDisplayFor"
- (forEach Value
-  (array (sites Occupied by:#1))
-  (set Value at:(value) (max 0 ("SurplusGoodsChainAt" (value))))
-))
-
-//-------------------------------------------------
-// Main Routine
-
-(game "SupplierSabotage" 
- (players 2)
- (equipment
-   {
-    <Board:used>
-    (piece "Barn" Each) 
-   }
- )
- (rules
-  (play
-   (if ("NewTurn")
-    (or
-     {
-      (move Add
-       (to (sites Empty)
-        if:(!= (to) (value Player Mover)) // not at last removal
-      ))
-      (move Pass)
-     }
+    // 4  One at a time, remove warehouses from your opponent's chains where they are in excess of your suppliers, and convert surrounding pieces back to suppliers as appropriate.
+    // Game ends when both players pass consecutively (including if there are no moves left.
+        // Score 1 point per warehouse.
+        
+        // Essential Booleans
+        
+        (define "IsSupplierAt"
+            (and
+                (not (is Empty #1)) 
+                (not ("IsWarehouseAt" #1))
+        ))
+        
+        (define "IsWarehouseAt" (is Pattern <Board:pattern1> from:#1))
+        
+        (define "AllWarehousesOf"
+            (forEach (sites Occupied by:#1)
+                if:("IsWarehouseAt" (site))
+        ))
+        
+        (define "ChainAt" (sites Group at:#1 <Grid:dirChains>))
+        
+        (define "SuppliersAroundChainAt"
+            (sites Around ("ChainAt" #1) <Grid:dirChains>
+                if:("IsSupplierAt" (to))
+        ))
+        
+        (define "WarehousesinChainAt"
+            (forEach 
+                ("ChainAt" #1) 
+                if:("IsWarehouseAt" (site))
+        ))
+        
+        (define "IsDeficitInChainAt" 
+            (< 
+                (size Array (array ("SuppliersAroundChainAt" #1)))
+                (size Array (array ("WarehousesinChainAt" #1)))
+        ))
+        
+        (define "DeficitWarehousesOf"
+            (forEach (sites Occupied by:#1)
+                if:(and
+                    ("IsWarehouseAt" (site))
+                    ("IsDeficitInChainAt" (site))
+        )))
+        
+        //-----------------------
+        // Display utilities
+        
+        (define "SurplusGoodsChainAt"
+            (-
+                (size Array (array ("SuppliersAroundChainAt" #1)))
+                (size Array (array ("WarehousesinChainAt" #1)))
+        ))
+        
+        (define "UpdateSurplusesToDisplayFor"
+            (forEach Value
+                (array (sites Occupied by:#1))
+                (set Value at:(value) (max 0 ("SurplusGoodsChainAt" (value))))
+        ))
+        
+        //-------------------------------------------------
+        // Main Routine
+        
+        (game "SupplierSabotage" 
+            (players 2)
+            (equipment
+                {
+                <Board:used>
+                (piece "Barn" Each) 
+                }
+            )
+            (rules
+                (play
+                    (if ("NewTurn")
+                        (or
+                            {
+                            (move Add
+                                (to (sites Empty)
+                                    if:(!= (to) (value Player Mover)) // not at last removal
+                            ))
+                            (move Pass)
+                            }
+                        )
+                        (priority
+                            (move Select (from ("DeficitWarehousesOf" Mover))
+                                (then
+                                    (remove (last From)
+                                        (then (set Value Mover (last To)))
+                            )))
+                            (move Select (from ("DeficitWarehousesOf" Next))
+                                (then
+                                    (remove (last From))
+                        ))) 
+                        (then 
+                            (and
+                                {
+                                ("UpdateSurplusesToDisplayFor" Mover)
+                                ("UpdateSurplusesToDisplayFor"  Next)
+                                ("Score")
+                                }
+                                (then
+                                    (if 
+                                        (< 0 (count Sites in:("DeficitWarehousesOf" All)))
+                                        (moveAgain)  
+                                    )
+                                )
+                ))))
+                (end
+                    {
+                    (if
+                        (and
+                            {
+                            (or (all Passed) (no Moves Mover))
+                            (no Pieces in: ("DeficitWarehousesOf" All))
+                            (= (score P1) (score P2))
+                            }
+                        )
+                        (byScore {(score P1 (count Pieces P1)) (score P2 (count Pieces P2))})
+                    )
+                    (if 
+                        (and
+                            {
+                            (or (all Passed) (no Moves Mover))
+                            (no Pieces in: ("DeficitWarehousesOf" All))
+                            (!= (score P1) (score P2))
+                            }
+                        )
+                        (byScore)
+                    )
+                    }
+        )))
+        
+        //--------------------------
+        // Scoring and display
+        //-------------------------------------------------------
+        // Scoring and display regions
+        
+        //-------------------
+        // Scoring
+        
+        (define "Score" (and ("ScoreFor" P1) ("ScoreFor" P2)))
+        (define "ScoreFor" (set Score #1 (size Array (array ("AllWarehousesOf" #1)))))
+        
+        (define "HexPattern"  {F R R F R R F})
+        (define "SquarePattern1" {F R R F R F R})
+        (define "SquarePattern2" {F R F})
+        (define "SquarePattern3"  {F L F})
+        
+        //-------------------------------------------------------
+        // Board definitions
+        
+        (option "Board" <Board> args:{<used> <warehouse> <pattern1>} 
+            {
+            (item "Hex 2,3 (12)"  <(board (hex 2 3) use:Cell)> <"Hex.svg">  <("HexPattern")> "Hex 2,3")
+            (item "Hex Triangle 5 (15)" <(board (hex Triangle 5) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 2,3")
+            (item "Hex 3 (19)"    <(board (hex   3) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 3")
+            (item "Hex 3,4 (27)"  <(board (hex 3 4) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 3,4")
+            (item "Hex 3,5 (36)"  <(board (hex 3 5) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 3,5")**
+            (item "Hex 4,5 (48)"  <(board (hex 4 5) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 4,5")
+            (item "Hex 4,6 (60)"  <(board (hex 5 6) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 5,6")
+            (item "Hex 6,7 (108)" <(board (hex 6 7) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 6,7")
+            (item "Hex 6,8 (126)" <(board (hex 6 8) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 6,8")
+            (item "Square 5 (25) 1" <(board (square 5) use:Cell)> <"Square.svg"> <("SquarePattern1")> "Square 5")
+            (item "Square 7 (49) 2" <(board (square 7) use:Cell)> <"Square.svg"> <("SquarePattern1")> "Square 7")
+            (item "Square 9 (81) 3" <(board (square 9) use:Cell)> <"Square.svg"> <("SquarePattern1")> "Square 9")
+            }
+        )
+        
+        (option "Connectivity" <Grid> args:{<dirWarehouse> <dirChains>} 
+            {
+            (item "Orthogonal Cells" <Orthogonal> <Orthogonal> 
+                "Chains are based on orthogonal links"
+            )
+            (item "Square Option" <Orthogonal> <Adjacent>
+                "Chains are based on both orthogonal and diagonal links
+                Foreign Suppliers count only for orthogonal links"
+            )
+            }
+        )
+        //------------------------------------------------
+        
+        (metadata
+            (info
+                {
+                }
+            ) 
+            
+            (graphics 
+                {
+                (player Colour P1 (colour 120 36 0))
+                (player Colour P2 (colour Cream))
+                (piece Scale "Barn" .06)    
+                (board StyleThickness InnerEdges 0.4)
+                (board StyleThickness OuterEdges 0.7)
+                (board StyleThickness InnerVertices 0.45)
+                (board StyleThickness OuterVertices 0.45)
+                (board Colour InnerVertices (colour Grey))
+                (board Colour OuterVertices (colour Grey))
+                (board Colour InnerEdges (colour Black))
+                (board Colour OuterEdges (colour Black))
+                (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
+            (board Colour Phase0 (colour 150 190 120)) // (colour HumanLight))
+            //    (show Piece Value Middle scale:.85)
+            (show Symbol "Hex" ("DeficitWarehousesOf" All) fillColour:(colour LightRed) scaleY:1.03)
+            (show Symbol "Hex" (difference ("AllWarehousesOf" All) ("DeficitWarehousesOf" All)) fillColour:(colour Grey) scaleY:1.03)
+            (show Symbol "Base" (intersection (sites Occupied by:P1) ("AllWarehousesOf" All))
+                fillColour:(colour 120 36 0) scale:.7 // scaleY:1.03
+            )
+            (show Symbol "Base" (intersection (sites Occupied by:P2) ("AllWarehousesOf" All))
+                fillColour:(colour Cream) scale:.7 // scaleY:1.03
+            )
+            (show Symbol "Barn" (difference (sites Occupied by:P1) ("AllWarehousesOf" All))
+                fillColour:(colour 120 36 0) scale:.6 // scaleY:1.03
+            )
+            (show Symbol "Barn" (difference (sites Occupied by:P2) ("AllWarehousesOf" All))
+                fillColour:(colour Cream) scale:.6 // scaleY:1.03
+            )
+            }
+        )
     )
-    (priority
-     (move Select (from ("DeficitWarehousesOf" Mover))
-      (then
-       (remove (last From)
-        (then (set Value Mover (last To)))
-     )))
-     (move Select (from ("DeficitWarehousesOf" Next))
-      (then
-       (remove (last From))
-    ))) 
-    (then 
-     (and
-      {
-       ("UpdateSurplusesToDisplayFor" Mover)
-       ("UpdateSurplusesToDisplayFor"  Next)
-       ("Score")
-      }
-      (then
-       (if 
-        (< 0 (count Sites in:("DeficitWarehousesOf" All)))
-        (moveAgain)  
-       )
-      )
-  ))))
-  (end
-   {
-    (if
-     (and
-      {
-       (or (all Passed) (no Moves Mover))
-       (no Pieces in: ("DeficitWarehousesOf" All))
-       (= (score P1) (score P2))
-      }
-     )
-     (byScore {(score P1 (count Pieces P1)) (score P2 (count Pieces P2))})
-    )
-    (if 
-     (and
-      {
-       (or (all Passed) (no Moves Mover))
-       (no Pieces in: ("DeficitWarehousesOf" All))
-       (!= (score P1) (score P2))
-      }
-     )
-     (byScore)
-    )
-   }
-)))
-
-//--------------------------
-// Scoring and display
-//-------------------------------------------------------
-// Scoring and display regions
-
-
-//-------------------
-// Scoring
-
-(define "Score" (and ("ScoreFor" P1) ("ScoreFor" P2)))
-(define "ScoreFor" (set Score #1 (size Array (array ("AllWarehousesOf" #1)))))
-
-
-
-(define "HexPattern"  {F R R F R R F})
-(define "SquarePattern1" {F R R F R F R})
-(define "SquarePattern2" {F R F})
-(define "SquarePattern3"  {F L F})
-   
-//-------------------------------------------------------
-// Board definitions
-  
-(option "Board" <Board> args:{<used> <warehouse> <pattern1>} 
-  {
-   (item "Hex 2,3 (12)"  <(board (hex 2 3) use:Cell)> <"Hex.svg">  <("HexPattern")> "Hex 2,3")
-   (item "Hex Triangle 5 (15)" <(board (hex Triangle 5) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 2,3")
-   (item "Hex 3 (19)"    <(board (hex   3) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 3")
-   (item "Hex 3,4 (27)"  <(board (hex 3 4) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 3,4")
-   (item "Hex 3,5 (36)"  <(board (hex 3 5) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 3,5")**
-   (item "Hex 4,5 (48)"  <(board (hex 4 5) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 4,5")
-   (item "Hex 4,6 (60)"  <(board (hex 5 6) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 5,6")
-   (item "Hex 6,7 (108)" <(board (hex 6 7) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 6,7")
-   (item "Hex 6,8 (126)" <(board (hex 6 8) use:Cell)> <"Hex.svg"> <("HexPattern")> "Hex 6,8")
-   (item "Square 5 (25) 1" <(board (square 5) use:Cell)> <"Square.svg"> <("SquarePattern1")> "Square 5")
-   (item "Square 7 (49) 2" <(board (square 7) use:Cell)> <"Square.svg"> <("SquarePattern1")> "Square 7")
-   (item "Square 9 (81) 3" <(board (square 9) use:Cell)> <"Square.svg"> <("SquarePattern1")> "Square 9")
-  }
-)
-
-(option "Connectivity" <Grid> args:{<dirWarehouse> <dirChains>} 
- {
-  (item "Orthogonal Cells" <Orthogonal> <Orthogonal> 
-   "Chains are based on orthogonal links"
-  )
-  (item "Square Option" <Orthogonal> <Adjacent>
-   "Chains are based on both orthogonal and diagonal links
-    Foreign Suppliers count only for orthogonal links"
-  )
- }
-)
-//------------------------------------------------
-
-(metadata
-  (info
-    {
-    }
-  ) 
-  
-  (graphics 
-   {
-    (player Colour P1 (colour 120 36 0))
-    (player Colour P2 (colour Cream))
-    (piece Scale "Barn" .06)    
-    (board StyleThickness InnerEdges 0.4)
-    (board StyleThickness OuterEdges 0.7)
-    (board StyleThickness InnerVertices 0.45)
-    (board StyleThickness OuterVertices 0.45)
-    (board Colour InnerVertices (colour Grey))
-    (board Colour OuterVertices (colour Grey))
-    (board Colour InnerEdges (colour Black))
-    (board Colour OuterEdges (colour Black))
-    (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
-    (board Colour Phase0 (colour 150 190 120)) // (colour HumanLight))
-//    (show Piece Value Middle scale:.85)
-    (show Symbol "Hex" ("DeficitWarehousesOf" All) fillColour:(colour LightRed) scaleY:1.03)
-    (show Symbol "Hex" (difference ("AllWarehousesOf" All) ("DeficitWarehousesOf" All)) fillColour:(colour Grey) scaleY:1.03)
-    (show Symbol "Base" (intersection (sites Occupied by:P1) ("AllWarehousesOf" All))
-     fillColour:(colour 120 36 0) scale:.7 // scaleY:1.03
-    )
-    (show Symbol "Base" (intersection (sites Occupied by:P2) ("AllWarehousesOf" All))
-     fillColour:(colour Cream) scale:.7 // scaleY:1.03
-    )
-    (show Symbol "Barn" (difference (sites Occupied by:P1) ("AllWarehousesOf" All))
-     fillColour:(colour 120 36 0) scale:.6 // scaleY:1.03
-    )
-    (show Symbol "Barn" (difference (sites Occupied by:P2) ("AllWarehousesOf" All))
-     fillColour:(colour Cream) scale:.6 // scaleY:1.03
-    )
-   }
-  )
-)

@@ -1,0 +1,184 @@
+(define "CanGo" (and (not ("IsFriendAt" (#1))) (not (or (= (what at:(#1)) (id "Goat1"))  (= (what at:(#1)) (id "Goat2"))))))
+
+(define "RTake" (and ("IsEnemyAt" (#1))  (not (or (= (what at:(#1)) (id "Goat1"))  (= (what at:(#1)) (id "Goat2"))))))
+
+(define "Rk" (where: "Goat" Mover))
+
+(define "Friendly"
+    (or {
+        ("IsPieceAt" "Knight" Mover #1)
+        ("IsPieceAt" "Prince" Mover #1)
+        ("IsPieceAt" "Flag" Mover #1)
+}))
+
+(define "TaCon"
+    (move Step #2 (to if:(and { 
+                ("RTake" to) 
+                (is In (from) (sites #1))
+                ("Friendly" (ahead (from) #3))
+}))))
+
+(define "EmCon"
+    (move Step #2 (to if:(and { 
+                (is Empty (to)) 
+                (is In (from) (sites #1))
+                ("Friendly" (ahead (from) #3))
+                }))(then (and (set Var "MLeft" 2)
+                (add (piece (id "Dot" Mover))(to (last From))
+(then "NextS")))))) 
+
+(define "SCheck"
+    (or 
+        (fromTo (from "Rk") (to (ahead "Rk" #2) if:(and { 
+                    ("RTake" to)
+                    (is In (from) (sites #1))
+                    ("IsPieceAt" "Dot" Mover (ahead (from) #3))
+        })) (then (set Var "MLeft" 0)))
+        
+        (fromTo (from "Rk") (to (ahead "Rk" #2) if:(and { 
+                    (is Empty (to))
+                    (is In (from) (sites #1))
+                    ("IsPieceAt" "Dot" Mover (ahead (from) #3))
+})) (then ((add (piece (id "Dot" Mover)) (to (last To))))))))
+
+(define "NextS"
+    (and {
+        (while:(> (var "MLeft") 0) 
+            (and 
+                (set Var "MLeft" (add (var "MLeft") -1))
+                (or { 
+                    ("SCheck" Board E W)
+                    ("SCheck" Board W E)
+                    ("SCheck" Board NNE SSW)
+                    ("SCheck" Board SSW NNE)
+                    ("SCheck" Board SSE NNW)
+                    ("SCheck" Board NNW SSE)
+                    ("SCheck" "OutE" NNW SSW)
+                    ("SCheck" "OutE" SSW NNW)
+                    ("SCheck" "OutW" NNE SSE)
+                    ("SCheck" "OutW" SSE NNE)
+                    (and ("SCheck" "OutS" NNE NNW)
+                    (remove (sites Occupied by:Mover component:"Dot")))
+                    (and ("SCheck" "OutS" NNW NNE)
+                    (remove (sites Occupied by:Mover component:"Dot")))
+                    (and ("SCheck" "OutN" SSE SSW)
+                    (remove (sites Occupied by:Mover component:"Dot")))
+                    (and ("SCheck" "OutN" SSW NNE)
+                    (remove (sites Occupied by:Mover component:"Dot")))
+        })))
+        (remove (sites Occupied by:Mover component:"Dot") (then (remove (sites Occupied by:Mover component:"Dot"))))
+}))
+
+//-------------------------------------------------------------------------
+
+(game "Vanguard"
+    (players 2)
+    (equipment
+        {
+        (board
+            (remove
+                (hex Rectangle 8 6)
+                cells:{5 16 27 38}
+            )
+        ) 
+        (regions "FullW" Shared {0 5 10 15 20 25 30 35})
+        (regions "FullE" Shared {4 9 14 19 24 29 34 39})
+        (regions "OutS" Shared {1 2 3})
+        (regions "OutN" Shared {36 37 38})
+        (regions "OutW" Shared {10 20 30})
+        (regions "OutE" Shared {9 19 29})
+        (regions "CorNW" Shared {35})
+        (regions "CorNE" Shared {39})
+        (regions "CorSW" Shared {0})
+        (regions "CorSE" Shared {4})
+        
+        (piece "Flag" Each)
+        
+        (piece "Knight" Each (move Step All (to if:("CanGo" to))))
+        
+        (piece "Prince" Each(move Step (to if:(not ("IsFriendAt" (to))))
+                (then (fromTo (from (sites Occupied by:Mover
+        component:"Flag")) (to (last From)))))) 
+        
+        (piece "Dot" Each)
+        
+        (piece "Goat" Each
+            (or {
+                
+                (move Step (to if:(and ("RTake" to) ("Friendly" (ahead (from) OppositeDirection)))))
+                
+                ("TaCon" "OutE" NNW SSW)
+                ("TaCon" "OutE" SSW NNW)
+                ("TaCon" "OutW" NNE SSE)
+                ("TaCon" "OutW" SSE NNE)
+                ("TaCon" "OutS" NNE NNW)
+                ("TaCon" "OutS" NNW NNE)
+                ("TaCon" "OutN" SSE SSW)
+                ("TaCon" "OutN" SSW SSE)
+                ("TaCon" "OutN" SSW SSE)
+                ("TaCon" "CorNW" SSW E)
+                ("TaCon" "CorNW" E SSW)
+                ("TaCon" "CorNE" W SSW)
+                ("TaCon" "CorNE" SSW W)
+                ("TaCon" "CorSE" NNE W)
+                ("TaCon" "CorSE" W NNE)
+                ("TaCon" "CorSW" E NNE)
+                ("TaCon" "CorSW" NNE E)
+                
+                (move Step (to if:(and (is Empty (to)) ("Friendly" (ahead (from) OppositeDirection)))) (then (and
+                            (set Var "MLeft" 2)
+                            (add (piece (id "Dot" Mover)) (to (last From)) 
+                            (then "NextS"))
+                )))
+                
+                ("EmCon" "OutE" NNW SSW)
+                ("EmCon" "OutE" SSW NNW)
+                ("EmCon" "OutW" NNE SSE)
+                ("EmCon" "OutW" SSE NNE)
+                ("EmCon" "OutS" NNE NNW)
+                ("EmCon" "OutS" NNW NNE)
+                ("EmCon" "OutN" SSE SSW)
+                ("EmCon" "OutN" SSW SSE)
+                ("EmCon" "OutN" SSW SSE)
+                ("EmCon" "CorNW" SSW E)
+                ("EmCon" "CorNW" E SSW)
+                ("EmCon" "CorNE" W SSW)
+                ("EmCon" "CorNE" SSW W)
+                ("EmCon" "CorSE" NNE W)
+                ("EmCon" "CorSE" W NNE)
+                ("EmCon" "CorSW" E NNE)
+                //("EmCon" "CorSW" NNE E)
+        }))
+    })
+    
+    (rules
+        (start {                            
+            (place "Knight1" {3 6 7})
+            (place "Prince1" 1)
+            (place "Flag1" {2})
+            (place "Goat1" 8)
+            (place "Knight2" {32 33 36})
+            (place "Prince2" 38)
+            (place "Flag2" 37)
+            (place "Goat2" 31)
+        })
+        
+        (play (forEach Piece))
+        
+        (end {
+            (forEach Player
+                if: ("IsOffBoard" (where "Flag" Next)) 
+            (result Mover Win))
+            (if: (no Moves Mover) (result Mover Loss))
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info {
+    	
+    }
+    )
+)

@@ -1,165 +1,165 @@
 (define "Intersect"
-	(union {
-		(intersection {
-			(sites Empty) 
-			(sites Layer (layer of:(last To))) 
-			(union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) N) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) S))
-			(union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) N) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) S))
-		})
-		(intersection {
-			(sites Empty) 
-			(sites Layer (layer of:(last To))) 
-			(union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) E) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) W))
-			(union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) E) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) W))
-		})
-		(intersection {
-			(sites Empty) 
-			(sites Layer (layer of:(last To))) 
-			(union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) NE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SW))
-			(union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) NE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SW))
-		})
-		(intersection {
-			(sites Empty) 
-			(sites Layer (layer of:(last To))) 
-			(union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) NW))
-			(union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) NW))
-		})
-	})
+    (union {
+        (intersection {
+            (sites Empty) 
+            (sites Layer (layer of:(last To))) 
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) N) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) S))
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) N) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) S))
+        })
+        (intersection {
+            (sites Empty) 
+            (sites Layer (layer of:(last To))) 
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) E) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) W))
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) E) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) W))
+        })
+        (intersection {
+            (sites Empty) 
+            (sites Layer (layer of:(last To))) 
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) NE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SW))
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) NE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SW))
+        })
+        (intersection {
+            (sites Empty) 
+            (sites Layer (layer of:(last To))) 
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) NW))
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) NW))
+        })
+    })
 )
 
 (define "ComputeScore"
-	(if 
-		(and 
-			(= (layer of:(last To)) 0)
-			(= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 0))) 16)
-		)
-		(addScore Mover 1)
-		(if 
-			(and 
-				(= (layer of:(last To)) 1)
-				(= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 1))) 9)
-			)
-			(addScore Mover 1)
-			(if 
-				(and 
-					(= (layer of:(last To)) 2)
-					(= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 2))) 4)
-				)
-				(addScore Mover 1)
-				(if 
-					(= (layer of:(last To)) 3)
-						(addScore Mover 2)	
-					)
-			)
-		)
-	)
+    (if 
+        (and 
+            (= (layer of:(last To)) 0)
+            (= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 0))) 16)
+        )
+        (addScore Mover 1)
+        (if 
+            (and 
+                (= (layer of:(last To)) 1)
+                (= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 1))) 9)
+            )
+            (addScore Mover 1)
+            (if 
+                (and 
+                    (= (layer of:(last To)) 2)
+                    (= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 2))) 4)
+                )
+                (addScore Mover 1)
+                (if 
+                    (= (layer of:(last To)) 3)
+                    (addScore Mover 2)	
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (game "Splastwo" 
-	    (players 2) 
-	    (equipment { 
-	        (board (square 4 pyramidal:True) use:Vertex) 
-	        (piece "Ball" Each maxValue:15)
-	    }) 
-	    
-	    (rules 
-	    	
-	    	(play 
-	    		(if
-	    			(not ((is Prev Mover)))
-	    			(move Add 
-	    	    		(to 
-	    	    			(sites Empty) 
-	    	    			if:(is Flat)
-	    	    		)
-	    	    		(then 
-	    	    			(and {
-	    	    				(forget Value "FirstLoc" All)
-	    	    				(remember Value "FirstLoc" (last To))
-	    	    				"ComputeScore"
-	    	    				(moveAgain)
-	    	    			})
-	    	    		)
-	    	    	)
-	    			(if
-    		    		(and (is Prev Mover) (not (is Pending)))
-	    				(or
-				    		(move Add 
-				    	    	(to 
-				    	    		(intersection {(sites Empty) (sites Layer (layer of:(last To))) (sites Direction from:(last To) SameLayer distance:1)})
-				    	    		if:(is Flat)
-				    	    	)
-			    	    		(then 
-			    	    			(and {
-			    	    				(set Pending (last To))
-			    	    				(remember Value "FirstLoc" (last To))
-			    	    				"ComputeScore"
-			    	    				(moveAgain)
-			    	    			})
-			    	    		)
-			    	    	)
-				    		(move Pass)
-    		    		)
-	    				(if
-    			    		(and (is Prev Mover) (is Pending))
-	    					(or
-	    			    		(move Add 
-	    			    	    	(to 
-	    			    	    		(union
-	    			    	    			(intersection 
-	    			    	    				"Intersect" (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SameLayer distance:1)
-	    			    	    			)
-	    			    	    			(intersection
-	    			    	    				"Intersect" (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SameLayer distance:1)
-	    			    	    			)
-	    			    	    		)
-	    			    	    		if:(is Flat)
-	    			    	    	)
-	    			    	    	(then
-    	    			    			"ComputeScore"
-    	    			    		)
-	    		    	    	)
-	    			    		(move Pass)
-    			    		)
-    			    	)
-    		    	)
-	    		)
-	    	)
-	
-	    	(end {
-	        	(if 
-	        		(and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (> (score P1) (score P2)))
-	                (result P1 Win)
-	            )
-	        	(if 
-	        		(and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (< (score P1) (score P2)))
-	                (result P2 Win)
-	            )	
-	        	(if 
-	        		(and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (= (score P1) (score P2)))
-	                (result All Draw)
-	            )
-	    	})
-	    	
-	    )
-	)
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each maxValue:15)
+    }) 
+    
+    (rules 
+        
+        (play 
+            (if
+                (not ((is Prev Mover)))
+                (move Add 
+                    (to 
+                        (sites Empty) 
+                        if:(is Flat)
+                    )
+                    (then 
+                        (and {
+                            (forget Value "FirstLoc" All)
+                            (remember Value "FirstLoc" (last To))
+                            "ComputeScore"
+                            (moveAgain)
+                        })
+                    )
+                )
+                (if
+                    (and (is Prev Mover) (not (is Pending)))
+                    (or
+                        (move Add 
+                            (to 
+                                (intersection {(sites Empty) (sites Layer (layer of:(last To))) (sites Direction from:(last To) SameLayer distance:1)})
+                                if:(is Flat)
+                            )
+                            (then 
+                                (and {
+                                    (set Pending (last To))
+                                    (remember Value "FirstLoc" (last To))
+                                    "ComputeScore"
+                                    (moveAgain)
+                                })
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (if
+                        (and (is Prev Mover) (is Pending))
+                        (or
+                            (move Add 
+                                (to 
+                                    (union
+                                        (intersection 
+                                            "Intersect" (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SameLayer distance:1)
+                                        )
+                                        (intersection
+                                            "Intersect" (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SameLayer distance:1)
+                                        )
+                                    )
+                                    if:(is Flat)
+                                )
+                                (then
+                                    "ComputeScore"
+                                )
+                            )
+                            (move Pass)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end {
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (> (score P1) (score P2)))
+                (result P1 Win)
+            )
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (< (score P1) (score P2)))
+                (result P2 Win)
+            )	
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (= (score P1) (score P2)))
+                (result All Draw)
+            )
+        })
+        
+    )
+)
 
 //------------------------------------------------------------------------------
 
 (metadata 
-		
-		(info
-				{
-				}
-			)
     
-		(graphics {
-	        (piece Scale "Ball" 1.0)
-	        (board Style Shibumi)
-			(piece Colour P1 fillColour:(colour White))
-			(piece Colour P2 fillColour:(colour Black))
-	    })
-       
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+    })
+    
 )

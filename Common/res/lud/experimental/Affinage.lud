@@ -9,111 +9,110 @@
 // Löcher // Trous // Buchi // Goutaler (class of cheeses)
 
 // Special restriction 
- 
+
 (define "NoNeutralSingleton"  
- (all Sites
-  (sites Around
-   (sites {(last To) (last From)})
-   <Scoring:direction>
-   if:(is Empty (to))
-  )
-  if:(or
-   {
-    (!= 0 
-     (size Array 
-      (array
-       (difference
-        (sites Around (site) Orthogonal if:(is Empty (to))) // territory is always Ortho
-        (sites {(last To) (last From)})
-    )))) 
-    (!=
-     (* 2
-      (count Pieces
-       in:(intersection
-        (sites State (- 3 <Variant:piece2>)) // opposite color of the piece being placed
-        (sites Around (site) <Scoring:direction>)
-     )))
-     (size Array
-      (array 
-       (difference
-        (sites Around (site) <Scoring:direction>)
-        (difference
-         (sites Empty)
-         (sites {(last To) (last From)})
-       )) 
-    )))
-   }
+    (all Sites
+        (sites Around
+            (sites {(last To) (last From)})
+            <Scoring:direction>
+            if:(is Empty (to))
+        )
+        if:(or
+            {
+            (!= 0 
+                (size Array 
+                    (array
+                        (difference
+                            (sites Around (site) Orthogonal if:(is Empty (to))) // territory is always Ortho
+                            (sites {(last To) (last From)})
+            )))) 
+            (!=
+                (* 2
+                    (count Pieces
+                        in:(intersection
+                            (sites State (- 3 <Variant:piece2>)) // opposite color of the piece being placed
+                            (sites Around (site) <Scoring:direction>)
+                )))
+                (size Array
+                    (array 
+                        (difference
+                            (sites Around (site) <Scoring:direction>)
+                            (difference
+                                (sites Empty)
+                                (sites {(last To) (last From)})
+                        )) 
+            )))
+            }
 )))
 
 (define "GroupSize" (< #1 (size Group at:(site) Orthogonal if:(is Empty (to)))))
 
 (define "NoOddNeutralTerritoryCreatedSmallerThan"  //for gap 1 and orthogonal for everything
- // could rewrite using  (all ...) 
- // can place there only if this is true
- (all Sites
-  (sites Around
-   (sites {(last To) (last From)})
-   <Scoring:direction>
-   if:(is Empty (to))
-  )
-  if:(or
-   {
-    #1
-    (= 0
-     (%
-      (size Group at:(site) Orthogonal if:(is Empty (to)))
-      2
-    ))
-    (!= 
-     (* 2
-      (count Pieces
-       in:(intersection
-        (sites State (- 3 <Variant:piece2>)) // opposite color of the piece being placed
-        (sites Around 
-         (sites Group at:(site) Orthogonal if:(is Empty (to)))
-         <Scoring:direction>
-     ))))
-     (size Array
-      (array
-       (sites Around
-        (sites Group at:(site) Orthogonal if:(is Empty (to)))
-        <Scoring:direction> 
-        if:(not (is Empty (to)))
-    ))))
-    #2
-   }
+    // could rewrite using  (all ...) 
+    // can place there only if this is true
+    (all Sites
+        (sites Around
+            (sites {(last To) (last From)})
+            <Scoring:direction>
+            if:(is Empty (to))
+        )
+        if:(or
+            {
+            #1
+            (= 0
+                (%
+                    (size Group at:(site) Orthogonal if:(is Empty (to)))
+                    2
+            ))
+            (!= 
+                (* 2
+                    (count Pieces
+                        in:(intersection
+                            (sites State (- 3 <Variant:piece2>)) // opposite color of the piece being placed
+                            (sites Around 
+                                (sites Group at:(site) Orthogonal if:(is Empty (to)))
+                                <Scoring:direction>
+                ))))
+                (size Array
+                    (array
+                        (sites Around
+                            (sites Group at:(site) Orthogonal if:(is Empty (to)))
+                            <Scoring:direction> 
+                            if:(not (is Empty (to)))
+            ))))
+            #2
+            }
 )))
-
 
 //------------------------
 // Basic move, and restricted versions
 (define "SitesInOddNeutralRegions"
- (sites
-  (results
-   from:(sites Empty)
-   to:(from)
-   (if
-    (and
-     (!= 0 
-      (% (size Group at:(from) Orthogonal if:(is Empty (to))) 2)
-     )
-     (= 
-      (count Pieces
-       in:(intersection
-        (sites State (mover)) // opposite color of the piece being placed
-        (sites Around 
-         (sites Group at:(from) Orthogonal if:(is Empty (to)))
-         <Scoring:direction>
-      )))
-      (count Pieces
-       in:(intersection
-        (sites State (- 3 (mover))) // opposite color of the piece being placed
-        (sites Around 
-         (sites Group at:(from) Orthogonal if:(is Empty (to)))
-         <Scoring:direction>
-    )))))
-    (from)
-    (last To)  // a non empty location used as a dummy result as a work-around
+    (sites
+        (results
+            from:(sites Empty)
+            to:(from)
+            (if
+                (and
+                    (!= 0 
+                        (% (size Group at:(from) Orthogonal if:(is Empty (to))) 2)
+                    )
+                    (= 
+                        (count Pieces
+                            in:(intersection
+                                (sites State (mover)) // opposite color of the piece being placed
+                                (sites Around 
+                                    (sites Group at:(from) Orthogonal if:(is Empty (to)))
+                                    <Scoring:direction>
+                        )))
+                        (count Pieces
+                            in:(intersection
+                                (sites State (- 3 (mover))) // opposite color of the piece being placed
+                                (sites Around 
+                                    (sites Group at:(from) Orthogonal if:(is Empty (to)))
+                                    <Scoring:direction>
+                )))))
+                (from)
+                (last To)  // a non empty location used as a dummy result as a work-around
 ))))
 
 //-----------------------------------
@@ -122,34 +121,33 @@
 (define "NeighborLimit" (max 0 (+ (+ <Placement:qty> <DensityLimit:qty>) (+ <Separation:qty> <Variant:qty>))))
 
 (define "StandardPlacementLimits"
- (or
-  (= "NeighborLimit" 0)
-  (>= "NeighborLimit" <Placement:method>)
+    (or
+        (= "NeighborLimit" 0)
+        (>= "NeighborLimit" <Placement:method>)
 ))
 
 (define "CombinedMove"  //first piece of; second Piece of (i.e. (mover) ; ("Piece2"))
- (do
-  (move Select
-   (from 
-    (difference
-     (sites Empty)
-     (sites Around (sites State (<Placement:ban> #1)) <DensityLimit:direction>)
-   ))
-   (to
-    (difference 
-     (<Separation:type>)
-     (sites Around (sites State (<Placement:ban> #2)) <DensityLimit:direction>)
-    )
-    if:(!= (to) (from))
-   )
-   (then
-    (add (piece "Disc0") (to (last From) (apply (set State at:(to) #1)))
-     (then
-      (add (piece "Disc0") (to (last To) (apply (set State at:(to) #2))))
-  ))))
-  ifAfterwards:("StandardPlacementLimits")
+    (do
+        (move Select
+            (from 
+                (difference
+                    (sites Empty)
+                    (sites Around (sites State (<Placement:ban> #1)) <DensityLimit:direction>)
+            ))
+            (to
+                (difference 
+                    (<Separation:type>)
+                    (sites Around (sites State (<Placement:ban> #2)) <DensityLimit:direction>)
+                )
+                if:(!= (to) (from))
+            )
+            (then
+                (add (piece "Disc0") (to (last From) (apply (set State at:(to) #1)))
+                    (then
+                        (add (piece "Disc0") (to (last To) (apply (set State at:(to) #2))))
+        ))))
+        ifAfterwards:("StandardPlacementLimits")
 ))
-
 
 // For knights' moves no neutral singles must be allowed even if they can be filled- 
 // otherwise gets complicated...
@@ -158,45 +156,45 @@
 // "NoOddNeutralTerritoryCreatedSmallerThan" handles it there.
 
 (define "MinimalRestrictedMove"  // no neutral singletons
- (do
-  ("CombinedMove" #1 #2) // ("FlipOption" #1 #2)  // 
-  ifAfterwards:("NoNeutralSingleton")
+    (do
+        ("CombinedMove" #1 #2) // ("FlipOption" #1 #2)  // 
+        ifAfterwards:("NoNeutralSingleton")
 ))
 
 (define "FlipOption" // flip, but not last flip. Cycles possible ???
- (priority
-  ("MinimalRestrictedMove" #1 #2)
-  (do
-   (move Select
-    (from
-     (sites Around
-      (difference
-       ("SitesInOddNeutralRegions")
-       (last To)
-      )
-      Orthogonal
-      if:(not 
-       (or
-        (is Empty (to))
-        (= (to) (last To))
-    ))))
-    (then (set State at:(last To) (- 3 (state at:(last To)))))
-   ) 
-   ifAfterwards:("NoNeutralSingleton")
+    (priority
+        ("MinimalRestrictedMove" #1 #2)
+        (do
+            (move Select
+                (from
+                    (sites Around
+                        (difference
+                            ("SitesInOddNeutralRegions")
+                            (last To)
+                        )
+                        Orthogonal
+                        if:(not 
+                            (or
+                                (is Empty (to))
+                                (= (to) (last To))
+                ))))
+                (then (set State at:(last To) (- 3 (state at:(last To)))))
+            ) 
+            ifAfterwards:("NoNeutralSingleton")
 )))
 
 (define "RestrictedBelow4" 
- (do
-  ("CombinedMove" #1 #2)
-  ifAfterwards:("NoOddNeutralTerritoryCreatedSmallerThan" ("GroupSize" 4) ~)
+    (do
+        ("CombinedMove" #1 #2)
+        ifAfterwards:("NoOddNeutralTerritoryCreatedSmallerThan" ("GroupSize" 4) ~)
 ))
 
 (define "RestrictedBelow4Pass" 
- (or
-  (move Pass)
-  (do
-   ("CombinedMove" #1 #2)
-   ifAfterwards:("NoOddNeutralTerritoryCreatedSmallerThan" ("GroupSize" 4) ~)
+    (or
+        (move Pass)
+        (do
+            ("CombinedMove" #1 #2)
+            ifAfterwards:("NoOddNeutralTerritoryCreatedSmallerThan" ("GroupSize" 4) ~)
 )))
 
 // Greater restrictions on odd territory only works for partisan games. NP games will hang with it imposed, or reqire higher densities to reduce the chance of draws.
@@ -204,147 +202,147 @@
 (define "RestrictionsNotApplicableToNonPartisanGames" (!= (mover) ("Piece2"))) // ie True if the game is non-partisan
 
 (define "MustBePartisan" 
-// No odd spaces (only applies to the partisan games)
-
- (do  
-  ("CombinedMove" #1 #2) // ("MinimalRestrictedMove" #1 #2)
-  ifAfterwards:(or
-   ("RestrictionsNotApplicableToNonPartisanGames")
-   ("NoOddNeutralTerritoryCreatedSmallerThan" ~ ~) // with no arguments this covers "NoNeutralSingleton"
+    // No odd spaces (only applies to the partisan games)
+    
+    (do  
+        ("CombinedMove" #1 #2) // ("MinimalRestrictedMove" #1 #2)
+        ifAfterwards:(or
+            ("RestrictionsNotApplicableToNonPartisanGames")
+            ("NoOddNeutralTerritoryCreatedSmallerThan" ~ ~) // with no arguments this covers "NoNeutralSingleton"
 )))
 
 (define "RestrictedMove" 
-
-// No odd spaces, unless they can be played into
-// no neutral singleton in any case (to handle knight's moves)
-// -- because it is not recursive, odd neutral terrritory can be created in practice
-
- (or
-  (move Pass)
-  (do
-   ("CombinedMove" #1 #2)
-   ifAfterwards:(or
-    ("RestrictionsNotApplicableToNonPartisanGames")
-    (and
-     ("NoNeutralSingleton")
-     ("NoOddNeutralTerritoryCreatedSmallerThan"
-      ~
-      (or
-       (can Move ("CombinedMove" #1 #2))
-       (can Move ("CombinedMove" (- 3 #1) (- 3 #2)))
-      )
+    
+    // No odd spaces, unless they can be played into
+    // no neutral singleton in any case (to handle knight's moves)
+    // -- because it is not recursive, odd neutral terrritory can be created in practice
+    
+    (or
+        (move Pass)
+        (do
+            ("CombinedMove" #1 #2)
+            ifAfterwards:(or
+                ("RestrictionsNotApplicableToNonPartisanGames")
+                (and
+                    ("NoNeutralSingleton")
+                    ("NoOddNeutralTerritoryCreatedSmallerThan"
+                        ~
+                        (or
+                            (can Move ("CombinedMove" #1 #2))
+                            (can Move ("CombinedMove" (- 3 #1) (- 3 #2)))
+                        )
 ))))))
 
 // Slower, but more reliable:
 (define "DeeperRestrictedMove" 
- (or
-  (move Pass)
-  (do
-   ("CombinedMove" #1 #2)
-   ifAfterwards:(or
-    ("RestrictionsNotApplicableToNonPartisanGames")
-    (and
-     ("NoNeutralSingleton")
-     ("NoOddNeutralTerritoryCreatedSmallerThan"
-      (or
-       (can Move ("MinimalRestrictedMove" #1 #2))
-       (can Move ("MinimalRestrictedMove" (- 3 #1) (- 3 #2)))
-      )
-      ~
+    (or
+        (move Pass)
+        (do
+            ("CombinedMove" #1 #2)
+            ifAfterwards:(or
+                ("RestrictionsNotApplicableToNonPartisanGames")
+                (and
+                    ("NoNeutralSingleton")
+                    ("NoOddNeutralTerritoryCreatedSmallerThan"
+                        (or
+                            (can Move ("MinimalRestrictedMove" #1 #2))
+                            (can Move ("MinimalRestrictedMove" (- 3 #1) (- 3 #2)))
+                        )
+                        ~
 ))))))
 
 //-------------------------------
 // Main routine
 
 (game "Affinage"
- (players 2)
- (equipment
-  {
-   (<Variant:board>)
-   (piece "Disc" Neutral)
-  }
- )
- (rules
-  (start (set Score Each "NeighborLimit"))
-  (play
-  
-   // Special first move for even (Partisan) boards
-   (if    
-    (and
-     (> 0 (counter))
-     (= 0 (% (count Sites in:(sites Board)) 2))
+    (players 2)
+    (equipment
+        {
+        (<Variant:board>)
+        (piece "Disc" Neutral)
+        }
     )
-    (move Add (piece "Disc0") (to (sites Empty) (apply (set State at:(to) (mover))))) // start move
-    (<Territory:neutralRestriction> (mover) <Variant:piece2>) // Selected way to play
-  ))
-  (end 
-   {
-    (if
-     (and
-      <Territory:endCondition>
-      (!= ("Score4" 1) ("Score4" 2))
-     )
-     (byScore {(score P1 ("Score4" 1)) (score P2 ("Score4" 2))})
-    )
-    (if
-     (and
-      {
-       <Territory:endCondition>
-       (= ("Score4" 1) ("Score4" 2))
-      }
-     )
-     (result Mover Win)  // Last to move wins, first to pass Separationes.
-    )
-   }
+    (rules
+        (start (set Score Each "NeighborLimit"))
+        (play
+            
+            // Special first move for even (Partisan) boards
+            (if    
+                (and
+                    (> 0 (counter))
+                    (= 0 (% (count Sites in:(sites Board)) 2))
+                )
+                (move Add (piece "Disc0") (to (sites Empty) (apply (set State at:(to) (mover))))) // start move
+                (<Territory:neutralRestriction> (mover) <Variant:piece2>) // Selected way to play
+        ))
+        (end 
+            {
+            (if
+                (and
+                    <Territory:endCondition>
+                    (!= ("Score4" 1) ("Score4" 2))
+                )
+                (byScore {(score P1 ("Score4" 1)) (score P2 ("Score4" 2))})
+            )
+            (if
+                (and
+                    {
+                    <Territory:endCondition>
+                    (= ("Score4" 1) ("Score4" 2))
+                    }
+                )
+                (result Mover Win)  // Last to move wins, first to pass Separationes.
+            )
+            }
 )))
- 
+
 //------------------------
 // End Scoring
- 
+
 (define "TheTerritory"  // always determined orthogonally
- (sites Group
-  at:(from)  
-  Orthogonal
-  if:(is In (to) (sites Empty))
+    (sites Group
+        at:(from)  
+        Orthogonal
+        if:(is In (to) (sites Empty))
 ))
 
 (define "Score4" // slow, but works
- (+
-  (results
-   from:(sites Empty)
-   to:(forEach (sites {(from)}) 
-    if:(>
-     (* 2
-      (size Array 
-       (array
-        (intersection
-         (sites State #1) 
-         (sites Around ("TheTerritory") <Scoring:direction>)
-     ))))
-     (size Array
-      (array
-       (sites Around ("TheTerritory") <Scoring:direction> if:(not (is Empty (to))))
-   ))))
-   1
+    (+
+        (results
+            from:(sites Empty)
+            to:(forEach (sites {(from)}) 
+                if:(>
+                    (* 2
+                        (size Array 
+                            (array
+                                (intersection
+                                    (sites State #1) 
+                                    (sites Around ("TheTerritory") <Scoring:direction>)
+                    ))))
+                    (size Array
+                        (array
+                            (sites Around ("TheTerritory") <Scoring:direction> if:(not (is Empty (to))))
+            ))))
+            1
 )))
 
 (define "GraphicsTerritoryOf"
- (results
-  from:(sites Empty)
-  to:(forEach (sites {(from)}) 
-   if:(>
-    (* 2
-     (size Array 
-      (array
-       (intersection
-        (sites State #1) 
-        (sites Around ("TheTerritory") <Scoring:direction>)
-    ))))
-    (size Array
-     (array
-      (sites Around ("TheTerritory") <Scoring:direction> if:(not (is Empty (to))))
-  ))))
-  (from)
+    (results
+        from:(sites Empty)
+        to:(forEach (sites {(from)}) 
+            if:(>
+                (* 2
+                    (size Array 
+                        (array
+                            (intersection
+                                (sites State #1) 
+                                (sites Around ("TheTerritory") <Scoring:direction>)
+                ))))
+                (size Array
+                    (array
+                        (sites Around ("TheTerritory") <Scoring:direction> if:(not (is Empty (to))))
+        ))))
+        (from)
 ))
 
 //---------------------------------------
@@ -352,158 +350,158 @@
 
 // + color restrictions if applicable  
 (option "Board" <Variant> args:{<board> <piece2> <qty>}
- {
-  (item "Hex 5 NP" <(board (hex 5) use:Cell)> <(- 3 (mover))> <2>
-   "-- Hex 5, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
-  )
-  (item "Hex 4-6 P" <(board (hex 4 6) use:Cell)> <(mover)> <3>
-   "-- Hex 4-6, Partisan: First player places a single bacterium of their color to start. 
-    Thereafter each mover, on their turn, places two bacteria of their color."
-  )
-  (item "Hex 6 NP" <(board (hex 6) use:Cell)> <(- 3 (mover))> <2>
-   "-- Hex 6, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
-  )
-  (item "Hex 5-7 P" <(board (hex 5 7) use:Cell)> <(mover)> <3>
-   "-- Hex 5-7, Partisan: First player places a single bacterium of their color to start. 
-    Thereafter each mover, on their turn, places two bacteria of their color."
-  )**
-  (item "Hex 7 NP" <(board (hex 7) use:Cell)> <(- 3 (mover))> <2>
-   "-- Hex 7, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
-  ) 
-  (item "Hex 6-8 P" <(board (hex 6 8) use:Cell)> <(mover)> <3>
-   "-- Hex 6-8, Partisan: First player places a single bacterium of their color to start. 
-    Thereafter each mover, on their turn, places two bacteria of their color."
-  )
-  (item "Square 6 P" <(board (square 6) use:Cell)> <(mover)> <1>
-  "-- Square 6, Partisan: First player places a single bacterium of their color to start.
-   Thereafter each mover, on their turn, places two bacteria of their color."
-  )*
-  (item "Square 7 NP" <(board (square 7) use:Cell)> <(- 3 (mover))> <0>
-   "-- Square 7, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
-  )
-  (item "Square 8 P" <(board (square 8) use:Cell)> <(mover)> <1>
-  "-- Square 8, Partisan: First player places a single bacterium of their color to start. 
-   Thereafter each mover, on their turn, places two bacteria of their color."
-  )***
-  (item "Square 9 NP" <(board (square 9) use:Cell)> <(- 3 (mover))> <0> 
-   "-- Square 9, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
-  )
-  (item "Square 10 P" <(board (square 10) use:Cell)> <(mover)> <1> 
-  "-- Square 10, Partisan: First player places a single bacterium of their color to start. 
-   Thereafter each mover, on their turn, places two bacteria of their color.  (1)"
-  )
-  (item "Square 12 P" <(board (square 12) use:Cell)> <(mover)> <1> 
-  "-- Square 12, Partisan: First player places a single bacterium of their color to start. 
-   Thereafter each mover, on their turn, places two bacteria of their color.  (1)"
-  )
- }
+    {
+    (item "Hex 5 NP" <(board (hex 5) use:Cell)> <(- 3 (mover))> <2>
+        "-- Hex 5, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
+    )
+    (item "Hex 4-6 P" <(board (hex 4 6) use:Cell)> <(mover)> <3>
+        "-- Hex 4-6, Partisan: First player places a single bacterium of their color to start. 
+        Thereafter each mover, on their turn, places two bacteria of their color."
+    )
+    (item "Hex 6 NP" <(board (hex 6) use:Cell)> <(- 3 (mover))> <2>
+        "-- Hex 6, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
+    )
+    (item "Hex 5-7 P" <(board (hex 5 7) use:Cell)> <(mover)> <3>
+        "-- Hex 5-7, Partisan: First player places a single bacterium of their color to start. 
+        Thereafter each mover, on their turn, places two bacteria of their color."
+    )**
+    (item "Hex 7 NP" <(board (hex 7) use:Cell)> <(- 3 (mover))> <2>
+        "-- Hex 7, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
+    ) 
+    (item "Hex 6-8 P" <(board (hex 6 8) use:Cell)> <(mover)> <3>
+        "-- Hex 6-8, Partisan: First player places a single bacterium of their color to start. 
+        Thereafter each mover, on their turn, places two bacteria of their color."
+    )
+    (item "Square 6 P" <(board (square 6) use:Cell)> <(mover)> <1>
+        "-- Square 6, Partisan: First player places a single bacterium of their color to start.
+        Thereafter each mover, on their turn, places two bacteria of their color."
+    )*
+    (item "Square 7 NP" <(board (square 7) use:Cell)> <(- 3 (mover))> <0>
+        "-- Square 7, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
+    )
+    (item "Square 8 P" <(board (square 8) use:Cell)> <(mover)> <1>
+        "-- Square 8, Partisan: First player places a single bacterium of their color to start. 
+        Thereafter each mover, on their turn, places two bacteria of their color."
+    )***
+    (item "Square 9 NP" <(board (square 9) use:Cell)> <(- 3 (mover))> <0> 
+        "-- Square 9, Nonpartisan: Board Starts Empty. On each turn the mover places one bacterium of each color."
+    )
+    (item "Square 10 P" <(board (square 10) use:Cell)> <(mover)> <1> 
+        "-- Square 10, Partisan: First player places a single bacterium of their color to start. 
+        Thereafter each mover, on their turn, places two bacteria of their color.  (1)"
+    )
+    (item "Square 12 P" <(board (square 12) use:Cell)> <(mover)> <1> 
+        "-- Square 12, Partisan: First player places a single bacterium of their color to start. 
+        Thereafter each mover, on their turn, places two bacteria of their color.  (1)"
+    )
+    }
 )
 
 //----------- Defines for separation types
 (define "EmptyNonAdjacentSites"
- (difference
-  (sites Empty)
-  (sites Around (from) <Separation:direction>)
+    (difference
+        (sites Empty)
+        (sites Around (from) <Separation:direction>)
 )) 
 (define "EmptyAdjacentSites"
- (intersection
-  (sites Around (from) <Separation:direction>) 
-  (sites Empty)
+    (intersection
+        (sites Around (from) <Separation:direction>) 
+        (sites Empty)
 )) 
 (define "LeapSites"
- (intersection
-  (sites (from) {{F R F F} {F L F F} {F F R F} {F F L F}} rotations:True)
-  (sites Empty)
+    (intersection
+        (sites (from) {{F R F F} {F L F F} {F F R F} {F F L F}} rotations:True)
+        (sites Empty)
 )) 
 (define "SeparationSitesFartherThan" 
- (difference
-  (sites LineOfSight Empty at:(from) <Separation:direction>)
-  (sites Direction from:(from) <Separation:direction> distance:#1) 
+    (difference
+        (sites LineOfSight Empty at:(from) <Separation:direction>)
+        (sites Direction from:(from) <Separation:direction> distance:#1) 
 ))
 
 //----------------------
 
 (option "Place" <Separation> args:{<type> <direction> <qty>} 
- {
-  (item "Two independently anywhere" 
-   <(sites Empty)> 
-   <Orthogonal>
-   <1>
-   "-- The two bacteria are placed independently."
-  )
-  
-  (item "Two independent non-adjacent" 
-   <("EmptyNonAdjacentSites")>
-   <Orthogonal>
-   <1>
-   "-- The two bacteria are placed independently but not adjacent."
-  )
-  
-  (item "Knight's Pair" 
-   <("LeapSites")> 
-   <Orthogonal>
-   <1>
-   "-- The bacteria are placed as pair at the distance of a chess knight's leap."
-  )
-  
-  (item "Ortho-diag Pair"
-   <("EmptyAdjacentSites")>
-   <All> 
-   <1>
-   "-- The bacteria are placed as an orthogonal or diagonal pair."
-  )***
-  
-  (item "Gap 1+ Ortho-diag"
-   <("SeparationSitesFartherThan" 1)>
-   <All> 
-   <2> 
-   "-- The bacteria are placed along any orthogonal or diagonal line-of-sight, with a minimum gap of one space between them."
-  )
-  
-  (item "Gap 2+ Ortho-diag"
-   <("SeparationSitesFartherThan" 2)>
-   <All> 
-   <4>
-   "-- The bacteria are placed along any orthogonal or diagonal line-of-sight, with a minimum gap of 2 spaces between them."
-  )
-  
-  (item "Orthogonal Pair"
-   <("EmptyAdjacentSites")>
-   <Orthogonal> 
-   <1>
-   "-- The bacteria are placed as an orthogonal pair."
-  )
-  
-  (item "Gap 1+ Orthogonal"
-   <("SeparationSitesFartherThan" 1)>
-   <Orthogonal> 
-   <2>
-   "-- The bacteria are placed along an orthogonal line-of-sight, with a minimum gap of one space between them."
-  )*
-  
-  (item "Gap 2+ Orthogonal" 
-   <("SeparationSitesFartherThan" 2)>
-   <Orthogonal> 
-   <4>
-   "-- The bacteria are placed along an orthogonal line-of-sight, with a minimum gap of 2 spaces between them."
-  )
-  
-  (item "Diagonal Pair"
-   <("EmptyAdjacentSites")>
-   <Diagonal> 
-   <2>
-   "-- The bacteria are placed as an adjacent diagonal pair."
-  )
-  
-  // Note that a 2nd parameter gets appended to these from another option, 
-  // so cannot use parenthese here. 
-  (item "Gap 1+ Diagonal"
-   <("SeparationSitesFartherThan" 1)>
-   <Diagonal> 
-   <3>
-   "-- The bacteria are placed along a diagonal line-of-sight, with a minimum gap of one space between them."
-  )
- }
+    {
+    (item "Two independently anywhere" 
+        <(sites Empty)> 
+        <Orthogonal>
+        <1>
+        "-- The two bacteria are placed independently."
+    )
+    
+    (item "Two independent non-adjacent" 
+        <("EmptyNonAdjacentSites")>
+        <Orthogonal>
+        <1>
+        "-- The two bacteria are placed independently but not adjacent."
+    )
+    
+    (item "Knight's Pair" 
+        <("LeapSites")> 
+        <Orthogonal>
+        <1>
+        "-- The bacteria are placed as pair at the distance of a chess knight's leap."
+    )
+    
+    (item "Ortho-diag Pair"
+        <("EmptyAdjacentSites")>
+        <All> 
+        <1>
+        "-- The bacteria are placed as an orthogonal or diagonal pair."
+    )***
+    
+    (item "Gap 1+ Ortho-diag"
+        <("SeparationSitesFartherThan" 1)>
+        <All> 
+        <2> 
+        "-- The bacteria are placed along any orthogonal or diagonal line-of-sight, with a minimum gap of one space between them."
+    )
+    
+    (item "Gap 2+ Ortho-diag"
+        <("SeparationSitesFartherThan" 2)>
+        <All> 
+        <4>
+        "-- The bacteria are placed along any orthogonal or diagonal line-of-sight, with a minimum gap of 2 spaces between them."
+    )
+    
+    (item "Orthogonal Pair"
+        <("EmptyAdjacentSites")>
+        <Orthogonal> 
+        <1>
+        "-- The bacteria are placed as an orthogonal pair."
+    )
+    
+    (item "Gap 1+ Orthogonal"
+        <("SeparationSitesFartherThan" 1)>
+        <Orthogonal> 
+        <2>
+        "-- The bacteria are placed along an orthogonal line-of-sight, with a minimum gap of one space between them."
+    )*
+    
+    (item "Gap 2+ Orthogonal" 
+        <("SeparationSitesFartherThan" 2)>
+        <Orthogonal> 
+        <4>
+        "-- The bacteria are placed along an orthogonal line-of-sight, with a minimum gap of 2 spaces between them."
+    )
+    
+    (item "Diagonal Pair"
+        <("EmptyAdjacentSites")>
+        <Diagonal> 
+        <2>
+        "-- The bacteria are placed as an adjacent diagonal pair."
+    )
+    
+    // Note that a 2nd parameter gets appended to these from another option, 
+    // so cannot use parenthese here. 
+    (item "Gap 1+ Diagonal"
+        <("SeparationSitesFartherThan" 1)>
+        <Diagonal> 
+        <3>
+        "-- The bacteria are placed along a diagonal line-of-sight, with a minimum gap of one space between them."
+    )
+    }
 )
 
 //------------------------------
@@ -515,137 +513,136 @@
 (define "AnyMatch" (+ 3 (* 0 #1)))
 
 (define "CountedPerPair"
- (size Array
-  (array
-   (sites Around      
-    (sites {(last To) (last From)})     
-    <DensityLimit:direction>  // Where to find the neighbors to count         
-    if:(not (is Empty (to)))
+    (size Array
+        (array
+            (sites Around      
+                (sites {(last To) (last From)})     
+                <DensityLimit:direction>  // Where to find the neighbors to count         
+                if:(not (is Empty (to)))
 ))))
 
 (define "CombinedTotalOfEach"
- (+
-  (size Array
-   (array
-    (sites Around      
-     (sites {(last To)})     
-     <DensityLimit:direction>  // Where to find the neighbors to count         
-     if:(not (is Empty (to))) // sequential placement so the second piece does count the first
-  )))
-  (size Array
-   (array
-    (sites Around      
-     (sites {(last From)})     
-     <DensityLimit:direction>  // Where to find the neighbors to count         
-     if:(and (!= (to) (last To)) (not (is Empty (to)))) // sequential placement so the first piece doesn't count the second
-  )))
+    (+
+        (size Array
+            (array
+                (sites Around      
+                    (sites {(last To)})     
+                    <DensityLimit:direction>  // Where to find the neighbors to count         
+                    if:(not (is Empty (to))) // sequential placement so the second piece does count the first
+        )))
+        (size Array
+            (array
+                (sites Around      
+                    (sites {(last From)})     
+                    <DensityLimit:direction>  // Where to find the neighbors to count         
+                    if:(and (!= (to) (last To)) (not (is Empty (to)))) // sequential placement so the first piece doesn't count the second
+        )))
 ))
 
 (option "Neighbor restriction" <Placement> args:{<ban> <method> <qty>}
- {
-  (item "Sparse count"
-   <"AnyMatch"> <"CountedPerPair"> <0>
-   "-- The total number of existing bacteria adjacent to the pair being placed must not exceed the limit that is shown in the score area."
-  )* 
-  (item "Combined counts"
-   <"AnyMatch"> <"CombinedTotalOfEach"> <2>
-   "-- The bacteria adjacent each piece as it is placed are counted, and the total for the full turn must not exceed the limit that is shown in the score area."
-  )* 
-  (item "Dense count"
-   <"AnyMatch"> <"CountedPerPair"> <1>
-   "-- The total number of existing bacteria adjacent to the pair being placed must not exceed the limit that is shown in the score area."
-  )
-  (item "Must not match color"
-   <"Matches"> <"CountedPerPair"> <-16>
-   "-- The bacteria that are placed must not match the color of any adjacent bacterium on the board."
-  )
-  (item "All colors must match"
-   <"Mismatches"> <"CountedPerPair"> <-16>
-   "-- The bacteria that are placed must match the color of every adjacent bacterium on the board."
-  )   
- }
+    {
+    (item "Sparse count"
+        <"AnyMatch"> <"CountedPerPair"> <0>
+        "-- The total number of existing bacteria adjacent to the pair being placed must not exceed the limit that is shown in the score area."
+    )* 
+    (item "Combined counts"
+        <"AnyMatch"> <"CombinedTotalOfEach"> <2>
+        "-- The bacteria adjacent each piece as it is placed are counted, and the total for the full turn must not exceed the limit that is shown in the score area."
+    )* 
+    (item "Dense count"
+        <"AnyMatch"> <"CountedPerPair"> <1>
+        "-- The total number of existing bacteria adjacent to the pair being placed must not exceed the limit that is shown in the score area."
+    )
+    (item "Must not match color"
+        <"Matches"> <"CountedPerPair"> <-16>
+        "-- The bacteria that are placed must not match the color of any adjacent bacterium on the board."
+    )
+    (item "All colors must match"
+        <"Mismatches"> <"CountedPerPair"> <-16>
+        "-- The bacteria that are placed must match the color of every adjacent bacterium on the board."
+    )   
+    }
 )
 
 (option "Applies" <DensityLimit> args:{<direction> <qty>}
- {
-  (item "Ortho" <Orthogonal> <0>
-   "-- Placement adjacency restrictions are determined orthogonally."
-  )*
-  (item "Adjacent" <Adjacent> <3>
-   "-- Placement adjacency restrictions are determined diagonally."
-  )
-  (item "Diag" <Diagonal> <0>
-   "-- Placement adjacency restrictions are determined diagonally."
-  )
- }
+    {
+    (item "Ortho" <Orthogonal> <0>
+        "-- Placement adjacency restrictions are determined orthogonally."
+    )*
+    (item "Adjacent" <Adjacent> <3>
+        "-- Placement adjacency restrictions are determined diagonally."
+    )
+    (item "Diag" <Diagonal> <0>
+        "-- Placement adjacency restrictions are determined diagonally."
+    )
+    }
 )
 
 (option "Score" <Scoring> args:{<direction>}
- {
-  (item "Ortho" <Orthogonal>
-   "
-   Territory extent for scoring is always determined by empty steps orthogonally. 
-   -- Territory ownership is by majority of orthogonally surrounding sites."
-  )*
-  (item "Adjacent" <Adjacent>
-   "
-   Territory extent for scoring is always determined by empty steps orthogonally. 
-   -- Territory ownership is by majority of surrounding sites in all directions."
-  )
- }
+    {
+    (item "Ortho" <Orthogonal>
+        "
+        Territory extent for scoring is always determined by empty steps orthogonally. 
+        -- Territory ownership is by majority of orthogonally surrounding sites."
+    )*
+    (item "Adjacent" <Adjacent>
+        "
+        Territory extent for scoring is always determined by empty steps orthogonally. 
+        -- Territory ownership is by majority of surrounding sites in all directions."
+    )
+    }
 )
 
 (option "Odd Territory" <Territory> args:{<neutralRestriction> <endCondition>}
- {
-  (item "No Passing"
-   <"CombinedMove"> <(no Moves Next)>
-   "-- There is no restriction on forming neutral territory. 
-    -- The game ends if a player can't move. Last to place wins a tie."
-  )
-  (item "Flip Option, No Passing"
-   <"FlipOption"> <(no Moves Next)>
-   "-- Neutral singleton territories may not be created.
-    -- If a player cannot otherwise move, and there is an odd-sized neutral territory, the player may flip any one stone within its border except the last stone placed or flipped. 
-    -- The game ends if a player can't move at all. Last to place wins a tie."
-  )****
-  (item "No odd neutral territory less than 4, No Passing"
-   <"RestrictedBelow4"> <(no Moves Next)>
-   "-- Odd neutral territory less than 4 may not be created.
-    -- The game ends if a player can't move. Last to place wins a tie."
-  )
-  (item "No odd neutral territory less than 4"
-   <"RestrictedBelow4Pass"> <(all Passed)>
-   "-- Odd neutral territory less than 4 may not be created.
-    -- Voluntary passing is allowed. Game ends with consecutive passes.
-    -- Ties are won by the last to place."
-  )
-  (item "Must be partisan"
-   <"MustBePartisan"> <(all Passed)>
-   "-- Voluntary passing is allowed. Game ends with consecutive passes.
-    -- Ties are won by the last to place.
-   
-    The following rule is effective only for partisan games; i.e. in which two of the same color are placed on even-sized boards after an initial single piece placement:  
-   -- Odd-size Neutral territories may not be created."
-  )*
-  (item "Partisan or playable with no neutral singletons" 
-   <"RestrictedMove"> <(all Passed)>
-   "-- Voluntary passing is allowed. Game ends with consecutive passes.
-    -- Ties are won by the last to place.
-   
-   The following rule is effective only for partisan games; i.e. in which two of the same color are placed on even-sized boards after an initial single piece placement:
-   -- Odd-size Neutral territories may only be created if they can be played into at least once without creating a neutral singleton."
-  )**
-//  (item "Partisan or playable"
-//   <"DeeperRestrictedMove"> <(all Passed)>
-//   "-- Voluntary passing is allowed. Game ends with consecutive passes.
-//    -- Ties are won by the last to place.
-//   
-//   The following rule is effective only for partisan games; i.e. in which two of the same color are placed on even-sized boards after an initial single piece placement:
-//   -- Odd-size Neutral territories may only be created if they can be played into at least once."
-//  )  // to slow to calculate
- }
+    {
+    (item "No Passing"
+        <"CombinedMove"> <(no Moves Next)>
+        "-- There is no restriction on forming neutral territory. 
+        -- The game ends if a player can't move. Last to place wins a tie."
+    )
+    (item "Flip Option, No Passing"
+        <"FlipOption"> <(no Moves Next)>
+        "-- Neutral singleton territories may not be created.
+        -- If a player cannot otherwise move, and there is an odd-sized neutral territory, the player may flip any one stone within its border except the last stone placed or flipped. 
+        -- The game ends if a player can't move at all. Last to place wins a tie."
+    )****
+    (item "No odd neutral territory less than 4, No Passing"
+        <"RestrictedBelow4"> <(no Moves Next)>
+        "-- Odd neutral territory less than 4 may not be created.
+        -- The game ends if a player can't move. Last to place wins a tie."
+    )
+    (item "No odd neutral territory less than 4"
+        <"RestrictedBelow4Pass"> <(all Passed)>
+        "-- Odd neutral territory less than 4 may not be created.
+        -- Voluntary passing is allowed. Game ends with consecutive passes.
+        -- Ties are won by the last to place."
+    )
+    (item "Must be partisan"
+        <"MustBePartisan"> <(all Passed)>
+        "-- Voluntary passing is allowed. Game ends with consecutive passes.
+        -- Ties are won by the last to place.
+        
+        The following rule is effective only for partisan games; i.e. in which two of the same color are placed on even-sized boards after an initial single piece placement:  
+        -- Odd-size Neutral territories may not be created."
+    )*
+    (item "Partisan or playable with no neutral singletons" 
+        <"RestrictedMove"> <(all Passed)>
+        "-- Voluntary passing is allowed. Game ends with consecutive passes.
+        -- Ties are won by the last to place.
+        
+        The following rule is effective only for partisan games; i.e. in which two of the same color are placed on even-sized boards after an initial single piece placement:
+        -- Odd-size Neutral territories may only be created if they can be played into at least once without creating a neutral singleton."
+    )**
+    //  (item "Partisan or playable"
+        //   <"DeeperRestrictedMove"> <(all Passed)>
+        //   "-- Voluntary passing is allowed. Game ends with consecutive passes.
+        //    -- Ties are won by the last to place.
+        //   
+        //   The following rule is effective only for partisan games; i.e. in which two of the same color are placed on even-sized boards after an initial single piece placement:
+        //   -- Odd-size Neutral territories may only be created if they can be played into at least once."
+    //  )  // to slow to calculate
+    }
 )
-
 
 //---------------------------------
 // Meta Info and Graphics
@@ -653,24 +650,22 @@
 (define "CP1" Black)
 (define "CP2" White)
 (metadata
- (info
-  {
-  }
- )
+    (info
+        {
+        }
+    )
     
-
- (graphics
-  {
-   (player Colour P1 (colour "CP1"))
-   (player Colour P2 (colour "CP2"))
-   (board Style Board)
-   (board Colour Phase0 (colour HumanLight))
-   (piece Scale "Disc0" .2)
-   (piece Foreground state:1 image:"Disc" fillColour:(colour "CP1") scale:.8)
-   (piece Foreground state:2 image:"Disc" fillColour:(colour "CP2") scale:.8)
-   (region Colour Cell (sites ("GraphicsTerritoryOf" 1)) (colour 165 140 120)) // (colour HumanDark) //
-   (region Colour Cell (sites ("GraphicsTerritoryOf" 2)) (colour 230 220 180)) // Cream
-  }
+    (graphics
+        {
+        (player Colour P1 (colour "CP1"))
+        (player Colour P2 (colour "CP2"))
+        (board Style Board)
+        (board Colour Phase0 (colour HumanLight))
+        (piece Scale "Disc0" .2)
+        (piece Foreground state:1 image:"Disc" fillColour:(colour "CP1") scale:.8)
+        (piece Foreground state:2 image:"Disc" fillColour:(colour "CP2") scale:.8)
+        (region Colour Cell (sites ("GraphicsTerritoryOf" 1)) (colour 165 140 120)) // (colour HumanDark) //
+        (region Colour Cell (sites ("GraphicsTerritoryOf" 2)) (colour 230 220 180)) // Cream
+        }
 ))
-
 

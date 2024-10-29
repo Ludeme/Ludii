@@ -7,388 +7,387 @@
 // Zombies are placed when no non-zombie move is possible   
 
 (define "PossibleLeap" // based on extract of piece value
- (if
-  (= 0 #2) // x & +
-  (forEach
-   (sites #1 {{F} {F R F} {F L F}})
-   if:#3
-  )
-  (if
-   (= 1 #2) // x
-   (forEach
-    (sites #1 {{F R F} {F L F}})
-    if:#3
-   )
-   (if
-    (= 2 #2) // 2x
-    (forEach
-     (sites #1 {{F R F L F R F} {F L F R F L F}})
-     if:#3
-    )
     (if
-     (= 3 #2) // 3x
-     (forEach
-      (sites #1  {{F R F L F R F L F R F} {F L F R F L F R F L F}})
-      if:#3
-     )
-     (if
-      (= 4 #2) // Diagonal
-      (forEach
-       (union
-        (sites LineOfSight Piece at:#1 Diagonal)
-        (sites LineOfSight Empty at:#1 Diagonal)
-       )
-       if:#3
-      )
-      (if
-       (= 5 #2) // N
-       (forEach
-        (sites #1 {{F R F F} {F L F F} {F F R F} {F F L F}})  // in case of diagonal boards
-        if:#3
-       )
-       (if
-        (= 6 #2) // +
+        (= 0 #2) // x & +
         (forEach
-         (sites #1 {{F}})
-         if:#3
+            (sites #1 {{F} {F R F} {F L F}})
+            if:#3
         )
         (if
-         (= 7 #2) // 2+
-         (forEach
-          (sites #1 {{F F}})
-          if:#3
-         )
-         (if
-          (= 8 #2) // 3+
-          (forEach
-           (sites #1 {{F F F}})
-           if:#3
-          )
-          (if
-           (= 9 #2) // Orthogonal
-           (forEach
-            (union
-             (sites LineOfSight Piece at:#1 Orthogonal)
-             (sites LineOfSight Empty at:#1 Orthogonal)
-            )
-            if:#3
-           )
-           (if
-            (= 10 #2) // 2+ 2x
+            (= 1 #2) // x
             (forEach
-             (sites #1 {{F F} {F R F L F R F} {F L F R F L F}})
-             if:#3
+                (sites #1 {{F R F} {F L F}})
+                if:#3
+            )
+            (if
+                (= 2 #2) // 2x
+                (forEach
+                    (sites #1 {{F R F L F R F} {F L F R F L F}})
+                    if:#3
+                )
+                (if
+                    (= 3 #2) // 3x
+                    (forEach
+                        (sites #1  {{F R F L F R F L F R F} {F L F R F L F R F L F}})
+                        if:#3
+                    )
+                    (if
+                        (= 4 #2) // Diagonal
+                        (forEach
+                            (union
+                                (sites LineOfSight Piece at:#1 Diagonal)
+                                (sites LineOfSight Empty at:#1 Diagonal)
+                            )
+                            if:#3
+                        )
+                        (if
+                            (= 5 #2) // N
+                            (forEach
+                                (sites #1 {{F R F F} {F L F F} {F F R F} {F F L F}})  // in case of diagonal boards
+                                if:#3
+                            )
+                            (if
+                                (= 6 #2) // +
+                                (forEach
+                                    (sites #1 {{F}})
+                                    if:#3
+                                )
+                                (if
+                                    (= 7 #2) // 2+
+                                    (forEach
+                                        (sites #1 {{F F}})
+                                        if:#3
+                                    )
+                                    (if
+                                        (= 8 #2) // 3+
+                                        (forEach
+                                            (sites #1 {{F F F}})
+                                            if:#3
+                                        )
+                                        (if
+                                            (= 9 #2) // Orthogonal
+                                            (forEach
+                                                (union
+                                                    (sites LineOfSight Piece at:#1 Orthogonal)
+                                                    (sites LineOfSight Empty at:#1 Orthogonal)
+                                                )
+                                                if:#3
+                                            )
+                                            (if
+                                                (= 10 #2) // 2+ 2x
+                                                (forEach
+                                                    (sites #1 {{F F} {F R F L F R F} {F L F R F L F}})
+                                                    if:#3
 )))))))))))))
 
 (define "PossibleLeapSites"
- (union 
-  ("PossibleLeap" #1 (% #2 10) #3)  
-  ("PossibleLeap" #1 (/ #2 10) #3)
+    (union 
+        ("PossibleLeap" #1 (% #2 10) #3)  
+        ("PossibleLeap" #1 (/ #2 10) #3)
 ))
 
 (define "PlacePiece"
- (move  // place on defenseless sites i.e. where attacker would not die.
-  (from (intersection (sites Occupied by:Mover)(sites Hand Mover)) if:(and (= #1 (state at:(from))) #2)) 
-  (to
-   (intersection (sites Empty) (sites Board)) // 0 means board?
-   if:(all Sites
-    ("PossibleLeapSites"
-     (to)
-     (value Piece at:(from)) 
-     (is Next (who at:(site)))
-    )
-    if:(not (is In (site) (sites Occupied by:Next)))    
+    (move  // place on defenseless sites i.e. where attacker would not die.
+        (from (intersection (sites Occupied by:Mover)(sites Hand Mover)) if:(and (= #1 (state at:(from))) #2)) 
+        (to
+            (intersection (sites Empty) (sites Board)) // 0 means board?
+            if:(all Sites
+                ("PossibleLeapSites"
+                    (to)
+                    (value Piece at:(from)) 
+                    (is Next (who at:(site)))
+                )
+                if:(not (is In (site) (sites Occupied by:Next)))    
 ))))
 
 (define "MovePiece"
- (forEach Piece
-  (if
-   (is In (from) (sites Board))
-   (do
-    (set Var "Origin" (from))
-    next:(forEach Value
-     (union  // union is to ensure duplicates are removed
-      {
-       (results 
-        from:("PossibleLeapSites"
-         (var "Origin")
-         (value Piece at:(var "Origin")) 
-         (is Mover (who at:(site)))
-         // variant allowing movement assisted by opponent's zombies as well 
-         // uses below instead:
-         // (or (= 1 (state at:(site))) (is Mover (who at:(site))))  
-        )
-        to:(from)
-        (value Piece at:(to))
-       )
-      } 
-     )
-     (or
-     
-      (move Select 
-       (from (from))
-       (to 
-        ("PossibleLeapSites"
-         (var "Origin")
-         (value) 
-         (or
-          (is Empty (site))
-          (is Next (who at:(site)))
-        ))
-        // cases for attacker defeat
-        if:(and
-         {
-          (is Next (who at:(to)))
-          (!= 1 (state at:(var "Origin"))) //attacking Zombies cannot bre defeated
-          (or 
-           {
-            (= 1 (state at:(to)))  // cannot defeat "zombies"
-            (is In (to)            // cannot defeat piece that "sees" the attack
-             ("PossibleLeapSites"
-              (var "Origin")
-              (value Piece at:(to))
-              (or
-               (is Empty (site))
-               (is Next (who at:(site)))
-            ))) 
-           }
-          ) 
-         }
-       ))
-       (then
-        (and
-         (set State at:(var "Origin") 1)
-         (fromTo
-          (from (var "Origin")) 
-          (to
-           (min (array (forEach (sites Hand <Rule4:deadAttacker>) if:(is Empty (site)))))
-      )))))
-         
-      (move Select
-       (from (from))
-       (to 
-        ("PossibleLeapSites"
-         (var "Origin")
-         (value) 
-         (or
-          {
-           (is Empty (site))
-           (is Next (who at:(site)))
-          }
-        ))
-        level:0
-        // cases for defender defeat or plain move
-        if:(or
-         (is Empty (to))
-         (and
-          (not
-           (= 1 (state at:(to)))
-          )
-          (or
-           (= 1 (state at:(var "Origin")))
-           (not
-            (is In (to)
-             ("PossibleLeapSites"
-              (var "Origin")
-              (value Piece at:(to))
-              (or
-               (is Empty (site))
-               (is Next (who at:(site)))
-        )))))))
-       )
-       (then
-        (set Var "Dest" (last To)
-         (then
-          (and
-           {
-           
-            (if
-             (is In (var "Dest") (sites Occupied by:Next))
-             (fromTo
-              (from (var "Dest"))
-              (to
-               (min (array (forEach (sites Hand <Rule4:deadDefender>) if:(is Empty (site)))))
-               (apply (set State at:(from) 1))
-              ) 
-              Next  // get next player's piece off before moving there
-            ))
-            
-            (fromTo 
-             (from (var "Origin")) 
-             (to (var "Dest"))
-            )
-            
-           }
-      )))))
-      
+    (forEach Piece
+        (if
+            (is In (from) (sites Board))
+            (do
+                (set Var "Origin" (from))
+                next:(forEach Value
+                    (union  // union is to ensure duplicates are removed
+                        {
+                        (results 
+                            from:("PossibleLeapSites"
+                                (var "Origin")
+                                (value Piece at:(var "Origin")) 
+                                (is Mover (who at:(site)))
+                                // variant allowing movement assisted by opponent's zombies as well 
+                                // uses below instead:
+                                // (or (= 1 (state at:(site))) (is Mover (who at:(site))))  
+                            )
+                            to:(from)
+                            (value Piece at:(to))
+                        )
+                        } 
+                    )
+                    (or
+                        
+                        (move Select 
+                            (from (from))
+                            (to 
+                                ("PossibleLeapSites"
+                                    (var "Origin")
+                                    (value) 
+                                    (or
+                                        (is Empty (site))
+                                        (is Next (who at:(site)))
+                                ))
+                                // cases for attacker defeat
+                                if:(and
+                                    {
+                                    (is Next (who at:(to)))
+                                    (!= 1 (state at:(var "Origin"))) //attacking Zombies cannot bre defeated
+                                    (or 
+                                        {
+                                        (= 1 (state at:(to)))  // cannot defeat "zombies"
+                                        (is In (to)            // cannot defeat piece that "sees" the attack
+                                            ("PossibleLeapSites"
+                                                (var "Origin")
+                                                (value Piece at:(to))
+                                                (or
+                                                    (is Empty (site))
+                                                    (is Next (who at:(site)))
+                                        ))) 
+                                        }
+                                    ) 
+                                    }
+                            ))
+                            (then
+                                (and
+                                    (set State at:(var "Origin") 1)
+                                    (fromTo
+                                        (from (var "Origin")) 
+                                        (to
+                                            (min (array (forEach (sites Hand <Rule4:deadAttacker>) if:(is Empty (site)))))
+                        )))))
+                        
+                        (move Select
+                            (from (from))
+                            (to 
+                                ("PossibleLeapSites"
+                                    (var "Origin")
+                                    (value) 
+                                    (or
+                                        {
+                                        (is Empty (site))
+                                        (is Next (who at:(site)))
+                                        }
+                                ))
+                                level:0
+                                // cases for defender defeat or plain move
+                                if:(or
+                                    (is Empty (to))
+                                    (and
+                                        (not
+                                            (= 1 (state at:(to)))
+                                        )
+                                        (or
+                                            (= 1 (state at:(var "Origin")))
+                                            (not
+                                                (is In (to)
+                                                    ("PossibleLeapSites"
+                                                        (var "Origin")
+                                                        (value Piece at:(to))
+                                                        (or
+                                                            (is Empty (site))
+                                                            (is Next (who at:(site)))
+                                )))))))
+                            )
+                            (then
+                                (set Var "Dest" (last To)
+                                    (then
+                                        (and
+                                            {
+                                            
+                                            (if
+                                                (is In (var "Dest") (sites Occupied by:Next))
+                                                (fromTo
+                                                    (from (var "Dest"))
+                                                    (to
+                                                        (min (array (forEach (sites Hand <Rule4:deadDefender>) if:(is Empty (site)))))
+                                                        (apply (set State at:(from) 1))
+                                                    ) 
+                                                    Next  // get next player's piece off before moving there
+                                            ))
+                                            
+                                            (fromTo 
+                                                (from (var "Origin")) 
+                                                (to (var "Dest"))
+                                            )
+                                            
+                                            }
+                        )))))
+                        
 ))))))
 
 (define "StillCanPlaceZombies"
- (<
-  (count Sites
-   in:(intersection
-    {
-     (sites Board)
-     (sites Occupied by:#1)
-     (sites State 1)
-    }
-  ))
-  (+ #2 
-   (count Sites
-    in:(intersection
-     {
-      (sites Board)
-      (sites Occupied by:#1)
-      (sites State 0)
-     }
+    (<
+        (count Sites
+            in:(intersection
+                {
+                (sites Board)
+                (sites Occupied by:#1)
+                (sites State 1)
+                }
+        ))
+        (+ #2 
+            (count Sites
+                in:(intersection
+                    {
+                    (sites Board)
+                    (sites Occupied by:#1)
+                    (sites State 0)
+                    }
 )))))
 
 (define "PieceMoves"
- (priority
-  {
-   ("PlacePiece" 0 #1)
-   (if 
-    (not (can Move ("PlacePiece" 0 #1)))
-    (or
-     {
-      ("MovePiece")
-//      (<Rule4:ZombieMovement>) // special rules don't exist yet
-     }
-   ))
-   (if
-    ("StillCanPlaceZombies" Mover 0)
-    ("PlacePiece" 1 #1)
-   )
-  }
-  #2
+    (priority
+        {
+        ("PlacePiece" 0 #1)
+        (if 
+            (not (can Move ("PlacePiece" 0 #1)))
+            (or
+                {
+                ("MovePiece")
+                //      (<Rule4:ZombieMovement>) // special rules don't exist yet
+                }
+        ))
+        (if
+            ("StillCanPlaceZombies" Mover 0)
+            ("PlacePiece" 1 #1)
+        )
+        }
+        #2
 ))
 
 (define "BluffingGame" // to be added later
 )
 //-----------------------------------------
-  
+
 (game "Zombego"
- (players 2)
- (equipment
-  {
-   (board (square <Board:size>) use:Cell)
-   (hand P1 size:<Pieces:count>)
-   (hand P2 size:<Pieces:count>)
-   (piece "Square" Each maxValue:110)
-   <Pieces:map>
-  }
- )
- (rules 
-  (start 
-   {
-    (forEach Value min:0 max:(- <Pieces:count> 1)
-     (place Random
-      (sites Hand P1) 
-      {"Square1"} count:1 
-      state:0
-      value:(mapEntry (value))
-    ))    
-    (forEach Value min:0 max:(- <Pieces:count> 1)
-     (place Random
-      (sites Hand P2) 
-      {"Square2"} count:1 
-      state:0
-      value:(mapEntry (value))
-    )) 
-    <Rule4:hiddenStart> 
-   }
-  )
-  (play
-   (<Rule4:variantPlay>)
-  )
-  (end
-   {
-    (if
-     (no Moves Next)
-     (result Mover Win)
+    (players 2)
+    (equipment
+        {
+        (board (square <Board:size>) use:Cell)
+        (hand P1 size:<Pieces:count>)
+        (hand P2 size:<Pieces:count>)
+        (piece "Square" Each maxValue:110)
+        <Pieces:map>
+        }
     )
-    (if
-     (not ("StillCanPlaceZombies" P1 1))
-     (result P2 Win)
-    )
-    (if
-     (not ("StillCanPlaceZombies" P2 1))
-     (result P1 Win)
-    )
-   }
+    (rules 
+        (start 
+            {
+            (forEach Value min:0 max:(- <Pieces:count> 1)
+                (place Random
+                    (sites Hand P1) 
+                    {"Square1"} count:1 
+                    state:0
+                    value:(mapEntry (value))
+            ))    
+            (forEach Value min:0 max:(- <Pieces:count> 1)
+                (place Random
+                    (sites Hand P2) 
+                    {"Square2"} count:1 
+                    state:0
+                    value:(mapEntry (value))
+            )) 
+            <Rule4:hiddenStart> 
+            }
+        )
+        (play
+            (<Rule4:variantPlay>)
+        )
+        (end
+            {
+            (if
+                (no Moves Next)
+                (result Mover Win)
+            )
+            (if
+                (not ("StillCanPlaceZombies" P1 1))
+                (result P2 Win)
+            )
+            (if
+                (not ("StillCanPlaceZombies" P2 1))
+                (result P1 Win)
+            )
+            }
 )))
 
 //------------------------------------------------
 // Options
 
 (option "Board" <Board> args:{<size>}
- {
-  (item "3" <3> "3x3 Square")
-  (item "4" <4> "4x4 Square")
-  (item "5" <5> "5x5 Square")
-  (item "6" <6> "6x6 Square")**
-  (item "7" <7> "7x7 Square")
-  (item "8" <8> "8x8 Square")
-  (item "9" <9> "9x9 Square")
-  (item "10" <10> "10x10 Square")
-  (item "12" <12> "12x12 Square")
- }
+    {
+    (item "3" <3> "3x3 Square")
+    (item "4" <4> "4x4 Square")
+    (item "5" <5> "5x5 Square")
+    (item "6" <6> "6x6 Square")**
+    (item "7" <7> "7x7 Square")
+    (item "8" <8> "8x8 Square")
+    (item "9" <9> "9x9 Square")
+    (item "10" <10> "10x10 Square")
+    (item "12" <12> "12x12 Square")
+    }
 )
 (option "Rulesets" <Rule4> args:{<deadAttacker> <deadDefender> <hiddenStart> <variantPlay>}
- {
-  (item "Stratego Style with Zombies" <Mover> <Next> 
-   <(set Hidden Value (sites Hand P1) to:P2) 
-    (set Hidden Value (sites Hand P2) to:P1)
-   >
-   <("PieceMoves" True 
-     (then  // Stratego variant    
-      (if
-       (= 1 (state at:(last To)))
-       (set Hidden Value at:(last To) False to:All)
-   )))> 
-   "Stratego Style with Zombies: Hidden set-up and play. Attackers become Zombies that must be placed when no other moves can be made and only become visible when placed." 
-  )
-  (item "All Zombies" <Mover> <Next> < > <("PieceMoves" True ~)>
-   "Zombies must be placed when no other moves can be made."
-  )***
-  (item "No Zombies" <Next> <Mover> <> <("PieceMoves" True ~)>
-   "Dead pieces are removed."
-  )
-//  (item "Bluffing with Zombies" <Mover> <Next> 
-//   <(set Hidden Value (sites Hand P1) to:P2) 
-//    (set Hidden Value (sites Hand P2) to:P1)
-//   >
-//   <("BluffingGame")> 
-//  "Hidden set-up and lawless play. When requested players must show that the last move was legal, or remove the pieces. Penalty for false accusation one additional piece above the amount challenged. Challenged pieces remain visible if not withdrawn voluntarily, but might still be invoked as part of a challenge."
-//  )
- }
+    {
+    (item "Stratego Style with Zombies" <Mover> <Next> 
+        <(set Hidden Value (sites Hand P1) to:P2) 
+        (set Hidden Value (sites Hand P2) to:P1)
+        >
+        <("PieceMoves" True 
+            (then  // Stratego variant    
+                (if
+                    (= 1 (state at:(last To)))
+                    (set Hidden Value at:(last To) False to:All)
+        )))> 
+        "Stratego Style with Zombies: Hidden set-up and play. Attackers become Zombies that must be placed when no other moves can be made and only become visible when placed." 
+    )
+    (item "All Zombies" <Mover> <Next> < > <("PieceMoves" True ~)>
+        "Zombies must be placed when no other moves can be made."
+    )***
+    (item "No Zombies" <Next> <Mover> <> <("PieceMoves" True ~)>
+        "Dead pieces are removed."
+    )
+    //  (item "Bluffing with Zombies" <Mover> <Next> 
+        //   <(set Hidden Value (sites Hand P1) to:P2) 
+        //    (set Hidden Value (sites Hand P2) to:P1)
+        //   >
+        //   <("BluffingGame")> 
+        //  "Hidden set-up and lawless play. When requested players must show that the last move was legal, or remove the pieces. Penalty for false accusation one additional piece above the amount challenged. Challenged pieces remain visible if not withdrawn voluntarily, but might still be invoked as part of a challenge."
+    //  )
+    }
 )
-  
 
 (option "PieceSet" <Pieces> args:{ <count> <map> }
- {
-  (item "(6) Sum dist by type = 4" <6> <(map {0..5} {2 5 7 25 27 57})>
-   "6 pieces, each defining leaps with sum of distance by type = 4"
-  )
-  (item "(7) 8 Destinations" <7> <(map {0..6} {12 16 17 26 27 55 67})>
-   "7 pieces, each defining 8 leaps"
-  )
-  (item "(8) Pairs of types" <8> <(map {0..7} {12 15 16 17 25 27 56 57})>
-   "8 pieces, each defined by 2 types of leaps"
-  )
-  (item "(8) 12 Destinations" <8> <(map {0..7} {2 7 15 25 56 57 101 106})>
-   "8 Pieces, each defining 12 leaps"
-  )***
-  (item "(10) Sum 4 with Long Leaps" <10> <(map {0..9} {2 5 7 13 18 25 27 36 57 68})>
-   "10 pieces, up to distance 3, each defining leaps with sum of distance by type = 4"
-  )
-  (item "(9) Sum 4 plus Slides" <9> <(map {0..8} {2 5 7 25 27 44 49 57 99})>
-   "9 Pieces, each defining leaps with sum of distance by type = 4, plus Rook / Bishop / Queen Slides"
-  )**
-  (item "(11) 12 plus Slides" <11> <(map {0..10} {2 7 15 25 44 49 56 57 99 101 106})>
-   "11 Pieces, each defining 12 leaps, plus Rook / Bishop / Queen Slides"
-  )
- }
+    {
+    (item "(6) Sum dist by type = 4" <6> <(map {0..5} {2 5 7 25 27 57})>
+        "6 pieces, each defining leaps with sum of distance by type = 4"
+    )
+    (item "(7) 8 Destinations" <7> <(map {0..6} {12 16 17 26 27 55 67})>
+        "7 pieces, each defining 8 leaps"
+    )
+    (item "(8) Pairs of types" <8> <(map {0..7} {12 15 16 17 25 27 56 57})>
+        "8 pieces, each defined by 2 types of leaps"
+    )
+    (item "(8) 12 Destinations" <8> <(map {0..7} {2 7 15 25 56 57 101 106})>
+        "8 Pieces, each defining 12 leaps"
+    )***
+    (item "(10) Sum 4 with Long Leaps" <10> <(map {0..9} {2 5 7 13 18 25 27 36 57 68})>
+        "10 pieces, up to distance 3, each defining leaps with sum of distance by type = 4"
+    )
+    (item "(9) Sum 4 plus Slides" <9> <(map {0..8} {2 5 7 25 27 44 49 57 99})>
+        "9 Pieces, each defining leaps with sum of distance by type = 4, plus Rook / Bishop / Queen Slides"
+    )**
+    (item "(11) 12 plus Slides" <11> <(map {0..10} {2 7 15 25 44 49 56 57 99 101 106})>
+        "11 Pieces, each defining 12 leaps, plus Rook / Bishop / Queen Slides"
+    )
+    }
 ) 
 (define "CP1" White)
 (define "CP2" Black)
@@ -396,205 +395,204 @@
 (define "Size2" 0.60)
 (define "Size3" 0.74)
 (define "PieceElement"
- (piece Foreground value:#1 
- image:"Square1" fillColour:(colour Grey)
- scale:0.14 offsetX:#2 offsetY:#3)
+    (piece Foreground value:#1 
+        image:"Square1" fillColour:(colour Grey)
+    scale:0.14 offsetX:#2 offsetY:#3)
 )
 (define "PieceElementSmall"
- (piece Foreground value:#1 
- image:"Square1" fillColour:(colour Grey)
- scale:0.12 offsetX:#2 offsetY:#3)
+    (piece Foreground value:#1 
+        image:"Square1" fillColour:(colour Grey)
+    scale:0.12 offsetX:#2 offsetY:#3)
 )
 (define "D1"
- ("PieceElement" #1 -"Size1" -"Size1")
- ("PieceElement" #1  "Size1" -"Size1")
- ("PieceElement" #1 -"Size1"  "Size1")
- ("PieceElement" #1  "Size1"  "Size1")
+    ("PieceElement" #1 -"Size1" -"Size1")
+    ("PieceElement" #1  "Size1" -"Size1")
+    ("PieceElement" #1 -"Size1"  "Size1")
+    ("PieceElement" #1  "Size1"  "Size1")
 )
 (define "D1S"
- ("PieceElementSmall" #1 -"Size1" -"Size1")
- ("PieceElementSmall" #1  "Size1" -"Size1")
- ("PieceElementSmall" #1 -"Size1"  "Size1")
- ("PieceElementSmall" #1  "Size1"  "Size1")
+    ("PieceElementSmall" #1 -"Size1" -"Size1")
+    ("PieceElementSmall" #1  "Size1" -"Size1")
+    ("PieceElementSmall" #1 -"Size1"  "Size1")
+    ("PieceElementSmall" #1  "Size1"  "Size1")
 )
 (define "D2"
- ("PieceElement" #1 -"Size2" -"Size2")
- ("PieceElement" #1  "Size2" -"Size2")
- ("PieceElement" #1 -"Size2"  "Size2")
- ("PieceElement" #1  "Size2"  "Size2")
+    ("PieceElement" #1 -"Size2" -"Size2")
+    ("PieceElement" #1  "Size2" -"Size2")
+    ("PieceElement" #1 -"Size2"  "Size2")
+    ("PieceElement" #1  "Size2"  "Size2")
 )
 (define "D3"
- ("PieceElementSmall" #1 -"Size3" -"Size3")
- ("PieceElementSmall" #1  "Size3" -"Size3")
- ("PieceElementSmall" #1 -"Size3"  "Size3")
- ("PieceElementSmall" #1  "Size3"  "Size3")
+    ("PieceElementSmall" #1 -"Size3" -"Size3")
+    ("PieceElementSmall" #1  "Size3" -"Size3")
+    ("PieceElementSmall" #1 -"Size3"  "Size3")
+    ("PieceElementSmall" #1  "Size3"  "Size3")
 )
 (define "R1"
- ("PieceElement" #1 0 -"Size1")
- ("PieceElement" #1 -"Size1" 0)
- ("PieceElement" #1  "Size1" 0)
- ("PieceElement" #1 0  "Size1")
+    ("PieceElement" #1 0 -"Size1")
+    ("PieceElement" #1 -"Size1" 0)
+    ("PieceElement" #1  "Size1" 0)
+    ("PieceElement" #1 0  "Size1")
 )
 (define "R1S"
- ("PieceElementSmall" #1 0 -"Size1")
- ("PieceElementSmall" #1 -"Size1" 0)
- ("PieceElementSmall" #1  "Size1" 0)
- ("PieceElementSmall" #1 0  "Size1")
+    ("PieceElementSmall" #1 0 -"Size1")
+    ("PieceElementSmall" #1 -"Size1" 0)
+    ("PieceElementSmall" #1  "Size1" 0)
+    ("PieceElementSmall" #1 0  "Size1")
 )
 (define "R2"
- ("PieceElement" #1 0 -"Size2")
- ("PieceElement" #1 -"Size2" 0)
- ("PieceElement" #1  "Size2" 0)
- ("PieceElement" #1 0  "Size2")
+    ("PieceElement" #1 0 -"Size2")
+    ("PieceElement" #1 -"Size2" 0)
+    ("PieceElement" #1  "Size2" 0)
+    ("PieceElement" #1 0  "Size2")
 )
 (define "R3"
- ("PieceElementSmall" #1 0 -"Size3")
- ("PieceElementSmall" #1 -"Size3" 0)
- ("PieceElementSmall" #1 0 "Size3" )
- ("PieceElementSmall" #1  "Size3" 0)
+    ("PieceElementSmall" #1 0 -"Size3")
+    ("PieceElementSmall" #1 -"Size3" 0)
+    ("PieceElementSmall" #1 0 "Size3" )
+    ("PieceElementSmall" #1  "Size3" 0)
 )
 (define "N1"
- ("PieceElement" #1 -"Size1" -"Size2")
- ("PieceElement" #1  "Size1" -"Size2")
- ("PieceElement" #1 -"Size1"  "Size2")
- ("PieceElement" #1  "Size1"  "Size2")
- ("PieceElement" #1 -"Size2" -"Size1")
- ("PieceElement" #1  "Size2" -"Size1")
- ("PieceElement" #1 -"Size2"  "Size1")
- ("PieceElement" #1  "Size2"  "Size1")
+    ("PieceElement" #1 -"Size1" -"Size2")
+    ("PieceElement" #1  "Size1" -"Size2")
+    ("PieceElement" #1 -"Size1"  "Size2")
+    ("PieceElement" #1  "Size1"  "Size2")
+    ("PieceElement" #1 -"Size2" -"Size1")
+    ("PieceElement" #1  "Size2" -"Size1")
+    ("PieceElement" #1 -"Size2"  "Size1")
+    ("PieceElement" #1  "Size2"  "Size1")
 )
 
 (define "DD3"
- ("D3" 13)
- ("D1S" 13)
+    ("D3" 13)
+    ("D1S" 13)
 )
 (define "DR3"
- ("R3" 18)
- ("D1S" 18)
+    ("R3" 18)
+    ("D1S" 18)
 )
 (define "RD3"
- ("D3" 36)
- ("R1S" 36)
+    ("D3" 36)
+    ("R1S" 36)
 )
 (define "RR3"
- ("R3" 68)
- ("R1S" 68)
+    ("R3" 68)
+    ("R1S" 68)
 )
 (define "DR2D"
- ("D2" 2)
- ("R1" 2)
- ("D1" 2)
+    ("D2" 2)
+    ("R1" 2)
+    ("D1" 2)
 )
 (define "DRN"
- ("N1" 5)
- ("R1" 5)
- ("D1" 5)
+    ("N1" 5)
+    ("R1" 5)
+    ("D1" 5)
 )
 (define "DR2R"
- ("R1" 7)
- ("R2" 7)
- ("D1" 7)
+    ("R1" 7)
+    ("R2" 7)
+    ("D1" 7)
 )
 (define "DD2"
- ("D2" 12)
- ("D1" 12)
+    ("D2" 12)
+    ("D1" 12)
 )
 (define "DN"
- ("N1" 15)
- ("D1" 15)
+    ("N1" 15)
+    ("D1" 15)
 )
 (define "DR"
- ("R1" 16)
- ("D1" 16)
+    ("R1" 16)
+    ("D1" 16)
 )
 (define "DR2"
- ("R2" 17)
- ("D1" 17)
+    ("R2" 17)
+    ("D1" 17)
 )
 (define "D2N"
- ("N1" 25)
- ("D2" 25)
+    ("N1" 25)
+    ("D2" 25)
 )
 (define "RD2"
- ("D2" 26)
- ("R1" 26)
+    ("D2" 26)
+    ("R1" 26)
 )
 (define "D2R2"
- ("R2" 27)
- ("D2" 27)
+    ("R2" 27)
+    ("D2" 27)
 )
 (define "N"
- ("N1" 55)
+    ("N1" 55)
 )
 (define "RN"
- ("R1" 56)
- ("N1" 56)
+    ("R1" 56)
+    ("N1" 56)
 )
 (define "R2N"
- ("R2" 57)
- ("N1" 57)
+    ("R2" 57)
+    ("N1" 57)
 )
 (define "RR2"
- ("R2" 67)
- ("R1" 67)
+    ("R2" 67)
+    ("R1" 67)
 )
 (define "DD2R2"
- ("R2" 101)
- ("D1" 101)
- ("D2" 101)
+    ("R2" 101)
+    ("D1" 101)
+    ("D2" 101)
 ) 
 (define "RR2D2"
- ("R2" 106)
- ("R1" 106)
- ("D2" 106)
+    ("R2" 106)
+    ("R1" 106)
+    ("D2" 106)
 ) 
 (metadata
- (info 
-  {
-    }
- )
- (graphics
-  {
-   (player Colour P1 (colour "CP1"))
-   (player Colour P2 (colour "CP2"))
- // (board Style Board)
- // (piece Foreground  P1 image:"Square" fillColour:(colour "CP1") scale:.9)
- // (piece Foreground  P1 image:"Square" fillColour:(colour "CP2") scale:.9)
-//  (piece Foreground  value:13 text:"x  3x" scale:0.2)
-//  (piece Foreground  value:18 text:"x  3+" scale:0.2)
-//  (piece Foreground  value:36 text:"+  3X" scale:0.2)
-//  (piece Foreground  value:68 text:"+  3+" scale:0.2)
-  (piece Foreground  value:44 text:"B" scale:0.4)
-  (piece Foreground  value:49 text:"Q" scale:0.4)
-  (piece Foreground  value:99 text:"R" scale:0.4)
-  ("DD3")
-  ("DR3")
-  ("RD3")
-  ("RR3")
-  ("DR2D")
-  ("DRN")
-  ("DR2R")
-  ("DN")
-  ("D2N")
-  ("D2R2")
-  ("RN")
-  ("R2N")
-  ("DD2R2")
-  ("RR2D2")
-  ("DD2")
-  ("DR")
-  ("DR2")
-  ("N")
-  ("RD2")
-  ("RR2")
-  (hand Placement P1 scale:.8 offsetX:0.1 offsetY:0.05 vertical:False)
-  (hand Placement P2 scale:.8 offsetX:0.1 offsetY:0.95 vertical:False)
-  
-//  (piece Foreground  P1 state:0 image:"Square" fillColour:(colour "CP1") scale:.9)
-//  (piece Foreground  P2 state:0 image:"Square" fillColour:(colour "CP2") scale:.9)
-  (piece Foreground  state:1 image:"Square1" fillColour:(colour Red) scale:0.14)
-//  (show Piece State)
-  }
+    (info 
+        {
+        }
+    )
+    (graphics
+        {
+        (player Colour P1 (colour "CP1"))
+        (player Colour P2 (colour "CP2"))
+        // (board Style Board)
+        // (piece Foreground  P1 image:"Square" fillColour:(colour "CP1") scale:.9)
+        // (piece Foreground  P1 image:"Square" fillColour:(colour "CP2") scale:.9)
+        //  (piece Foreground  value:13 text:"x  3x" scale:0.2)
+        //  (piece Foreground  value:18 text:"x  3+" scale:0.2)
+        //  (piece Foreground  value:36 text:"+  3X" scale:0.2)
+        //  (piece Foreground  value:68 text:"+  3+" scale:0.2)
+        (piece Foreground  value:44 text:"B" scale:0.4)
+        (piece Foreground  value:49 text:"Q" scale:0.4)
+        (piece Foreground  value:99 text:"R" scale:0.4)
+        ("DD3")
+        ("DR3")
+        ("RD3")
+        ("RR3")
+        ("DR2D")
+        ("DRN")
+        ("DR2R")
+        ("DN")
+        ("D2N")
+        ("D2R2")
+        ("RN")
+        ("R2N")
+        ("DD2R2")
+        ("RR2D2")
+        ("DD2")
+        ("DR")
+        ("DR2")
+        ("N")
+        ("RD2")
+        ("RR2")
+        (hand Placement P1 scale:.8 offsetX:0.1 offsetY:0.05 vertical:False)
+        (hand Placement P2 scale:.8 offsetX:0.1 offsetY:0.95 vertical:False)
+        
+        //  (piece Foreground  P1 state:0 image:"Square" fillColour:(colour "CP1") scale:.9)
+        //  (piece Foreground  P2 state:0 image:"Square" fillColour:(colour "CP2") scale:.9)
+        (piece Foreground  state:1 image:"Square1" fillColour:(colour Red) scale:0.14)
+        //  (show Piece State)
+        }
 ))
-   
 

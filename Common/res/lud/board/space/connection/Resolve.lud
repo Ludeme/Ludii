@@ -1,89 +1,89 @@
 // Working to fix bug -- wrong piece owner if turn starts with a resolve.
 // End as soon as connection for either player is made
 // Only one swap per enemy stone per turn. (not just non repeat of last swap)
- 
+
 (define "CrosscutSites" 
- (sites
-  (results
-   from:#1
-   to:(sites Around (from) Diagonal
-    if:(and
-     (is Mover (who at:(to)))
-     (= 2 
-      (count Sites 
-       in:(intersection
-        { 
-         (sites Around (to) Orthogonal)
-         (sites Around (from) Orthogonal)
-         (sites Occupied by:Next)  
-        }
-   )))))
-   (to)
+    (sites
+        (results
+            from:#1
+            to:(sites Around (from) Diagonal
+                if:(and
+                    (is Mover (who at:(to)))
+                    (= 2 
+                        (count Sites 
+                            in:(intersection
+                                { 
+                                (sites Around (to) Orthogonal)
+                                (sites Around (from) Orthogonal)
+                                (sites Occupied by:Next)  
+                                }
+            )))))
+            (to)
 )))
 
 (define "HasCrosscuts"
- (< 0 
-  (count Sites
-   in:("CrosscutSites" #1)
+    (< 0 
+        (count Sites
+            in:("CrosscutSites" #1)
 )))
 
 (define "Place"
- (move Add 
-  (to (sites Empty))
-  (then 
-   (set Var "Status" "AlreadyPlaced"
-    (then
-     (if 
-      (and 
-       ("NewTurn")
-       ("HasCrosscuts" (last To))
-      )
-      (set Var "LT" (last To) (then (set NextPlayer (player (mover)))))
-      (set Var "LT" -1) 
+    (move Add 
+        (to (sites Empty))
+        (then 
+            (set Var "Status" "AlreadyPlaced"
+                (then
+                    (if 
+                        (and 
+                            ("NewTurn")
+                            ("HasCrosscuts" (last To))
+                        )
+                        (set Var "LT" (last To) (then (set NextPlayer (player (mover)))))
+                        (set Var "LT" -1) 
 ))))))
 
 (define "Choose2Resolve"
- (forEach Site (sites Occupied by:Mover)
-  (do (set Var "LT" (site)) 
-   next:("ResolveTheValue" (var "LT"))
-  )
-  (then
-   (set Var "Status" "NotYetPlaced"
-    (then
-     (set NextPlayer (player (mover)))
+    (forEach Site (sites Occupied by:Mover)
+        (do (set Var "LT" (site)) 
+            next:("ResolveTheValue" (var "LT"))
+        )
+        (then
+            (set Var "Status" "NotYetPlaced"
+                (then
+                    (set NextPlayer (player (mover)))
 )))))
 
 (define "ResolveTheValue"
- (forEach Site
-  (intersection 
-   (sites Around #1 Orthogonal)
-   (sites Around ("CrosscutSites" #1) Orthogonal)
-  )
-  (move 
-   (from #1) 
-   (to (site)
-    if:(or "NewTurn" (!= 1 (state at:(to)))) //(!= (last From) (to))) // only 1 swap per turn
-    //bug corrected: "NewTurn" because can exchange to an opponent placed piece.
-    (apply (remove (site)))
-   )
-   (then
-    (and
-     (add 
-      (piece (- 3 (mover))) //  i.e. enemy of mover
-      (to (var "LT")
-       (apply (set State at:(to) 1))
-     )) 
-     (set Var "LT" (last To) 
-      (then
-       (if 
-        ("HasCrosscuts" (var "LT"))
-        (set NextPlayer (player (mover)))
-        (set Var "LT" -1
-         (then
-          (if
-           (= (var "Status") "NotYetPlaced")
-           (set NextPlayer (player (mover)))
-        )))
+    (forEach Site
+        (intersection 
+            (sites Around #1 Orthogonal)
+            (sites Around ("CrosscutSites" #1) Orthogonal)
+        )
+        (move 
+            (from #1) 
+            (to (site)
+            if:(or "NewTurn" (!= 1 (state at:(to)))) //(!= (last From) (to))) // only 1 swap per turn
+            //bug corrected: "NewTurn" because can exchange to an opponent placed piece.
+            (apply (remove (site)))
+        )
+        (then
+            (and
+                (add 
+                    (piece (- 3 (mover))) //  i.e. enemy of mover
+                    (to (var "LT")
+                        (apply (set State at:(to) 1))
+                )) 
+                (set Var "LT" (last To) 
+                    (then
+                        (if 
+                            ("HasCrosscuts" (var "LT"))
+                            (set NextPlayer (player (mover)))
+                            (set Var "LT" -1
+                                (then
+                                    (if
+                                        (= (var "Status") "NotYetPlaced")
+                                        (set NextPlayer (player (mover)))
+                            )))
 ))))))))
 (define "NotYetPlaced" 0)
 (define "AlreadyPlaced" 1)
@@ -91,48 +91,48 @@
 // Main routine
 
 (game "Resolve"
- (players 2)
- (equipment
-  {
-   "SquareGrid"
-   (regions P1 {(sites Side N) (sites Side S) }) 
-   (regions P2 {(sites Side W) (sites Side E) })
-   (piece "Ball" P1)
-   (piece "Ball" P2)
-  }
- )
- (rules
-  (play
-   (if
-    ("NewTurn")
-    (do
-     (forEach Site (sites State 1) (set State at:(site) 0)) 
-     next:(<Variant:whenYouCanResolveWithoutPlacing>
-      ("Place")
-      ("Choose2Resolve")
-    ))
-    (if 
-     (<= 0 (var "LT"))
-     ("ResolveTheValue" (var "LT"))
-     ("Place")
-  )))
-  (end
-   {
-    (if 
-     (is Connected at:(last To) Orthogonal Mover) 
-     (result Mover Win)
+    (players 2)
+    (equipment
+        {
+        "SquareGrid"
+        (regions P1 {(sites Side N) (sites Side S) }) 
+        (regions P2 {(sites Side W) (sites Side E) })
+        (piece "Ball" P1)
+        (piece "Ball" P2)
+        }
     )
-    // added instant win during opponent's move condition
-    (if 
-     (is Connected at:(last From) Orthogonal P1) // Mover could be Next? - But Enemy causes a Ludii Player bug and Next doesn't see win if a forced pass follows the move.
-     (result P1 Win)
-    )
-    (if 
-     (is Connected at:(last From) Orthogonal P2) 
-     // test both P1 and P2 as we don't know who is moving...
-     (result P2 Win)
-    )
-   }
+    (rules
+        (play
+            (if
+                ("NewTurn")
+                (do
+                    (forEach Site (sites State 1) (set State at:(site) 0)) 
+                    next:(<Variant:whenYouCanResolveWithoutPlacing>
+                        ("Place")
+                        ("Choose2Resolve")
+                ))
+                (if 
+                    (<= 0 (var "LT"))
+                    ("ResolveTheValue" (var "LT"))
+                    ("Place")
+        )))
+        (end
+            {
+            (if 
+                (is Connected at:(last To) Orthogonal Mover) 
+                (result Mover Win)
+            )
+            // added instant win during opponent's move condition
+            (if 
+                (is Connected at:(last From) Orthogonal P1) // Mover could be Next? - But Enemy causes a Ludii Player bug and Next doesn't see win if a forced pass follows the move.
+                (result P1 Win)
+            )
+            (if 
+                (is Connected at:(last From) Orthogonal P2) 
+                // test both P1 and P2 as we don't know who is moving...
+                (result P2 Win)
+            )
+            }
 )))
 
 //-------------------------------------------------
@@ -144,61 +144,60 @@
 // Options
 
 (option "Board Size" <BoardSize> args:{<smallSide>} 
- {
- (item "Order 5" <5> "Order 5 board")
- (item "Order 9" <9> "Order 9 board")*
- (item "Order 13" <13> "Order 13 board")
- (item "Order 19" <19> "Order 19 board")
- }
+    {
+    (item "Order 5" <5> "Order 5 board")
+    (item "Order 9" <9> "Order 9 board")*
+    (item "Order 13" <13> "Order 13 board")
+    (item "Order 19" <19> "Order 19 board")
+    }
 )
 
 (option "Variant" <Variant> args:{<whenYouCanResolveWithoutPlacing>}
- {
-  (item "Standard Rules" <priority> "Play using the Standard Rules (2024)
-   On your turn you must place a stone of your color on an empty point, if there is one.
-   
-   If that stone creates a crosscut, swap it with different adjacent enemy stones that share a crosscut with it, until that stone is no longer part of a crosscut. 
-  
-   If there are no empty points at the start of your turn, choose a stone of your color that is part of a crosscut, and use it to resolve crosscuts as above."
-  )**
-  (item "Original Rules" <or> "Play using the Original Rules (2020)
-   On your turn you must select the following one of two actions. 
-   1. Place a stone of your color on an empty point. If that stone creates a crosscut, swap it with different adjacent enemy stones that share a crosscut with it, until that stone is no longer part of a crosscut. 
-   2. Choose a stone of your color that is part of a crosscut, and use it to resolve crosscuts as in 1. Then place a stone of your color on an empty point, if possible."
-  )
- }
+    {
+    (item "Standard Rules" <priority> "Play using the Standard Rules (2024)
+        On your turn you must place a stone of your color on an empty point, if there is one.
+        
+        If that stone creates a crosscut, swap it with different adjacent enemy stones that share a crosscut with it, until that stone is no longer part of a crosscut. 
+        
+        If there are no empty points at the start of your turn, choose a stone of your color that is part of a crosscut, and use it to resolve crosscuts as above."
+    )**
+    (item "Original Rules" <or> "Play using the Original Rules (2020)
+        On your turn you must select the following one of two actions. 
+        1. Place a stone of your color on an empty point. If that stone creates a crosscut, swap it with different adjacent enemy stones that share a crosscut with it, until that stone is no longer part of a crosscut. 
+        2. Choose a stone of your color that is part of a crosscut, and use it to resolve crosscuts as in 1. Then place a stone of your color on an empty point, if possible."
+    )
+    }
 )
 //---------------------------------------------
 
 (define "ColourBackground" (colour LightTan)) 
 (define "Invisible" (colour 0 0 0 0))
 
-
 //---------------------------------------------
 
 (metadata
- (info
-  {
-  (description "A square connection game where crosscuts are resolved by swapping stones. Resolve was designed by Alek Erickson in July 2020. The rules were finalized through critical playtesting session with Dale Walton and Luis Bolaños Mures. The game was partly inspired by the swap mechanic from Michael Zapala's Slyde. The original idea for swapping stones to resolve crosscuts can be traced to Phil Leduc's Thruway and Bill Taylor's Swapway as early as 2008, but the notion of a resolving stone where a single stone gets serially swapped to fix cuts in Resolve is novel.")
-  (rules "Resolve is a connection game for two players: a player with Black stones who wins by connecting the East/West sides, and a player with White stones who wins by connecting the North/South sides. Players take turns placing and swapping stones on the intersections of a square grid which is initially empty. Passing is forbidden. Same-colored stones with orthogonal adjacency are connected. The game is over when a player wins by connecting their designated sides of the board with a single group of connected stones of their color, at any time during their turn or their opponent's turn. Cutting stones are any four stones in a generic crosscut configuration. 
-   
-   OX
-   XO
-   
-   ")
-  (id "1558")
-  (source "<a href=\"https://boardgamegeek.com/boardgame/314106/resolve\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-  (version "1.3.12")
-  (classification "board/space/connection")
-  (author "Alek Erickson")
-  (credit "Dale W. Walton")
-  (date "2020")
-  }
- )
- (graphics
-  {
-   (board Style Go)
-  }
- )
+    (info
+        {
+        (description "A square connection game where crosscuts are resolved by swapping stones. Resolve was designed by Alek Erickson in July 2020. The rules were finalized through critical playtesting session with Dale Walton and Luis Bolaños Mures. The game was partly inspired by the swap mechanic from Michael Zapala's Slyde. The original idea for swapping stones to resolve crosscuts can be traced to Phil Leduc's Thruway and Bill Taylor's Swapway as early as 2008, but the notion of a resolving stone where a single stone gets serially swapped to fix cuts in Resolve is novel.")
+        (rules "Resolve is a connection game for two players: a player with Black stones who wins by connecting the East/West sides, and a player with White stones who wins by connecting the North/South sides. Players take turns placing and swapping stones on the intersections of a square grid which is initially empty. Passing is forbidden. Same-colored stones with orthogonal adjacency are connected. The game is over when a player wins by connecting their designated sides of the board with a single group of connected stones of their color, at any time during their turn or their opponent's turn. Cutting stones are any four stones in a generic crosscut configuration. 
+            
+            OX
+            XO
+            
+        ")
+        (id "1558")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/314106/resolve\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.12")
+        (classification "board/space/connection")
+        (author "Alek Erickson")
+        (credit "Dale W. Walton")
+        (date "2020")
+        }
+    )
+    (graphics
+        {
+        (board Style Go)
+        }
+    )
 )
 

@@ -6,28 +6,28 @@
     }) 
     
     (rules 
-    	(play 
-    		(move Add 
-    			(to 
-    				(sites Empty) 
-    	            if:(is Flat)
-    	        )
-    		)
-    	)
+        (play 
+            (move Add 
+                (to 
+                    (sites Empty) 
+                    if:(is Flat)
+                )
+            )
+        )
         (end { //add visibility condition
             (if
-            	(and {
-            		(= (who at:(last To)) 2) 
-            		(> (size Array (array (intersection (sites Top) (sites Group Vertex at:(last To) isVisible:True)))) 0) 
-            		(> (size Array (array (intersection (sites Bottom) (sites Group Vertex at:(last To) isVisible:True)))) 0)
-            	})
-            	(result Mover Win)
+                (and {
+                    (= (who at:(last To)) 2) 
+                    (> (size Array (array (intersection (sites Top) (sites Group Vertex at:(last To) isVisible:True)))) 0) 
+                    (> (size Array (array (intersection (sites Bottom) (sites Group Vertex at:(last To) isVisible:True)))) 0)
+                })
+                (result Mover Win)
             )
             (if
                 (and {
-                	(= (who at:(last To)) 1) 
-                	(> (size Array (array (intersection (sites Right) (sites Group Vertex at:(last To) isVisible:True)))) 0) 
-                	(> (size Array (array (intersection (sites Left) (sites Group Vertex at:(last To) isVisible:True)))) 0)
+                    (= (who at:(last To)) 1) 
+                    (> (size Array (array (intersection (sites Right) (sites Group Vertex at:(last To) isVisible:True)))) 0) 
+                    (> (size Array (array (intersection (sites Left) (sites Group Vertex at:(last To) isVisible:True)))) 0)
                 })
                 (result Mover Win)
             )
@@ -38,17 +38,17 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-		
-	(info
-		{
-		}
-	)
+    
+    (info
+        {
+        }
+    )
     
     (graphics {
         (piece Scale "Ball" 1.0)
         (board Style Shibumi)
-		(piece Colour P1 fillColour:(colour White))
-		(piece Colour P2 fillColour:(colour Black))
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
     })
-       
+    
 )

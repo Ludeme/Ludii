@@ -28,14 +28,14 @@
     (rules 
         
         (start 
-			{
-				(set Count 2 to:(union (sites P1 "Normal") (sites P2 "Normal")))
-				(set Count 3 to: (sites { <Board:S1> <Board:T1> <Board:S2> <Board:T2> } ))
-			}
-		)
+            {
+            (set Count 2 to:(union (sites P1 "Normal") (sites P2 "Normal")))
+            (set Count 3 to: (sites { <Board:S1> <Board:T1> <Board:S2> <Board:T2> } ))
+            }
+        )
         (play
             (move Select
-              (from 
+                (from 
                     (if 
                         (and 
                             ("SameTurn") 
@@ -43,37 +43,37 @@
                         ) 
                         "LastHoleSowed" 
                         (difference
-							(sites Mover)
-							(mapEntry (mover))
-						)
+                            (sites Mover)
+                            (mapEntry (mover))
+                        )
                     )
                     if:(< 0 (count at:(from)))
-               )
-               (then
-                   (sow
+                )
+                (then
+                    (sow
                         "TrackCCW"
                         owner:(mover)
-						apply:
-							(if ("SowingEndInMyStore")
+                        apply:
+                        (if ("SowingEndInMyStore")
+                            (and
+                                (moveAgain)
+                                ("LastCounterInTheStore")
+                            )
+                            (if (> (count at:(to)) 1)
                                 (and
                                     (moveAgain)
-                                    ("LastCounterInTheStore")
-                                )
-                                (if (> (count at:(to)) 1)
-                                    (and
-                                        (moveAgain)
-                                        ("StoreLastHoleSowed")
-                                    )
+                                    ("StoreLastHoleSowed")
                                 )
                             )
-					)
-				)
-			)
+                        )
+                    )
+                )
+            )
         )
         
         (end (if (= (count Sites in:(difference (sites Mover) (sites Empty))) 1)
-                 (result Mover Win)
-             )
+                (result Mover Win)
+            )
         )
     )
 )
@@ -108,5 +108,4 @@
     })
     
 )
-
 

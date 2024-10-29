@@ -7,13 +7,12 @@
 (define "CurrentDirection"  (directions Cell from:(var "LF") to:(var "LT"))) 
 (define "OppositeDirection"  (directions Cell from:(var "LT") to:(var "LF")))
 (define "MaxMoveDistanceBasedOn"
- (+
-  (count Sites in:#1)
-  (count Pieces
-   of:(- 3 (mover))
-   in:#1
+    (+
+        (count Sites in:#1)
+        (count Pieces
+            of:(- 3 (mover))
+            in:#1
 )))
-
 
 //------------------- 
 // Actual Column Movement
@@ -21,35 +20,35 @@
 (define "DestinationOf" (ahead Cell #1 steps:(var "Offset") "CurrentDirection"))
 
 (define "MoveTheColumnForwardAt" //#1 = <int:column startSite> needs "LD" "LT" "LF" 
- (seq
-  {
-   (set Var "PiecesMoved" 0)
-   (set Var "Offset" (var "LD"))
-   (remove
-    (sites Direction
-     from:#1 
-     "CurrentDirection" 
-     included:True
-     distance:(- (var "LD") 1)
-   ))
-   (while
-    (> (var "LD") (var "PiecesMoved"))
-    (if (is Empty ("DestinationOf" #1))
-    
-     (add (to ("DestinationOf" #1))
-      (then
-       (seq
+    (seq
         {
-        (set Var "Offset" (+ 1 (var "Offset")))
-        (set Var "PiecesMoved" (+ 1 (var "PiecesMoved")))
-        }
-     )))
-     (remove ("DestinationOf" #1)
-      (then (set Var "PiecesMoved" (+ 1 (var "PiecesMoved"))))
-   )))
-  }   
+        (set Var "PiecesMoved" 0)
+        (set Var "Offset" (var "LD"))
+        (remove
+            (sites Direction
+                from:#1 
+                "CurrentDirection" 
+                included:True
+                distance:(- (var "LD") 1)
+        ))
+        (while
+            (> (var "LD") (var "PiecesMoved"))
+            (if (is Empty ("DestinationOf" #1))
+                
+                (add (to ("DestinationOf" #1))
+                    (then
+                        (seq
+                            {
+                            (set Var "Offset" (+ 1 (var "Offset")))
+                            (set Var "PiecesMoved" (+ 1 (var "PiecesMoved")))
+                            }
+                )))
+                (remove ("DestinationOf" #1)
+                    (then (set Var "PiecesMoved" (+ 1 (var "PiecesMoved"))))
+        )))
+        }   
 ))
-   
+
 //------------------
 // Preparing to move for subsequent columns
 
@@ -66,106 +65,105 @@
 //------------------
 
 (define "SubsequentAvailableSites"
- (sites Direction from:("SubsequentLT")
-  "CurrentDirection" 
-  included:True 
-  stop:(or
-   (= (mover) (who at:(to)))
-   (is In (to) (sites Corners))
+    (sites Direction from:("SubsequentLT")
+        "CurrentDirection" 
+        included:True 
+        stop:(or
+            (= (mover) (who at:(to)))
+            (is In (to) (sites Corners))
 )))
 
 (define "IfAllowedSecondaryDestination" 
- (and
-  {
-   // Starts within range to be associated with an earlier column move in an adjacent column.
-   (is In (from)
-    (union
-     ("SitesFromSeeds" "CurrentDirection") 
-     ("SitesFromSeeds" "OppositeDirection")
-   ))
-   // Destination is on the board
-   (not (is In ("SubsequentLT") (sites Corners)))
-   // Is a continuous column of friendly pieces of the same length and in the same direction as the first move.
-   (all Sites (sites Between from:(from) to:("SubsequentLT")) if:(= (mover) (who at:(site))))
-   // that ends at a non-mover site.
-   (!= (mover) (who at:("SubsequentLT")))
-   // There is enough space to move the rest of the column.
-   (<=
-    (var "LD")
-    ("MaxMoveDistanceBasedOn" "SubsequentAvailableSites")
-   )
-  }
+    (and
+        {
+        // Starts within range to be associated with an earlier column move in an adjacent column.
+        (is In (from)
+            (union
+                ("SitesFromSeeds" "CurrentDirection") 
+                ("SitesFromSeeds" "OppositeDirection")
+        ))
+        // Destination is on the board
+        (not (is In ("SubsequentLT") (sites Corners)))
+        // Is a continuous column of friendly pieces of the same length and in the same direction as the first move.
+        (all Sites (sites Between from:(from) to:("SubsequentLT")) if:(= (mover) (who at:(site))))
+        // that ends at a non-mover site.
+        (!= (mover) (who at:("SubsequentLT")))
+        // There is enough space to move the rest of the column.
+        (<=
+            (var "LD")
+            ("MaxMoveDistanceBasedOn" "SubsequentAvailableSites")
+        )
+        }
 )) 
 
 (define "SubsequentColumnAttack"
- (move Select
-  (from ("MoverSites")
-   if:("IfAllowedSecondaryDestination")
-  )
-  (then
-   (seq
-    {
-     (set Var "ALF" (last From))
-     (remember Value "Origins" (var "ALF") unique:True) 
-     ("MoveTheColumnForwardAt" (var "ALF"))
-    }
+    (move Select
+        (from ("MoverSites")
+            if:("IfAllowedSecondaryDestination")
+        )
+        (then
+            (seq
+                {
+                (set Var "ALF" (last From))
+                (remember Value "Origins" (var "ALF") unique:True) 
+                ("MoveTheColumnForwardAt" (var "ALF"))
+                }
 ))))
 
 //-------------------
 // Preparing to move first column attack
 
 (define "AvailableSites"
- (sites Direction
-  from:(to)
-  (directions Cell from:(from) to:(to)) 
-  included:True 
-  stop:(or
-   (= (mover) (who at:(to)))
-   (is In (to) (sites Corners))
+    (sites Direction
+        from:(to)
+        (directions Cell from:(from) to:(to)) 
+        included:True 
+        stop:(or
+            (= (mover) (who at:(to)))
+            (is In (to) (sites Corners))
 )))
 
 (define "FirstColumnAttack"
- (forEach Piece
-  (do
-   (set Var "LF" (from))
-   next:(move Select
-    (from (from) if:(is In (from) ("MoverSites")))
-    (to
-     (difference
-      (difference
-       (sites Direction from:(from) Adjacent)
-       (sites Corners)
-      ) 
-      ("MoverSites")
-     )
-     if:(and
-      {
-       (all Sites
-        (sites Between Adjacent Cell from:(from) to:(to)) 
-        if:(is In (site) ("MoverSites"))
-       )
-       (<=
-        (count Steps Adjacent (from) (to))
-        ("MaxMoveDistanceBasedOn" "AvailableSites")
-       )
-      }
-     )
-//   (apply (set Var "LF" (from))) // bug - doesn't work here either...
-    )
-    (then
-     (seq
-      {
-// bug work around can only assign LF or LT here, --
-// not both, so put LF up top with (do)
-//       (set Var "LF" (last From))
-       (set Var "LT" (last To))
-       (remember Value "Origins" (var "LF") unique:True)
-       (set Var "LD" (count Steps (var "LF") (var "LT")))
-       ("MoveTheColumnForwardAt" (var "LF")) 
-       (if (can Move ("SubsequentColumnAttack")) (moveAgain))
-      }
+    (forEach Piece
+        (do
+            (set Var "LF" (from))
+            next:(move Select
+                (from (from) if:(is In (from) ("MoverSites")))
+                (to
+                    (difference
+                        (difference
+                            (sites Direction from:(from) Adjacent)
+                            (sites Corners)
+                        ) 
+                        ("MoverSites")
+                    )
+                    if:(and
+                        {
+                        (all Sites
+                            (sites Between Adjacent Cell from:(from) to:(to)) 
+                            if:(is In (site) ("MoverSites"))
+                        )
+                        (<=
+                            (count Steps Adjacent (from) (to))
+                            ("MaxMoveDistanceBasedOn" "AvailableSites")
+                        )
+                        }
+                    )
+                    //   (apply (set Var "LF" (from))) // bug - doesn't work here either...
+                )
+                (then
+                    (seq
+                        {
+                        // bug work around can only assign LF or LT here, --
+                        // not both, so put LF up top with (do)
+                        //       (set Var "LF" (last From))
+                        (set Var "LT" (last To))
+                        (remember Value "Origins" (var "LF") unique:True)
+                        (set Var "LD" (count Steps (var "LF") (var "LT")))
+                        ("MoveTheColumnForwardAt" (var "LF")) 
+                        (if (can Move ("SubsequentColumnAttack")) (moveAgain))
+                        }
 ))))))
-
 
 //-------------------
 (define "EmptyBoardSites" (difference (sites Empty) (sites Corners)))
@@ -173,347 +171,346 @@
 (define "DirectionFromWhichToAdd" (ahead (to) (directions Cell from:(var "RD")  to:(centrePoint Cell))))
 
 (define "ConnectivityRestriction"
- (!= Infinity
-  (count Steps Adjacent
-   (step (to if:#1))
-   (to)
-   (sites Around (var "RD") Orthogonal)  // (last To) or (last From)
+    (!= Infinity
+        (count Steps Adjacent
+            (step (to if:#1))
+            (to)
+            (sites Around (var "RD") Orthogonal)  // (last To) or (last From)
 )))   
 
 (define "ToPotentialReinforcementSites"
- (to
-  (difference
-   ("EmptyBoardSites")
-   (sites Around ("EnemySites"))
-  )
-  if:(and
-   {
-    <Restricted:reinforcementSites>
-    (= (id "Disc" Mover) (what at:("DirectionFromWhichToAdd")))
-   }
+    (to
+        (difference
+            ("EmptyBoardSites")
+            (sites Around ("EnemySites"))
+        )
+        if:(and
+            {
+            <Restricted:reinforcementSites>
+            (= (id "Disc" Mover) (what at:("DirectionFromWhichToAdd")))
+            }
 )))
 
 (define "SelectedDirectionReinforcement"
- (forEach Piece
-  (move 
-   (from (intersection (sites Corners) (sites Occupied by:Mover component:"Hex")))
-   (to (sites Corners) if:(is Empty (to))
-    (apply (set Var "RD" <CornerOccupation:type>))
-   )
-   (then
-    (add ("ToPotentialReinforcementSites"))
-  ))
-  Mover
+    (forEach Piece
+        (move 
+            (from (intersection (sites Corners) (sites Occupied by:Mover component:"Hex")))
+            (to (sites Corners) if:(is Empty (to))
+                (apply (set Var "RD" <CornerOccupation:type>))
+            )
+            (then
+                (add ("ToPotentialReinforcementSites"))
+        ))
+        Mover
 ))
 
 (define "AnyDirectionReinforcement"
- (move Select
-  (from (sites Corners))
-  (then 
-   (set Var "RD" (last To)
-    (then
-     (add ("ToPotentialReinforcementSites"))
+    (move Select
+        (from (sites Corners))
+        (then 
+            (set Var "RD" (last To)
+                (then
+                    (add ("ToPotentialReinforcementSites"))
 )))))
 
 (define "Reinforce"
- (do
-//  (set Value Mover (count Pieces Mover))
-//  next:(if
-  (if
-   (no Pieces in:(sites Corners))
-   ("AnyDirectionReinforcement")
-   ("SelectedDirectionReinforcement")
-  )
-  ifAfterwards:(!= (value Player Mover) (count Pieces Mover))
-))
-
-//---------------------------------
-(define "StandardTurn"
- (if
-  ("NewTurn")
-  
-  (do 
-   (seq
-    {
-     (forget Value All)
-     (set Value Mover (count Pieces Mover))
-     (if
-      (!= (var "StalemateIn") 0) 
-      (if
-       (!= (value Player Prev) (count Pieces Prev))
-       (set Var "StalemateIn" 5)  // 5 keeps feel of the game, if 3 can be used for suprise wins
-       (set Var "StalemateIn" (- (var "StalemateIn") 1))
-     ))
-    }
-   )
-   next:(if
-    (and (= (var "StalemateIn") 0) (!= (count Pieces "Disc2") (count Pieces "Disc1"))) // game over
-    (move Pass)
-    (or 
-     ("Reinforce")
-     ("FirstColumnAttack")
-  )))
-  
-  // same turn
-  (or
-   {
-    <Passing:option>
-    (and  
-    // 'and' is work around for no recursion -- 
-    // gets the (then) condition outside of the define
-     {
-      ("SubsequentColumnAttack")
-     }
-     (then 
-      (if (can Move ("SubsequentColumnAttack")) (moveAgain))
-    ))
-   }
-)))
-
-
-//-------------------------------------------
-(game "Hordes Realm"
- (players 2)
- (equipment
-  {
-   <Variant:board>
-   (piece "Disc" Each)
-   (piece "Hex" Each)
-  }
- )
- 
- (rules
-  (<Setup:start> <CornerOccupation:start>)
-  phases:{
-   <Setup:phase1>
-   <Setup:phase2>   
-   (phase "PlayPhase"
-    (play
-     ("StandardTurn")
-    )
-    (end
-     {
-      (if 
-       (no Pieces Next "Disc")
-       (result Next Loss)
-      )
-      (if
-       (and
-        (= (var "StalemateIn") 0)
-        (> (count Pieces "Disc1") (count Pieces "Disc2"))
-       )
-       (result P1 Win)
-      )      
-      (if
-       (and
-        (= (var "StalemateIn") 0)
-        (> (count Pieces "Disc2") (count Pieces "Disc1"))
-       )
-       (result P2 Win)
-      )
-     } 
-   ))
-   
-  }
-))
-//--------------------------------
-// Options
-
-(define "CornerStart"
- (start
-  {
-   (place "Hex1"
-    (sites Random (intersection (sites Empty) (sites Corners)) num:#1)
-   )
-   (place "Hex2"
-    (sites Random (intersection (sites Empty) (sites Corners)) num:#1)
-   )
-  }
-))
-
-(define "CenterStart"
- (start
-  {
-   (place "Disc2" (centrePoint))
-   (set RememberValue #1)
-  }
-))
-
-(define "CountOfGenerals" <CornerOccupation:start>)
-
-(option "Set-up" <Setup> args:{ <start> <phase1> <phase2> }
- {
- 
-  (item "Pie Rule" 
-   <"CornerStart">
-   <(phase "PiePhase"
-    (play
-     (or
-      (if
-       (< 0 (* (count Pieces "Disc1") (count Pieces "Disc2")))
-       (move Propose "My Pie Offer")
-      )
-      (or
-       {
-       (if
-        (> 3 (count Pieces "Disc1")) 
-        (move Add (piece "Disc1")
-         (to ("EmptyBoardSites")
-          (apply (remember Value (to) unique:True))
-       )))
-       (if
-        (> 3 (count Pieces "Disc2"))
-        (move Add (piece "Disc2")
-         (to ("EmptyBoardSites"))
-       ))
-       }
-       (then (moveAgain))
-    )))
-    (nextPhase (is Proposed "My Pie Offer") "AcceptancePhase")
-   )> 
-   <(phase "AcceptancePhase"
-     (play 
-      (or
-       ("StandardTurn")
-       (move Propose "Decline"
-        (then
-         (if (is Proposed "Decline")
-          (and
-           { 
-            (add (piece "Disc1") (to ("MoverSites") (apply (remove (to)))))
-            (forEach Value
-             (values Remembered) 
-             (add (piece "Disc2") (to (value) (apply (remove (to)))))
+    (do
+        //  (set Value Mover (count Pieces Mover))
+        //  next:(if
+            (if
+                (no Pieces in:(sites Corners))
+                ("AnyDirectionReinforcement")
+                ("SelectedDirectionReinforcement")
             )
-           }
-     ))))))
-     (nextPhase "PlayPhase")
-   )>
-   "Pie Rule:
-   
-   First, two Generals (hex pieces) - one of each color, are placed at random on the green corner cells. Their location indicates the direction to which reinforcements can be added later.
-   Then the first player (Black) adds upto 1 to 3 pieces of each color to empty cells on the board, and finshes by proposing it as a 'Pie Offer'.
-   The second player (White) then either begins play, or else proposes to 'Decline' which reverses the colors of the pieces on the board so that Black can begin play from the same positions.
-   "
-  )
-  
-  (item "Central Placement"
-   <"CenterStart">
-   <(phase "StartPhase"  
-     (play
-      (move Add (piece "Disc1")
-       (to (intersection ("EmptyBoardSites") (sites Outer)))
-       (then
+            ifAfterwards:(!= (value Player Mover) (count Pieces Mover))
+    ))
+    
+    //---------------------------------
+    (define "StandardTurn"
         (if
-         ("NewTurn")
-         (moveAgain)
-     ))))
-     {
-      (nextPhase (and (is Next P2) (= 0 ("CountOfGenerals"))) "PlayPhase")
-      (nextPhase (is Next P2) "PlaceGeneralsPhase")
-     }
-   )> 
-   <(phase "PlaceGeneralsPhase" 
-     (play
-      (move Add (piece (id "Hex" Mover))
-       (to
-        (intersection (sites Empty) (sites Corners))
-     )))
-     (nextPhase (>= (counter) (* 2 ("CountOfGenerals"))) "PlayPhase")
-   )> 
-   "Central Placement Set-up:
-   
-   A white piece starts in the middle. 
-   Black then adds 2 pieces to the edges of the board.
-   Afterwards, Black and White alternate placing their 'Generals' in the green corners.
-   White begins normal play.
-   "
-  )****
-  
- }
-)
-
-(option "Reinforce toward" <CornerOccupation> args:{ <start> <type> }
- {
-  (item "General's position before move (1)" 
-   <1> <(from)>
-    "Each player has one general.
-    The direction activated for reinforcement is shown by where your general is at the begining of the turn."
-  )***
-  (item "General's position before move (2)" <2> <(from)>
-   "Each player has 2 generals.
-    The direction activated for reinforcement is shown by where your selected general is at the begining of the turn."
-  )
-  (item "General's destination (1)" <1> <(to)>
-   "Each player has one general.
-    The direction activated for reinforcement is shown by where your general moves to."
-  )
-  (item "General's destination (2)" <2> <(to)>
-   "Each player has 2 generals.
-    The direction activated for reinforcement is shown by where your general moves to."
-  )**
-  (item "Select Any" <0> <(to)>
-   "Select any direction for reinforcement."
-  )*
- }
-)
-  
-(option "Via" <Restricted> args:{ <reinforcementSites> }
- {
-  (item "Any Site"
-   <True> "Reinforcements are not restricted by connectivity to the general.
-   "
-  )***
-  (item "Empty"
-   <("ConnectivityRestriction" (is Empty (to)))> 
-   "Reinforcements can only occur where connected to direction via Empty sites.
-   "
-  )
-  (item "Non-Friendly"
-   <("ConnectivityRestriction"  (or (is Empty (to)) (not (is Mover (who at:(to))))))> 
-   "Reinforcements can only occur where connected to direction via Friendly sites.
-   "
-  )
-  (item "Non-Enemy"
-   <("ConnectivityRestriction" (or (is Empty (to)) (is Mover (who at:(to)))))> 
-   "Reinforcements can only occur where connected to direction via Non-Enemy sites.
-   "
-  )
- }
-)
-
-(option "Partial Advances" <Passing> args:{ <option> }
- {
-  (item "No" < > "Adjacent columns must move together, if possible.")
-  (item "Yes" <(move Pass)> "You may stop the move with a pass after any column has been moved.")
- }
-)
-
-(option "Board Size" <Variant> args:{ <board> } 
- {
-  (item "Order 8 hexagon" <(board (trim (remove (hex 9) cells:{1..7 9 18..19 29..30 41..42 54..55 68..69 83..84 99 117 132..133 147..148 161..162 174..175 186..187 197..198 207 209..215})) use:Cell)>  "Order 8 board")
-  (item "Order 7 hexagon" <(board (trim (remove (hex 8) cells:{1..6 8 16..17 26..27 37..38 49..50 62..63 76 92 105..106 118..119 130..131 141..142 151..152 160 162..167})) use:Cell)>  "Order 7 board")
-  (item "Order 6 hexagon" <(board (trim (remove (hex 7) cells:{1..5 7 14..15 23..24 33..34 44..45 56 70 81..82 92..93 102..103 111..112 119 121..125})) use:Cell)>  "Order 6 board6")
-  (item "Order 5 hexagon" <(board (trim (remove (hex 6) cells:{1..4 6 12..13 20..21 29..30 39 51 60..61 69..70 77..78 84 86..89})) use:Cell)>   "Order 5 board")**
-  (item "Order 4 hexagon" <(board (trim (remove (hex 5) cells:{1..3 5 10..11 17..18 25 35 42..43 49..50 55 57..59})) use:Cell)>   "Order 5 board5")***
-  (item "Order 9 square" <(board (trim (remove (square 11) cells:{1..4 6..9 11 21..22 32..33 43..44 54 66 76..77 87..88 98..99 109 111..114 116..119})) use:Cell)>  "Order 9 board")
-  (item "Order 7 square" <(board (trim (remove (square 9) cells:{1..3 5..7 9 17..18 26..27 35 45 53..54 62..63 71 73..75 77..79})) use:Cell)> "Order 7 board")
- }
-)
-
-(metadata
- (info
-  {
-  } 
- ) 
- 
- (graphics
-  {
-   (player Colour P1 (colour Grey))
-   (player Colour P2 (colour White))
-   (region Colour (sites Corners) (colour Green))
-  }
- )
- (ai (alphaBeta)) 
-  
-)
+            ("NewTurn")
+            
+            (do 
+                (seq
+                    {
+                    (forget Value All)
+                    (set Value Mover (count Pieces Mover))
+                    (if
+                        (!= (var "StalemateIn") 0) 
+                        (if
+                            (!= (value Player Prev) (count Pieces Prev))
+                            (set Var "StalemateIn" 5)  // 5 keeps feel of the game, if 3 can be used for suprise wins
+                            (set Var "StalemateIn" (- (var "StalemateIn") 1))
+                    ))
+                    }
+                )
+                next:(if
+                    (and (= (var "StalemateIn") 0) (!= (count Pieces "Disc2") (count Pieces "Disc1"))) // game over
+                    (move Pass)
+                    (or 
+                        ("Reinforce")
+                        ("FirstColumnAttack")
+            )))
+            
+            // same turn
+            (or
+                {
+                <Passing:option>
+                (and  
+                    // 'and' is work around for no recursion -- 
+                    // gets the (then) condition outside of the define
+                    {
+                    ("SubsequentColumnAttack")
+                    }
+                    (then 
+                        (if (can Move ("SubsequentColumnAttack")) (moveAgain))
+                ))
+                }
+    )))
+    
+    //-------------------------------------------
+    (game "Hordes Realm"
+        (players 2)
+        (equipment
+            {
+            <Variant:board>
+            (piece "Disc" Each)
+            (piece "Hex" Each)
+            }
+        )
+        
+        (rules
+            (<Setup:start> <CornerOccupation:start>)
+            phases:{
+            <Setup:phase1>
+            <Setup:phase2>   
+            (phase "PlayPhase"
+                (play
+                    ("StandardTurn")
+                )
+                (end
+                    {
+                    (if 
+                        (no Pieces Next "Disc")
+                        (result Next Loss)
+                    )
+                    (if
+                        (and
+                            (= (var "StalemateIn") 0)
+                            (> (count Pieces "Disc1") (count Pieces "Disc2"))
+                        )
+                        (result P1 Win)
+                    )      
+                    (if
+                        (and
+                            (= (var "StalemateIn") 0)
+                            (> (count Pieces "Disc2") (count Pieces "Disc1"))
+                        )
+                        (result P2 Win)
+                    )
+                    } 
+            ))
+            
+            }
+    ))
+    //--------------------------------
+    // Options
+    
+    (define "CornerStart"
+        (start
+            {
+            (place "Hex1"
+                (sites Random (intersection (sites Empty) (sites Corners)) num:#1)
+            )
+            (place "Hex2"
+                (sites Random (intersection (sites Empty) (sites Corners)) num:#1)
+            )
+            }
+    ))
+    
+    (define "CenterStart"
+        (start
+            {
+            (place "Disc2" (centrePoint))
+            (set RememberValue #1)
+            }
+    ))
+    
+    (define "CountOfGenerals" <CornerOccupation:start>)
+    
+    (option "Set-up" <Setup> args:{ <start> <phase1> <phase2> }
+        {
+        
+        (item "Pie Rule" 
+            <"CornerStart">
+            <(phase "PiePhase"
+                (play
+                    (or
+                        (if
+                            (< 0 (* (count Pieces "Disc1") (count Pieces "Disc2")))
+                            (move Propose "My Pie Offer")
+                        )
+                        (or
+                            {
+                            (if
+                                (> 3 (count Pieces "Disc1")) 
+                                (move Add (piece "Disc1")
+                                    (to ("EmptyBoardSites")
+                                        (apply (remember Value (to) unique:True))
+                            )))
+                            (if
+                                (> 3 (count Pieces "Disc2"))
+                                (move Add (piece "Disc2")
+                                    (to ("EmptyBoardSites"))
+                            ))
+                            }
+                            (then (moveAgain))
+                )))
+                (nextPhase (is Proposed "My Pie Offer") "AcceptancePhase")
+            )> 
+            <(phase "AcceptancePhase"
+                (play 
+                    (or
+                        ("StandardTurn")
+                        (move Propose "Decline"
+                            (then
+                                (if (is Proposed "Decline")
+                                    (and
+                                        { 
+                                        (add (piece "Disc1") (to ("MoverSites") (apply (remove (to)))))
+                                        (forEach Value
+                                            (values Remembered) 
+                                            (add (piece "Disc2") (to (value) (apply (remove (to)))))
+                                        )
+                                        }
+                ))))))
+                (nextPhase "PlayPhase")
+            )>
+            "Pie Rule:
+            
+            First, two Generals (hex pieces) - one of each color, are placed at random on the green corner cells. Their location indicates the direction to which reinforcements can be added later.
+            Then the first player (Black) adds upto 1 to 3 pieces of each color to empty cells on the board, and finshes by proposing it as a 'Pie Offer'.
+            The second player (White) then either begins play, or else proposes to 'Decline' which reverses the colors of the pieces on the board so that Black can begin play from the same positions.
+            "
+        )
+        
+        (item "Central Placement"
+            <"CenterStart">
+            <(phase "StartPhase"  
+                (play
+                    (move Add (piece "Disc1")
+                        (to (intersection ("EmptyBoardSites") (sites Outer)))
+                        (then
+                            (if
+                                ("NewTurn")
+                                (moveAgain)
+                ))))
+                {
+                (nextPhase (and (is Next P2) (= 0 ("CountOfGenerals"))) "PlayPhase")
+                (nextPhase (is Next P2) "PlaceGeneralsPhase")
+                }
+            )> 
+            <(phase "PlaceGeneralsPhase" 
+                (play
+                    (move Add (piece (id "Hex" Mover))
+                        (to
+                            (intersection (sites Empty) (sites Corners))
+                )))
+                (nextPhase (>= (counter) (* 2 ("CountOfGenerals"))) "PlayPhase")
+            )> 
+            "Central Placement Set-up:
+            
+            A white piece starts in the middle. 
+            Black then adds 2 pieces to the edges of the board.
+            Afterwards, Black and White alternate placing their 'Generals' in the green corners.
+            White begins normal play.
+            "
+        )****
+        
+        }
+    )
+    
+    (option "Reinforce toward" <CornerOccupation> args:{ <start> <type> }
+        {
+        (item "General's position before move (1)" 
+            <1> <(from)>
+            "Each player has one general.
+            The direction activated for reinforcement is shown by where your general is at the begining of the turn."
+        )***
+        (item "General's position before move (2)" <2> <(from)>
+            "Each player has 2 generals.
+            The direction activated for reinforcement is shown by where your selected general is at the begining of the turn."
+        )
+        (item "General's destination (1)" <1> <(to)>
+            "Each player has one general.
+            The direction activated for reinforcement is shown by where your general moves to."
+        )
+        (item "General's destination (2)" <2> <(to)>
+            "Each player has 2 generals.
+            The direction activated for reinforcement is shown by where your general moves to."
+        )**
+        (item "Select Any" <0> <(to)>
+            "Select any direction for reinforcement."
+        )*
+        }
+    )
+    
+    (option "Via" <Restricted> args:{ <reinforcementSites> }
+        {
+        (item "Any Site"
+            <True> "Reinforcements are not restricted by connectivity to the general.
+            "
+        )***
+        (item "Empty"
+            <("ConnectivityRestriction" (is Empty (to)))> 
+            "Reinforcements can only occur where connected to direction via Empty sites.
+            "
+        )
+        (item "Non-Friendly"
+            <("ConnectivityRestriction"  (or (is Empty (to)) (not (is Mover (who at:(to))))))> 
+            "Reinforcements can only occur where connected to direction via Friendly sites.
+            "
+        )
+        (item "Non-Enemy"
+            <("ConnectivityRestriction" (or (is Empty (to)) (is Mover (who at:(to)))))> 
+            "Reinforcements can only occur where connected to direction via Non-Enemy sites.
+            "
+        )
+        }
+    )
+    
+    (option "Partial Advances" <Passing> args:{ <option> }
+        {
+        (item "No" < > "Adjacent columns must move together, if possible.")
+        (item "Yes" <(move Pass)> "You may stop the move with a pass after any column has been moved.")
+        }
+    )
+    
+    (option "Board Size" <Variant> args:{ <board> } 
+        {
+        (item "Order 8 hexagon" <(board (trim (remove (hex 9) cells:{1..7 9 18..19 29..30 41..42 54..55 68..69 83..84 99 117 132..133 147..148 161..162 174..175 186..187 197..198 207 209..215})) use:Cell)>  "Order 8 board")
+        (item "Order 7 hexagon" <(board (trim (remove (hex 8) cells:{1..6 8 16..17 26..27 37..38 49..50 62..63 76 92 105..106 118..119 130..131 141..142 151..152 160 162..167})) use:Cell)>  "Order 7 board")
+        (item "Order 6 hexagon" <(board (trim (remove (hex 7) cells:{1..5 7 14..15 23..24 33..34 44..45 56 70 81..82 92..93 102..103 111..112 119 121..125})) use:Cell)>  "Order 6 board6")
+        (item "Order 5 hexagon" <(board (trim (remove (hex 6) cells:{1..4 6 12..13 20..21 29..30 39 51 60..61 69..70 77..78 84 86..89})) use:Cell)>   "Order 5 board")**
+        (item "Order 4 hexagon" <(board (trim (remove (hex 5) cells:{1..3 5 10..11 17..18 25 35 42..43 49..50 55 57..59})) use:Cell)>   "Order 5 board5")***
+        (item "Order 9 square" <(board (trim (remove (square 11) cells:{1..4 6..9 11 21..22 32..33 43..44 54 66 76..77 87..88 98..99 109 111..114 116..119})) use:Cell)>  "Order 9 board")
+        (item "Order 7 square" <(board (trim (remove (square 9) cells:{1..3 5..7 9 17..18 26..27 35 45 53..54 62..63 71 73..75 77..79})) use:Cell)> "Order 7 board")
+        }
+    )
+    
+    (metadata
+        (info
+            {
+            } 
+        ) 
+        
+        (graphics
+            {
+            (player Colour P1 (colour Grey))
+            (player Colour P2 (colour White))
+            (region Colour (sites Corners) (colour Green))
+            }
+        )
+        (ai (alphaBeta)) 
+        
+    )

@@ -1,170 +1,170 @@
 (define "ComputeScore"
-	(and {
-		(if
-			(or {
-				(and (> (count SizeBiggestGroup if:(= (who at:(to)) 1)) (score P1)) (> (count SizeBiggestGroup if:(= (who at:(to)) 1)) (score P2)))
-				(and (> (count SizeBiggestGroup if:(= (who at:(to)) 2)) (score P1)) (> (count SizeBiggestGroup if:(= (who at:(to)) 2)) (score P2)))
-			})
-			(and {
-				(forget Value "BiggerGroup" All)
-				(remember Value "BiggerGroup" 1)
-			})
-		)
-		(set Score P1 (count SizeBiggestGroup if:(= (who at:(to)) 1)))
-		(set Score P2 (count SizeBiggestGroup if:(= (who at:(to)) 2)))	
-	})	
+    (and {
+        (if
+            (or {
+                (and (> (count SizeBiggestGroup if:(= (who at:(to)) 1)) (score P1)) (> (count SizeBiggestGroup if:(= (who at:(to)) 1)) (score P2)))
+                (and (> (count SizeBiggestGroup if:(= (who at:(to)) 2)) (score P1)) (> (count SizeBiggestGroup if:(= (who at:(to)) 2)) (score P2)))
+            })
+            (and {
+                (forget Value "BiggerGroup" All)
+                (remember Value "BiggerGroup" 1)
+            })
+        )
+        (set Score P1 (count SizeBiggestGroup if:(= (who at:(to)) 1)))
+        (set Score P2 (count SizeBiggestGroup if:(= (who at:(to)) 2)))	
+    })	
 )
 
 //------------------------------------------------------------------------------
 
 (game "Spice" 
-	    (players 2) 
-	    (equipment { 
-	        (board (square 4 pyramidal:True) use:Vertex) 
-	        (piece "Ball" Each maxValue:16)
-	        (piece "Ball" Neutral)
-	    }) 
-	    
-	    (rules 
-	    	(meta {(pin SupportMultiple) (gravity)})
-	    	(start {
-	        	(place "Ball0" {8 10 14 18 20})
-	        })
-	    	(play  		
-	    		(if
-	    			(and (not ((is Prev Mover))) (not ((is Prev Next))))
-	    			(move Add 
-	    	    		(to 
-	    	    			(sites Empty) 
-	    	    			if:(is Flat)
-	    	    		)
-	    	    		(then 
-	    	    			"ComputeScore"
-	    	    		)
-	    	    	)
-	    			(or {
-	    				(if 
-	    					(and (= (arrayValue (values Remembered "BiggerGroup") index:0) 1) (not "SameTurn"))
-	    					(or {
-	    						(move Remove
-	    		    	        	(sites Occupied by:P1)
-	    		    	        	(then
-	    		    	        		(and {
-		    		    	        		(forget Value "BiggerGroup" All)
-		    		    	        		(remember Value "BiggerGroup" 0)
-		    		    	        		"ComputeScore"
-		    		    	        		(set Pending)
-		    		    	        		(moveAgain)
-	    		    	        		})
-		    			    		)
-	    		    	        )
-	    						(move Remove
-		    		    	        	(sites Occupied by:P2)
-		    		    	        	(then
-		    		    	        		(and {
-			    		    	        		(forget Value "BiggerGroup" All)
-			    	    			    		(remember Value "BiggerGroup" 0)
-			    		    	        		"ComputeScore"
-			    		    	        		(set Pending)
-			    		    	        		(moveAgain)
-		    		    	        		})
-			    			    		)
-		    		    	        )
-	    						(move Add 
-	    			    			(to 
-	    			    				(sites Empty) 
-	    			    				if:(is Flat)
-	    			    			)
-	    			    			(then
-    			    					(and {
-		    		    	        		(forget Value "BiggerGroup" All)
-		    	    			    		(remember Value "BiggerGroup" 0)
-		    		    	        		"ComputeScore"
-		    		    	        		(moveAgain)
-	    		    	        		})	
-	    			    			)
-	    			    		)
-	    					})
-	    				)
-	    				(if
-	            			(and (= (arrayValue (values Remembered "BiggerGroup") index:0) 0) (not "SameTurn"))
-	            			(move Add 
-	            			    (to 
-	            			    	(sites Empty) 
-	            			    	if:(is Flat)
-	            			    )
-	            			    (then 
-	            			    	(and {
-	            			    		"ComputeScore"
-	            			    		(moveAgain)	
-	            			    	})          			    	
-	            			    )
-	            			)
-		            	)
-	    				(if
-	    					(and "SameTurn" (is Pending))
-	    					(move Add 
-	    			    		(to 
-	    			    			(sites Empty) 
-	    			    			if:(is Flat)
-	    			    		)
-	    			    		(then 
-	    			    			(and
-	    	    			    		"ComputeScore"
-	    			    				(moveAgain)
-	    			    			)
-	    			    		)
-	    			    	)
-	    				)
-	    				(if
-	        				(and "SameTurn" (not (is Pending)))
-	    					(or {
-		        				(move Add 
-		        			    	(to 
-		        			    		(sites Empty) 
-		        			    		if:(is Flat)
-		        			    	)
-		        			    	(then "ComputeScore")
-		        			    )
-		        				(move Pass)
-	    					})
-	        			)
-	    			})
-	    		)
-	    	)
-	    		
-	    	(end {
-	        	(if 
-	        		(and (= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (> (count SizeBiggestGroup if:(= (who at:(to)) 1)) (count SizeBiggestGroup if:(= (who at:(to)) 2))))
-	                (result P1 Win)
-	            )
-	        	(if 
-	        		(and (= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (< (count SizeBiggestGroup if:(= (who at:(to)) 1)) (count SizeBiggestGroup if:(= (who at:(to)) 2))))
-	                (result P2 Win)
-	            )
-	        	(if 
-		        	(and (= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (= (count SizeBiggestGroup if:(= (who at:(to)) 1)) (count SizeBiggestGroup if:(= (who at:(to)) 2))))
-		            (result All Draw)
-		        )
-	        })
-	    )
-	)
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each maxValue:16)
+        (piece "Ball" Neutral)
+    }) 
+    
+    (rules 
+        (meta {(pin SupportMultiple) (gravity)})
+        (start {
+            (place "Ball0" {8 10 14 18 20})
+        })
+        (play  		
+            (if
+                (and (not ((is Prev Mover))) (not ((is Prev Next))))
+                (move Add 
+                    (to 
+                        (sites Empty) 
+                        if:(is Flat)
+                    )
+                    (then 
+                        "ComputeScore"
+                    )
+                )
+                (or {
+                    (if 
+                        (and (= (arrayValue (values Remembered "BiggerGroup") index:0) 1) (not "SameTurn"))
+                        (or {
+                            (move Remove
+                                (sites Occupied by:P1)
+                                (then
+                                    (and {
+                                        (forget Value "BiggerGroup" All)
+                                        (remember Value "BiggerGroup" 0)
+                                        "ComputeScore"
+                                        (set Pending)
+                                        (moveAgain)
+                                    })
+                                )
+                            )
+                            (move Remove
+                                (sites Occupied by:P2)
+                                (then
+                                    (and {
+                                        (forget Value "BiggerGroup" All)
+                                        (remember Value "BiggerGroup" 0)
+                                        "ComputeScore"
+                                        (set Pending)
+                                        (moveAgain)
+                                    })
+                                )
+                            )
+                            (move Add 
+                                (to 
+                                    (sites Empty) 
+                                    if:(is Flat)
+                                )
+                                (then
+                                    (and {
+                                        (forget Value "BiggerGroup" All)
+                                        (remember Value "BiggerGroup" 0)
+                                        "ComputeScore"
+                                        (moveAgain)
+                                    })	
+                                )
+                            )
+                        })
+                    )
+                    (if
+                        (and (= (arrayValue (values Remembered "BiggerGroup") index:0) 0) (not "SameTurn"))
+                        (move Add 
+                            (to 
+                                (sites Empty) 
+                                if:(is Flat)
+                            )
+                            (then 
+                                (and {
+                                    "ComputeScore"
+                                    (moveAgain)	
+                                })          			    	
+                            )
+                        )
+                    )
+                    (if
+                        (and "SameTurn" (is Pending))
+                        (move Add 
+                            (to 
+                                (sites Empty) 
+                                if:(is Flat)
+                            )
+                            (then 
+                                (and
+                                    "ComputeScore"
+                                    (moveAgain)
+                                )
+                            )
+                        )
+                    )
+                    (if
+                        (and "SameTurn" (not (is Pending)))
+                        (or {
+                            (move Add 
+                                (to 
+                                    (sites Empty) 
+                                    if:(is Flat)
+                                )
+                                (then "ComputeScore")
+                            )
+                            (move Pass)
+                        })
+                    )
+                })
+            )
+        )
+        
+        (end {
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (> (count SizeBiggestGroup if:(= (who at:(to)) 1)) (count SizeBiggestGroup if:(= (who at:(to)) 2))))
+                (result P1 Win)
+            )
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (< (count SizeBiggestGroup if:(= (who at:(to)) 1)) (count SizeBiggestGroup if:(= (who at:(to)) 2))))
+                (result P2 Win)
+            )
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (= (count SizeBiggestGroup if:(= (who at:(to)) 1)) (count SizeBiggestGroup if:(= (who at:(to)) 2))))
+                (result All Draw)
+            )
+        })
+    )
+)
 
 //------------------------------------------------------------------------------
 
 (metadata 
-		
-	(info
-		{
-		}
-	)
+    
+    (info
+        {
+        }
+    )
     
     (graphics {
         (piece Scale "Ball" 1.0)
         (board Style Shibumi)
         (piece Colour Neutral fillColour:(colour Red))
-		(piece Colour P1 fillColour:(colour White))
-		(piece Colour P2 fillColour:(colour Black))
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
     })
-       
+    
 )

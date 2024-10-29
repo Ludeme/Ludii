@@ -1,13 +1,13 @@
 (game "Neutreeko"
     (players 2)
-
+    
     (equipment
         {
-            (board (square 5))
-            (piece "Ball" Each (move (from (from)) (to (sites LineOfSight Farthest at:(from)))))
+        (board (square 5))
+        (piece "Ball" Each (move (from (from)) (to (sites LineOfSight Farthest at:(from)))))
         }
     )
-
+    
     (rules
         (start
             {
@@ -19,24 +19,22 @@
             (place "Ball2" (coord "D5"))
             }
         )
-
+        
         (play 
             (forEach Piece)
         )
-
+        
         (end (if (is Line 3) (result Mover Win)))
     )
 )
 
-
 //------------------------------------------------------------------------------
-
 
 (metadata
     (info
         {
         (rules "Pieces move by sliding orthogonally or diagonally until blocked by the edge of the board or another piece.
-The object of the game is to arrange your pieces in a line of three either orthogonally or diagonally.")
+        The object of the game is to arrange your pieces in a line of three either orthogonally or diagonally.")
         }
     )
     
@@ -46,14 +44,14 @@ The object of the game is to arrange your pieces in a line of three either ortho
         (board Colour InnerEdges (colour  254 254 231))  
         (board StyleThickness InnerEdges 0.45)
         (board StyleThickness OuterEdges 0.0)
-
+        
         (player Colour P1 (colour Black))
         (player Colour P2 (colour White))
-
+        
         (piece Scale 0.78)
         }
     )
-
+    
     (ai
         (bestAgent "Alpha-Beta")
         trainedHeuristics:(heuristics {
@@ -61,7 +59,4 @@ The object of the game is to arrange your pieces in a line of three either ortho
         })
     )
 )
-
-
-
 

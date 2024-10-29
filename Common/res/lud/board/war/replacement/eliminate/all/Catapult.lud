@@ -1,132 +1,132 @@
 (define "NoncapturingMove"
-	(move 
-		(from)
-		(to 
-			(sites Direction
-				from:(from)
-				Forwards
-				stop:(not (is Empty (to)))
-				distance:(^ 2 
-					(- 3
-						(count Sites
-							in:(sites Direction
-								from:(from)
-								Forwards
-								stop:(is Mover (who at:(to)))
-								distance:1
-							)
-						)
-					)
-				)
-			)
-		)
-	)
+    (move 
+        (from)
+        (to 
+            (sites Direction
+                from:(from)
+                Forwards
+                stop:(not (is Empty (to)))
+                distance:(^ 2 
+                    (- 3
+                        (count Sites
+                            in:(sites Direction
+                                from:(from)
+                                Forwards
+                                stop:(is Mover (who at:(to)))
+                                distance:1
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 (define "CapturingMove"
-	(move 
-		(from)
-		(to 
-			(sites Direction
-				from:(from)
-				stop:(is Mover (who at:(to)))
-				distance:(^ 2 
-					(- 3
-						(count Sites
-							in:(sites Direction
-								from:(from)
-								Forwards
-								stop:(is Mover (who at:(to)))
-								distance:1
-							)
-						)
-					)
-				)
-			)
-			if:(< 0
-				(count Sites
-					in:(intersection
-						(sites Occupied by:Next)
-						(sites Between
-							(directions Cell from:(from) to:(to))
-							from:(from)
-							to:(to)
-							toIncluded:True
-						)
-					)
-				)
-			) 
-			(apply 
-				(remove
-					(sites Between
-						(directions Cell from:(from) to:(to))
-						from:(from)
-						to:(to)
-						toIncluded:True
-					)
-				)
-			)
-		)
-	)
+    (move 
+        (from)
+        (to 
+            (sites Direction
+                from:(from)
+                stop:(is Mover (who at:(to)))
+                distance:(^ 2 
+                    (- 3
+                        (count Sites
+                            in:(sites Direction
+                                from:(from)
+                                Forwards
+                                stop:(is Mover (who at:(to)))
+                                distance:1
+                            )
+                        )
+                    )
+                )
+            )
+            if:(< 0
+                (count Sites
+                    in:(intersection
+                        (sites Occupied by:Next)
+                        (sites Between
+                            (directions Cell from:(from) to:(to))
+                            from:(from)
+                            to:(to)
+                            toIncluded:True
+                        )
+                    )
+                )
+            ) 
+            (apply 
+                (remove
+                    (sites Between
+                        (directions Cell from:(from) to:(to))
+                        from:(from)
+                        to:(to)
+                        toIncluded:True
+                    )
+                )
+            )
+        )
+    )
 )
 
 //-----------------------------------------------------------------------------
 
 (game "Catapult"
-	(players {(player N) (player S)})
-	(equipment
-		{
-			(board (rotate 45 (square <Size>)))
-			(piece "Disc" Each
-				(or 
-					("NoncapturingMove")
-					("CapturingMove")
-				)
-			)
-		}
-	)
-	(rules
-		(start {
-			(place "Disc1" 
+    (players {(player N) (player S)})
+    (equipment
+        {
+        (board (rotate 45 (square <Size>)))
+        (piece "Disc" Each
+            (or 
+                ("NoncapturingMove")
+                ("CapturingMove")
+            )
+        )
+        }
+    )
+    (rules
+        (start {
+            (place "Disc1" 
                 (difference
                     (expand (sites Bottom) steps:(- <Size> 3) Orthogonal)
                     (sites Phase (% <Size> 2))
                 )
             )
-			(place "Disc2"
+            (place "Disc2"
                 (difference 
                     (expand (sites Top) steps:(- <Size> 3) Orthogonal)
                     (sites Phase (% <Size> 2))
                 )
             )
-		})
-		(play
-			(forEach Piece)
-		)
-		(end 
-			(if 
-				(no Pieces Next) 
-				(result Next Loss)
-			)
-		)
-	)
+        })
+        (play
+            (forEach Piece)
+        )
+        (end 
+            (if 
+                (no Pieces Next) 
+                (result Next Loss)
+            )
+        )
+    )
 )
 
 (option "Board Size" <Size> args:{ <size> }
-	{
-	(item "8x8"    <8>  "A size 8 board is currently selected")*
-	(item "9x9"    <9>  "A size 9 board is currently selected")
-	}
+    {
+    (item "8x8"    <8>  "A size 8 board is currently selected")*
+    (item "9x9"    <9>  "A size 9 board is currently selected")
+    }
 )
 
 //-----------------------------------------------------------------------------
 
 (metadata
-	(info {
-	})
-	(graphics {
-		(player Colour P1 (colour White))
-		(player Colour P2 (colour Black))
-		(board Style Chess)
-	})
+    (info {
+    })
+    (graphics {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (board Style Chess)
+    })
 )

@@ -2,40 +2,40 @@
     ("TwoPlayersNorthSouth")
     (equipment
         {
-         (board (rectangle <Rows:num> <Columns:num>))
-            (piece "Ball" Each
-                (or
-                    (move Step (directions { FL FR }) (to if:(is Empty (to))))
-                    (move
-                        Hop
-                        (between
-                            if:(is Enemy (who at:(between)))
-                            (apply (remove (between)))
-                        )
-                        (to if:(is Empty (to)))
+        (board (rectangle <Rows:num> <Columns:num>))
+        (piece "Ball" Each
+            (or
+                (move Step (directions { FL FR }) (to if:(is Empty (to))))
+                (move
+                    Hop
+                    (between
+                        if:(is Enemy (who at:(between)))
+                        (apply (remove (between)))
                     )
+                    (to if:(is Empty (to)))
                 )
             )
-       }
+        )
+        }
     )
     (rules
         (start
             {
-                (set Score Each 0)
-                (place
-                    "Ball2"
-                    (intersection
-                        (sites Phase 0)
-                        (expand (sites Top) steps:1)
-                    )
+            (set Score Each 0)
+            (place
+                "Ball2"
+                (intersection
+                    (sites Phase 0)
+                    (expand (sites Top) steps:1)
                 )
-                (place
-                    "Ball1"
-                    (intersection
-                        (sites Phase 1)
-                        (expand (sites Bottom) steps:1)
-                    )
+            )
+            (place
+                "Ball1"
+                (intersection
+                    (sites Phase 1)
+                    (expand (sites Bottom) steps:1)
                 )
+            )
             }
         )
         (play
@@ -72,9 +72,9 @@
     }
 )
 (option "End Rules" <Result> args:{ <play> <end> } {
-            (item "Classical" <(forEach Piece)><"BlockWin"> "The last one to move wins.")*
-            (item "Scores" <(priority  (forEach Piece) (move Pass (then (if (= (score Mover) 0) (addScore Next 1)))))> <if (all Passed) (byScore)> "With a final score for tournaments.")
-        }
+    (item "Classical" <(forEach Piece)><"BlockWin"> "The last one to move wins.")*
+    (item "Scores" <(priority  (forEach Piece) (move Pass (then (if (= (score Mover) 0) (addScore Next 1)))))> <if (all Passed) (byScore)> "With a final score for tournaments.")
+    }
 )
 
 //------------------------------------------------------------------------------
@@ -93,8 +93,4 @@
         )
     )
 )
-
-
-
-
 

@@ -1,314 +1,310 @@
 //----------------------------
 (define "ArchwormMove" 
- (or
-  {
-   (move
-    (from (sites Occupied by:Mover) if:(is In (from) (sites Board))) 
-    (to (sites Around (from) <Board:directions> if:(is Empty (to))))
-   )
-   (if
-    (not (is Empty (handSite Mover)))
-     (move Select
-      (from (sites Board) if:(is Empty (to)))
-      (then
-       (fromTo
-        (from (handSite Mover))
-        (to (last To))
-     )))
-   )//)
-   (move 
-    (from (sites Occupied by:Mover) if:(is In (from) (sites Board))) 
-    (to (handSite Mover))
-   )
-  }
-  (then
-   (and
-    (<Board:wormVariant> Mover)  // Score the worms
-    (if 
-     (and
-      {
-       <Alternation:variant> // True for double moves
-       "NewTurn" 
-       (!= -1 (counter))
-      }
-     )
-     (moveAgain)  
+    (or
+        {
+        (move
+            (from (sites Occupied by:Mover) if:(is In (from) (sites Board))) 
+            (to (sites Around (from) <Board:directions> if:(is Empty (to))))
+        )
+        (if
+            (not (is Empty (handSite Mover)))
+            (move Select
+                (from (sites Board) if:(is Empty (to)))
+                (then
+                    (fromTo
+                        (from (handSite Mover))
+                        (to (last To))
+            )))
+    )//)
+    (move 
+        (from (sites Occupied by:Mover) if:(is In (from) (sites Board))) 
+        (to (handSite Mover))
+    )
+    }
+    (then
+        (and
+            (<Board:wormVariant> Mover)  // Score the worms
+            (if 
+                (and
+                    {
+                    <Alternation:variant> // True for double moves
+                    "NewTurn" 
+                    (!= -1 (counter))
+                    }
+                )
+                (moveAgain)  
 )))))
 
 //-----------------------------------------------
 // Main routine
 
 (game "Archworm"
- (players 2)
- (equipment
-  {
-   <Board:used>
-   (hand Each size:1)
-//   (hand P2) // size:1)
-   (piece "Ball" Each)
-  }
- )
- (rules
-  (start
-   {
-    (set Score Each 0)
-    (place Stack "Ball1" Cell (handSite 1) count:13)
-    (place Stack "Ball2" Cell (handSite 2) count:13)
-   }
-  )
-  (play
-   ("ArchwormMove") 
-  )
-  (end 
-   (if 
-    (= 
-     <Winning:count>
-     (score Mover)
+    (players 2)
+    (equipment
+        {
+        <Board:used>
+        (hand Each size:1)
+    //   (hand P2) // size:1)
+    (piece "Ball" Each)
+    }
+)
+(rules
+    (start
+        {
+        (set Score Each 0)
+        (place Stack "Ball1" Cell (handSite 1) count:13)
+        (place Stack "Ball2" Cell (handSite 2) count:13)
+        }
     )
-    (result Mover Win)             
+    (play
+        ("ArchwormMove") 
+    )
+    (end 
+        (if 
+            (= 
+                <Winning:count>
+                (score Mover)
+            )
+            (result Mover Win)             
 ))))
 
 //-------------------------------------------------
 // Defines for Winning
 
 (define "ScoreWormsOf"
- (set Score #1
-  (^
-   (+
-    (results
-     from:(forEach
-      (sites Occupied by:#1)
-      if:(is Pattern {F R F R F R} Cell from:(site))
-     )
-     to:(forEach
-      (sites {(from)})
-//      if:(= 4
-//       (size Group at:(from)
-//        Orthogonal if:(= (mover) (who at:(to)))  
-//        //bug: Ludii isn't recognising non-Orthogonal;
-      if:(no Pieces Mover 
-       in:(sites Around (sites Pattern {F R F R F R} Cell from:(site)) <Board:directions>)
-     ))
-     1
-   ))
-   2
-)))
-
-
-(define "ScoreRestrictedWormsOf"
- (set Score #1
-  (^
-   (+
-    (results
-     from:(forEach
-      (sites Occupied by:#1)
-      if:(and
-       {
-        // to eliminate consideration of the middle stones
-        // this is failing???
-        (= 1 (count Pieces #1 in:(sites Around (site) Orthogonal))) 
-
-        // to count only the defining end of the worm
-        (or
-         // Note that on the Cairo board the cardinal direction along a segment 
-         // is incorrectly considered adjacent and/or diagonal by Ludii
-         {
-          (= 1 (count Pieces #1 in:(intersection
-             (sites Direction from:(site) N distance:1)
-             (sites Around (site) Orthogonal)
-          )))
-          (= 1 (count Pieces #1 in:(intersection
-             (sites Direction from:(site) E distance:1)
-             (sites Around (site) Orthogonal)
-          )))
-          (= 1 (count Pieces #1 in:(intersection
-             (sites Direction from:(site) W distance:1)
-             (sites Around (site) Orthogonal)
-          )))
-          (= 1 (count Pieces #1 in:(intersection
-             (sites Direction from:(site) S distance:1)
-             (sites Around (site) Orthogonal)
-          )))
-         }
-        )
-
-        // test for worm shape
-        (or
-         (is Pattern {F R F R F } Cell from:(site))
-         (is Pattern {F L F L F } Cell from:(site))
-        )
-
-        // to ensure that it is indeed a worm of exactly 4
-        (no Pieces #1 
-         in:(sites Around (sites Pattern {F R F R F } Cell from:(site)) Orthogonal)
-        )
-        (no Pieces #1 
-         in:(sites Around (sites Pattern {F L F L F } Cell from:(site)) Orthogonal)
-        )
-       }
-     ))
-     to:(from)  
-     1
-   ))
-   2
-  )
-))
-
-(define "ScoreDiagonalEndedWormsOf"
- (set Score #1 0
-  (then
-   (forEach Group Adjacent
-    if:(and
-     (is #1 (who at:(to)))
-     (= 1 (count Pieces #1 in:(sites Around (to) Diagonal)))
-    ) 
-    (if
-     (and
-      {
-       (= 4 (size Array (array (sites))))
-       (no Pieces #1 in:(sites Around (sites) Adjacent))
-       (or
-        (= 1 
-         (size Array
-          (array
-           (intersection 
-            (sites)
-            (sites Around (regionSite (sites) index:0) distance:3 Orthogonal)
+    (set Score #1
+        (^
+            (+
+                (results
+                    from:(forEach
+                        (sites Occupied by:#1)
+                        if:(is Pattern {F R F R F R} Cell from:(site))
+                    )
+                    to:(forEach
+                        (sites {(from)})
+                        //      if:(= 4
+                            //       (size Group at:(from)
+                                //        Orthogonal if:(= (mover) (who at:(to)))  
+                                //        //bug: Ludii isn't recognising non-Orthogonal;
+                                if:(no Pieces Mover 
+                                    in:(sites Around (sites Pattern {F R F R F R} Cell from:(site)) <Board:directions>)
+                            ))
+                            1
+                    ))
+                    2
+        )))
+        
+        (define "ScoreRestrictedWormsOf"
+            (set Score #1
+                (^
+                    (+
+                        (results
+                            from:(forEach
+                                (sites Occupied by:#1)
+                                if:(and
+                                    {
+                                    // to eliminate consideration of the middle stones
+                                    // this is failing???
+                                    (= 1 (count Pieces #1 in:(sites Around (site) Orthogonal))) 
+                                    
+                                    // to count only the defining end of the worm
+                                    (or
+                                        // Note that on the Cairo board the cardinal direction along a segment 
+                                        // is incorrectly considered adjacent and/or diagonal by Ludii
+                                        {
+                                        (= 1 (count Pieces #1 in:(intersection
+                                                    (sites Direction from:(site) N distance:1)
+                                                    (sites Around (site) Orthogonal)
+                                        )))
+                                        (= 1 (count Pieces #1 in:(intersection
+                                                    (sites Direction from:(site) E distance:1)
+                                                    (sites Around (site) Orthogonal)
+                                        )))
+                                        (= 1 (count Pieces #1 in:(intersection
+                                                    (sites Direction from:(site) W distance:1)
+                                                    (sites Around (site) Orthogonal)
+                                        )))
+                                        (= 1 (count Pieces #1 in:(intersection
+                                                    (sites Direction from:(site) S distance:1)
+                                                    (sites Around (site) Orthogonal)
+                                        )))
+                                        }
+                                    )
+                                    
+                                    // test for worm shape
+                                    (or
+                                        (is Pattern {F R F R F } Cell from:(site))
+                                        (is Pattern {F L F L F } Cell from:(site))
+                                    )
+                                    
+                                    // to ensure that it is indeed a worm of exactly 4
+                                    (no Pieces #1 
+                                        in:(sites Around (sites Pattern {F R F R F } Cell from:(site)) Orthogonal)
+                                    )
+                                    (no Pieces #1 
+                                        in:(sites Around (sites Pattern {F L F L F } Cell from:(site)) Orthogonal)
+                                    )
+                                    }
+                            ))
+                            to:(from)  
+                            1
+                    ))
+                    2
+                )
+        ))
+        
+        (define "ScoreDiagonalEndedWormsOf"
+            (set Score #1 0
+                (then
+                    (forEach Group Adjacent
+                        if:(and
+                            (is #1 (who at:(to)))
+                            (= 1 (count Pieces #1 in:(sites Around (to) Diagonal)))
+                        ) 
+                        (if
+                            (and
+                                {
+                                (= 4 (size Array (array (sites))))
+                                (no Pieces #1 in:(sites Around (sites) Adjacent))
+                                (or
+                                    (= 1 
+                                        (size Array
+                                            (array
+                                                (intersection 
+                                                    (sites)
+                                                    (sites Around (regionSite (sites) index:0) distance:3 Orthogonal)
+                                    ))))
+                                    (= 1 
+                                        (size Array
+                                            (array
+                                                (intersection 
+                                                    (sites)
+                                                    (sites Around (regionSite (sites) index:3) distance:3 Orthogonal)
+                                )))))
+                                }
+                            )
+                            (addScore #1 1)
+                        )
+                        (then (set Score #1 (^ (score #1) 2)))
         ))))
-        (= 1 
-         (size Array
-          (array
-           (intersection 
-            (sites)
-            (sites Around (regionSite (sites) index:3) distance:3 Orthogonal)
-       )))))
-      }
-     )
-     (addScore #1 1)
-    )
-    (then (set Score #1 (^ (score #1) 2)))
-))))
-
-//-----------------------------------------
-// Options
-// Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by  diagonals only.
-
-
-// Rotation, board, cells or vertices to remove 
-(define "SymRemover" (renumber (rotate (* (- #1 1) (/ 360 #1)) (trim (remove #2 #3)))))
-(define "RaggedTri" ("SymRemover" 1 ("SymRemover" 3 ("SymRemover" 3 #1 #2) #2) #3))
-
-(option "Board" <Board> args:{<used> <directions> <backgroundSize> <wormVariant>} //<smallSide> <backgroundSize> <pattern>} 
- { 
-  (item "Canoe 2003"
-   <(board (trim (remove (rectangle 6 13) cells:{0..2 10..13 25 65 68..74 77})) use:Cell)> 
-   <Adjacent>
-   <1.2>
-   <"ScoreDiagonalEndedWormsOf">
-   "Canoe 2003 board (61 cell)
-   Adjacent movement and separation. (i.e. Orthogonal and Diagonal)
-   Canoe angles are 135 degrees.
-   Canoes are restricted to those with diagonal ends."
-  )
-  
-  (item "Archworm 2018-04-20 (129) - original"
-   <(board (trim (remove (dual (tiling T33434 7)) cells:{0..11 13 45 54 60 65..67 76..78 83..84 90..93 102..105 111..112 117..118 129..130 135 141 150 151 155 160 167..168 171..172 174..176 179..181 183..195})) use:Cell)> 
-   <Orthogonal>
-   <1.2>
-   <"ScoreWormsOf">
-   "Archworm Cairo Leaf 2018-04-20 original (129 cell)
-   Archworm angles are 150 degrees.
-   Orthogonal movement and separation."
-  )
-  
-  (item "Archworm 2018-10-21 (129) - restricted worms"
-   <(board (trim (remove (dual (tiling T33434 7)) cells:{0..11 13 45 54 60 65..67 76..78 83..84 90..93 102..105 111..112 117..118 129..130 135 141 150 151 155 160 167..168 171..172 174..176 179..181 183..195})) use:Cell)> 
-   <Orthogonal>
-   <1.2>
-   <"ScoreRestrictedWormsOf">
-   "Archworm Cairo Leaf board (129 cell)
-    Archworm angles are 150 degrees.
-    Orthogonal movement and separation.
-    2018-10-21 Restricted worms: One end must be in cardinal direction."
-  )
-  
-  (item "Archworm Cairo (46)"
-   <(board (trim (remove (dual (tiling T33434 4)) cells:{0..3 15 20 24 27..28 35..36 39 43 48 60..63})) use:Cell)> 
-   <Orthogonal>
-   <1.2>
-   <"ScoreWormsOf">
-   "Archworm Cairo 'Turtleback' board (46 cell)
-   Archworm angles are 150 degrees.
-   Orthogonal movement and separation."
-  )**
-  
-  (item "Archworm Cairo (46) - restricted worms"
-   <(board (trim (remove (dual (tiling T33434 4)) cells:{0..3 15 20 24 27..28 35..36 39 43 48 60..63})) use:Cell)> 
-   <Orthogonal>
-   <1.2>
-   <"ScoreRestrictedWormsOf">
-   "Archworm Cairo 'Turtleback' board (46 cell) 
-    Archworm angles are 150 degrees.
-    Orthogonal movement and separation.
-    Restricted worms: One end must be in cardinal direction."
-  )*
-  
-  (item "Hex 3-hole (39)"
-   <(board (trim (remove ("RaggedTri" (hex 5 6) cells:{0..3 6 7 21 30} cells:{0..3 5 6 19 27}) cells:{0 1 5 12 17 22 27 34 38 41 49 50})) use:Cell)> 
-   <Orthogonal>   
-   <1.3>
-   <"ScoreWormsOf">
-   "3-hole hex-grid board (39 cells)
-   Archworm angles are 120 degrees.
-   Orthogonal movement and separation."
-  )***
-  
-  (item "Hex 6-hole (63)"
-   <(board (trim (remove ("RaggedTri" (hex 6 8) cells:{0..5 8..11 17 18 38 50} cells:{0..5 7..10 15 16 35 45}) cells:{0 1 5 12 13 20 27 34 41 42 49 55 60 67 71 74 82 83})) use:Cell)>
-   <Orthogonal>
-   <1.3> 
-   <"ScoreWormsOf">
-   "6-hole hex-grid board (63 cells)
-   Archworm angles are 120 degrees.
-   Orthogonal movement and separation."
-  )**
- }
-)
-
-
-(option "Alternation" <Alternation>  args:{<variant>} 
- {
-  (item "One Action"
-   <False>
-   "One action per turn."
-  )
-   
-  (item "Two Actions"
-   <True>
-   "Two actions per turn."
-  )
-   
- }
-)
-
-
-(option "Win with" <Winning>  args:{<count>} 
- {
-  (item "One worm"
-   <1>
-   "Goal is to form one worm. (or canoe)"
-  )
-   
-  (item "Two worms"
-   <4>
-   "Goal is to form two worms. (or canoes)"
-  )**
-   
- }
-)
-
-//---------------------------------------------
-
+        
+        //-----------------------------------------
+        // Options
+        // Notes: Opponent scoring on odd square diagonal grid leads to 1st player win by  diagonals only.
+        
+        // Rotation, board, cells or vertices to remove 
+        (define "SymRemover" (renumber (rotate (* (- #1 1) (/ 360 #1)) (trim (remove #2 #3)))))
+        (define "RaggedTri" ("SymRemover" 1 ("SymRemover" 3 ("SymRemover" 3 #1 #2) #2) #3))
+        
+        (option "Board" <Board> args:{<used> <directions> <backgroundSize> <wormVariant>} //<smallSide> <backgroundSize> <pattern>} 
+            { 
+            (item "Canoe 2003"
+                <(board (trim (remove (rectangle 6 13) cells:{0..2 10..13 25 65 68..74 77})) use:Cell)> 
+                <Adjacent>
+                <1.2>
+                <"ScoreDiagonalEndedWormsOf">
+                "Canoe 2003 board (61 cell)
+                Adjacent movement and separation. (i.e. Orthogonal and Diagonal)
+                Canoe angles are 135 degrees.
+                Canoes are restricted to those with diagonal ends."
+            )
+            
+            (item "Archworm 2018-04-20 (129) - original"
+                <(board (trim (remove (dual (tiling T33434 7)) cells:{0..11 13 45 54 60 65..67 76..78 83..84 90..93 102..105 111..112 117..118 129..130 135 141 150 151 155 160 167..168 171..172 174..176 179..181 183..195})) use:Cell)> 
+                <Orthogonal>
+                <1.2>
+                <"ScoreWormsOf">
+                "Archworm Cairo Leaf 2018-04-20 original (129 cell)
+                Archworm angles are 150 degrees.
+                Orthogonal movement and separation."
+            )
+            
+            (item "Archworm 2018-10-21 (129) - restricted worms"
+                <(board (trim (remove (dual (tiling T33434 7)) cells:{0..11 13 45 54 60 65..67 76..78 83..84 90..93 102..105 111..112 117..118 129..130 135 141 150 151 155 160 167..168 171..172 174..176 179..181 183..195})) use:Cell)> 
+                <Orthogonal>
+                <1.2>
+                <"ScoreRestrictedWormsOf">
+                "Archworm Cairo Leaf board (129 cell)
+                Archworm angles are 150 degrees.
+                Orthogonal movement and separation.
+                2018-10-21 Restricted worms: One end must be in cardinal direction."
+            )
+            
+            (item "Archworm Cairo (46)"
+                <(board (trim (remove (dual (tiling T33434 4)) cells:{0..3 15 20 24 27..28 35..36 39 43 48 60..63})) use:Cell)> 
+                <Orthogonal>
+                <1.2>
+                <"ScoreWormsOf">
+                "Archworm Cairo 'Turtleback' board (46 cell)
+                Archworm angles are 150 degrees.
+                Orthogonal movement and separation."
+            )**
+            
+            (item "Archworm Cairo (46) - restricted worms"
+                <(board (trim (remove (dual (tiling T33434 4)) cells:{0..3 15 20 24 27..28 35..36 39 43 48 60..63})) use:Cell)> 
+                <Orthogonal>
+                <1.2>
+                <"ScoreRestrictedWormsOf">
+                "Archworm Cairo 'Turtleback' board (46 cell) 
+                Archworm angles are 150 degrees.
+                Orthogonal movement and separation.
+                Restricted worms: One end must be in cardinal direction."
+            )*
+            
+            (item "Hex 3-hole (39)"
+                <(board (trim (remove ("RaggedTri" (hex 5 6) cells:{0..3 6 7 21 30} cells:{0..3 5 6 19 27}) cells:{0 1 5 12 17 22 27 34 38 41 49 50})) use:Cell)> 
+                <Orthogonal>   
+                <1.3>
+                <"ScoreWormsOf">
+                "3-hole hex-grid board (39 cells)
+                Archworm angles are 120 degrees.
+                Orthogonal movement and separation."
+            )***
+            
+            (item "Hex 6-hole (63)"
+                <(board (trim (remove ("RaggedTri" (hex 6 8) cells:{0..5 8..11 17 18 38 50} cells:{0..5 7..10 15 16 35 45}) cells:{0 1 5 12 13 20 27 34 41 42 49 55 60 67 71 74 82 83})) use:Cell)>
+                <Orthogonal>
+                <1.3> 
+                <"ScoreWormsOf">
+                "6-hole hex-grid board (63 cells)
+                Archworm angles are 120 degrees.
+                Orthogonal movement and separation."
+            )**
+            }
+        )
+        
+        (option "Alternation" <Alternation>  args:{<variant>} 
+            {
+            (item "One Action"
+                <False>
+                "One action per turn."
+            )
+            
+            (item "Two Actions"
+                <True>
+                "Two actions per turn."
+            )
+            
+            }
+        )
+        
+        (option "Win with" <Winning>  args:{<count>} 
+            {
+            (item "One worm"
+                <1>
+                "Goal is to form one worm. (or canoe)"
+            )
+            
+            (item "Two worms"
+                <4>
+                "Goal is to form two worms. (or canoes)"
+            )**
+            
+            }
+        )
+        
+        //---------------------------------------------
+        
 (define "ColourBackground" (colour 146 175 126))// (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
 (define "ColourBackground2" (colour 166 215 146))// (colour 136 175 96)) //meadow (colour 146 175 86)) // tawny: (colour 175 146 86)) 
 
@@ -323,7 +319,7 @@
         (player Colour P1 (colour 120 36 0))
         (player Colour P2 (colour Cream))
         (piece Scale "Ball" 0.92 )
-//        (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 140) edgeColour:(colour 0 0 0 0)) 
+        //        (piece Background "Ball" image:"Disc" fillColour:(colour 0 0 0 140) edgeColour:(colour 0 0 0 0)) 
         (board Colour Phase0 "ColourBackground2")
         (board StyleThickness InnerEdges 0.4)
         (board StyleThickness OuterEdges 0.6)
@@ -337,21 +333,21 @@
         (board Background image:"Disc" fillColour:"ColourBackground" edgeColour:(colour 180 180 180 20)  scale:<Board:backgroundSize> offsetX:.01 offsetY:.02) 
         (hand Placement P1 scale:.1 offsetX:.05 offsetY:.12)
         (hand Placement P2 scale:.1 offsetX:.9 offsetY:.12)
-        (stackType Count) // site:(handSite 1) Count) 
-//        (stackType site:(handSite 2) Count) 
-        }
+    (stackType Count) // site:(handSite 1) Count) 
+    //        (stackType site:(handSite 2) Count) 
+    }
+)
+(ai
+    (bestAgent "Alpha-Beta")
+    (heuristics 
+        {
+        //       (lineCompletionHeuristic weight:-.2 targetLength:5)
+        (lineCompletionHeuristic weight:.2 targetLength:2)
+        (score weight:.4)
+        (centreProximity weight:.1)
+        } 
     )
-    (ai
-     (bestAgent "Alpha-Beta")
-     (heuristics 
-      {
-//       (lineCompletionHeuristic weight:-.2 targetLength:5)
-       (lineCompletionHeuristic weight:.2 targetLength:2)
-       (score weight:.4)
-       (centreProximity weight:.1)
-      } 
-     )
-    )
-     
+)
+
 )
 

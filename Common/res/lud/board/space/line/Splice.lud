@@ -9,30 +9,30 @@
     }) 
     
     (rules 
-    	(start {
-    		(place "Ball" "Hand" count:16)
-    		(place "Ball0" 32 count:16)
-    	})
+        (start {
+            (place "Ball" "Hand" count:16)
+            (place "Ball0" 32 count:16)
+        })
         (play 
             (or
-            	(move 
-            		(from (handSite Mover))
-                	(to 
-                		(sites Empty) 
-                    	if:
-                    		(and
-                    			(is Flat)
-                    			(is Within (id "Ball" Neutral) in:(sites Layer (layer of:(to))))
-                    		)
-                	)
-            	)
-            	(move
-            		(from (handSite Shared))
-            		(to
-            			(sites Empty)
-            			if: (is Flat)
-            		)
-            	)
+                (move 
+                    (from (handSite Mover))
+                    (to 
+                        (sites Empty) 
+                        if:
+                        (and
+                            (is Flat)
+                            (is Within (id "Ball" Neutral) in:(sites Layer (layer of:(to))))
+                        )
+                    )
+                )
+                (move
+                    (from (handSite Shared))
+                    (to
+                        (sites Empty)
+                        if: (is Flat)
+                    )
+                )
             )
         )
         (end {
@@ -51,18 +51,18 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-		
-	(info
-		{
-		}
-	)
+    
+    (info
+        {
+        }
+    )
     
     (graphics {
         (piece Scale "Ball" 1.0)
         (board Style Shibumi)
         (piece Colour Neutral fillColour:(colour Red))
-		(piece Colour P1 fillColour:(colour White))
-		(piece Colour P2 fillColour:(colour Black))
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
     })
-       
+    
 )
