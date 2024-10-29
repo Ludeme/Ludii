@@ -52,7 +52,7 @@ public class CreateLeMaitre4ClusterTrialsScript
 		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "epiette";
 		final String mainScriptName = "GenTrials.sh";
-		final int numRulesetsPerBatch = 12; // 48
+		final int numRulesetsPerBatch = 8; // 48
 		
 		final ArrayList<String> rulesetNames = new ArrayList<String>();
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
@@ -151,8 +151,8 @@ public class CreateLeMaitre4ClusterTrialsScript
 						if((i*numRulesetsPerBatch+j) < rulesetNames.size())
 						{
 							String jobLine = "";
-							//jobLine += "taskset -c ";
-							//jobLine += (3*j) + "," + (3*j + 1) + "," +  (3*j + 2) + " "; 
+							jobLine += "taskset -c ";
+							jobLine += (CORES_PER_PROCESS*j) + "," + (CORES_PER_PROCESS*j + 1) + "," +  (CORES_PER_PROCESS*j + 2) + "," +  (CORES_PER_PROCESS*j + 3) + " "; 
 							jobLine += "java -Xms" + JVM_MEM_MIN + " -Xmx" + JVM_MEM_MAX + " -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/globalscratch/ucl/ingi/" + clusterLogin + "/ludii/Trials/Ludii.jar\" --generate-trials-parallel ";
 							jobLine += maxMove + " " + thinkingTime + " " + numPlayout + " "  + "\"" + agentName + "\"" + " " + "\"";
 							jobLine += rulesetNames.get(i*numRulesetsPerBatch+j);
