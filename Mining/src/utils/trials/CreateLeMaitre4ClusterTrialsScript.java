@@ -135,7 +135,7 @@ public class CreateLeMaitre4ClusterTrialsScript
 					writer.println("#SBATCH -J GenTrials"+agentName+"Script" + scriptId);
 					writer.println("#SBATCH -p batch");
 					writer.println("#SBATCH -o /globalscratch/ucl/ingi/" + clusterLogin + "/Out/Out_%J.out");
-					writer.println("#SBATCH -e /globalscratch/ucl/ingi/" + clusterLogin + "/Out/Err_%J.err");
+					writer.println("#SBATCH -e /globalscratch/ucl/ingi/" + clusterLogin + "/Err/Err_%J.err");
 					writer.println("#SBATCH -t " + MAX_WALL_TIME);
 					writer.println("#SBATCH -N 1");
 
