@@ -49,7 +49,7 @@ public class CreateLeMaitre4ClusterTrialsScript
 		final int numPlayout = 100;
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int thinkingTime = 1;
-		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "UCT"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "epiette";
 		final String mainScriptName = "GenTrials.sh";
 		final int numRulesetsPerBatch = 8; // 48
