@@ -29,7 +29,7 @@ public class CreateLeMaitre4ClusterConceptScript
 	private static final String JVM_MEM_MAX = "512g"; // 128g
 
 	/** Max wall time (in minutes) */
-	private static final int MAX_WALL_TIME = 175000;
+	private static final int MAX_WALL_TIME = 2880; // 2880 is the max on LeMaitre4
 	
 	// TODO no idea what this should be on Lemaitre4
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
