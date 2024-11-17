@@ -138,7 +138,7 @@ public class CreateLeMaitre4ClusterConceptScript
 				{
 					writer.println("#!/bin/bash");
 					writer.println("#SBATCH -J GenConcepts" + jobName + "Script" + scriptId);
-					writer.println("#SBATCH -p thin");
+					writer.println("#SBATCH -p batch");
 					writer.println("#SBATCH -o /globalscratch/ucl/ingi/"+clusterLogin+"/Out/Out_%J.out");
 					writer.println("#SBATCH -e /globalscratch/ucl/ingi/"+clusterLogin+"/Out/Err_%J.err");
 					writer.println("#SBATCH -t "+ MAX_WALL_TIME);
