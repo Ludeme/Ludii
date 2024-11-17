@@ -26,20 +26,20 @@ public class CreateLeMaitre4ClusterTrialsScript
 	private static final int MAX_WALL_TIME = 1500;
 
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MIN = "128g"; // 512g
+	private static final String JVM_MEM_MIN = "512g"; // 128g
 	
 	/** Memory to assign to JVM */
-	private static final String JVM_MEM_MAX = "128g"; // 512g
+	private static final String JVM_MEM_MAX = "512g"; // 128g
 	
 	// TODO no idea what this should be on Lemaitre4
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
-	private static final int MAX_REQUEST_MEM = 150; // 600
+	private static final int MAX_REQUEST_MEM = 224; // 600
 	
 	/** Number of cores per node (this is for Lemaitre4) */
-	private static final int CORES_PER_NODE = 32; // 128
+	private static final int CORES_PER_NODE = 128; // 32
 	
 	/** Number of cores per Java call */
-	private static final int CORES_PER_PROCESS = 4;
+	private static final int CORES_PER_PROCESS = 128;
 	
 	/**Number of processes we can put in a single job (on a single node) */
 	private static final int PROCESSES_PER_JOB = CORES_PER_NODE / CORES_PER_PROCESS;
@@ -49,10 +49,10 @@ public class CreateLeMaitre4ClusterTrialsScript
 		final int numPlayout = 100;
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int thinkingTime = 1;
-		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "epiette";
 		final String mainScriptName = "GenTrials.sh";
-		final int numRulesetsPerBatch = 8; // 48
+		final int numRulesetsPerBatch = 1; // 48
 		
 		final ArrayList<String> rulesetNames = new ArrayList<String>();
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
@@ -151,8 +151,8 @@ public class CreateLeMaitre4ClusterTrialsScript
 						if((i*numRulesetsPerBatch+j) < rulesetNames.size())
 						{
 							String jobLine = "";
-							jobLine += "taskset -c ";
-							jobLine += (CORES_PER_PROCESS*j) + "," + (CORES_PER_PROCESS*j + 1) + "," +  (CORES_PER_PROCESS*j + 2) + "," +  (CORES_PER_PROCESS*j + 3) + " "; 
+							//jobLine += "taskset -c ";
+							//jobLine += (CORES_PER_PROCESS*j) + "," + (CORES_PER_PROCESS*j + 1) + "," +  (CORES_PER_PROCESS*j + 2) + "," +  (CORES_PER_PROCESS*j + 3) + " "; 
 							jobLine += "java -Xms" + JVM_MEM_MIN + " -Xmx" + JVM_MEM_MAX + " -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/globalscratch/ucl/ingi/" + clusterLogin + "/ludii/Trials/Ludii.jar\" --generate-trials-parallel ";
 							jobLine += maxMove + " " + thinkingTime + " " + numPlayout + " "  + "\"" + agentName + "\"" + " " + "\"";
 							jobLine += rulesetNames.get(i*numRulesetsPerBatch+j);
