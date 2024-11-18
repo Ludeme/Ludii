@@ -140,7 +140,7 @@ public class CreateLeMaitre4ClusterConceptScript
 					writer.println("#SBATCH -J GenConcepts" + jobName + "Script" + scriptId);
 					writer.println("#SBATCH -p batch");
 					writer.println("#SBATCH -o /globalscratch/ucl/ingi/"+clusterLogin+"/Out/Out_%J.out");
-					writer.println("#SBATCH -e /globalscratch/ucl/ingi/"+clusterLogin+"/Out/Err_%J.err");
+					writer.println("#SBATCH -e /globalscratch/ucl/ingi/"+clusterLogin+"/Err/Err_%J.err");
 					writer.println("#SBATCH -t "+ MAX_WALL_TIME);
 					writer.println("#SBATCH -N 1");
 
@@ -149,7 +149,7 @@ public class CreateLeMaitre4ClusterConceptScript
 					writer.println("#SBATCH --cpus-per-task="+ (numProcessesThisJob * CORES_PER_PROCESS)); // 128s
 					writer.println("#SBATCH --mem="+MAX_REQUEST_MEM+"G");
 					writer.println("#SBATCH --exclusive");
-					writer.println("module load Java/11.0.2");
+					writer.println("module load Java/11.0.20");
 					
 					for(int j = 0; j < numRulesetsPerBatch; j++)
 					{
