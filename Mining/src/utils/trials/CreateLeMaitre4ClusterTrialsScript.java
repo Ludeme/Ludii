@@ -33,7 +33,7 @@ public class CreateLeMaitre4ClusterTrialsScript
 	
 	// TODO no idea what this should be on Lemaitre4
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
-	private static final int MAX_REQUEST_MEM = 224; // 600
+	private static final int MAX_REQUEST_MEM = 600; // 600
 	
 	/** Number of cores per node (this is for Lemaitre4) */
 	private static final int CORES_PER_NODE = 128; // 32
@@ -49,7 +49,7 @@ public class CreateLeMaitre4ClusterTrialsScript
 		final int numPlayout = 100;
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
 		final int thinkingTime = 1;
-		final String agentName = "UCT"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "epiette";
 		final String mainScriptName = "GenTrials.sh";
 		final int numRulesetsPerBatch = 1; // 48

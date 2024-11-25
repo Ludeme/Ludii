@@ -33,7 +33,7 @@ public class CreateLeMaitre4ClusterConceptScript
 	
 	// TODO no idea what this should be on Lemaitre4
 	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
-	private static final int MAX_REQUEST_MEM = 224; // 600
+	private static final int MAX_REQUEST_MEM = 600; // 600
 	
 	/** Number of cores per node (this is for Lemaitre4) */
 	private static final int CORES_PER_NODE = 128; // 32
