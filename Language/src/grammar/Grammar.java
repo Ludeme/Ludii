@@ -1293,10 +1293,12 @@ public class Grammar
 					}
 				}
 
-				final String actualParameterName = (label == null) ? null : new String(label);
+				final String actualParameterName = (label == null) ? null : label;
 
 				if (!isNamed)
 					label = null;
+				else if (actualParameterName == null) 
+					System.err.println("Error: no name for parameter which should be named. Make sure to compile Core with the -parameters flag for javac!");
 
 				if (orType != 0 && orType != prevOrType)
 					orGroup++;  // new consecutive 'or' group
