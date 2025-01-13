@@ -27,7 +27,7 @@ public class MergeDBResultCSV
 	public static void main(final String[] args) throws IOException
 	{
 		final File folder = new File(FolderCSV.replaceAll(Pattern.quote("\\"), "/"));
-		final int linelimit = 50000;
+		//final int linelimit = 50000;
 		
 		final List<File> csvFiles = new ArrayList<File>();
 		for (final File file : folder.listFiles())
@@ -38,6 +38,7 @@ public class MergeDBResultCSV
 		final String extensionName = ".csv";
 		int id = 1;
 		
+		List<String> linesToWrite = new ArrayList<String>();
 		try 
 		{
 		PrintWriter mainWriter = new UnixPrintWriter(new File(fileName + fileNumber + extensionName), "UTF-8");
@@ -59,23 +60,28 @@ public class MergeDBResultCSV
 						final String idRuleset = lineFromComa.substring(1, 3);
 						if (!idRuleset.equals("-1"))
 						{
-							mainWriter.println(id + lineFromComa);
+							linesToWrite.add(id + lineFromComa);
 							id++;
-							if(id % linelimit == 1)
-							{
-								fileNumber++;
-								mainWriter = new UnixPrintWriter(new File(fileName + fileNumber + extensionName), "UTF-8");
-							}
+//							if(id % linelimit == 1)
+//							{
+//								fileNumber++;
+//								mainWriter = new UnixPrintWriter(new File(fileName + fileNumber + extensionName), "UTF-8");
+//							}
 						}
 						line = reader.readLine();
 					}
 					reader.close();
+					
 				}
 				catch (final IOException e)
 				{
 					e.printStackTrace();
-				}
+				} 
 			}
+
+		for(String conceptLine: linesToWrite)
+			mainWriter.println(conceptLine);
+		mainWriter.close();
 		}
 		catch (final FileNotFoundException e)
 		{
