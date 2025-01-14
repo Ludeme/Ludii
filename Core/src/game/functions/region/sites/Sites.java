@@ -38,6 +38,7 @@ import game.functions.region.sites.index.SitesCell;
 import game.functions.region.sites.index.SitesColumn;
 import game.functions.region.sites.index.SitesEdge;
 import game.functions.region.sites.index.SitesEmpty;
+import game.functions.region.sites.index.SitesSupport;
 import game.functions.region.sites.index.SitesLayer;
 import game.functions.region.sites.index.SitesPhase;
 import game.functions.region.sites.index.SitesRow;
@@ -741,6 +742,8 @@ public final class Sites extends BaseRegionFunction
 			return new SitesState(elementType, index);
 		case Empty:
 			return SitesEmpty.construct(elementType, index);
+		case Support:
+			return new SitesSupport(elementType, index);
 		default:
 			break;
 		}

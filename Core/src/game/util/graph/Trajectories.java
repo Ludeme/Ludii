@@ -120,7 +120,6 @@ public class Trajectories
 	{
 		// Prepare the arrays
 		final int numSiteTypes = SiteType.values().length;
-
 		steps   = new Steps[numSiteTypes][];
 		radials = new Radials[numSiteTypes][];
 
@@ -593,8 +592,10 @@ public class Trajectories
 
 	void generateRadials(final Graph graph)
 	{
+//		System.out.println("GENERATE");
 		for (final SiteType siteType : SiteType.values())
 		{
+			
 			final List<? extends GraphElement> elements = graph.elements(siteType);
 			final int st = siteType.ordinal();
 			
@@ -613,12 +614,14 @@ public class Trajectories
 										
 						// Create new radial in this direction
 						final RadialWIP radial = new RadialWIP(step.from(), dirn);
-						followRadial(graph, radial, siteType, dirn, step.to());
-						radials[st][id].addSafe(radial.toRadial());
+						followRadial(graph, radial, siteType, dirn, step.to(), st, id);
+						// radials[st][id].addSafe(radial.toRadial());
+//						System.out.println("Added radial: " + radial.toRadial());
 					}
 				}
 			}
 		}
+		
 		
 		// Remove opposite subsets
 		for (final SiteType siteType : SiteType.values())
@@ -674,7 +677,7 @@ public class Trajectories
 	void followRadial
 	(
 		final Graph  graph, final RadialWIP radial, final SiteType siteType, 
-		final AbsoluteDirection dirn, final GraphElement current
+		final AbsoluteDirection dirn, final GraphElement current, int st, int id
 	)
 	{
 		final double threshold = 0.25;  // allowable bend
@@ -699,6 +702,8 @@ public class Trajectories
 //		double bestScore = -100000;
 		double bestAbsTanDiff = tanThreshold;	// initialising this to threshold allows us to always only compare to bestDiff
 		GraphElement bestNextTo = null;
+		ArrayList<GraphElement> bestsNextTo = new ArrayList<GraphElement>();
+		GraphElement[] bestsNextToA = new GraphElement[0];
 		
 		final int dirnOrdinal = dirn.ordinal();
 		
@@ -725,12 +730,24 @@ public class Trajectories
 					break;
 				}
 			}
+			
+			if (bestNextTo != null)
+			{
+				if (!radial.steps().contains(bestNextTo))
+					followRadial(graph, radial, siteType, dirn, bestNextTo, st, id);
+				else radials[st][id].addSafe(radial.toRadial());
+					
+			}
+			else radials[st][id].addSafe(radial.toRadial());
+				
 		}
 		else
 		{
 			// Non-circular steps
 			for (final Step next : nextSteps)
 			{
+				
+				
 				final GraphElement nextTo = next.to();
 				
 				if (nextTo.siteType() != siteType)
@@ -755,30 +772,54 @@ public class Trajectories
 					// now is that we have to adjust the threshold that we compare to; originally,
 					// we wanted a threshold absolute angle difference of at most 0.25rad. Now, 
 					// we'll have to change that to a threshold of tan(0.25).
-					final double absTanDiff = MathRoutines.absTanAngleDifferencePosX
+					
+					final double absTanDiff = MathRoutines.absTanAngleDifference3D
 									(
-										previous.pt2D(), current.pt2D(), nextTo.pt2D()
+										previous.pt(), current.pt(), nextTo.pt()
 									);
+					
+					
+//					final double absTanDiff = MathRoutines.absTanAngleDifferencePosX
+//							(
+//								previous.pt2D(), current.pt2D(), nextTo.pt2D()
+//							);					
+					
 					if (absTanDiff < bestAbsTanDiff)	// comparison to threshold is implicit due to init of bestAbsTanDiff
 					{
-						bestNextTo = nextTo;
 						bestAbsTanDiff = absTanDiff;
-						
-						if (bestAbsTanDiff == 0.0)
-							break;		// We won't be able to improve this anymore
+						bestsNextTo = new ArrayList<GraphElement>();
+						bestsNextTo.add(nextTo);
+						if (bestAbsTanDiff == 0.0) {  //&& current.pt().z() == nextTo.pt().z()) {  -> to use for Sploof
+							break;
+						}
+					}
+					else if (absTanDiff == bestAbsTanDiff)
+					{
+						bestsNextTo.add(nextTo);
 					}
 				}
 			}
+			
+			bestsNextToA = bestsNextTo.toArray(new GraphElement[0]);
+			
+			if (bestsNextToA.length != 0)
+			{
+//				if (bestNext.from.siteType() != siteType || bestNext.to.siteType() != siteType)
+//					System.out.println("** Bad site type in followRadial().");
+				for (final GraphElement nextTo : bestsNextToA)
+				{
+					final RadialWIP radialCopy = new RadialWIP(radial);
+					if (!radial.steps().contains(nextTo))
+						followRadial(graph, radialCopy, siteType, dirn, nextTo, st, id);
+					else 
+						radials[st][id].addSafe(radial.toRadial());
+				}
+			}
+			else
+				radials[st][id].addSafe(radial.toRadial());
+			
 		}
 		
-		if (bestNextTo != null)
-		{
-//			if (bestNext.from.siteType() != siteType || bestNext.to.siteType() != siteType)
-//				System.out.println("** Bad site type in followRadial().");
-			
-			if (!radial.steps().contains(bestNextTo))
-				followRadial(graph, radial, siteType, dirn, bestNextTo);
-		}
 	}
 	
 	//-------------------------------------------------------------------------
@@ -848,6 +889,22 @@ public class Trajectories
 			this.direction = direction;
 			steps.add(start);
 		}
+			
+		/**
+	     * Copy constructor.
+	     * 
+	     * @param other The RadialWIP object to copy.
+	     */
+	    public RadialWIP(final RadialWIP other)
+	    {
+	        this.direction = other.direction;
+
+	        // Deep copy the steps list
+	        for (GraphElement step : other.steps)
+	        {
+	            this.steps.add(step); // Assuming GraphElement is immutable or does not require a deep copy
+	        }
+	    }
 		
 		/**
 		 * @return The list of the graph elements in the steps.
@@ -858,7 +915,7 @@ public class Trajectories
 		}
 		
 		/**
-		 * Add an element to the steps.
+		 * Add a element to the steps.
 		 * 
 		 * @param to The element.
 		 */

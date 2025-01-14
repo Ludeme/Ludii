@@ -67,7 +67,7 @@ public final class CountSizeBiggestLine extends BaseIntFunction
 	@Override
 	public int eval(final Context context)
 	{
-		
+
 //		final Topology topology = context.topology();
 		final List<? extends TopologyElement> sites = context.topology().getGraphElements(type);
 //		final ContainerState cs = context.containerState(0);

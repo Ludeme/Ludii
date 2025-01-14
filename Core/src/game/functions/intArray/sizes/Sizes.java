@@ -37,6 +37,7 @@ public final class Sizes extends BaseIntArrayFunction
 	 * @param of         The index of the player.
 	 * @param If         The condition on the pieces to include in the group.
 	 * @param min        Minimum size of each group [0].
+	 * @param isVisible  If all items of group have to be visible
 	 * 
 	 * @example (sizes Group Orthogonal P1)
 	 */
@@ -48,7 +49,8 @@ public final class Sizes extends BaseIntArrayFunction
 		@Opt @Or	    final RoleType        role,
 		@Opt @Or @Name  final IntFunction     of,
 		@Opt @Or @Name  final BooleanFunction If,
-		@Opt     @Name  final IntFunction     min
+		@Opt     @Name  final IntFunction     min,
+		@Opt @Name     final BooleanFunction isVisible
 	)
 	{
 		int numNonNull = 0;
@@ -65,7 +67,7 @@ public final class Sizes extends BaseIntArrayFunction
 		switch (sizesType)
 		{
 		case Group:
-			return new SizesGroup(type, directions, role, of, If, min);
+			return new SizesGroup(type, directions, role, of, If, min, isVisible);
 		default:
 			break;
 		}

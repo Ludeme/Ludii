@@ -9,4 +9,7 @@ public enum IsPatternType
 {
 	/** To detect a pattern from a site. */
 	Pattern,
+
+	/** To detect a pyramid corners from a site. */
+	PyramidCorners,
 }

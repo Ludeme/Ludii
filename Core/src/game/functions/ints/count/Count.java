@@ -3,6 +3,7 @@ package game.functions.ints.count;
 import annotations.Name;
 import annotations.Opt;
 import annotations.Or;
+import annotations.Or2;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
 import game.functions.intArray.IntArrayFunction;
@@ -205,6 +206,7 @@ public final class Count extends BaseIntFunction
 	 * @param name      The name of the container from which to count the number of
 	 *                  sites or the name of the piece to count only pieces of that
 	 *                  type.
+	 * @param who  		Player id the counted items belong to
 	 * 
 	 * @example (count at:(last To))
 	 * 
@@ -212,11 +214,15 @@ public final class Count extends BaseIntFunction
 	 */
 	public static IntFunction construct
 	(
-		@Opt           final CountSiteType  countType, 
-		@Opt           final SiteType 		type,
-		@Opt @Or @Name final RegionFunction in, 
-		@Opt @Or @Name final IntFunction 	at, 
-		@Opt @Or       final String 		name
+		@Opt            final CountSiteType  countType, 
+		@Opt            final SiteType 		type,
+		@Opt @Or @Name  final RegionFunction in, 
+		@Opt @Or @Name  final IntFunction 	at, 
+		@Opt @Or        final String 		name,
+		@Opt	  @Name final RoleType 		who,
+		@Opt @Or2 @Name final IntFunction 	what,
+		@Opt @Or2 @Name final IntFunction[] whats
+		
 	)
 	{
 		int numNonNull = 0;
@@ -233,7 +239,6 @@ public final class Count extends BaseIntFunction
 
 		if (countType == null)
 			return new CountNumber(type, in, at);
-
 		switch (countType)
 		{
 		case Adjacent:
@@ -248,6 +253,8 @@ public final class Count extends BaseIntFunction
 			return new CountOrthogonal(type, in, at);
 		case Sites:
 			return new CountSites(in, at, name);
+		case SitesPlatformBelow:
+			return new CountSitesPlatformBelow(type, at, who, what, whats);
 		default:
 			break;
 		}
@@ -329,6 +336,7 @@ public final class Count extends BaseIntFunction
 			       final CountGroupsType   countType,
 		@Opt 	   final SiteType          type,
 		@Opt       final Direction         directions,
+		@Opt	   final RegionFunction  throughAny,
 		@Opt @Name final BooleanFunction   If,
 		@Opt @Name final IntFunction       min,
 		@Opt @Name final BooleanFunction   isVisible
@@ -339,7 +347,7 @@ public final class Count extends BaseIntFunction
 		case Groups:
 			return new CountGroups(type, directions, If, min);
 		case SizeBiggestGroup:
-			return new CountSizeBiggestGroup(type, directions, If, isVisible);
+			return new CountSizeBiggestGroup(type, directions, throughAny, If, isVisible);
 		default:
 			break;
 		}
@@ -349,45 +357,14 @@ public final class Count extends BaseIntFunction
 	
 	//-------------------------------------------------------------------------
 
-	/**
-	 * For counting elements on a platform below another element
-	 * 
-	 * @param countType The property to count.
-	 * @param type       The graph element type [default SiteType of the board].
-	 * @param site      The site to test.
-	 * @param who  		Player id the counted items belong to
-	 * 
-	 * @example (count SitesPlatformBelow Mover)
-	 */
-	public static IntFunction construct
-	(
-					final CountSitesPlatformBelowType 	countType,
-		@Opt 	   	final SiteType          			type,
-		@Opt 		final IntFunction 				  	site,
-					final RoleType 						who
-	)
-		{
-			switch (countType)
-			{
-			case SitesPlatformBelow:
-				return new CountSitesPlatformBelow(type, site, who);
-			default:
-				break;
-			}
-			// We should never reach that except if we forget some codes.
-			throw new IllegalArgumentException("Count(): A CountGroupsType is not implemented.");
-		}
-	
-	//-------------------------------------------------------------------------
-
 		/**
-		 * For counting elements in a group.
+		 * For counting elements in a line.
 		 * 
 		 * @param countType  The property to count.
 		 * @param type       The graph element type [default SiteType of the board].
 		 * @param directions The directions of the connection between elements in the
-		 *                   group [Adjacent].
-		 * @param If         The condition on the pieces to include in the group [(is Occupied (to))].
+		 *                   line [Adjacent].
+		 * @param If         The condition on the pieces to include in the line [(is Occupied (to))].
 		 * 
 		 * @example (count SizeBiggestLine Orthogonal)
 		 */

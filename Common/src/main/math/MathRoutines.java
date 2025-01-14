@@ -385,6 +385,49 @@ public final class MathRoutines
 		
 		return Math.abs((ux * -vy + uy * vx) / x);
 	}
+	
+	/**
+	 * Computes the absolute value of the tangent of the angle formed by the three
+	 * points a, b, and c in 3D space, using an optimized implementation that is only 
+	 * valid if the dot product of vectors (b - a) and (c - b) is positive. 
+	 * 
+	 * If the restriction is violated, we return infinity.
+	 * 
+	 * @param a First point
+	 * @param b Second point
+	 * @param c Third point
+	 * @return Absolute value of the tangent of angle formed by points a, b, and c,
+	 *         or infinity if the dot product of (b - a) and (c - b) is not positive.
+	 */
+	public static double absTanAngleDifference3D(final Point3D a, final Point3D b, final Point3D c) 
+	{
+	    // Vectors from a->b and b->c
+	    final double vx = b.x() - a.x();
+	    final double vy = b.y() - a.y();
+	    final double vz = b.z() - a.z();
+	    final double ux = c.x() - b.x();
+	    final double uy = c.y() - b.y();
+	    final double uz = c.z() - b.z();
+	    
+	    // Dot product (u · v)
+	    final double dotProduct = ux * vx + uy * vy + uz * vz;
+	    
+	    // Restriction: if dot product is not positive, return infinity
+	    if (dotProduct <= 0.0)
+	        return Double.POSITIVE_INFINITY;
+	    
+	    // Cross product (u × v)
+	    final double crossX = vy * uz - vz * uy;
+	    final double crossY = vz * ux - vx * uz;
+	    final double crossZ = vx * uy - vy * ux;
+	    
+	    // Magnitude of cross product (|u × v|)
+	    final double crossMagnitude = Math.sqrt(crossX * crossX + crossY * crossY + crossZ * crossZ);
+	    
+	    // Return the absolute tangent: |u × v| / (u · v)
+	    return Math.abs(crossMagnitude / dotProduct);
+	}
+
 
 	//-------------------------------------------------------------------------
 	
