@@ -1,0 +1,58 @@
+(game "Spuzzle" 
+    (players 1) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball0")
+        (piece "Ball1")
+        (piece "Ball2")
+    }) 
+    (rules
+        (play
+        	(or {
+	        	(move Add 
+	        		(piece "Ball0")
+		        	(to (sites Empty) 
+		        		if:(and { (is Flat) (< (count SizeBiggestGroup (sites Around (to)) if:(= (what at:(to)) 1) ) 2) (< (count Sites in:(intersection (sites Around (to)) (sites Occupied by:All component:1)))  2)})
+		            )
+		        	(then (addScore Mover 1))
+	        	)
+	        	(move Add 
+		        	(piece "Ball1")
+			        (to (sites Empty) 
+			        	if:(and { (is Flat) (< (count SizeBiggestGroup (sites Around (to)) if:(= (what at:(to)) 2) ) 2) (< (count Sites in:(intersection (sites Around (to)) (sites Occupied by:All component:2)))  2)})
+			        )
+			        (then (addScore Mover 1))
+		        )
+	        	(move Add 
+			        (piece "Ball2")
+				    (to (sites Empty) 
+				    	if:(and { (is Flat) (< (count SizeBiggestGroup (sites Around (to)) if:(= (what at:(to)) 3) ) 2) (< (count Sites in:(intersection (sites Around (to)) (sites Occupied by:All component:3)))  2)})
+				    )
+				    (then (addScore Mover 1))
+	        	)
+        	})
+        )
+        (end {
+            (if (no Moves Next) (result Mover Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+	(info
+        {
+        }
+    )	
+		
+	(graphics {
+		(piece Scale "Ball" 1.0)
+	    (board Style Shibumi)
+	    (piece Colour "Ball0" fillColour:(colour White))
+	    (piece Colour "Ball1" fillColour:(colour Black))
+	    (piece Colour "Ball2" fillColour:(colour Red))
+	})
+       
+)
