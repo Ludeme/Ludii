@@ -1,0 +1,44 @@
+(game "Spao" 
+	(players 3) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each) 
+    }) 
+    (rules
+        (play
+    		(move Add 
+    			(to (sites Empty) 
+    				if:(is Flat)
+    			)
+    			(then 
+    				(set Score Mover (* (sizes Group Mover)))
+    			)
+    		)
+        )
+	    (end
+	        (if   
+	        	(= (size Array (array (sites Occupied by:All))) 30)
+	        	(byScore)
+	        )
+	    )
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+	(info
+        {
+        }
+    )		
+		
+	(graphics {
+		(piece Scale "Ball" 1.0)
+	    (board Style Shibumi)
+	    (piece Colour P1 fillColour:(colour White))
+	    (piece Colour P2 fillColour:(colour Black))
+	    (piece Colour P3 fillColour:(colour Red))
+	})
+       
+)
