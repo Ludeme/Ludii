@@ -1,0 +1,155 @@
+(game "Speedo" 
+	(players 3) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each) 
+    }) 
+    (rules
+    	(meta {(pin SupportMultiple) (gravity)})
+    	(play 
+    		(if 
+    			(and 
+    				(= (size Array (array (sites Occupied by:All))) 0)
+    				(not ((is Prev Mover)))
+    			)
+    			(move Add
+		    	    (to 
+		    	    	(sites Empty)
+		    	    	if:(is Flat)
+		    	    )
+		    	    (then
+		    	    	(and {
+		    	    		(set Score P1 (* (sizes Group P1 isVisible:True)))
+    	    				(set Score P2 (* (sizes Group P2 isVisible:True)))
+    	    				(set Score P3 (* (sizes Group P3 isVisible:True)))
+		    	    	})
+		    	    )
+		    	)
+	    		(if
+	    			(not ((is Prev Mover)))
+	    			(or {
+    					(move Remove 
+		    				(sites Occupied by:P1 container:"Board")
+		    	    		(then 
+		    	    			(and {
+		    	    				(forget Value "Removed" All)
+		    	    				(remember Value "Removed" 2)
+		    	    				(remember Value "Removed" 3)
+		    	    				(set Score P1 (* (sizes Group P1 isVisible:True)))
+		    	    				(set Score P2 (* (sizes Group P2 isVisible:True)))
+		    	    				(set Score P3 (* (sizes Group P3 isVisible:True)))
+		    	    				(moveAgain)
+		    	    			})
+		    	    		)
+		    	    	)
+    					(move Remove 
+		    				(sites Occupied by:P2 container:"Board")
+		    	    		(then 
+		    	    			(and {
+		    	    				(forget Value "Removed" All)
+		    	    				(remember Value "Removed" 1)
+		    	    				(remember Value "Removed" 3)
+		    	    				(set Score P1 (* (sizes Group P1 isVisible:True)))
+		    	    				(set Score P2 (* (sizes Group P2 isVisible:True)))
+		    	    				(set Score P3 (* (sizes Group P3 isVisible:True)))
+		    	    				(moveAgain)
+		    	    			})
+		    	    		)
+		    	    	)
+    					(move Remove 
+		    				(sites Occupied by:P3 container:"Board")
+		    	    		(then 
+		    	    			(and {
+		    	    				(forget Value "Removed" All)
+		    	    				(remember Value "Removed" 1)
+		    	    				(remember Value "Removed" 2)
+		    	    				(set Score P1 (* (sizes Group P1 isVisible:True)))
+		    	    				(set Score P2 (* (sizes Group P2 isVisible:True)))
+		    	    				(set Score P3 (* (sizes Group P3 isVisible:True)))
+		    	    				(moveAgain)
+		    	    			})
+		    	    		)
+		    	    	)
+	    			})
+	    			(if
+	    				(and (is Prev Mover) (not (is Pending)))
+	    				(or
+				    		(move Add (piece (arrayValue (values Remembered "Removed") index:0))
+				    	    	(to 
+				    	    			
+				    	    		(sites Empty)
+				    	    		if:(is Flat)
+				    	    	)
+			    	    		(then 
+			    	    			(and {
+			    	    				(set Pending (arrayValue (values Remembered "Removed") index:1))
+			    	    				(set Score P1 (* (sizes Group P1 isVisible:True)))
+			    	    				(set Score P2 (* (sizes Group P2 isVisible:True)))
+			    	    				(set Score P3 (* (sizes Group P3 isVisible:True)))
+			    	    				(moveAgain)
+			    	    			})
+			    	    		)
+			    	    	)
+				    		(move Add (piece (arrayValue (values Remembered "Removed") index:1))
+				    	    	(to 
+				    	    		(sites Empty)
+				    	    		if:(is Flat)
+				    	    	)
+			    	    		(then 
+			    	    			(and {
+			    	    				(set Pending (arrayValue (values Remembered "Removed") index:0))
+			    	    				(set Score P1 (* (sizes Group P1 isVisible:True)))
+			    	    				(set Score P2 (* (sizes Group P2 isVisible:True)))
+			    	    				(set Score P3 (* (sizes Group P3 isVisible:True)))
+			    	    				(moveAgain)
+			    	    			})
+			    	    		)
+				    	    )
+			    		)
+	    				(if
+				    		(and (is Prev Mover) (is Pending))
+	    					(move Add (piece (value Pending))
+				    	    	(to 
+				    	    		(sites Empty)
+				    	    		if:(is Flat)
+				    	    	)
+				    	    	(then
+					    	    	(and {
+					    	    		(set Score P1 (* (sizes Group P1 isVisible:True)))
+			    	    				(set Score P2 (* (sizes Group P2 isVisible:True)))
+			    	    				(set Score P3 (* (sizes Group P3 isVisible:True)))
+					    	    	})
+					    	    )	
+			    	    	)
+				    	)
+			    	)
+	    		)
+	    	)
+    	)
+	    (end
+	        (if   
+	        	(= (size Array (array (sites Occupied by:All))) 30)
+	        	(byScore)
+	        )
+	    )
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+	(info
+        {
+        }
+    )		
+		
+	(graphics {
+		(piece Scale "Ball" 1.0)
+	    (board Style Shibumi)
+	    (piece Colour P1 fillColour:(colour White))
+	    (piece Colour P2 fillColour:(colour Black))
+	    (piece Colour P3 fillColour:(colour Red))
+	})
+       
+)
