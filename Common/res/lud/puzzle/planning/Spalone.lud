@@ -1,0 +1,86 @@
+(define "AddRandomPiece"
+	(if 
+		(and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:2)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
+		(add (piece (value Random (range 1 3))) (to 30))
+		(if (and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:2)) 10)})
+			(add (piece (value Random (range 1 2))) (to 30))
+			(if (and {(< (count Sites in:(sites Occupied by:P1 component:2)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
+				(add (piece (value Random (range 2 3))) (to 30))
+				(if (and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
+					(add (piece (arrayValue (array {1 3}) index:(value Random (range 0 1)))) (to 30))
+					(if (< (count Sites in:(sites Occupied by:P1 component:1)) 10)
+						(add (piece 1) (to 30))
+						(if (< (count Sites in:(sites Occupied by:P1 component:2)) 10)
+							(add (piece 2) (to 30))
+							(if (< (count Sites in:(sites Occupied by:P1 component:3)) 10)
+								(add (piece 3) (to 30))
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(game "Spalone" 
+    (players 1) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball0")
+        (piece "Ball1")
+        (piece "Ball2")
+        (hand Each)
+    }) 
+    (rules
+		(start {
+    		(place Random (sites {(handSite 1)}) {"Ball0" "Ball1" "Ball2"} True)
+			//(place "Ball" "Hand" count:1)
+		})
+        (play
+        	(move //Add
+        		(from (handSite 1))
+	        	(to (sites Empty) 
+	        		if:(and {
+	        			(is Flat)
+	        			(or {
+	        				(>= (count SitesPlatformBelow what:(what at:30)) 2)
+	        				(= (layer of:(to)) 0)
+	        			})
+	        		})
+	            )
+	        	(then 
+	        		(if 
+		        		(is Empty 30)
+		        		"AddRandomPiece"
+	        		)
+	        	)
+        	)
+        )
+        (end {
+            (if (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (result Mover Win))
+            (if (no Moves Next) (result All Loss))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+	(info
+        {
+        }
+    )	
+		
+	(graphics {
+		(piece Scale "Ball" 1.0)
+	    (board Style Shibumi)
+	    (piece Colour "Ball0" fillColour:(colour White))
+	    (piece Colour "Ball1" fillColour:(colour Black))
+	    (piece Colour "Ball2" fillColour:(colour Red))
+	})
+       
+)
