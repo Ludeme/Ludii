@@ -1,0 +1,71 @@
+(game "Spirit" 
+	(players <Num:players>) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each) 
+    }) 
+    (rules
+        (play
+        	(move Add 
+	        	(to (sites Empty) 
+	        		if:(and
+	        			(is Flat) 
+	        			(= 0 
+	        				(size Array 
+	        					(array
+	        						(intersection { 
+	        							(difference (sites Occupied by:All) (sites Support)) 
+	        							(sites Occupied by:Mover) 
+	        							(union {
+	        								(sites Direction from:(to) N) 
+	        								(sites Direction from:(to) S) 
+	        								(sites Direction from:(to) E) 
+	        								(sites Direction from:(to) W)
+	        							})
+	        						})
+	        					)
+	        				)
+	        			)
+	        		)
+	        	)
+	        	(then (addScore Mover 1))
+        	)
+        )
+	    (end
+	        (if
+	        	(or
+		        	(all Passed)
+		        	(= (size Array (array (sites Occupied by:All))) 30)
+		        )
+	        	(byScore)
+	        )
+	    )
+	)
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players" <Num> args:{ <players> }
+	{
+	(item "3" <3> "The game is played with three players.") 
+	(item "2" <2> "The game is played with two players.") 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+	(info
+        {
+        }
+    )		
+		
+	(graphics {
+		(piece Scale "Ball" 1.0)
+	    (board Style Shibumi)
+	    (piece Colour P1 fillColour:(colour White))
+	    (piece Colour P2 fillColour:(colour Black))
+	    (piece Colour P3 fillColour:(colour Red))
+	})
+       
+)
