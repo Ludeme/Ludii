@@ -1,0 +1,47 @@
+(game "Spyramid" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each) 
+    }) 
+    (rules
+    	(meta {(noStackOn Fallen) (pin SupportMultiple) (gravity)})
+        (play
+        	(or 
+        		(move Add 
+	        		(to (sites Empty) 
+	        			if:(is Flat)
+	                )
+        		)
+        		(move
+                	(from (sites Occupied by:Mover))
+                	(to (sites Empty) 
+        	        		if:(is Flat)
+        	        )
+                )
+        	)
+        )
+        (end {
+            (if (is PyramidCorners froms:(sites Occupied by:Mover)) (result Mover Win))
+            (if (is PyramidCorners froms:(sites Occupied by:Next)) (result Next Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+		
+	(info
+		{
+		}
+	)
+  
+  (graphics {
+      	(piece Scale "Ball" 1.0)
+      	(board Style Shibumi)
+      	(piece Colour P1 fillColour:(colour White))
+		(piece Colour P2 fillColour:(colour Black))
+  })
+     
+)
