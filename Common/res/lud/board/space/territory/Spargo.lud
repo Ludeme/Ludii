@@ -1,0 +1,103 @@
+(game "Spargo" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each) 
+    }) 
+    (rules
+        (play
+    		(move Add 
+        		(to (sites Empty) 
+        			if:(and 
+        					(is Flat)
+        					(or {
+        						(is Freedom (sites Group from:(intersection {(sites Around (to)) (sites Occupied by:Mover)}) isVisible:True) (to))
+        						(> (count Sites in:(intersection {(sites Empty) (sites Around (to)) (sites Layer (layer of:0))})) 0)
+        						(and {
+        							(not (is Freedom (sites Group from:(intersection {(sites Around (to) N) (sites Occupied by:Next)}) isVisible:True) (to))) 
+        							(> (count Sites in:(sites Group from:(intersection {(sites Around (to) N) (sites Occupied by:Next)}) isVisible:True)) 0)
+        							(< 
+        								(count Sites in:(intersection {(sites Around (to) N) (sites Occupied by:Next) (sites Support (id Mover))}))
+        								(count Sites in:(intersection {(sites Around (to) N) (sites Occupied by:Next)}))
+        							)
+        						})
+        						(and {
+        							(not (is Freedom (sites Group from:(intersection {(sites Around (to) S) (sites Occupied by:Next)}) isVisible:True) (to))) 
+        							(> (count Sites in:(sites Group from:(intersection {(sites Around (to) S) (sites Occupied by:Next)}) isVisible:True)) 0)
+        							(< 
+        								(count Sites in:(intersection {(sites Around (to) S) (sites Occupied by:Next) (sites Support (id Mover))}))
+        								(count Sites in:(intersection {(sites Around (to) S) (sites Occupied by:Next)}))
+        							)
+        						})
+        						(and {
+        							(not (is Freedom (sites Group from:(intersection {(sites Around (to) E) (sites Occupied by:Next)}) isVisible:True) (to))) 
+        							(> (count Sites in:(sites Group from:(intersection {(sites Around (to) E) (sites Occupied by:Next)}) isVisible:True)) 0)
+        							(< 
+        								(count Sites in:(intersection {(sites Around (to) E) (sites Occupied by:Next) (sites Support (id Mover))}))
+        								(count Sites in:(intersection {(sites Around (to) E) (sites Occupied by:Next)}))
+        							)
+        						})
+        						(and {
+        							(not (is Freedom (sites Group from:(intersection {(sites Around (to) W) (sites Occupied by:Next)}) isVisible:True) (to))) 
+        							(> (count Sites in:(sites Group from:(intersection {(sites Around (to) W) (sites Occupied by:Next)}) isVisible:True)) 0)
+        							(< 
+        								(count Sites in:(intersection {(sites Around (to) W) (sites Occupied by:Next) (sites Support (id Mover))}))
+        								(count Sites in:(intersection {(sites Around (to) W) (sites Occupied by:Next)}))
+        							)
+        						})
+        					})
+        			   )
+                )
+        		(then
+        			(forEach Site (sites Occupied by:Next) 
+        				(if
+    						(and (not (is Freedom (sites Group at:(site) isVisible:True))) (= (count Sites in:(intersection (sites {(site)}) (sites Support (id Mover)))) 0))
+    						(remove (site))
+        				)
+        			)
+        		)
+    		)
+        )
+        (end {
+            (if 
+            	(and 
+            		(no Moves Next)
+            		(> (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))
+            	) 
+            	(result Mover Win)
+            )
+            (if 
+            	(and 
+            		(no Moves Next)
+            		(< (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))
+            	) 
+            	(result Next Win)
+            )
+            (if 
+            	(and 
+            		(no Moves Next)
+            		(= (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))
+            	) 
+            	(result All Draw)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+		
+		(info
+			{
+			}
+		)
+    
+	(graphics {
+		(piece Scale "Ball" 1.0)
+	    (board Style Shibumi)
+	    (piece Colour P1 fillColour:(colour White))
+	    (piece Colour P2 fillColour:(colour Black))
+	})
+       
+)
