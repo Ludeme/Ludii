@@ -1,0 +1,77 @@
+(define "GoalCell"
+    (if (is #1 P1)
+        34
+        26
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(game "Aboyne"
+    (players 2)
+    (equipment {
+        (board (hex 5))
+        (piece "Marker" Each)
+    })
+    (rules
+        (start {
+            (place "Marker1" (sites { 0 5 11 18 27 35 43 50 56 }))
+            (place "Marker2" (sites { 4 10 17 25 33 42 49 55 60 }))
+        })
+        (play
+            (forEach Piece
+                (or {
+                    (move Step
+                        (from
+                            if:(= (count Sites in:(intersection (sites Around (from)) (sites Occupied by:Next))) 0)
+                        )
+                        (to
+                            if:(and 
+                                (not ("IsFriendAt" (to)))
+                                (!= (to) ("GoalCell" Next))
+                            )
+                            (apply
+                                if:("IsEnemyAt" (to))
+                                (remove (to))
+                            )
+                        )
+                    )
+                    (move Hop
+                        (from
+                            if:(= (count Sites in:(intersection (sites Around (from)) (sites Occupied by:Next))) 0)
+                        )
+                        (between
+                            (max 7)
+                            if:("IsFriendAt" (between))
+                        )
+                        (to
+                            if:(and 
+                                (not ("IsFriendAt" (to)))
+                                (!= (to) ("GoalCell" Next))
+                            )
+                            (apply
+                                (if ("IsEnemyAt" (to)) (remove (to)))
+                            )
+                        )
+                    )
+                })
+            )
+        )
+        (end {
+            (if 
+                (is Mover (who at:("GoalCell" Mover)))
+                (result Mover Win)
+            )
+            (if (no Moves Next)
+                (result Mover Win)
+            )
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
