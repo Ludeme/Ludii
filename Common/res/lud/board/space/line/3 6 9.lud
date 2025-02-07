@@ -1,0 +1,45 @@
+(define "NonContiguousLineDirection" 
+    (if (is Line #1 #2 exact:True contiguous:False) (addScore Mover (/ #1 3)))
+)
+
+//-------------------------------------------------------------------------
+
+(game "3 6 9"
+    (players 2)
+    (equipment {
+        (board (square 9))
+        (piece "Disc" Shared)
+    })
+    (rules
+        (play 
+            (move Add (piece "Disc") (to (sites Empty))
+                (then
+                    (and {
+                        ("NonContiguousLineDirection" 9 N)
+                        ("NonContiguousLineDirection" 6 N)
+                        ("NonContiguousLineDirection" 3 N)
+                        ("NonContiguousLineDirection" 9 E)
+                        ("NonContiguousLineDirection" 6 E)
+                        ("NonContiguousLineDirection" 3 E)
+                        ("NonContiguousLineDirection" 9 NE)
+                        ("NonContiguousLineDirection" 6 NE)
+                        ("NonContiguousLineDirection" 3 NE)
+                        ("NonContiguousLineDirection" 9 NW)
+                        ("NonContiguousLineDirection" 6 NW)
+                        ("NonContiguousLineDirection" 3 NW)
+                    })
+                )
+            )
+        )
+        (end (if (is Full) (byScore)))
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+)
