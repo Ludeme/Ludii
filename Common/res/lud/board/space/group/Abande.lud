@@ -1,0 +1,115 @@
+(define "MoveStack"
+    (move
+        (from
+            (forEach
+                (sites Occupied by:Mover)
+                if:(all Groups Cell Orthogonal
+                    of:(and (not (is Empty (to))) (!= (to) (site)))
+                    if:(= (count Sites in:(sites)) (- (count Sites in:(sites Occupied by:All)) 1))
+                )
+            )
+        )
+        (to
+            (intersection (sites Around (from)) (sites Occupied by:Next))
+            if:(<= (+ (size Stack at:(to)) (size Stack at:(from))) 3)
+        )
+        stack:True
+        (then
+            (and
+                ("ComputeScore" P1 P2)
+                ("ComputeScore" P2 P1)
+            )
+        )
+    )
+)
+
+(define "MoveAdd"
+    (move Add
+        (to (sites Empty)
+            if:(> 
+                (count Sites 
+                    in:(intersection (sites Around (to)) (sites Occupied by:All))
+                )
+                0
+            )
+        )
+        (then
+            (and
+                ("ComputeScore" P1 P2)
+                ("ComputeScore" P2 P1)
+            )
+        )
+    )
+)
+
+(define "CountStacks"
+    (count Sites 
+        in:(forEach
+            (sites Occupied by:#1)
+            if:(and
+                (>= 
+                    (count Sites 
+                        in:(intersection 
+                            (sites Around (site))
+                            (sites Occupied by:#2)
+                        )
+                    )
+                    1
+                )
+                (= (size Stack at:(site)) #3)
+            )
+        )
+    )
+)
+
+(define "ComputeScore"
+    (set Score #1 
+        (+ {
+            (* ("CountStacks" #1 #2 1) 1)
+            (* ("CountStacks" #1 #2 2) 2)
+            (* ("CountStacks" #1 #2 3) 3)
+        })
+    )
+)
+
+(game "Abande"
+    (players 2)
+    (equipment {
+        (board (hex 4))
+        (piece "Disc" Each)
+    })
+    (rules
+        (play
+            (if (= (count Moves) 0)
+                (move Add
+                    (to (sites Empty))
+                    (then
+                        (and
+                            ("ComputeScore" P1 P2)
+                            ("ComputeScore" P2 P1)
+                        )
+                    )
+                )
+                (if (< (count Pieces Mover) 18)
+                    (or {
+                        ("MoveAdd")
+                        ("MoveStack")
+                    })
+                    (or {
+                        (move Pass)
+                        ("MoveStack")
+                    })
+                )
+            )
+        )
+        (end {
+            (if (all Passed) (byScore))
+        })
+    )
+)
+
+(metadata
+    (info {
+    	
+    })
+)
