@@ -1,0 +1,137 @@
+(game "BreakBeer" 
+    ("TwoPlayersNorthSouth") 
+    (equipment { 
+        (board (<Tiling:type> <Board:size>)) 
+        (piece "Pawn" Each 
+            (or {
+                "StepForwardToEmpty" 
+                (move 
+                    Step
+                    (directions {FR FL}) 
+                    (to if:(or 
+                            (is Empty (to)) 
+                            ("IsEnemyAt" (to))
+                        ) 
+                        (apply (remove (to)))
+                    )
+                )
+                (move 
+                    Step
+                    Forwards
+                    (to if:(and (is Occupied (to)) (= 0 (who at:(to))))
+                        (apply (remove (to)))
+                    )
+                    (then (set State at:(last To) 5))
+                )
+            })
+        )
+        (piece "Beer" Neutral)
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+    }) 
+    (rules 
+        (start { 
+            (place "Pawn1" (expand (sites Bottom)))
+            (place "Pawn2" (expand (sites Top)))
+        })
+        
+        (play 
+            (forEach Piece 
+                (then
+                    (and 
+                        (if (= (value Random (range 1 3)) 1)
+                            (add (piece "Beer0") (to (sites Random (sites Empty) num:1)))
+                        )
+                        (forEach Site
+                            (sites Board)
+                            (if (!= 0 (state at:(site)))
+                                (and
+                                    (set State at:(site) (- (state at:(site)) 1))
+                                    (if (= (value Random (range 1 2)) 1)
+                                        (if (and 
+                                                (= 0 (who at:(ahead (site) W) ))
+                                                (!= (ahead (site) W) (site))
+                                            )
+                                            (fromTo
+                                                (from (site))
+                                                (to (ahead (site) W)
+                                                    (apply
+                                                        (if (is Occupied (to))
+                                                            (and
+                                                                (remove (to))
+                                                                (set State at:(from) 5)
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                        (if (and 
+                                                (= 0 (who at:(ahead (site) E)))
+                                                (!= (ahead (site) E) (site))
+                                            )
+                                            (fromTo
+                                                (from (site))
+                                                (to (ahead (site) E)
+                                                    (apply
+                                                        (if (is Occupied (to))
+                                                            (and
+                                                                (remove (to))
+                                                                (set State at:(from) 5)
+                                                            )
+                                                        )
+                                                    )		
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )	
+        )
+        
+        (end ("ReachWin" (sites Mover) Mover)) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board" <Tiling> args:{ <type> }
+    {
+    (item "Square" <square> "The board is tiling by square.")* 
+    (item "Hexagon" <hex> "The board is tiling by hexagon.") 
+})
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4x4" <4> "The game is played on a 4x4 board.") 
+    (item "5x5" <5> "The game is played on a 5x5 board.") 
+    (item "6x6" <6> "The game is played on a 6x6 board.") 
+    (item "7x7" <7> "The game is played on a 7x7 board.") 
+    (item "8x8" <8> "The game is played on a 8x8 board.")* 
+    (item "9x9" <9> "The game is played on a 9x9 board.") 
+    (item "10x10" <10> "The game is played on a 10x10 board.") 
+    (item "11x11" <11> "The game is played on a 11x11 board.") 
+    (item "12x12" <12> "The game is played on a 12x12 board.") 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (player Colour Neutral (colour Yellow))
+        (show Piece State P1)
+        (show Piece State P2)
+    })
+    
+)
