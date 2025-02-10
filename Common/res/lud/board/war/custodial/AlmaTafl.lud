@@ -1,0 +1,169 @@
+(define "EscapeSpots"
+    (sites { 0 1 7 14 15 23 49 57 58 65 71 72 })
+)
+
+(define "Throne"
+    (sites { 36 })
+)
+
+(define "MoveDefenders"
+    (move
+        (from
+            (sites Occupied by:P2)
+            if:(!= (what at:(from) level:(topLevel at:(from))) (id "King" P2))
+        )
+        (to
+            (difference
+                (sites Around 
+                    (from) 
+                    distance:(size Stack at:(from)) 
+                    Orthogonal
+                    if:(!= (what at:(to) level:(topLevel at:(to))) (id "King" P2))
+                )
+                (union ("EscapeSpots") ("Throne"))
+            )
+            if:(< (size Stack at:(to)) 3)
+        )
+    )
+)
+
+(define "MoveKing"
+    (or {
+        (move
+            (from
+                (sites Occupied by:P2)
+                if:(= (what at:(from) level:(topLevel at:(from))) (id "King" P2))
+            )
+            (to
+                (sites Around 
+                    (from) 
+                    distance:(size Stack at:(from)) 
+                    Orthogonal
+                )
+                if:(and 
+                    (= (what at:(to) level:(topLevel at:(to))) (id "Disc" P1))
+                    (< (size Stack at:(to)) 3)
+                )
+            )
+            (then
+                (moveAgain)
+            )
+        )
+        (move
+            (from
+                (sites Occupied by:P2)
+                if:(= (what at:(from) level:(topLevel at:(from))) (id "King" P2))
+            )
+            (to
+                (sites Around 
+                    (from) 
+                    distance:(size Stack at:(from)) 
+                    Orthogonal
+                )
+                if:(and 
+                    (!= (what at:(to) level:(topLevel at:(to))) (id "Disc" P1))
+                    (< (size Stack at:(to)) 3)
+                )
+            )
+        )
+    })
+)
+
+(define "MoveInvaders"
+    (move
+        (from
+            (sites Occupied by:P1)
+        )
+        (to
+            (difference
+                (sites Around 
+                    (from) 
+                    distance:(size Stack at:(from)) 
+                    Orthogonal
+                )
+                ("EscapeSpots")
+            )
+            if:(and 
+                (or 
+                    (not (is In (to) ("Throne")))
+                    (= (what at:(to) level:(topLevel at:(to))) (id "King" P2))
+                )
+                (< (size Stack at:(to)) 3)
+            )
+        )
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(game "AlmaTafl"
+    (players 2)
+    (equipment {
+        (board 
+            (remove
+                (hex 6)
+                cells:{ 0 1 4 5 6 12 30 39 40 50 51 60 78 84 85 86 89 90 }
+            )
+        )
+        (piece "Disc" Each)
+        (piece "King" P2)
+    })
+    (rules
+        (start {
+            (place "Disc1" (sites { 2 3 4 5 6 8 13 16 22 24 31 32 40 41 48 50 56 59 64 66 67 68 69 70 }))
+            (place "Disc2" (sites { 19 26 27 28 29 35 37 43 44 45 46 53 }))
+            (place "King2" ("Throne"))
+        })
+        (play
+            (if ("SameTurn")
+                (or
+                    ("MoveKing")
+                    (move Pass)
+                )
+                (if (is Mover P1)
+                    ("MoveInvaders")
+                    (or {
+                        ("MoveDefenders")
+                        ("MoveKing")
+                    })
+                )
+            )
+        )
+        (end {
+            (if 
+                (is In (where (id "King" P2)) ("EscapeSpots"))
+                (result P1 Win)
+            )
+            (if 
+                (!= 
+                    (what 
+                        at:(where (id "King" P2))
+                        level:(topLevel at:(where (id "King" P2)))
+                    )
+                    (id "King" P2)
+                )
+                (result P2 Win)
+            )
+            (if 
+                (< 
+                    (count Sites 
+                        in:(difference 
+                            (sites Occupied by:P2) 
+                            (sites { (where (id "King" P2)) })
+                        )
+                    )
+                    1
+                )
+                (result P1 Win)
+            )
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info {
+
+    })
+)
