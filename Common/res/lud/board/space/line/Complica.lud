@@ -1,0 +1,34 @@
+(game "Complica"
+    (players 2)
+    (equipment {
+        (board (rectangle 1 4))
+        (piece "Disc" Each)
+    })
+    (rules
+        (play
+            (move Add
+                (to
+                    (sites Board)
+                )
+                stack:True
+                (then
+                    (if (= (size Stack at:(last To)) 8)
+                        (move Remove (last To) level:0)
+                    )                
+                )
+            )
+        )
+        (end {
+            (if (and (is Line 4 P1 byLevel:True) (not (is Line 4 P2 byLevel:True))) (result P1 Win))
+            (if (and (is Line 4 P2 byLevel:True) (not (is Line 4 P1 byLevel:True))) (result P2 Win))
+            (if (= 80 (count Moves)) (result All Draw))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
