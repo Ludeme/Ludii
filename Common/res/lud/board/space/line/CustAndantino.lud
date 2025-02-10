@@ -1,0 +1,72 @@
+(define "NumTiles" 64)
+
+//------------------------------------------------------------------------------
+
+(game "CustAndantino" 
+    (players 2) 
+    (equipment { 
+        (boardless <Tiling:type>) 
+        (tile <Tiling:tile> Each <Tiling:numSides>) 
+    }) 
+    
+    (rules 
+        (start {
+            (place <Tiling:piece1> (centrePoint)) 
+            (place <Tiling:piece2> (ahead (centrePoint) E))
+        })
+        
+        (play 
+            (move Add
+                (to 
+                    (sites Playable) 
+                    if:(<= 2 
+                        (count Sites in:(sites Around (to) NotEmpty)) 
+                    )
+                )
+                (then
+                    	(custodial 
+                    	       (from (last To))
+                    		        (between  
+                    		            if:("IsEnemyAt" (between))
+                    		            (apply 
+                    		            	(and 
+                    		            		(remove (between))
+                    		            		(add (piece (mover)) (to (between)))
+                    		            	)
+                    		            )
+                    		        )
+                    		        (to if:("IsFriendAt" (to)))
+                    		    )		
+                    )
+            )
+        )
+        
+        (end {
+            (if (or (is Loop surround:Next) (is Line 8)) (result Mover Win))
+            (if (= (count Moves) (* (count Players) "NumTiles")) (result Mover Draw))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Tiling" <Tiling> args:{ <type> <tile> <numSides> <piece1> <piece2> }
+  {
+  (item "Hexagonal"  <Hexagonal> <"Hex"> <numSides:6> <"Hex1">  <"Hex2">  "The game uses hexagonal tiles.")** 
+  (item "Square"   <Square>  <"Square"> <numSides:4> <"Square1"> <"Square2"> "The game uses square tiles")  
+  (item "Triangle"  <Triangular> <"Triangle"> <numSides:3> <"Triangle1"> <"Triangle2"> "The game uses triangle tiles") 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour LightGrey))
+    })
+    
+)
