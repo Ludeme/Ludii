@@ -1,0 +1,95 @@
+(define "Connected"
+    (>= 
+        (count Sites 
+            in:(intersection 
+                    (sites {0 16 31 45 58 70 15 30 44 57 69 80 71 72 73 74 75 76 77 78 79})
+                    (sites Group Cell at:#1 if:(= (what at:(to)) (id #2 P1)))
+            )
+        ) 
+        1
+    )
+)
+
+(define "Connectable"
+    (>=
+        (count Sites 
+            in:(intersection 
+                    (sites {0 16 31 45 58 70 15 30 44 57 69 80 71 72 73 74 75 76 77 78 79})
+                    (sites Group Cell at:#1 if:(or (= (what at:(to)) (id #2 P1)) (is Empty (to))))
+            )
+        ) 
+        1
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(game "Bipod" 
+    (players 2)
+    (equipment { 
+        (board
+            (intersect 
+                (hex Triangle 16) 
+                (hex Rectangle 6 16)
+            )
+        )
+        (piece "Disc" P2)
+        (piece "MarkerGray" P1)
+        (piece "MarkerWhite" P1)
+    }) 
+    (rules 
+        (start {
+            (place "MarkerGray1" 10)
+            (place "MarkerWhite1" 5)
+        })
+        (play 
+            (if (<= (count Moves) 3)
+                (move Add
+                    (piece (id "Disc" P2))
+                    (to (sites Empty))
+                )
+                (if (= (mover) P2)
+                    (move Add
+                        (piece (id "Disc" P2))
+                        (to (sites Empty))
+                    )
+                    (or
+                        (move Add
+                            (piece (id "MarkerGray" P1))
+                            (to (sites Empty))
+                        )
+                        (move Add
+                            (piece (id "MarkerWhite" P1))
+                            (to (sites Empty))
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if (and ("Connected" 5 "MarkerWhite") ("Connected" 10 "MarkerGray"))
+                (result P1 Win)
+            )
+            (if 
+                (or 
+                    (not ("Connectable" 5 "MarkerWhite")) 
+                    (not ("Connectable" 10 "MarkerGray"))
+                )
+                (result P2 Win)
+            )
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info {
+    	
+    })
+
+    (graphics {
+        (piece Foreground "MarkerGray" image:"Disc" fillColour:(colour Grey) edgeColour:(colour Hidden))
+        (piece Foreground "MarkerWhite" image:"Disc" fillColour:(colour White) edgeColour:(colour Hidden))
+    })
+)
