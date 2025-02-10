@@ -1,0 +1,102 @@
+(define "JumpSite" (+ 7 #1))
+
+(define "EscapeAPiece" 
+    (if (and 
+            (is Occupied #1)
+            (= 2
+                (count Sites in:(intersection ("OuterRadial" #1) 
+                    (sites Occupied by:(player (who at:#1))))
+                )
+            )
+        )
+        (move Remove #1)	
+    )			
+)
+
+(define "PlaceAPiece" 
+    (if (not (is Empty (handSite Mover)))
+        (move
+            (from (handSite Mover))
+            (to (intersection (sites Centre) (sites Empty)))
+        )
+    )		
+)
+
+(define "OuterRadial" 
+    (sites {#1 (- #1 7) (- #1 14)})
+)
+
+(define "InnerRadial" 
+    (sites {#1 (- #1 7) (- #1 14) (- #1 21)})
+)
+
+(define "Jump"
+    (if (and (is Occupied #1) (is Empty ("JumpSite" #1)))
+        (if (= 3 (count Sites in:(intersection ("InnerRadial" #1) (sites Occupied by:(player (who at:#1))))))
+            (move
+                (from #1)
+                (to ("JumpSite" #1))
+            )
+        )
+    )		
+)
+
+(define "JumpMove"
+    (forEach Site (sites {21..27})
+        ("Jump" (site))	
+    )
+)
+
+(define "EscapeMove"
+    (forEach Site (sites {42..48})
+        ("EscapeAPiece" (site))	
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Atom" 
+    (players 2)
+    (equipment {
+        (board (concentric {7 7 7 7 0 7 7 7}) use:Vertex)
+        (piece "Marker" Each 
+            (move Step 
+                (to
+                    if:(is Empty (to))
+                )
+                (then
+                    (and
+                        ("JumpMove")
+                        ("EscapeMove")
+                    )
+                )
+            )
+        )
+        (hand Each)
+    })
+    (rules 
+        (start {
+            (place "Marker" "Hand" count:12)
+        })
+        (play
+            (or {
+                ("PlaceAPiece")
+                (forEach Piece)
+            })
+        )
+        (end (if (<= (count Pieces Mover) 7) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info {
+    })
+    
+    (graphics {
+        (no Sunken)
+    })
+    
+)
