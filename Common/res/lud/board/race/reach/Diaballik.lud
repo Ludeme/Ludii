@@ -1,0 +1,168 @@
+(define "RemainingActions"
+    (if (= Undefined (var "NbrActions"))
+        3
+        (var "NbrActions")
+    )
+)
+
+(define "RemainingMoves"
+    (if (= Undefined (var "NbrMoves"))
+        2
+        (var "NbrMoves")
+    )
+)
+
+(define "RemainingThrows"
+    (if (= Undefined (var "NbrThrows"))
+        1
+        (var "NbrThrows")
+    )
+)
+
+(define "Connectable"
+    (>=
+        (count Sites 
+            in:(intersection 
+                #2
+                (sites Group Cell at:(where "Ball" #1) Orthogonal if:(or (= (what at:(to)) (id "Disc" #1)) (is Empty (to))))
+            )
+        ) 
+        1
+    )
+)
+
+(define "IsAgainst"
+    (>=
+        (count Sites 
+            in:(forEach
+                (sites Occupied by:#1)
+                if:(>= 
+                    (count Sites 
+                        in:(intersection 
+                            (sites Occupied by:#2)
+                            (sites Around (site) Orthogonal)
+                        )
+                    )
+                    1
+                )
+            )
+        )
+        3
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Diaballik"
+    (players 2)
+    (equipment {
+        (board (square 7))
+        (piece "Disc" Each)
+        (piece "Ball" Each)
+    })
+    (rules
+        (start {
+            (place "Disc1" (sites Bottom))
+            (place "Disc2" (sites Top))
+            (place Stack "Ball1" (sites {3}))
+            (place Stack "Ball2" (sites {45}))
+        })
+        (play
+            (or {
+                (if (> ("RemainingMoves") 0)
+                    (move
+                        (from
+                            (sites Occupied by:Mover)
+                            if:(!= (what at:(from) level:(topLevel at:(from))) (id "Ball" Mover))
+                        )
+                        (to
+                            (intersection (sites Around (from) Orthogonal) (sites Empty))
+                        )
+                        (then
+                            (if (<= ("RemainingActions") 1)
+                                (and {
+                                    (set Var "NbrActions" 3)
+                                    (set Var "NbrMoves" 2)
+                                    (set Var "NbrThrows" 1)
+                                })
+                                (and {
+                                    (set Var "NbrActions" (- ("RemainingActions") 1))
+                                    (set Var "NbrMoves" (- ("RemainingMoves") 1))
+                                    (moveAgain)
+                                })
+                            )
+                        )
+                    )
+                )
+                (if (> ("RemainingThrows") 0)
+                    (forEach Piece "Ball"
+                        (move Slide
+                            (between
+                                if:(or (is Friend (who at:(between))) (is Empty (between)))
+                            )
+                            (to
+                                (apply
+                                    if:(is Friend (who at:(to)))
+                                )
+                            )
+                            (then
+                                (if (<= ("RemainingActions") 1)
+                                    (and {
+                                        (set Var "NbrActions" 3)
+                                        (set Var "NbrMoves" 2)
+                                        (set Var "NbrThrows" 1)
+                                    })
+                                    (and {
+                                        (set Var "NbrActions" (- ("RemainingActions") 1))
+                                        (set Var "NbrThrows" (- ("RemainingThrows") 1))
+                                        (moveAgain)
+                                    })
+                                )
+                            )
+                        )
+                    )
+                )
+                (if (< ("RemainingActions") 3)
+                    (move Pass
+                        (then
+                            (and {
+                                (set Var "NbrActions" 3)
+                                (set Var "NbrMoves" 2)
+                                (set Var "NbrThrows" 1)
+                            })
+                        )
+                    )
+                )
+            })
+        )
+        (end {
+            (if (is In (where "Ball" P1) (sites Top)) 
+                (result P1 Win)
+            )
+            (if (is In (where "Ball" P2) (sites Bottom)) 
+                (result P2 Win)
+            )
+            (if 
+                (and 
+                    (not ("Connectable" P1 (sites Top)))
+                    ("IsAgainst" P1 P2)
+                )
+                (result P1 Win)
+            )
+            (if 
+                (and
+                    (not ("Connectable" P2 (sites Bottom)))
+                    ("IsAgainst" P2 P1)
+                )
+                (result P2 Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
