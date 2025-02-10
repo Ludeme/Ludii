@@ -1,0 +1,62 @@
+(define "NewBiggerGroup" 
+	(< 
+		(size Group at:(last From) Orthogonal if:(or (= (to) (from)) (= (who at:(to)) Mover)))
+		(size Group at:(last To) Orthogonal if:(= (who at:(to)) Mover))
+	)
+)
+
+(define "OneSingleGroupPieces" 
+		(= 1 (count Groups Orthogonal if:(= (who at:(to)) Mover)))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Bounce" 
+    (players 2) 
+    (equipment { 
+        (board (square 8))
+        (piece "Marker" Each
+        	(do
+	        	(move 
+	        		(from)
+	        		(to (sites Empty))
+	        	)
+	        	ifAfterwards:("NewBiggerGroup")
+        	)
+        )
+    }) 
+    (rules 
+        (start { 
+            (place "Marker1" (difference (sites Phase 1) (sites Corners)))
+            (place "Marker2" (difference (sites Phase 0) (sites Corners)))
+        })
+        	
+        (play
+        	(priority {
+        		(forEach Piece)
+        		(move Remove (sites Occupied by:Mover))
+        	})
+        )
+        
+        (end (if ("OneSingleGroupPieces") (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {        
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (board Colour Phase0 (colour 223 178 110))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+    })
+    
+)
