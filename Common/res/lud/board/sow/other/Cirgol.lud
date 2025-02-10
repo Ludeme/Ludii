@@ -1,0 +1,66 @@
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
+
+(define "LastHole" (last To afterConsequence:True))
+
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+(define "NextFilled"
+    (trackSite FirstSite from:(trackSite Move from:#1 steps:1)
+        if:(> (count at:(to)) 0)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Cirgol"
+    (players 2)
+    (equipment {
+        (board 
+            (concentric { 10 }) 
+            (track "Track" { 0 2 4 6 8 9 7 5 3 1 } loop:True)
+            use:Vertex
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+    })
+    (rules
+        (start (set Count 4 to:(sites Board)))
+        (play 
+            (move Select 
+                (from 
+                    (sites Board) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow 
+                        apply:(if 
+                            (and {
+                                (= 1 (count at:(to)))
+                                (>= (count at:("NextHoleFrom" (to) 1)) 1)
+                                (> (count Moves) 3)
+                            })
+                            (fromTo 
+                                (from ("NextHoleFrom" (to) 1))
+                                (to (handSite Mover))
+                                count:(count at:("NextHoleFrom" (to) 1))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end ("MancalaByScoreWhen" (<= (count Pieces in:(sites Board)) 3)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    	
+    })
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)
