@@ -1,0 +1,63 @@
+(game "Adere" 
+    (players 2)
+    (equipment { 
+        (board
+            (hex Triangle 8) 
+        )
+        (piece "Disc" Each)
+        (regions P1 {(sites Side NE) (sites Side NW) (sites Side S)})
+        (regions P2 {(sites Side NE) (sites Side NW) (sites Side S)})
+    }) 
+    (rules 
+        (play 
+            (or 
+                (move Add (to (sites Empty)))
+                (move Select
+                    (from 
+                        (sites Occupied by:Mover top:True)
+                    )
+                    (to
+                        (intersection (sites Around (from)) (sites Occupied by:Prev top:True))
+                        if:(= (size Stack at:(to)) (size Stack at:(from)))
+                    )
+                    (then
+                        (fromTo
+                            (from (last From))
+                            (to (last To))
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if 
+                (and
+                    (not (all Sites
+                        (sites Occupied by:P1 top:True)
+                        if:(not (is Connected at:(site) P1))
+                    ))
+                    (= (mover) P2)
+                )
+                (result P1 Win)
+            )
+            (if 
+                (and
+                    (not (all Sites
+                        (sites Occupied by:P2 top:True)
+                        if:(not (is Connected at:(site) P2))
+                    ))
+                    (= (mover) P1)
+                )
+                (result P2 Win)
+            )
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info {
+    	
+    })
+)
