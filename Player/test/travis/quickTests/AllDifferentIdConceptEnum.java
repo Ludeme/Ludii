@@ -11,7 +11,6 @@ import gnu.trove.list.array.TIntArrayList;
 import other.concept.Concept;
 import other.concept.ConceptComputationType;
 import other.concept.ConceptDataType;
-import other.concept.ConceptKeyword;
 import other.concept.ConceptPurpose;
 import other.concept.ConceptType;
 
@@ -79,7 +78,7 @@ public class AllDifferentIdConceptEnum
 	public void ConceptKeyword()
 	{
 		final TIntArrayList ids = new TIntArrayList();
-		for (final ConceptKeyword conceptKeyword : ConceptKeyword.values())
+		for (final Concept conceptKeyword : Concept.values())
 		{
 			if (ids.contains(conceptKeyword.id()))
 			{
