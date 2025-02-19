@@ -1,0 +1,30 @@
+(game "Migration"
+	(players {(player E) (player N)})
+    (equipment {
+        (board (square 8) use:Vertex)	
+        (piece "Ball" Each (move Step (directions Forwards of:All) (to if:(is Empty (to)))))
+    })
+    (rules 
+        (start {
+            (place "Ball1" (sites {48 40..41 32..34 24..26 16..17 8}))
+            (place "Ball2" (sites {1..6 10..13 19..20}))
+        })
+       (play (forEach Piece))
+       (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    
+    (graphics {
+        (board Style Board)
+        (board Colour InnerEdges (colour 160 140 100))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour Phase0 (colour 255 230 150))
+        (show Edges Diagonal Hidden)
+    })
+)
