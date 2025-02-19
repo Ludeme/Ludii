@@ -1,0 +1,50 @@
+(game "Winkers"
+    (players 2)
+    (equipment {
+        (board (hex Hexagon 3))
+        (hand Each size:2)
+        (piece "Marker" Each)
+        (piece "MarkerNeutral" Shared)
+    })
+    (rules
+        (start {(place "Marker" "Hand" count:10) (place "MarkerNeutral" (handSite 1 1) count:10) (place "MarkerNeutral" (handSite 2 1) count:10)})
+        (play 
+            (or
+                (move 
+                    (from (handSite Mover 1))
+                    (to (sites Empty))
+                )
+                (move 
+                    (from (handSite Mover 0))
+                    (to 
+                        (difference 
+                            (difference 
+                                (sites Occupied by:Shared) 
+                                (handSite 2 1)
+                            )
+                            (handSite 1 1)
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if (is Line 3 Mover) (result Mover Win))
+            (if ("HandEmpty" Mover) (result Mover Loss))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    
+    (graphics {
+        (player Colour P1 (colour DarkRed))
+        (player Colour P2 (colour Black))
+        (player Colour Shared (colour White))
+        (piece Rename Shared "Marker")
+    })
+)
