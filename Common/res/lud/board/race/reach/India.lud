@@ -1,0 +1,70 @@
+(define "ReachWinIndia"
+    (if
+        (and (is In (last To) #1) (= (count at:(last To)) 1))
+        (result #2 Win)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "India"
+    (players 2)
+    (equipment {
+        (board (square 6))
+        (hand Each)
+        (piece "Marker" Each)
+        (regions P1 (sites Top))
+        (regions P2 (sites Bottom))
+    })
+    (rules
+        (start {
+            (place "Marker" "Hand" count:10)
+            (place "Marker1" (expand (sites Bottom)))
+            (place "Marker2" (expand (sites Top)))
+        })
+        (play 
+            (or {
+                (move 
+                    (from (handSite Mover))
+                    (to (difference (sites Occupied by:Mover) (handSite Mover)))
+                )
+                (forEach Piece 
+                    (move Step 
+                        (to if:(and (is Empty (to)) (> (count at:(from)) 0)))
+                        (then
+                            (fromTo (from (last From)) (to (last To)) count:(count at:(last From)))
+                        )
+                    )
+                )
+                (forEach Piece 
+                    (move Step
+                        (to
+                            if:(and {
+                                ("IsEnemyAt" (to))
+                                (> (count at:(from)) 0)
+                                (= (+ (count at:(to)) 1) (count at:(from)))
+                            })
+                            (apply (remove (to) count:(count at:(to))))
+                        )
+                        (then
+                            (fromTo (from (last From)) (to (last To)) count:(count at:(last From)))
+                        )
+                    )
+                )
+            })
+        )
+        (end {
+            ("ReachWinIndia" (sites Mover) Mover)
+            (if (= (count Sites in:(forEach (intersection (sites Board) (sites Occupied by:Next)) if:(= (count at:(site)) 1))) 0)
+                (result Next Loss)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
