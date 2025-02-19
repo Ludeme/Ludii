@@ -1,0 +1,40 @@
+(game "Wong" 
+    (players 2) 
+    (equipment { 
+        (board (square 9) use:Vertex) 
+        (piece "Marker" Each)
+    })
+    (rules 
+        phases:{
+            (phase "Setup"
+                (play (move Add (to (sites Empty))))
+                (nextPhase (<= 16 (count Sites in:(sites Occupied by:All))) "Placement")
+            )
+            (phase "Placement"
+                (play 
+                    (move Add
+                        (to
+                            (sites Empty)
+                            if:(<= 2 (count Sites in:(sites Around (to) Own All)))
+                        )
+                    )
+                )
+            )
+        }
+        (end
+            (if (no Moves Mover) (result Prev Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    
+    (graphics {
+        (board Style Go)
+    })
+)
+
