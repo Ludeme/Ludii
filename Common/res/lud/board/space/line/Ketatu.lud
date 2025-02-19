@@ -1,0 +1,22 @@
+(game "Ketatu"
+    (players 2)
+    (equipment {
+        (board (square 11)) 
+        (piece "Marker" Each)
+    })
+    (rules 
+        (play (move Add (to (sites Empty))))
+        (end {
+            (if (is Line 5 All Mover exact:True) (result Mover Win))
+            (if (is Line 6 All Mover) (result Mover Loss))
+            (if (is Line 4 All Mover) (result Mover Loss))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
