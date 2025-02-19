@@ -1,0 +1,42 @@
+(game "Orthokon"
+	(players 2)
+    (equipment {
+        (board (square 4) use:Vertex)	
+        (piece "Ball" Each 
+        	(move Slide All
+        		(then
+        			(forEach Site 
+        				(sites Around (last To) Enemy)
+        				(and
+        					(remove (site))
+        					(add (piece (mover)) (to (site)))
+        				)
+        			)
+        		)
+        	)	
+        )
+    })
+    (rules 
+        (start {
+            (place "Ball1" (sites Bottom))
+            (place "Ball2" (sites Top))
+        })
+       (play (forEach Piece))
+       (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    
+    (graphics {
+        (board Style Board)
+        (board Colour InnerEdges (colour 160 140 100))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour Phase0 (colour 255 230 150))
+        (show Edges Diagonal Hidden)
+    })
+)
