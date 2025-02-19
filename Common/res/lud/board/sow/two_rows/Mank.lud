@@ -1,0 +1,77 @@
+(define "Columns" 8)
+
+(define "PiecesOwnedBy" (+ (count at:(mapEntry #1)) (count in:(sites #1))))
+
+(define "RealOppositePit" 
+    (if 
+        (is In #1 (sites { 1 2 3 4 5 6 7 8 })) 
+        (+ #1 "Columns") 
+        (- #1 "Columns")
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Mank" 
+    (players 2) 
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns"
+            (track "Track" "0,ESE,E,ENE,WNW,N,W" loop:True)
+        )
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+        (map {(pair P1 LastSite) (pair P2 FirstSite)}) 
+        (piece "Seed" Shared)
+    }) 
+    (rules 
+        
+        (start (set Count 6 to:(union (sites P1) (sites P2))))
+        
+        (play (move Select 
+                (from 
+                    (sites Mover) 
+                    if:(> (count at:(from)) 0)
+                ) 
+                (then 
+                    (sow
+                        apply:(if 
+                            (= (to) (mapEntry (mover)))
+                            (moveAgain)
+                            (if (and { 
+                                    (= (count at:(to)) 1) 
+                                    (> (count at:("RealOppositePit" (to))) 0)
+                                })
+                                (and 
+                                    (fromTo 
+                                        (from (to)) 
+                                        (to (mapEntry (mover))) 
+                                        count:(count at:(to))
+                                    ) 
+                                    (fromTo 
+                                        (from ("RealOppositePit" (to))) 
+                                        (to (mapEntry (mover))) 
+                                        count:(count at:("RealOppositePit" (to)))
+                                    ) 
+                                ) 
+                            )
+                        )
+                        skipIf:(= (to) (mapEntry (next)))
+                    )
+                )
+            )
+        )
+        
+        (end ("MancalaByScoreWhen" (no Moves Mover)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    (graphics {
+        (board Style Mancala)
+    })
+)
