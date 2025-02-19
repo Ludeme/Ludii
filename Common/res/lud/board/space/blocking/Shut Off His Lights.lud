@@ -1,0 +1,50 @@
+(game "Shut Off His Lights" 
+    (players 2) 
+    (equipment { 
+        (board (celtic 4)) 
+        (piece "Light" Each
+                (move
+                        Leap
+                        "KnightWalk"
+                        (to if:(is Empty (to)))
+                        (then
+                        		(forEach Site (sites Around (last To) includeSelf:True)
+                                        (if (is Occupied (site))
+                                            (remove (site))
+                                            (add (piece (mover)) (to (site)))
+                                        )
+                                    )		
+                        )
+                    ) 
+        )
+    }) 
+    (rules
+        (start { 
+        	(place Random {"Light1"} count:12)
+        	(place Random {"Light2"} count:12)
+        })
+        (play (forEach Piece))
+        
+        (end 
+            (if (no Pieces Next) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (board Colour Phase0 (colour 0 102 0))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+    })
+)
