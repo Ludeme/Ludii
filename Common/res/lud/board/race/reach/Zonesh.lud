@@ -1,0 +1,55 @@
+(define "FromIsOnTheRegionToFill" (is In #1 (sites (player (mover)))))
+
+//------------------------------------------------------------------------------
+
+(game "Zonesh"
+    (players 2)
+    (equipment {
+        (board (square 6))	
+        (piece "Ant" P1 (if ("FromIsOnTheRegionToFill" (from)) ("StepToNotFriend" Orthogonal) ("StepToNotFriend")))
+        (piece "Grasshopper" P2 (if ("FromIsOnTheRegionToFill" (from)) ("StepToNotFriend" Orthogonal) ("StepToNotFriend")))
+        (regions "Home" P1 
+            (difference 
+                (expand (intersection (sites Bottom) (sites Left)) steps:3 Orthogonal) 
+                (sites {
+                    (ahead (coord row:0 column:5) steps:3 N)
+                    (ahead (coord row:0 column:5) steps:3 E)
+                })
+            )
+        )
+        (regions "Home" P2 
+            (difference 
+                (expand (intersection (sites Top) (sites Right)) steps:3 Orthogonal) 
+                (sites {
+                    (ahead (coord row:5 column:0) steps:3 W)
+                    (ahead (coord row:5 column:0) steps:3 S)
+                })
+            )
+        )
+        
+        (map {(pair P1 35) (pair P2 0)})
+    })
+    (rules 
+        (start {
+            (place "Ant1" (sites P1))
+            (place "Grasshopper2" (sites P2))
+        })
+        (play (forEach Piece))
+        (end (if (or (no Pieces Next) (= (last To) (mapEntry (mover)))) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    
+    (graphics {
+        (board Style Board)
+        (board Colour InnerEdges (colour 160 140 100))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour Phase0 (colour 255 230 150))
+        (show Edges Diagonal Hidden)
+    })
+)
