@@ -1,0 +1,48 @@
+(game "NotChess"
+    (players 2)
+    (equipment {
+        (board (square 8))	
+        (piece "Knight" 
+        	("LeapCapture" "KnightWalk" ~
+        	(then 
+        		(and
+        			(remove (last To))
+        			(add (piece (id "Pawn" Mover)) (to (last To)))
+        		)
+        	)
+        	)
+        )
+        (piece "Pawn" ("StepToNotFriend" Orthogonal
+            	(then 
+                		(and
+                			(remove (last To))
+                			(add (piece (id "Knight" Mover)) (to (last To)))
+                		)
+                	)
+                )
+        		)
+    })
+    (rules 
+        (start {
+            (place "Pawn1" (sites {"C1" "E1" "G1"}))
+            (place "Knight1" (sites {"B1" "D1" "F1"}))
+
+            (place "Pawn2" (sites {"B8" "D8" "F8"}))
+            (place "Knight2" (sites {"C8" "E8" "G8"}))
+        })
+        
+        (play (forEach Piece))
+        (end (if (no Pieces Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    
+    (graphics {
+        (board Style Chess)
+    })
+)
