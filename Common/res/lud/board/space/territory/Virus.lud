@@ -1,0 +1,76 @@
+(game "Virus"
+    (players 2)
+    (equipment {
+        (board (square 8))
+        (piece "Disc" Each
+            (move Step 
+                (to if:(is Empty (to)))
+                (then
+                    (and
+                        (add (piece (id "Disc" Mover)) (to (last From)))
+                        (forEach Site 
+                            (intersection 
+                                (sites Around (last To)) 
+                                (sites Occupied by:Next)
+                            )
+                            (and 
+                                (remove (site)) 
+                                (add (piece (id "Disc" Mover)) (to (site))) 
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    })
+    (rules
+        (start {
+            (place "Disc1" {"B2"})
+            (place "Disc2" {"G7"})
+        })
+        (play
+            (or
+                (forEach Piece
+                    (then 
+                        (and 
+                            (set Score P1 (count Sites in:(sites Occupied by:P1)))	 
+                            (set Score P2 (count Sites in:(sites Occupied by:P2)))
+                        )
+                    )
+                )
+                (move Add
+                    (to 
+                        (sites Empty)
+                        if:(is Empty (to))
+                    )
+                    (then 
+                        (and 
+                            (set Score P1 (count Sites in:(sites Occupied by:P1)))	 
+                            (set Score P2 (count Sites in:(sites Occupied by:P2)))
+                        )
+                    )
+                )
+            )
+        )
+        (end
+            {
+                (if ("NoSites" (sites Occupied by:Next)) 
+                    (result Mover Win)
+                )
+                (if (is Full)
+                    (byScore {
+                        (score P1 (count Sites in:(sites Occupied by:P1)))
+                        (score P2 (count Sites in:(sites Occupied by:P2)))
+                    })
+                )
+            }
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
