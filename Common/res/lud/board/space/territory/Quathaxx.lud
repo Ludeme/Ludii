@@ -1,0 +1,79 @@
+(game "Quathaxx" 
+    (players 2) 
+    (equipment { 
+        (board (quadhex 4)) 
+        (piece "Marker" Each 
+            (or 
+                (move 
+                    (from) 
+                    (to (sites Around (from)) if:(is Empty (to))) 
+                    copy:True
+                )
+                (move 
+                    (from) 
+                    (to 
+                        (difference 
+                            (expand origin:(from) steps:2) 
+                            (expand origin:(from))
+                        ) 
+                        if:(is Empty (to))
+                    )
+                )
+                (then
+                    (forEach Site 
+                        (intersection 
+                            (sites Around (last To)) 
+                            (sites Occupied by:Next)
+                        )
+                        (and 
+                            (remove (site)) 
+                            (add (piece (id "Marker" Mover)) (to (site))) 
+                        )
+                    )
+                )
+            )
+        )
+        }
+    ) 
+    (rules 
+        (start {
+            (set Score Each 2)
+            (place "Marker1" {"L1" "L37" "AZ19"})
+            (place "Marker2" {"A19" "AO37" "AO1"})
+        })
+        (play (forEach Piece
+                (then 
+                    (and 
+                        (set Score P1 (count Sites in:(sites Occupied by:P1)))	 
+                        (set Score P2 (count Sites in:(sites Occupied by:P2)))
+                    )
+                )	
+            )
+        )
+        
+        (end
+            (if (or 
+                    ("NoSites" (sites Occupied by:Next)) 
+                    (is Full)
+                )
+                (byScore)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+    })
+    
+)
