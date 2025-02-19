@@ -1,0 +1,38 @@
+(game "Roots"
+    (players 2)
+    (equipment {
+        (board (hex 6))
+        (piece "Disc" Each)
+    })
+    (rules
+        (start {
+            (place "Disc1" (sites {5 40 90}))
+            (place "Disc2" (sites {0 50 85}))
+        })
+        (play
+            (move Add
+                (to
+                    (sites Empty)
+                    if:(= 
+                        (count Sites
+                            in:(sites Around
+                                (to)
+                                Own
+                                Orthogonal
+                            )
+                        )
+                        1
+                    )
+                )
+            )  
+        )
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
