@@ -1,0 +1,74 @@
+(define "MovePiece"
+    (move Slide 
+        (to
+            (sites Empty)
+            (apply
+                if:(or {
+                    (is In 
+                        (ahead (to) steps:1 (directions Cell from:(from) to:(to)))
+                        (sites Occupied by:All)
+                    )
+                    (= (ahead (to) steps:1 (directions Cell from:(from) to:(to))) (to))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Neutron"
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Disc" Each)
+        (piece "Neutron" Shared)
+    })
+    (rules
+        (start {
+            (place "Disc1" (sites Bottom))
+            (place "Disc2" (sites Top))
+            (place "Neutron" (sites {12}))
+        })
+        (play
+            (if (= (count Moves) 0)
+                (forEach Piece "Disc"
+                    ("MovePiece")
+                )
+                (if ("SameTurn")
+                    (forEach Piece "Disc"
+                        ("MovePiece")
+                    )
+                    (forEach Piece "Neutron"
+                        ("MovePiece")
+                        Shared
+                        (then
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if (is In (where "Neutron" Shared) (sites Bottom)) 
+                (result P1 Win)
+            )
+            (if (is In (where "Neutron" Shared) (sites Top)) 
+                (result P2 Win)
+            )
+            (if (and (no Moves Next) (is Next P1))
+                (result P2 Win)
+            )
+            (if (and (no Moves Next) (is Next P2))
+                (result P1 Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
