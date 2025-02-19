@@ -1,0 +1,43 @@
+(game "Un" 
+    (players 2) 
+    (equipment { 
+        (board (hex 5)) 
+        (piece "Marker" Neutral 
+            (move Slide
+                (between trail:(id "Marker" Shared))	
+            )
+        )
+        (piece "Marker" Shared)
+    })
+    
+    (rules 
+        (meta (swap))
+        phases:{
+        (phase "Init"
+            (play (move Add (piece "Marker0") (to (sites Empty))))
+            (nextPhase "Main")
+        )
+        (phase "Main"
+            (play (forEach Piece Neutral)
+            )
+        )
+        }
+        
+        (end (if (no Moves Next) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (player Colour Neutral (colour Black))
+    })
+    
+)
