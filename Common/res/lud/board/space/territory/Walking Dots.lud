@@ -1,0 +1,82 @@
+(define "CaptureSurroundedPiece"
+    (enclose 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            if:("IsEnemyAt" (between)) 
+            (apply    
+                (remove (between)) 
+            ) 
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Walking Dots" 
+    (players 2) 
+    (equipment { 
+        (board (square 8) use:Vertex) 
+        (piece "Marker" Each)
+    })
+    
+    (rules 
+        phases:{
+        (phase "Init"
+            (play (move Add (to (sites Empty))))
+            (nextPhase (= 4 (count Sites in:(sites Occupied by:All))) "Main")
+        )
+        (phase "Main"
+            (play (or 
+                    (move Add 
+                        (to (sites Around 
+                                (sites Occupied by:Mover)
+                                Orthogonal
+                                if:(is Empty (to))
+                            )
+                        )
+                        (then "CaptureSurroundedPiece")
+                        
+                    )
+                    
+                    (move Pass)
+                )
+            )
+        )
+        }
+        
+        (end
+            (if (all Passed)
+                (byScore {
+                    (score P1 (+ 
+                            (size Territory P1) 
+                            (count Pieces P1)
+                        )
+                    ) 
+                    (score P2 (+ 
+                            (size Territory P2) 
+                            (count Pieces P2)
+                        )
+                    )
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (board Style Go)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+    
+)
