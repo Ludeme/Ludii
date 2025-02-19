@@ -1,0 +1,68 @@
+(define "UpdateScore"
+    (if
+        (>= (count Sites in:(sites Group at:(last To) Orthogonal)) (score #1))
+        (set Score #1 (count Sites in:(sites Group at:(last To) Orthogonal)))
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(game "Taiji"
+    (players 2)
+    (equipment {
+        (board (square 9))
+        (piece "Marker" Each)
+    })
+    (rules
+        (play
+            (if ("SameTurn")
+                (move Add 
+                    (piece (id "Marker" Next)) 
+                    (to 
+                        (intersection 
+                            (sites Around (last To) Orthogonal) 
+                            (sites Empty)
+                        )
+                    )
+                    (then
+                        ("UpdateScore" Next)
+                    )
+                )
+                (move Add 
+                    (to (sites Empty)
+                        if:(> 
+                            (count Sites 
+                                in:(intersection (sites Around (to) Orthogonal) (sites Empty))
+                            )
+                            0
+                        )
+                    )
+                    (then
+                        (and
+                            ("UpdateScore" Mover)
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if (and (no Moves Next) (= (score Mover) (score Next)))
+                (result P2 Win)
+            )
+            (if (and (no Moves Next) (> (score Mover) (score Next)))
+                (result Mover Win)
+            )
+            (if (and (no Moves Next) (< (score Mover) (score Next)))
+                (result Next Win)
+            )
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+)
