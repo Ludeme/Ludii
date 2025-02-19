@@ -1,0 +1,47 @@
+(game "Slimetrail"
+    (players 2)
+    (equipment {
+        (board (rotate -30 (hex Diamond 11)))	
+        (piece "Snail" Shared 
+            (move Step (to if:(is Empty (to)))
+                (then 
+                    (add 
+                        (piece (id "Leaf" Neutral)) 
+                        (to (last From)) 
+                    )
+                )
+            )
+        )
+        
+        (piece "Leaf" Neutral)
+    })
+    (rules 
+        (start (place "Snail" (centrePoint)))
+        (play (forEach Piece Shared))
+        (end {
+            (if (no Moves Next) (result Mover Win))
+            (if (= (last To) 120) (result P1 Win))
+            (if (= (last To) 0) (result P2 Win))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    
+    (graphics {
+        (board Style Board)
+        (board Colour InnerEdges (colour 160 140 100))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour Phase0 (colour Green))
+        (show Edges Diagonal Hidden)
+        (piece Scale "Snail" 0.8)
+        (piece Colour "Leaf" fillColour:(colour Brown))
+        (piece Colour "Snail" fillColour:(colour Brown))
+        (show Symbol "hex" 0 fillColour:(colour Black) scale:0.8) 
+        (show Symbol "hex" 120 fillColour:(colour White) scale:0.8) 
+    })
+)
