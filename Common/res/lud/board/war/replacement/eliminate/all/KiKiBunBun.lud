@@ -1,0 +1,96 @@
+(define "KiKiHop"
+    (move Hop
+        #1
+        #2
+        (between
+            if:(or ("IsEnemyAt" (between)) ("IsFriendAt" (between)))
+            (apply if:("IsEnemyAt" (between)) (remove (between)))
+        )
+        (to if:(is Empty (to)))
+        #3
+    )
+)
+
+(define "IsUnpromoted" ("IsPieceAt" "Counter" Mover (last To)))
+
+//------------------------------------------------------------------------------
+
+(game "KiKiBunBun" 
+    ("TwoPlayersNorthSouth")
+    ("DraughtsEquipment" (square 8))
+    (rules
+        ("BlackCellsSetup" 3)
+        (play
+            (if (is Mover P1)
+                (if "SameTurn"
+                    (if "IsUnpromoted"
+                        ("KiKiHop" (from (last To)) (directions {FR FL})
+                            (then 
+                                ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                    ("ReplayIfCanMove" ("KiKiHop" (from (last To)) (directions {FR FL})))
+                                ) 
+                            ) 
+                        )
+                        ("HopDiagonalSequenceCaptureAgain")
+                    )
+                    (priority {
+                        (or 
+                            (forEach Piece "Counter" 
+                                ("KiKiHop" (from) (directions {FR FL}) 
+                                    (then 
+                                        ("PromoteIfReach" (sites Next) "DoubleCounter"
+                                            ("ReplayIfCanMove" ("KiKiHop" (from (last To)) (directions {FR FL})))
+                                        ) 
+                                    ) 
+                                ) 
+                            )
+                            (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture"))
+                        )
+                        
+                        (or 
+                            (forEach Piece "Counter" 
+                                ("StepToEmpty" (directions {FR FL}))
+                                (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
+                            )
+                            (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
+                        )
+                    })
+                )
+                (priority {
+                    (or 
+                        (forEach Piece "Counter" 
+                            ("StepToEnemy" (directions {FR FL}) 
+                                (then 
+                                    ("PromoteIfReach" (sites Next) "DoubleCounter") 
+                                ) 
+                            ) 
+                        )
+                        (forEach Piece "DoubleCounter" ("StepToEnemy" Diagonal))
+                    )
+                    
+                    (or 
+                        (forEach Piece "Counter" 
+                            ("StepToEmpty" (directions {FR FL}))
+                            (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
+                        )
+                        (forEach Piece "DoubleCounter" "StepDiagonalToEmpty")
+                    )
+                })
+            )
+        )
+        (end ("BlockWin"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+
+    })
+    
+    (graphics {
+        (board Style Chess)
+        (piece Families {"Defined" "Isometric"})
+    })
+)
