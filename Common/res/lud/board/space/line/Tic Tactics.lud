@@ -1,0 +1,37 @@
+(game "Tic Tactics" 
+    (players 2) 
+    (equipment { 
+        (board 
+        	(remove	
+        	(square 11)
+        		cells:{
+        			3 7 14 25 18 29 33 34 35 37 38 39 41 42 43
+        		    47 58 69 51 62 73 77 78 79 81 82 83 85 86 87
+        		    91 102 113 95 106 117
+        		}
+        	)
+        ) 
+        (piece "Disc" Each) 
+        (piece "Cross" Each) 
+    }) 
+    (rules
+        (play 
+        	(if (or (= (% (count Turns) 4) 0) (= (% (count Turns) 4) 1))
+        		(move Add (piece (mover)) (to (sites Empty)))
+        		(move Add (piece (+ 2 (mover))) (to (sites Empty)))
+        	)
+        )
+        (end ("Line3Win"))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+)
