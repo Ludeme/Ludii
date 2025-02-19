@@ -1,0 +1,43 @@
+(game "Vertiges" 
+    (players 2) 
+    (equipment { 
+        (board 
+        	(remove
+        	(square 12) 
+        		vertices:{0 1 2 3 8 9 10 11 12 13 14 21 22 23 24 25 34 35 36 47
+        		96 107 108 109 118 119 120 121 122 129 130 131 132 133 134 135 140..143}
+        	)
+        	use:Vertex
+        ) 
+        (piece "Marker" Each
+        	(move Slide All)
+        )
+    }) 
+    (rules 
+    	(start {
+    		(place "Marker1" {"A8" "A6" "L7" "L5" "F1" "G1" "E12" "H12" "I4" "D9"})
+    		(place "Marker2" {"A7" "A5" "L8" "L6" "E1" "H1" "F12" "G12" "I9" "D4"})
+    	})
+        (play (forEach Piece))
+        (end (if (is Line 5 All) (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+    	(board Background fillColour:(colour Black))
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Yellow))
+        (show Edges Hidden)
+        (piece Scale 0.5)
+    })
+    
+)
