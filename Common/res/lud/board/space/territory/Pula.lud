@@ -1,0 +1,98 @@
+(define "CellOfLastVertex" 
+    (sites Incident Cell of:Vertex at:(last To)) 
+)
+
+(define "AllHolesOfCell"
+     (sites Incident Vertex of:Cell at:(site))
+)
+
+(define "NumHolesCells" 
+    (count Sites in:("AllHolesOfCell"))
+)
+
+(define "NumOwnedHolesCells"
+    (count Sites 
+        in:(intersection
+            ("AllHolesOfCell")
+            (sites Occupied by:Mover on:Vertex)
+        )
+    )		
+)
+
+(define "MajorityOfEmptyCell" 
+    (if (is In (site) (sites Centre))
+        (>=
+            (+ ("NumOwnedHolesCells") (if (= (mover) (who Vertex at:(centrePoint Vertex))) 1 0))
+            3
+        )
+        (>=
+            ("NumOwnedHolesCells")
+            (if (is Even ("NumHolesCells")) (/ ("NumHolesCells") 2) (+ (/ ("NumHolesCells") 2) 1))
+        )
+    )
+)
+
+(define "CaptureTheCell" 
+    (claim
+        (piece (id "Hex" Mover))
+        (to
+            Cell 
+            (site) 
+        )
+    ) 
+)
+
+//------------------------------------------------------------------------------
+
+(game "Pula" 
+    (players 2)
+    (equipment {
+        (board (hex 4))
+        (piece "Marker" Each)
+        (piece "Hex" Each)
+        (regions P1 {(sites Side N) (sites Side S) })
+        (regions P2 {(sites Side W) (sites Side E) })
+    })
+    (rules
+        (meta (swap))
+        (play 
+            (move Add (to Vertex (sites Empty Vertex) )
+                (then 
+                    (forEach Site
+                        "CellOfLastVertex" 
+                        (if "MajorityOfEmptyCell"
+                            "CaptureTheCell"
+                        )
+                        (then
+                            (forEach Site (forEach ("CellOfLastVertex") if:(is Mover (who Cell at:(site))))
+                                (if (is Connected at:(site) Mover)
+                                    (trigger "Connected" Mover)
+                                )
+                            )		
+                        )
+                    )
+                )		
+            )
+        )
+        
+        (end 
+            (if (> (count Pieces Mover "Hex") 18) (result Mover Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal Hidden)
+        (piece Scale "Marker" 0.35)    
+        (piece Scale "Hex" 0.5)
+    })
+    
+)
