@@ -1,0 +1,32 @@
+(game "Queen's Four"
+	(players 2)
+    (equipment {
+        (board (rectangle 12 15))	
+        (piece "Ball" Each (move Slide))
+    })
+    (rules 
+        (start {
+            (place "Ball1" (sites {7 22 67 82 127 142}))
+            (place "Ball2" (sites {37 52 97 112 157 172}))
+        })
+       (play (forEach Piece))
+       (end (if (is Line 4) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info {
+    })
+    
+    (graphics {
+        (board Style Board)
+        (board Colour InnerEdges (colour 160 140 100))
+        (board Colour OuterEdges (colour Hidden))
+        (board Colour Phase0 (colour 255 230 150))
+        (show Edges Diagonal Hidden)
+        (player Colour P1 (colour Blue))
+        (player Colour P2 (colour Red))
+    })
+)
