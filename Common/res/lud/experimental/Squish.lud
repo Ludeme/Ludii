@@ -128,8 +128,32 @@
 (define "ColourBackground" (colour 245 245 245)) 
 
 (metadata
-    (info     
+    (info
         {
+        (description "Squish is an unification game based with the theme of 'condensation'. Players take turns moving one of their pieces one space at a time toward an allied piece on the same line. If a player's piece moves to a space occupied by an opponent's piece, the opponent's piece is captured by replacement. If there is no friendly piece on the same line, the piece cannot move.
+            
+        The first player to move all of his or her pieces on the board adjacent to each other or to prevent the opponent from moving wins the game.")
+        (rules "Goal: Take turns without passing until you unify the pieces of your color into a single group.
+            
+            The board starts with pieces of each color distributed symmetrically on every 3rd cell of the board.
+            (For a game on an order 4 board, the outer cells are not used.)
+            
+            Play:
+            Decide which player will play with which color (Dark or Light). Light is the first player to play.
+            
+            On each turn, the move one of your pieces to an adjacent space so that it is one step closer to a friendly that lies anywhere along the line of movement. 
+            If that cell is occupied by the opponent's piece, the opponent's piece is removed from the game as part of the move. 
+            The moving piece cannot move onto a space occupied by a friendly piece.
+            
+            The game ends in a win for a player who moves all his pieces into a single group.  Otherwise, if the player captures an opponent's piece leaving the opponent with only a single group of pieces, the game ends in a win for the opponent. (Unifying the pieces of both players on the same move is a win for the moving player.)
+            
+        The game also ends in a loss for the first player who is unable to move, if the pieces are not yet unified.")
+        (id "4212")
+        (version "1.3.14")
+        (classification "experimental")
+        (author "Kanare Kato")
+        (credit "Dale W. Walton")
+        (date "22-10-2021")
         }
     )
     (graphics 

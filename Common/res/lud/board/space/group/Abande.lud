@@ -113,7 +113,17 @@
 //-------------------------------------------------------------------------
 
 (metadata
-    (info {
-    	
-    })
+    (info
+        {
+        (description "Abande is either player on a 7x7 square board or on a hexagonal board of side 4.")
+        (rules "Abande is a two-player game played on a hexagonal board with 37 spaces. Each player has 18 pieces in either white or black. The game begins with the white player placing a piece on the board, and players take turns making either an initiative move (placing a new piece) or a regular move (moving a piece or stack on top of an adjacent opponent piece or stack). All pieces on the board must be connected in a single band. Pieces or stacks move one space in any of the six directions and capture by moving on top of an opponent piece or stack. Stacks cannot grow larger than 3 pieces high and cannot be split. Passing a turn is allowed only if a player has no more pieces in hand. The game ends when both players pass their turn in sequence. Before scoring, pieces or stacks with no connection to an opponent piece are removed. Players earn points for single pieces, double stacks, and triple stacks, with the player with the higher score winning the game. If both players have the same score, the game is a draw.")
+        (id "4256")
+        (source "<a href=\"https://jpneto.github.io/world_abstract_games/abande.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/group")
+        (author "Dieter Stein")
+        (credit "Achille Morenville")
+        (date "2005")
+        }
+    )
 )

@@ -508,6 +508,56 @@
     
     (info
         {
+        (description "Chu Seireigi (中精霊棋 <i>chu seireigi</i>, middle spirit's game) is a large variant of Seireigi which is essentially a version of Chu Shogi that is designed to be played with the drop rule. Because of this, most unpromoted pieces have a forward bias in their movements and are quite weak, and the Lion is replaced with the Lion Hawk, which moves as a Bishop or jumps anywhere within a distance of exactly two squares.
+            
+            Captured pieces are placed in the hand in the following order, from left to right:
+            ● Pawn
+            ● Lance
+            ● Ram's-Head Soldier
+            ● Running Rabbit
+            ● Knight
+            ● Flying Swallow
+            ● Copper General
+            ● Silver General
+            ● Gold General
+            ● Strong Bear
+            ● Great Leopard
+            ● Running Wolf
+            ● Great Elephant
+            ● Kirin
+            ● Phoenix
+            ● Bishop
+            ● Rook
+            ● Lion Hawk
+        ● Queen")
+        (rules "All rules are the same as in standard Shogi, except as follows.
+            ● The initial setup and equipment are different (Game -> Restart (Ctrl-R) to see on board)
+            ● The board may be either a traditional uncheckered Shogi board, or a checkered board with a dark square at each player's left-hand side.
+            ● Lances promote to Free Tiger, which slides sideways, steps one square vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
+            ● The Ram's-Head Soldier slides diagonally forward, promotes to Treacherous Fox, which slides vertically, steps one square sideways, or jumps to any square that is two squares ahead or behind in an adjacent file (column).
+            ● The Running Rabbit slides in any forward direction, promotes to Prancing Stag, which slides sideways or diagonally forward, or steps one square vertically.
+            ● Knights promote to Heavenly Horse, which steps one square in any diagonal or forward direction, jumps two squares in any forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
+            ● The Flying Swallow jumps two squares in a straight line in any forward direction, promotes to Golden Bird, which jumps two squares in a straight line in any sideways or backwards direction, jumps to either square that is two squares to either side in the rank (row) immediately in front of it, jumps to either square that is two squares ahead in an adjacent file (column), or steps one square vertically or forward.
+            ● The Copper General steps one square vertically or forward, promotes to Great Leopard, which steps one square straight backward or diagonally forward, or slides sideways.
+            ● Silver Generals promote to Running Wolf, which steps one square sideways or diagonally forward, or slides vertically.
+            ● Gold Generals promote to Great Elephant, which steps one square diagonally backward or orthogonally sideways or forward, or slides diagonally forward.
+            ● The Strong Bear steps one square in any diagonal, sideways, or forward direction, promotes to Whale, which slides diagonally forward or directly backward, steps one square diagonally backward or directly forward, or jumps to either square that is two squares to either side in the rank (row) immediately behind it.
+            ● The Great Leopard steps one square straight backward or diagonally forward, or slides sideways, promotes to Flying Ox, which slides in any diagonal or vertical direction.
+            ● The Running Wolf steps one square sideways or diagonally forward, or slides vertically, promotes to Free Boar, which slides in any diagonal or sideways direction.
+            ● The Great Elephant steps one square diagonally backward or orthogonally sideways or forward, or slides diagonally forward, promotes to Teaching King, which slides vertically or forward, or steps one square sideways or diagonally backward.
+            ● The Kirin steps one square diagonally or jumps two squares in a straight line along any orthogonal direction, promotes to Bishop.
+            ● The Phoenix steps one square orthogonally or jumps two squares in a straight line along any diagonal direction, promotes to Rook.
+            ● The Lion Hawk slides diagonally or jumps anywhere within a distance of exactly two squares, does not promote.
+            ● The Queen slides in any orthogonal or diagonal direction, does not promote.
+            ● The promotion zone is the farthest four ranks of the board.
+        ● In over-the-board play, the minimum number of points needed to not lose during an impasse is 56. Each Queen, Lion Hawk, Rook, Bishop, Phoenix, or Kirin, promoted or not, scores 5 points for the owning player, and all other pieces except Kings score 1 point each.")
+        (id "4187")
+        (source "<a href=\"https://www.chessvariants.com/invention/chuseireigi\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />www.chessvariants.com</a>")
+        (version "1.3.14")
+        (classification "board/war/replacement/checkmate/shogi")
+        (author "A. M. DeWitt")
+        (credit "A. M. DeWitt")
+        (date "2023")
         }
     )
     

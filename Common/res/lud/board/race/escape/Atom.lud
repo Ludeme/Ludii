@@ -92,8 +92,17 @@
 
 (metadata 
     
-    (info {
-    })
+    (info
+        {
+        (description "Atom is a two player strategy game where the aim is to get 5 of your pieces, or atoms, off the board first.")
+        (rules "Atom is a two player strategy game where the aim is to get 5 of your pieces, or atoms, off the board first. The game is played with 24 pieces of two different colours on a board made up of 7 circles called orbitals, divided into two layers: layer 1 is made up of the 4 central orbitals, and layer 2 is made up of the 3 remaining orbitals. To move from layer 1 to layer 2, at least 3 atoms of the same colour must be aligned on the same radius and one atom must be in the last orbital of the layer. To remove an atom from the board, at least 2 atoms of the same colour must be aligned on the same radius of layer 2 and one atom must be in the last orbital of the layer. If at any point during a player's turn the conditions are met for an atom to jump to another layer or off the board, the jump will be made during that turn. A chain reaction can occur. There can only be one atom per square and it is not possible to jump over an atom to a free square. The white player starts the game and on each turn a player can choose to place an atom of his colour on one of the 7 squares of the first orbital space or to move one of his pieces along a line on the board from one square to another adjacent square, but only within the same level.")
+        (id "4262")
+        (version "1.3.14")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (date "2024")
+        }
+    )
     
     (graphics {
         (no Sunken)

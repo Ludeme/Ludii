@@ -1,26 +1,26 @@
 (define "AddRandomPiece"
-	(if 
-		(and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:2)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
-		(add (piece (value Random (range 1 3))) (to 30))
-		(if (and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:2)) 10)})
-			(add (piece (value Random (range 1 2))) (to 30))
-			(if (and {(< (count Sites in:(sites Occupied by:P1 component:2)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
-				(add (piece (value Random (range 2 3))) (to 30))
-				(if (and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
-					(add (piece (arrayValue (array {1 3}) index:(value Random (range 0 1)))) (to 30))
-					(if (< (count Sites in:(sites Occupied by:P1 component:1)) 10)
-						(add (piece 1) (to 30))
-						(if (< (count Sites in:(sites Occupied by:P1 component:2)) 10)
-							(add (piece 2) (to 30))
-							(if (< (count Sites in:(sites Occupied by:P1 component:3)) 10)
-								(add (piece 3) (to 30))
-							)
-						)
-					)
-				)
-			)
-		)
-	)
+    (if 
+        (and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:2)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
+        (add (piece (value Random (range 1 3))) (to 30))
+        (if (and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:2)) 10)})
+            (add (piece (value Random (range 1 2))) (to 30))
+            (if (and {(< (count Sites in:(sites Occupied by:P1 component:2)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
+                (add (piece (value Random (range 2 3))) (to 30))
+                (if (and {(< (count Sites in:(sites Occupied by:P1 component:1)) 10) (< (count Sites in:(sites Occupied by:P1 component:3)) 10)})
+                    (add (piece (arrayValue (array {1 3}) index:(value Random (range 0 1)))) (to 30))
+                    (if (< (count Sites in:(sites Occupied by:P1 component:1)) 10)
+                        (add (piece 1) (to 30))
+                        (if (< (count Sites in:(sites Occupied by:P1 component:2)) 10)
+                            (add (piece 2) (to 30))
+                            (if (< (count Sites in:(sites Occupied by:P1 component:3)) 10)
+                                (add (piece 3) (to 30))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
@@ -35,29 +35,29 @@
         (hand Each)
     }) 
     (rules
-		(start {
-    		(place Random (sites {(handSite 1)}) {"Ball0" "Ball1" "Ball2"} True)
-			//(place "Ball" "Hand" count:1)
-		})
+        (start {
+            (place Random (sites {(handSite 1)}) {"Ball0" "Ball1" "Ball2"} True)
+            //(place "Ball" "Hand" count:1)
+        })
         (play
-        	(move //Add
-        		(from (handSite 1))
-	        	(to (sites Empty) 
-	        		if:(and {
-	        			(is Flat)
-	        			(or {
-	        				(>= (count SitesPlatformBelow what:(what at:30)) 2)
-	        				(= (layer of:(to)) 0)
-	        			})
-	        		})
-	            )
-	        	(then 
-	        		(if 
-		        		(is Empty 30)
-		        		"AddRandomPiece"
-	        		)
-	        	)
-        	)
+            (move //Add
+                (from (handSite 1))
+                (to (sites Empty) 
+                    if:(and {
+                        (is Flat)
+                        (or {
+                            (>= (count SitesPlatformBelow what:(what at:30)) 2)
+                            (= (layer of:(to)) 0)
+                        })
+                    })
+                )
+                (then 
+                    (if 
+                        (is Empty 30)
+                        "AddRandomPiece"
+                    )
+                )
+            )
         )
         (end {
             (if (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (result Mover Win))
@@ -70,17 +70,27 @@
 
 (metadata 
     
-	(info
+    (info
         {
+        (description "Spalone is a solitaire puzzle game played with a Series: Shibumi set.")
+        (rules "The player puts 10 balls of each colour (red, white, black) in a bag, then randomly draws a ball each turn and places it either: 1. on an empty board hole, or: 2. on a 2x2 platform that contains at least two balls of the same colour. The puzzle ends when the player cannot place the ball just drawn. It is solved if the player can place the last ball on the apex of the pyramid. The random draw means that not all games will be solvable - some patience may be required! We do not yet know exactly how much patience.")
+        (id "4248")
+        (source "<a href=\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />SHIBUMI Rulebook</a>")
+        (version "1.3.14")
+        (classification "puzzle/planning")
+        (author "Cameron Browne")
+        (publisher "Computational Creativity Group, nestorgames")
+        (credit "Cédric Antoine")
+        (date "2012")
         }
-    )	
-		
-	(graphics {
-		(piece Scale "Ball" 1.0)
-	    (board Style Shibumi)
-	    (piece Colour "Ball0" fillColour:(colour White))
-	    (piece Colour "Ball1" fillColour:(colour Black))
-	    (piece Colour "Ball2" fillColour:(colour Red))
-	})
-       
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour "Ball0" fillColour:(colour White))
+        (piece Colour "Ball1" fillColour:(colour Black))
+        (piece Colour "Ball2" fillColour:(colour Red))
+    })
+    
 )

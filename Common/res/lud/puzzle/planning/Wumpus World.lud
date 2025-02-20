@@ -5,18 +5,18 @@
 (define "AtWumpus" (is In (where "Human" P1) (sites "Wumpus")))
 (define "ArrowPath" (sites Between Orthogonal from:(where "Arrow" P1) fromIncluded:True to:(where "Human" P1)))
 (define "ArrowLogic" (if (= 0 (size Array (intersection (array (sites "Wumpus")) (array ("ArrowPath")))))
-                        (and
-                            (note "Thunk! The arrow hits a wall. You have failed to kill the wumpus.")
-                            (remove (where "Arrow" P1) at:EndOfTurn)
-                        )
-                        (and
-                            (or
-                                (set Var "WumpusKilled" 1)
-                                (remove (where "Arrow" P1) at:EndOfTurn)
-                            )
-                            (note "The wumpus yells in pain and dies")
-                        )
-                     )
+        (and
+            (note "Thunk! The arrow hits a wall. You have failed to kill the wumpus.")
+            (remove (where "Arrow" P1) at:EndOfTurn)
+        )
+        (and
+            (or
+                (set Var "WumpusKilled" 1)
+                (remove (where "Arrow" P1) at:EndOfTurn)
+            )
+            (note "The wumpus yells in pain and dies")
+        )
+    )
 )
 
 // "Binary" Variables: GoldFound, WumpusKilled (1 if true, Constants.UNDEFINED or -1 if not set / false)
@@ -27,46 +27,46 @@
     (players 1)
     (equipment
         {
-            (board (square 4))
-            (piece "Human" P1
-                (move Step Orthogonal
-                    (to if:(is Empty (to) ))
-                    (then
-                        (or
-                            (if (and ("AtGold") (!= (var "GoldFound") 1))
-                                (and
-                                    (set Var "GoldFound" 1)
-                                    (note "You found the gold")
-                                )
+        (board (square 4))
+        (piece "Human" P1
+            (move Step Orthogonal
+                (to if:(is Empty (to) ))
+                (then
+                    (or
+                        (if (and ("AtGold") (!= (var "GoldFound") 1))
+                            (and
+                                (set Var "GoldFound" 1)
+                                (note "You found the gold")
+                            )
+                        )
+                        (and
+                            (and
+                                (if ("IsNextToPit") (note "You feel a breeze. A pit is nearby!"))
+                                (if ("IsNextToWumpus") (note "Your nose wrinkles from the strong stench. A wumpus is nearby!"))
                             )
                             (and
-                                (and
-                                    (if ("IsNextToPit") (note "You feel a breeze. A pit is nearby!"))
-                                    (if ("IsNextToWumpus") (note "Your nose wrinkles from the strong stench. A wumpus is nearby!"))
-                                )
-                                (and
-                                    (if ("AtPit") (note "You fall into a pit and die."))
-                                    (if (and ("AtWumpus") (!= (var "WumpusKilled") 1)) (note "You are eaten by the wumpus."))
-                                )
+                                (if ("AtPit") (note "You fall into a pit and die."))
+                                (if (and ("AtWumpus") (!= (var "WumpusKilled") 1)) (note "You are eaten by the wumpus."))
                             )
                         )
                     )
                 )
             )
-            (hand P1 size:1)
-            (piece "Arrow" P1)
-            (regions "Gold" (sites {"B3"}))
-            (regions "Pits" (sites {"C1" "C3" "D4"}))
-            (regions "Wumpus" (sites {"A3"}))
-            (regions "Stench" (sites Around (sites "Wumpus") Orthogonal))
-            (regions "Breeze" (sites Around (sites "Pits") Orthogonal))
+        )
+        (hand P1 size:1)
+        (piece "Arrow" P1)
+        (regions "Gold" (sites {"B3"}))
+        (regions "Pits" (sites {"C1" "C3" "D4"}))
+        (regions "Wumpus" (sites {"A3"}))
+        (regions "Stench" (sites Around (sites "Wumpus") Orthogonal))
+        (regions "Breeze" (sites Around (sites "Pits") Orthogonal))
         }
     )
     (rules
         (start
             {
-                (place "Human" coord:"A1")
-                (place "Arrow" (handSite P1))
+            (place "Human" coord:"A1")
+            (place "Arrow" (handSite P1))
             }
         )
         (play
@@ -79,7 +79,7 @@
                 )
             )
         )
-
+        
         (end {
             (if (or (and ("AtWumpus") (!= (var "WumpusKilled") 1)) ("AtPit"))
                 (result Mover Loss)
@@ -96,6 +96,23 @@
 (metadata
     (info
         {
+        (description "Wumpus World is a common puzzle used for AI planning algorithms. In 'Wumpus World' the player is exploring a cave, seeking a pile of gold, while avoiding falling into pits and the wumpus.")
+        (rules "A grid of rooms contains one room with a wumpus, one or more rooms with pits, and one room with gold. The player must both find the gold and kill the wumpus to win.
+            
+            During a turn, the player may either move to an adjacent room or fire an arrow along an orthogonal path.
+            
+            The arrow will continue along the path until it either hits a wall or hits the wumpus, killing it.
+            
+            If the player moves into a room with a pit, they will fall and die. If the player moves into a room with a living wumpus, the wumpus will eat the player. If the player moves into a room with the gold, they will pick up the gold automatically, satisfying one of the win conditions.
+            
+        As warning, if a room adjacent to the player has a pit, they will feel a breeze. If the room is adjacent to the wumpus, they will smell a stench.")
+        (id "4314")
+        (source "<a href=\"https://cis.temple.edu/~giorgio/cis587/readings/wumpus.shtml\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />cis.temple.edu</a>")
+        (version "1.3.14")
+        (classification "puzzle/planning")
+        (author "Michael Genesereth")
+        (credit "Jeffrey Starr")
+        (date "1973")
         }
     )
 )

@@ -501,8 +501,53 @@
     (metadata
         (info
             {
-            } 
-        ) 
+            (description "Hordes' Realm is an abstract elimination war game based on choice of reinforcement or structured attack moves. It uses a special piece called a 'General' that determines where reinforcements occur, and foot soldiers that move together in a chosen direction from a specified depth from a front line, that are removed 1:1 together with any enemy they meet. 
+                
+                Surprisingly the number of turns needed does not depend much on the board size, but rather on the skill of the players and the balance of the pie move. Random play seems to finish, but slowly; thoughtful play is faster.
+                
+                Cycles are possible, but do not seem to be a concern in practice - and the rules to handle them are not implemented here: 
+                1. An opponent may bar the mover from making a repetition that he recognises.
+                2. If the piece counts for both players do not change during 5 consecutive turns, the first player to have a a greater number of pieces in play wins.
+                
+            The feature of Generals allows future implemention of a handicap with unequal Generals counts, to balance play between players of unequal skill levels.")
+            (rules "Goal is to eliminate the opponent.
+                
+                There are 2 set-up options: Pie Rule, and Central Placement rule (see Options below.)
+                
+                After this each turn consists of either Reinforcement moves or Advancing moves.
+                
+                Reinforcement Moves:
+                
+                Reinforcement is triggered by the movement of your 'General'. (see Options) 
+                It involves adding a piece to each open space that is not next to an enemy, but is next to one of your own pieces, in a particular direction determined by the options for the 'General'. 
+                
+                If no pieces can be added, a Reinforcement Move cannot be taken and the General cannot move.
+                
+                Advancing Moves:
+                
+                Advancing moves are taken by choosing a piece to move and its destination. 
+                
+                This choice indicates the distance (D) and direction in which a column of pieces moves towards the spaces in front of them. 
+                
+                As it advances, a column sacrifices pieces for enemies at a rate of 1:1.
+                
+                The column is part of a D-deep front of adjacent columns, which must/may be  selected to participate in the front's move, depending on the option. 
+                
+                Click on 'Pass' to finish the move.
+                
+                It is helpful to use the 'View Legal Moves' setting to see where to select them.
+                
+                Ending the game:
+                The game normally ends in elimination of one player.
+            However, if the piece counts remain the same for 5 consecutive turns, the game ends suddenly whenever one player has more pieces than the other.")
+            (id "4211")
+            (version "1.3.14")
+            (classification "experimental")
+            (author "Dale Walton")
+            (credit "Dale Walton")
+            (date "08-01-2024")
+            }
+        )
         
         (graphics
             {

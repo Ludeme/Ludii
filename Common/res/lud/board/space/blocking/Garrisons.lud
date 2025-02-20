@@ -600,17 +600,96 @@
 //----------------------------------------------------------
 
 (metadata
-    (info 
+    (info
         {
-        }
-    )
+        (description "Garrisons is an adaptation of my game Skirt in line with David Ploog's recommendations on avoiding cop-outs and making it easier for new players to learn.
+            Differences: Small suggested board to learn with. No pie (or optional pie); single action turns; pieces age by stacking becoming immobile. No incentive to pass. Game ends when one player controls more than half the board (win) or both contorl exactly half. Continuing to play will make this condition clearer without changing the outcome (unless a player blunders)
+            
+        The skirting, then is the focus of the game and the main learning hurdle.")
+        (rules "Garrisons Rules
+            The Board presented here is for learning to play. Please select a larger board for an actual game between human players.
+            
+            Overview
+            The game is played by placing or moving pieces (regiments) in order to occupy the most territory, and ends when it is clear who can do so.
+            
+            Regiments exert influence on the spaces around them. Their placement and movement is restricted by these influences.
+            
+            After moving, regiments become 'garrisoned', and can no longer move, but exert greater influence on the spaces around them. This is indicated by converting them to a 2-stack (garrison).
+            
+            Set-up:
+            After choosing colors, Black starts by placing a regiment onto any empty position, and then White does the same. Note: Avoid starting on the edge. - A piece started on the edge can be easily boxed in.
+            
+            Play
+            Players alternate taking turns as follows:
+            A turn is either placing a regiment, or moving a regiment, but not both. There is no need to pass.
+            
+            Placing a regiment.
+            A regiment is placed on any empty space where the friendly influence of the surrounding pieces is greater than the enemy's influence there. Regiments each contribute one influence, garrisons contribute 2. The piece being placed does not contribute influence.
+            
+            Moving a regiment.
+            A regiment moves in a series of 'marches', each 'march' moving the regiment one step to a neighboring empty position, provided both that:
+        1) -- The marching regiment maintains adjacency with (skirts) another piece during the 'march'. The adjacent piece may be of any type or ownership.
+        (This keeps the piece from marching away from contact with the entire group pieces on the board, even if that march would bring it back into contact.)
+    2) -- The position is not under the opponent's influence when entered. The influence of the moving piece IS counted.
     
-    (graphics 
-        {
-        (board Style Graph)
-        (board Colour InnerEdges (colour 62 72 55 150))
-        (board Colour OuterEdges (colour 62 72 55 150))
-    (board Colour InnerVertices (colour LightGrey)) // (colour 170 160 140))
+    The same regiment may continue to march, skirting the same or successive pieces, or stop at any time. When it stops, a piece is stacked on top to show that it is now garrisoned, and will no longer move.
+    
+    Another way to think about #2 is that the regiment can enter positions where a regiment could have been placed, and also neutral positions that are next to existing pieces.
+    
+    Because the influence of the regiment itself is counted on arrival, far away locations that have an enemy influence of 1 will become neutral when the regiment arrives, and the regiment can thus march into them, as well.
+    
+    Territory and Ending the Game
+    Your territory includes:
+1) All the locations you occupy
+2) All the locations that, if you were to pass until your opponent could no longer play, you could still reach with a series of your own moves.
+
+There is a definite point when one player's territory exceeds 1/2 of the board and a win can be claimed. This would end the game in tournament play.
+
+However it takes experience to see exactly when this occurs. There is no problem continuing to play until the result becomes visible; for example, when each playable region is fully surrounded by one color. Unless players make obvious blunders, the results will remain the same. Such blunders would only happen if a player does not yet realize they have won. For non-tournament play, the game is considered ended when play has actually stopped.
+
+In rare cases, both players may gain control of exactly half of the positions that are not entirely blocked off from future play, thus tying the game. Territorial ties on a board with an odd number of playing positions require that an odd number of positions must become blocked, with neither player able reach them.
+
+Board for regular play:
+Minimum edge length 5.
+To minimize draws, boards with odd numbers of playing positions are preferred. (eg. any regular hexagon)
+For balance, boards should have alternating edge lengths and not be centered on a play position.
+This suggests: Alternating edge hex boards of 5-6 (75); 7-8 (147); 9-10 (243)
+
+Basic Emergent Tactics:
+-- Placing regiments gives a player mobility;
+-- Moving them to create garrisons gives defense.
+-- Regiments cannot cross between enemy pieces located on a diagonal, and need assistance to march from one to the other.
+-- Similarly two unfriendly garrisons block passage through a location directly between them.
+Note: Regiments can easily skirt around and between these formations when they are friendly.
+
+-- Placing a regiment next to another regiment, prevents an enemy regiment from marching from one to the other without assistance.
+-- Creating a garrison by moving to the end of a line can prevent enemy regiments from marching around it without assistance.
+-- Doing either of these near the edge of the board blocks movement around entirely.
+
+-- Playing near (not on) the edge is an easy way to build and extend territory.
+-- Playing toward the center from the opponent's edge pieces might allow you to cut off larger areas.
+-- Playing a regiment next to an opponent's piece may allow him to reach areas that could not be reached before - for defense, leave a gap.
+-- But placing a garrison against a opponent's piece - or just near it - can restrict placements between them.
+-- Getting at least one piece onto the other side of a group is important to prevent the opponent from closing off large territories.
+
+-- A arc of 3 that includes a garrison, joined with a similar arc of 3 to form a cup around 2 open positions makes those positions yours, and is very hard for the opponent to move around.
+
+Options: For those who like tactical, puzzley games, and don't fall into analysis-paralysis *12 *23 protocols can be used for a higher branching factors. These would need to be played on larger boards.")
+(id "4208")
+(version "1.3.14")
+(classification "board/space/blocking")
+(publisher "Dale W. Walton")
+(credit "Dale W. Walton")
+(date "15-02-2024")
+}
+)
+
+(graphics 
+    {
+    (board Style Graph)
+    (board Colour InnerEdges (colour 62 72 55 150))
+    (board Colour OuterEdges (colour 62 72 55 150))
+(board Colour InnerVertices (colour LightGrey)) // (colour 170 160 140))
 (board Colour OuterVertices (colour LightGrey)) // (colour 170 160 140))
 (board StyleThickness OuterEdges .15)
 (board StyleThickness InnerEdges .15)

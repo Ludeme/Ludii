@@ -1,44 +1,53 @@
 (game "Spao" 
-	(players 3) 
+    (players 3) 
     (equipment { 
         (board (square 4 pyramidal:True) use:Vertex) 
         (piece "Ball" Each) 
     }) 
     (rules
         (play
-    		(move Add 
-    			(to (sites Empty) 
-    				if:(is Flat)
-    			)
-    			(then 
-    				(set Score Mover (* (sizes Group Mover)))
-    			)
-    		)
+            (move Add 
+                (to (sites Empty) 
+                    if:(is Flat)
+                )
+                (then 
+                    (set Score Mover (* (sizes Group Mover)))
+                )
+            )
         )
-	    (end
-	        (if   
-	        	(= (size Array (array (sites Occupied by:All))) 30)
-	        	(byScore)
-	        )
-	    )
-	)
+        (end
+            (if   
+                (= (size Array (array (sites Occupied by:All))) 30)
+                (byScore)
+            )
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (metadata 
     
-	(info
+    (info
         {
+        (description "Spao is a 3-player ball-stacking game that can be played with a Series: Shibumi set. It uses a '4x4 holes board' and balls in 3 colours.")
+        (rules "Each player has an allocated colour (white, black and red). Players take turns placing a ball of their colour in a legal position (hole or 2x2 platform). When the pyramid is full the game ends. To get your score multiply the sizes of your groups (including hidden connections). Highest score wins.")
+        (id "4250")
+        (source "<a href=\\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\">SHIBUMI Rulebook</a>")
+        (version "1.3.14")
+        (classification "board/space/group")
+        (author "Néstor Romeral Andrés")
+        (publisher "Computational Creativity Group, nestorgames")
+        (credit "Cedric Antoine")
         }
-    )		
-		
-	(graphics {
-		(piece Scale "Ball" 1.0)
-	    (board Style Shibumi)
-	    (piece Colour P1 fillColour:(colour White))
-	    (piece Colour P2 fillColour:(colour Black))
-	    (piece Colour P3 fillColour:(colour Red))
-	})
-       
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+        (piece Colour P3 fillColour:(colour Red))
+    })
+    
 )

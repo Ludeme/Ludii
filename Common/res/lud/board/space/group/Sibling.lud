@@ -93,9 +93,24 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info {
-        
-    })
+    (info
+        {
+        (description "Sibling is a simple placement game where the goal is to maximize the group size.")
+        (rules "Starting with the White player. The first player places one of his/her pieces on the board.
+            From the next Black's turn, the turn player places exactly two of his/her pieces on the board. The two pieces must be on the same straight line of the grid and must not be adjacent to each other.
+            
+            The game ends when no more pieces can legally be placed.
+            The second largest group of each color is compared and the larger player wins.
+        In case of a tie, the first largest group is compared, and if there is still a tie, the comparison continues with the third, fourth, and so on. No draws occur.")
+        (id "4215")
+        (version "1.3.14")
+        (classification "board/space/group")
+        (author "Kanare Kato
+        ")
+        (credit "Takuro Kawasaki")
+        (date "13-12-2023")
+        }
+    )
     (graphics
         {
         (show Score P1 ("Score" P1 P2))

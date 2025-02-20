@@ -652,6 +652,63 @@
 (metadata
     (info
         {
+        (description "This is a Game system called 'Affinage', the process of curing cheese, because the process creates holes. The games were inspired by a BGG thread by the user hoembla called Tsjabitsjoe (a Trous type of cheese). 
+            
+            However they also relate to my exploration of 'Brain Coral' in the summer of 2021, and Alek Erickson's suggestion for that game of a goal of owner of largest partisan territory determined by stone-majority around the territory's perimeter.
+            
+            Other influences were Luis Bolaños Mures' games with placement restrictions based on territory perimeters.
+            
+            The core principals are:
+            -- Territory ownership by a stone-majority around the territory's perimeter.
+            -- Goal of most owned territory (site-count) 
+            -- Pure double placement: 
+            -- * partisan (same color) if on an even cell-count board, and 
+            -- * non-partisan (one of each color) if on an odd cell-count board
+            and
+            -- Some kind of placement restriction:
+            -- * No mismatch of colors on the board adjacent to the new pair.
+            -- * No match of colors on the board adjacent to the new pair.
+            -- * maximum of N pieces on the board adjacent to the new pair. 
+            -- * maximum of N for the combined number of pieces adjacent to each piece as placed.
+            -- and/or
+            -- * Domino placement (adjacent placement)
+            -- * Separation placement with minimum open distances of N where (N = 1 or 2)
+            -- * Independant placement
+            
+            With all these options, the number of possible rules sets is over 1000.
+            
+            Note: partisan vs non-partisan piece placement was tied to board size because originally there was an additional restriction against the creation of neutral territory, thus preventing ties on those boards.
+            
+            Options are given for orthogonal play on both square and hex grids. - Square-adjacent (ortho / diagonal) play is not yet implemented.
+            
+            Certain of these options go together better than others giving a variety of rulesets, which should be named after different cheeses.
+            -------------------------------------------------------
+            Placement proximity does a good job of limiting the choices to interesting games. A system is used to weight these limits in order to balance the effect of the options. The calculated limit, tallied from all option choices, is shown instead of the score, for ease of implementing the interface. The limits don't apply to color matching versions. 
+            
+            Options affect placement restriction limits. 
+            During the game the score area is used instead to show the limit tally based on:
+            Board:  Square 1; Hex 3; 
+            Placements: Ortho-Diag 0; Independent 1; Knight 1; Diag 1; Ortho 2;
+            Gaps: 1+ 1; 2+ 3; 
+            Sparse: 0;  Dense:1; Combined 2;
+            Directions to neighbors: Ortho 0; Diag 0; Ortho-Diag 3;
+            
+            Options considered, but not implemented: 
+            -- Restriction against creation of neutral territory - too difficult to implement or for players to track over the board.
+            -- Alternative goals of
+            -- * 'most owned territory by territory count', and 
+            -- * 'cascading, largest owned territory'
+            
+        These probably would over-emphasize the largest group, even though this could make strategy easier to focus on.")
+        (rules "This is a game with a cheese curing theme. The colors are different bacteria that are contributing to the gas in holes in the cheese.
+            When no more bacteria grow in the cheese, the volume of each hole is assigned to the player whose bacteria dominate the hole, and the highest score wins.
+        In case of a tie, last to place wins.")
+        (id "4216")
+        (version "1.3.14")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "16-09-2023")
         }
     )
     

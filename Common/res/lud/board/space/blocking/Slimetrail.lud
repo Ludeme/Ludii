@@ -29,8 +29,18 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (rules "Each player moves the same snail. You must move the snail to any adjacent place which doesn't have a leaf. Every time you move the snail, the previous place is filled by a leaf. The player wins when the snail is moved over the position with its colour or if the opponent is blocked.")
+        (id "4297")
+        (source "<a href=\"https://bodogemu.com/en/games/slimetrail\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />bodogemu.com</a>")
+        (version "1.3.14")
+        (classification "board/space/blocking")
+        (author "Bill Taylor")
+        (credit "Eric Piette")
+        (date "1992")
+        }
+    )
     
     (graphics {
         (board Style Board)

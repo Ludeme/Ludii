@@ -33,8 +33,8 @@
             (if 
                 (and
                     (not (all Sites
-                        (sites Occupied by:P1 top:True)
-                        if:(not (is Connected at:(site) P1))
+                            (sites Occupied by:P1 top:True)
+                            if:(not (is Connected at:(site) P1))
                     ))
                     (= (mover) P2)
                 )
@@ -43,8 +43,8 @@
             (if 
                 (and
                     (not (all Sites
-                        (sites Occupied by:P2 top:True)
-                        if:(not (is Connected at:(site) P2))
+                            (sites Occupied by:P2 top:True)
+                            if:(not (is Connected at:(site) P2))
                     ))
                     (= (mover) P1)
                 )
@@ -57,7 +57,17 @@
 //-------------------------------------------------------------------------
 
 (metadata
-    (info {
-    	
-    })
+    (info
+        {
+        (description "Adere is a 2-player strategy game that lasts about 20 minutes.")
+        (rules "The game is played on a triangular board made up of hexagonal tiles. On each turn, a player can either place a stone of their color on an empty space on the board, or they can move a stone of their color from the top of a stack onto a neighboring opponent's stack of exactly the same height. A player wins the game if, at the start of their turn, a single group of their stones connects all three sides of the board. A stack belongs to the player who has a stone of their color on top of it.")
+        (id "4258")
+        (source "<a href=\"https://agere.drew-edwards.com/\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />agere.drew-edwards</a>")
+        (version "1.3.14")
+        (classification "board/space/group")
+        (author "Drew Edwards")
+        (credit "Achille Morenville")
+        (date "2023")
+        }
+    )
 )

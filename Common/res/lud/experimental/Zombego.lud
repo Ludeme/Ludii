@@ -548,8 +548,41 @@
     ("D2" 106)
 ) 
 (metadata
-    (info 
+    (info
         {
+        (description "Game inspired by Stratego and Shoghi and various games with pieces that have movement maps.  Serveral alternative piece sets are given. The base game can be played as a combinatoral game, or as a deductive game of hidden information, or even as a bluffing game. The bluffing game has not yet been implemented.
+            
+            In the combinatoral game cooperative cycles are easy to create. While for casual play this does not create a problem for the game, it was felt thatadditional measures were needed to ensure that players could avoid cyclical draws under almost all circumstances. Therefore. the game includes a novel mechanism for making play less defensive toward the end, to encourage players to race to win instead of seeking to cycle, namely:
+            
+            When players cannot move they must enter a previously captured or removed piece into play. The piece is called a Zombie.  These Zombies cannot be captured, keeping the play active and making it more aggressive. However, the game ends, when as the remaining pieces are reduced in number, or more Zombies are added, the remaining number of normal pieces falls below the number of Zombies.
+            
+        Piece moves are by indirect referencing  to helper pieces to determine the possible movements. the helper pieces' patterns are applied to the moving piece's location to determine the set of allowed destinations. A potential unimplemented variant could use base the destinations on the halper pieces own locations, instead.")
+        (rules "Goal is to be the last to make a legal move, or to cause the opponent to have more Zombies in play than regular 'living' pieces.
+            
+            The same assortment unique 'living' pieces is assigned to each player and randomly arranged in their hand. (see Options)
+            
+            Each piece has a pattern that references other locations and/or potential movements or defense.
+            
+            At the start of the game players take turns placing 'living' pieces. These must be placed such that the locations indicated on the piece being placed do not correspond to any enemy piece locations. When placement is not possible, movement is allowed, but placement of all the original pieces has priority over all other moves.
+            
+            Pieces then may be moved with the assistance of helper pieces. These helper pieces are friendly pieces that lie at the locations designated by the piece to be moved. The helper pieces are what determine the actual moves that the moving piece is allowed to make. Their patterns are applied to the origin of the moving piece to determine the allowed destinations.
+            
+            The moving piece may not land on a friendly piece. If it lands on an enemy piece, the result is determined by whether the defending piece is vulnerable. If the defending piece's pattern includes the origin of the attacking piece, then the attack fails and the attacking piece goes into the hand of the attacker as a Zombie. Otherwise, the attack succeeds and the defending piece becomes a Zombie in its owner's hand.
+            
+            Zombies:
+            Zombies enter the board one-at-a-time, when no other move is possible. However, a player must never have more Zombies in play than their 'living' pieces. 
+            
+            If a Zombie cannot be placed, there are no more legal moves and the player loses. This can also happen if the player has no Zombies available when needed, or if none of the available Zombies can be placed according to the 'living' piece placement rules.
+            
+            Zombies on the board move and behave like 'living' pieces, with the exception that they win all attacks and cannot be defended against. This also means that Zombies are not able to attack other Zombies.
+            
+        In the Stratego-like variant, the Zombies become visible when placed. All other interactions are hidden to the opponent and based on trust, which is enforced by the script, or by review of the game record, if over the board play.")
+        (id "4220")
+        (version "1.3.14")
+        (classification "experimental")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "01-09-2023")
         }
     )
     (graphics

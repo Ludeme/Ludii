@@ -2,8 +2,8 @@
     (>= 
         (count Sites 
             in:(intersection 
-                    (sites {0 16 31 45 58 70 15 30 44 57 69 80 71 72 73 74 75 76 77 78 79})
-                    (sites Group Cell at:#1 if:(= (what at:(to)) (id #2 P1)))
+                (sites {0 16 31 45 58 70 15 30 44 57 69 80 71 72 73 74 75 76 77 78 79})
+                (sites Group Cell at:#1 if:(= (what at:(to)) (id #2 P1)))
             )
         ) 
         1
@@ -14,8 +14,8 @@
     (>=
         (count Sites 
             in:(intersection 
-                    (sites {0 16 31 45 58 70 15 30 44 57 69 80 71 72 73 74 75 76 77 78 79})
-                    (sites Group Cell at:#1 if:(or (= (what at:(to)) (id #2 P1)) (is Empty (to))))
+                (sites {0 16 31 45 58 70 15 30 44 57 69 80 71 72 73 74 75 76 77 78 79})
+                (sites Group Cell at:#1 if:(or (= (what at:(to)) (id #2 P1)) (is Empty (to))))
             )
         ) 
         1
@@ -84,10 +84,20 @@
 //-------------------------------------------------------------------------
 
 (metadata
-    (info {
-    	
-    })
-
+    (info
+        {
+        (description "Bipod is an original connection game.")
+        (rules "The game is played on a trapezium-shaped board made up of hexagonal tiles. In the first phase, players take turns placing one black stone on an empty tile until four black stones have been placed. The second phase begins with the first player placing either a white or a grey stone on an empty tile, with the goal of creating two separate paths, one with white stones and one with grey stones, that connect the longest side of the trapezium to any of the three shorter sides. The second player's role is to place black stones on the board to block the first player's paths. The game continues with players taking turns to place stones until the first player successfully creates the two paths or until the first player cannot complete the paths.")
+        (id "4264")
+        (source "<a href=\"https://jpneto.github.io/world_abstract_games/bipod.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/connection")
+        (author "Bill Taylor")
+        (credit "Achille Morenville")
+        (date "2004")
+        }
+    )
+    
     (graphics {
         (piece Foreground "MarkerGray" image:"Disc" fillColour:(colour Grey) edgeColour:(colour Hidden))
         (piece Foreground "MarkerWhite" image:"Disc" fillColour:(colour White) edgeColour:(colour Hidden))

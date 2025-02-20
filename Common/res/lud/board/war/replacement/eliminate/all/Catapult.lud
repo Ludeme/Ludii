@@ -122,8 +122,24 @@
 //-----------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (description "Catapult is a decisive two-player army game of total annihilation. It was invented by Alek Erickson and Michael Amundsen in January 2024.")
+        (rules "The goal of Catapult is to capture all your opponent's pieces.
+            Starting with light, players move one of their pieces each turn. 
+            If you cannot make a legal move, you must pass. 
+            Pieces move in a straight line, up to its range, passing only enemy or empty spaces, and capturing all passed enemies, including one landed on. 
+            Each piece has default range of 1. Range is doubled for each friendly piece or wall adjacent to it along the three forward directions. 
+            Non-capturing movements (a move that only passes and lands on empty spaces) must be in one of the three forward directions, towards the opposite corner. 
+        Capturing movements (a move that lands on or passes through 1 or more opponent pieces) may be in any of the eight orthogonal or diagonal directions.")
+        (id "4210")
+        (version "1.3.14")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Alek Erickson and Michael Amundsen")
+        (credit "Michael Amundsen")
+        (date "01-2024")
+        }
+    )
     (graphics {
         (player Colour P1 (colour White))
         (player Colour P2 (colour Black))

@@ -1,104 +1,112 @@
 (define "SwitchColour"
-	(if
-		(= (state at:#1) 0)
-		(seq {
-			(remove #1) 
-			(add (piece (id "Chameleon" #2)) (to #1))
-			(set State at:#1 2)
-		})
-		(set State at:#1 (- (state at:#1) 1))
-	)
+    (if
+        (= (state at:#1) 0)
+        (seq {
+            (remove #1) 
+            (add (piece (id "Chameleon" #2)) (to #1))
+            (set State at:#1 2)
+        })
+        (set State at:#1 (- (state at:#1) 1))
+    )
 )
 (define "SwitchColours"
-	(seq {
-		(set State at:(last To) 2)
-
-		(forEach
-			Site
-			(intersection (sites "GreenTiles") (sites Occupied by:P1))
-			("SwitchColour" (site) P2)
-		)
-
-		(forEach
-			Site
-			(intersection (sites "RedTiles") (sites Occupied by:P2))
-			("SwitchColour" (site) P1)
-		)
-	})
+    (seq {
+        (set State at:(last To) 2)
+        
+        (forEach
+            Site
+            (intersection (sites "GreenTiles") (sites Occupied by:P1))
+            ("SwitchColour" (site) P2)
+        )
+        
+        (forEach
+            Site
+            (intersection (sites "RedTiles") (sites Occupied by:P2))
+            ("SwitchColour" (site) P1)
+        )
+    })
 )
 
 (define "ForcedCapture"
-	("HopSequenceCapture" ~ ~ ~ "SwitchColours")
+    ("HopSequenceCapture" ~ ~ ~ "SwitchColours")
 )
 
 (define "RepeatCapture"
-	("HopSequenceCaptureAgain" ~ ~ ~ "SwitchColours")
+    ("HopSequenceCaptureAgain" ~ ~ ~ "SwitchColours")
 )
 
 //------------------------------------------------------------------------------
 
 (game "Chameleons"
-	(players 2)
-
-	(equipment 
-		{
-			(board (square 7))
-			(piece "Chameleon" Each)
-
-			(regions "RedTiles" P1 (sites {"G7" "F7" "E7" "D7" "C7" "B7" "A7" "A6" "A5" "A4" "A3" "A2" "B2" "C2" "D2" "E2" "F2" "F3" "F4" "F5" "E5" "D5" "C5" "C4" "D4"}))
-			(regions "GreenTiles" P2 (sites {"A1" "B1" "C1" "D1" "E1" "F1" "G1" "G2" "G3" "G4" "G5" "G6" "F6" "E6" "D6" "C6" "B6" "B5" "B4" "B3" "C3" "D3" "E3" "E4" "D4"}))
-			(regions "Center" Neutral (sites {"D4"}))
-		}
-	)
-
-	(rules
-		(start 
-			{
-				(forEach Site (sites "RedTiles") if:(not (is In (site) (sites "GreenTiles"))) (place "Chameleon1" (site)))
-				(forEach Site (sites "GreenTiles") if:(not (is In (site) (sites "RedTiles"))) (place "Chameleon2" (site)))
-			}
-		)
-
-		(play
-			(if "SameTurn"
-				(or ("RepeatCapture") (move Pass))
-				(priority
-					(forEach Piece "ForcedCapture")
-					(forEach Piece "StepToEmpty")
-				)
-			)
-		)
-
-		(end ("CaptureAll" Next))
-	)
+    (players 2)
+    
+    (equipment 
+        {
+        (board (square 7))
+        (piece "Chameleon" Each)
+        
+        (regions "RedTiles" P1 (sites {"G7" "F7" "E7" "D7" "C7" "B7" "A7" "A6" "A5" "A4" "A3" "A2" "B2" "C2" "D2" "E2" "F2" "F3" "F4" "F5" "E5" "D5" "C5" "C4" "D4"}))
+        (regions "GreenTiles" P2 (sites {"A1" "B1" "C1" "D1" "E1" "F1" "G1" "G2" "G3" "G4" "G5" "G6" "F6" "E6" "D6" "C6" "B6" "B5" "B4" "B3" "C3" "D3" "E3" "E4" "D4"}))
+        (regions "Center" Neutral (sites {"D4"}))
+        }
+    )
+    
+    (rules
+        (start 
+            {
+            (forEach Site (sites "RedTiles") if:(not (is In (site) (sites "GreenTiles"))) (place "Chameleon1" (site)))
+            (forEach Site (sites "GreenTiles") if:(not (is In (site) (sites "RedTiles"))) (place "Chameleon2" (site)))
+            }
+        )
+        
+        (play
+            (if "SameTurn"
+                (or ("RepeatCapture") (move Pass))
+                (priority
+                    (forEach Piece "ForcedCapture")
+                    (forEach Piece "StepToEmpty")
+                )
+            )
+        )
+        
+        (end ("CaptureAll" Next))
+    )
 )
 
 //------------------------------------------------------------------------------
 
 (metadata
-	(info
-		{
-
-		}
-	)
-
-	(graphics 
-		{
-			(board Colour OuterEdges (colour Black))
-			(board StyleThickness InnerEdges 0.5)
-			(board Colour InnerEdges (colour Black))
-
-			(player Colour P1 (colour Red))
-			(player Colour P2 (colour Green))
-
-			(piece Style Tile)
-			(piece Foreground "Chameleon1" image:"Counter" fillColour:(colour Red) scale:0.8)
-			(piece Foreground "Chameleon2" image:"Counter" fillColour:(colour Green) scale:0.8)
-
-			(region Colour "RedTiles" Cell (colour Red))
-			(region Colour "GreenTiles" Cell (colour Green))
-			(region Colour "Center" Cell (colour LightTan))
-		}
-	)
-
+    (info
+        {
+        (description "A game from The World of Abstract Games, invented in 2000 by Chris Huntoon.")
+        (rules "Played on a 7x7 board where each tile is marked either red or green in a spiraling pattern. A chameleon is placed on each tile, matching its colour. At the beginning of each turn, chameleons that haven't moved in two turns change colours to that of the tile below them. The center tile, which is not coloured, always inverts the color of the chameleon placed on it. Chameleons can move to any adjacent (orthogonal or diagonal) empty tile. They can also jump over an enemy chameleon to capture it. If a player can capture a chameleon, they must do so. A player wins when no chameleons of the other colour are left on the board.")
+        (id "4268")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/chameleons.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/war/leaping/orthogonal")
+        (author "Chris Huntoon")
+        (credit "Eric Piette")
+        (date "2000")
+        }
+    )
+    
+    (graphics 
+        {
+        (board Colour OuterEdges (colour Black))
+        (board StyleThickness InnerEdges 0.5)
+        (board Colour InnerEdges (colour Black))
+        
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Green))
+        
+        (piece Style Tile)
+        (piece Foreground "Chameleon1" image:"Counter" fillColour:(colour Red) scale:0.8)
+        (piece Foreground "Chameleon2" image:"Counter" fillColour:(colour Green) scale:0.8)
+        
+        (region Colour "RedTiles" Cell (colour Red))
+        (region Colour "GreenTiles" Cell (colour Green))
+        (region Colour "Center" Cell (colour LightTan))
+        }
+    )
+    
 )

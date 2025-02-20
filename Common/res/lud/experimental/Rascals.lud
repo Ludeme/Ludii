@@ -337,25 +337,59 @@
 //-----------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
-    
-    (graphics {
-        (player Colour P1 (colour White))
-        (player Colour P2 (colour DarkBlue))
-        (region Colour (expand origin:(centrePoint) steps:9 "NextTo") (colour 130 170 245))
-        (region Colour (expand origin:(centrePoint) steps:8 "NextTo") (colour 160 195 250))
-        (region Colour (expand origin:(centrePoint) steps:7 "NextTo") (colour 190 220 255))
-        (region Colour (expand origin:(centrePoint) steps:6 "NextTo") (colour 255 250 150))
-        (region Colour (expand origin:(centrePoint) steps:5 "NextTo") (colour 230 240 120))
-        (region Colour (expand origin:(centrePoint) steps:4 "NextTo") (colour 195 230 90))
-        (region Colour (expand origin:(centrePoint) steps:3 "NextTo") (colour 160 220 60))
-        (region Colour (expand origin:(centrePoint) steps:2 "NextTo") (colour 125 210 30))
-        (region Colour (expand origin:(centrePoint) "NextTo") (colour 90 200 0))
-        (region Colour (sites {(centrePoint)}) (colour HumanLight))
-        (board Colour OuterEdges (colour DarkGrey))
-        (board Colour InnerEdges (colour White)) 
-        (board StyleThickness OuterEdges 2.7)
-        (board StyleThickness InnerEdges 1.2)
-    })
-)
+    (info
+        {
+        (description "Rascals is an abstract variant of the rough-and-tumble game 'King of the Castle' (where a player stands on top of a dirt pile proclaiming 'I am the King of the Castle and you're a dirty rascal' and then tries to push off all comers, with last man stnding is King. A variant of that game uses teams, and it is the variant that 'Rascals' roughly models.
+                
+                The game was inspired by Alek Erickson and Michael Amundsen's game Catapult and piece step counting modified from my own Throngs. Leading to the idea of 'King of the Castle' which then contributed to the mechanics of the game.
+                
+                Originally, the concept was to require all turns to include either a capture (push off), or else end higher on the hill. However Ludii doesn't seem to have a (do .. if Afterwards) on the turn level, and also does not support recursion. 
+                
+                Therefore it was instead implemented with the removal of 'Coward' pieces at the end of the turn if the turn did not comply to the original rule.  This might in rare circumstanses have tactical value, but the difference is minimal, and it fits well with the theme of the game.
+                
+                The original design also removed all adjacent enemies at each step. But Ludii testing revealed that excluding pieces below the stepping piece added more tactical interest at all stages of the game, while also reducing the branching factor. However play toward the center becomes more of a disadvantage.
+                
+                However, giving the moving pieces power that declines with each step, proved even more interesting, because the moves' effects are more focused and the center is not so disadvantaged.
+                
+            Thus the final rules are that the moving piece's power to remove pieces on a given step, is the number of steps available to it before taking that step. When the step has been made, the player removes any adjacent enemy piece if this power is greater than or equal to the number of spaces surrounding that enemy.")
+            (rules "The board is in the form of a hill and whoever occupies the Castle on it's peak is the current 'King of the Castle'. The goal is to push off all the opponent's rascals (pieces) and then become King.
+                
+                To start, the players' rascals are evenly distributed in alternation across the board.
+                
+                Players then take turns moving a friendly rascal in a series of steps to adjacent empty spaces. 
+                
+                The number of steps that the rascal can take is limited to no more than the number of friendly rascals next to where it started, including the moving rascal itself. 
+                
+                As the rascal moves to each new space, the Capture Rule in effect (see below) is applied to determine which adjacent enemy rascals are thrown off the hill; 
+                
+                If the moving rascal does not throw off any rascals, it must finish its move higher up the hill than where it started. Otherwise it is considered a coward and leaves the hill entirely.
+                
+            The complete passing of a turn is not allowed, so sometimes even a King might be forced to be a coward.")
+            (id "4209")
+            (version "1.3.14")
+            (classification "experimental")
+            (author "Dale Walton")
+            (credit "Dale Walton")
+            (date "19-01-2024")
+            }
+        )
+        
+        (graphics {
+            (player Colour P1 (colour White))
+            (player Colour P2 (colour DarkBlue))
+            (region Colour (expand origin:(centrePoint) steps:9 "NextTo") (colour 130 170 245))
+            (region Colour (expand origin:(centrePoint) steps:8 "NextTo") (colour 160 195 250))
+            (region Colour (expand origin:(centrePoint) steps:7 "NextTo") (colour 190 220 255))
+            (region Colour (expand origin:(centrePoint) steps:6 "NextTo") (colour 255 250 150))
+            (region Colour (expand origin:(centrePoint) steps:5 "NextTo") (colour 230 240 120))
+            (region Colour (expand origin:(centrePoint) steps:4 "NextTo") (colour 195 230 90))
+            (region Colour (expand origin:(centrePoint) steps:3 "NextTo") (colour 160 220 60))
+            (region Colour (expand origin:(centrePoint) steps:2 "NextTo") (colour 125 210 30))
+            (region Colour (expand origin:(centrePoint) "NextTo") (colour 90 200 0))
+            (region Colour (sites {(centrePoint)}) (colour HumanLight))
+            (board Colour OuterEdges (colour DarkGrey))
+            (board Colour InnerEdges (colour White)) 
+            (board StyleThickness OuterEdges 2.7)
+            (board StyleThickness InnerEdges 1.2)
+        })
+    )

@@ -1,5 +1,5 @@
 (game "Queen's Four"
-	(players 2)
+    (players 2)
     (equipment {
         (board (rectangle 12 15))	
         (piece "Ball" Each (move Slide))
@@ -9,16 +9,26 @@
             (place "Ball1" (sites {7 22 67 82 127 142}))
             (place "Ball2" (sites {37 52 97 112 157 172}))
         })
-       (play (forEach Piece))
-       (end (if (is Line 4) (result Mover Win)))
+        (play (forEach Piece))
+        (end (if (is Line 4) (result Mover Win)))
     )
 )
 
 //------------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (description "Sliding queens to make a 4 in-a-row.")
+        (rules "On each turn, each player must move one friendly stone. Stones slide (orthogonally or diagonally) over a line of empty cells (like a non-capturing chess queen). Wins the player that makes a 4 in-a-row.")
+        (id "4293")
+        (source "<a href=\"https://www.di.fc.ul.pt/~jpn/gv/queensfour.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Christopher Clark")
+        (credit "Eric Piette")
+        }
+    )
     
     (graphics {
         (board Style Board)

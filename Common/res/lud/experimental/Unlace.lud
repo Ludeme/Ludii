@@ -78,8 +78,36 @@
 (define "ColourBackground" (colour 245 245 245)) 
 
 (metadata
-    (info     
+    (info
         {
+        (description "Unlace is a game based on the game Squish.
+            It was invented with the idea of creating a pure stalemate game (a game where players compete for room to move) from the same initial layout as 
+        Squish. Contrary to Squish, if you unify all your pieces first, you often lose.")
+        (rules "Unlace is a game based on the game Squish.
+            Goal: Be the last player able to take a turn.
+            
+            Definition (size of a group)
+            A group is a single piece and all the pieces that can be reached from it by a series of connections.
+            A connection means two pieces of the same color that are next to each other.
+            The size of a group is the number of pieces in it.
+            
+            Play:
+            The board starts with pieces of each color distributed symmetrically on every 3rd cell of the board.
+            (For a game on an order 4 board, the outer cells are not used.)
+            
+            Decide which player will play with which color (Dark or Light). Light is the first player to play.
+            
+            On your turn, you move one of your pieces onto an adjacent hex. However after moving, it must belong to a larger group than the one it was part of before. 
+            
+            If there is an enemy piece at the destination, the enemy piece is captured and removed from the board. You cannot move to a place where there is a friendly piece.
+            
+        The game ends with the player who cannot move on his turn losing.")
+        (id "4213")
+        (version "1.3.14")
+        (classification "experimental")
+        (author "Kanare Kato")
+        (credit "Dale W. Walton")
+        (date "22-10-2021")
         }
     )
     (graphics 

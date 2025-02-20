@@ -21,7 +21,7 @@
                     <Board:adjP3score>
                 )
             )
-        }
+            }
         )
     )
 )
@@ -86,13 +86,13 @@
         (piece "Ball" Each) 
         // (piece "Ball" Neutral)
     }) 
-
+    
     (rules 
         (meta (swap))  // Pie Rule is enabled.
         (start {
             (set Score Each 0)
         })
-
+        
         (play 
             (move Add
                 (piece (id "Ball" Mover))
@@ -114,11 +114,11 @@
                         (if (= (count Pieces Mover) (- <Board:goal> 1))
                             (note "Opponent is one move away from a win")
                         )
-                     } )
+                    } )
                 ) 
             )
         ) 
-
+        
         (end (if (= (score Mover) <Board:goal>) (byScore)))
     )
 )
@@ -128,41 +128,41 @@
 (option "Board Setup" <Board> args:{ <type> <pcnt> <goal> <adjP3score> <centreEdges> } 
     {
     (item "7x7 2p**" <square 7>       
-                   <2>   
-                   <8>  
-                   <> 
-                   <> 
-                   "Board dimensions 7x7, 2 players, goal is 8.")**
+        <2>   
+        <8>  
+        <> 
+        <> 
+    "Board dimensions 7x7, 2 players, goal is 8.")**
     (item "7x9 2p" <rectangle 7 9>  
-                   <2>   
-                   <10>  
-                   <> 
-                   <>  
-                   "Board dimensions 7x9, 2 players, goal is 9.")
+        <2>   
+        <10>  
+        <> 
+        <>  
+    "Board dimensions 7x9, 2 players, goal is 9.")
     (item "9x9 2p" <remove (square 9) cells:{40}>       
-                   <2>  
-                   <12>  
-                   <> 
-                   <(region Colour Edge {80 89 90 99} regionSiteType:Edge (colour Grey))>  
-                   "Board dimensions 9x9 centre hole, 2 players, goal is 12.")
+        <2>  
+        <12>  
+        <> 
+        <(region Colour Edge {80 89 90 99} regionSiteType:Edge (colour Grey))>  
+    "Board dimensions 9x9 centre hole, 2 players, goal is 12.")
     (item "7x7 3p*" <square 7>       
-                   <3>    
-                   <6>  
-                   <(if (= 3 (who at:((ahead (last To) steps:#1 #2))) ) (addScore P3 -1) )>
-                   <>  
-                   "Board dimensions 7x7, 3 players, goal is 6.")*
+        <3>    
+        <6>  
+        <(if (= 3 (who at:((ahead (last To) steps:#1 #2))) ) (addScore P3 -1) )>
+        <>  
+    "Board dimensions 7x7, 3 players, goal is 6.")*
     (item "7x9 3p" <rectangle 7 9>  
-                   <3>   
-                   <7>  
-                   <(if (= 3 (who at:((ahead (last To) steps:#1 #2))) ) (addScore P3 -1) )> 
-                   <>  
-                   "Board dimensions 7x9, 3 players, goal is 7.")
+        <3>   
+        <7>  
+        <(if (= 3 (who at:((ahead (last To) steps:#1 #2))) ) (addScore P3 -1) )> 
+        <>  
+    "Board dimensions 7x9, 3 players, goal is 7.")
     (item "9x9 3p" <remove (square 9) cells:{40}>       
-                   <3>    
-                   <8>  
-                   <(if (= 3 (who at:((ahead (last To) steps:#1 #2))) ) (addScore P3 -1) )>
-                   <(region Colour Edge {80 89 90 99} regionSiteType:Edge (colour Grey))>  
-                   "Board dimensions 9x9 centre hole, 3 players, goal is 8.")
+        <3>    
+        <8>  
+        <(if (= 3 (who at:((ahead (last To) steps:#1 #2))) ) (addScore P3 -1) )>
+        <(region Colour Edge {80 89 90 99} regionSiteType:Edge (colour Grey))>  
+    "Board dimensions 9x9 centre hole, 3 players, goal is 8.")
     }
 )
 
@@ -172,9 +172,20 @@
     
     (info
         {
+        (description "Momentum is a tactical abstract board game for two players in which the lead swings back and forth like the spheres of Newton’s cradle. The mechanics of the game simulate the game of marbles. Momentum is normally played on a 7 x 7 game board but can be played on game boards of various sizes and shapes and with more players.")
+        (rules "Players take turns dropping one of their marbles onto the game board. The momentum of the dropped marble is transferred in up to eight directions through adjacent contiguous lines of marbles. The last marble at the end of each of these lines is pushed away one cell from the dropped marble. Some marbles may fall off the board. 
+            
+        The first player to have a predetermined number (8 is standard game) of his or her marbles on the board at the end of his or her turn wins the game. Options for different boards and player counts are selectable and can be viewed on the Rules tab.")
+        (id "4312")
+        (source "<a href=\\"https://boardgamegeek.com/boardgame/73091/momentum\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />BGG</a>")
+        (version "1.3.14")
+        (classification "board/race/score")
+        (author "Phil Leduc")
+        (credit "Phil Leduc")
+        (date "28-07-2002")
         }
     )
-
+    
     (graphics {
         (piece Scale "Ball" 0.75)
         (board Colour Phase0 (colour Cream))
@@ -191,7 +202,7 @@
         // If playing on a 9x9 board, put a hole at its center.
         // (region Colour Edge {80 89 90 99} regionSiteType:Edge (colour Grey))
         <Board:centreEdges>
-
+        
     })
-
+    
 )

@@ -163,7 +163,16 @@
 //-------------------------------------------------------------------------
 
 (metadata
-    (info {
-
-    })
+    (info
+        {
+        (description "AlmaTafl is an abstract strategy game for 2 players of at least 8 years of age, with an average playing time of 20 minutes, influenced by the Tafl family of games, where one player controls the invaders and one player controls the defenders.")
+        (rules "AlmaTafl is a two-player strategy game, with one player controlling the invaders and the other player controlling the defenders, which includes a special piece called the King. The objective of the game is for the invaders to capture the King, while the defenders aim to move the King to any of the escape spots on the board's periphery. The game is played on a star-shaped board. The escape spots are marked by dots on the board's edge, and only the King can occupy them. The throne, located at the board's center and marked by a dot, can also only be occupied by the King. However, the King can be stacked by an invader while on the throne. Stacks are formed by placing pieces on top of each other, with a maximum height of three. The topmost piece is considered active, while the ones below are non-active. Only active pieces can be moved. The King cannot be stacked by the defenders, meaning he cannot become non-active throughout the game. If the King is stacked by an invader, it results in a win for the invaders. The players alternate turns, starting with the invaders. They can move one of their active pieces in any direction, covering a distance equal to the height of the stack. For example, a single piece will move to an adjacent hex, while the topmost piece in a stack of three will move three spaces. A piece can finish its move on either an empty point or on top of another piece, regardless of its side. The total height of a stack should not exceed three. No piece can exit the board, and passing is not allowed. The King has a special move called bounce, which allows him to leap to an invader and then continue moving, following the same rules for distance and stack height. The King can bounce multiple times in a turn, as long as he lands on an invader. The game ends when the King reaches an escape spot, resulting in a win for the defenders. The invaders can also win the game by stacking the King and making him non-active or if the defending army has no active pieces left, apart from the King.")
+        (id "4260")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/401367/almatafl\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.14")
+        (classification "board/war/custodial")
+        (author "Paschalis Antoniou")
+        (credit "Achille Morenville")
+        }
+    )
 )

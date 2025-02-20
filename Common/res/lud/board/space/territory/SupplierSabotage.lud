@@ -187,39 +187,83 @@
         (metadata
             (info
                 {
-                }
-            ) 
+                (description "'Supplier Sabotage' is a variant of 'Supply Chains' which originated as a search for alternative liberty and life concepts, taking a body-foot concept from 'Polypods' and 'Mutant Y'.  Placements mutate one's pieces (from 'Suppliers' to scoring 'Warehouses' based on a triangle pattern rather than the friendly neighborhood density.
+                        
+                        Each player's ability to retain Warehouses relies on their opponent's Supplier pieces. This also constrains the sites that can be used for expansion in an area, and potentially forces removals of unsupported Warehouses in the opponent's neighboring chains. in this variant self-suicide is allowed, and can be used to create undersupply to the opponent's warehouses - and the mover determines which warehouses to remove, making attacks more effective.
+                        
+                        Passing is allowed and can be tactically advantageous.
+                        
+                        Cycles are reduced, or perhaps eliminated, by preventing placement on the same location on a player's own consecutive turns.
+                        
+                    The game ends with consecutive passes, ties resolved by piece count. ")
+                    (rules "The goal is to have the most 'Warehouses' when the board is full.
+                        
+                        Definitions:
+                        -- 'friend': a player's piece. 
+                        -- 'foreign': an opponent's piece.
+                        -- A 'Warehouse' is a piece that is part of a triangle of adjacent friendlies.
+                        -- A 'Supplier' is any piece other than a warehouse.
+                        
+                        -- A 'Supply Chain' is any friendly, its friendly neighbors, their neighbors, and so on. (see options).
+                        -- A 'Supply Chain Deficit' is a condition that occurs when the number of Warehouses in a Supply Chain is more than the number of foreign Suppliers orthogonally next to that Chain.
+                        
+                        Play:
+                        On your turn, you may pass.
+                        
+                        Otherwise, a turn can have 3 phases in the following order:
+                        
+                    1) Place a friend on an empty space. 
+                    -- If the placement does not cause any friends to become warehouses, then the turn is over.
+                    
+                2) If the Supply Chain where you placed has a Deficit, remove one friendly warehouse at a time, until you have no Deficits in any friendly Supply Chain.
+                
+            3) If any foreign Supply Chain now has a Deficit, remove one foreign warehouse at a time, until there are no Deficits left on the board.
             
-            (graphics 
-                {
-                (player Colour P1 (colour 120 36 0))
-                (player Colour P2 (colour Cream))
-                (piece Scale "Barn" .06)    
-                (board StyleThickness InnerEdges 0.4)
-                (board StyleThickness OuterEdges 0.7)
-                (board StyleThickness InnerVertices 0.45)
-                (board StyleThickness OuterVertices 0.45)
-                (board Colour InnerVertices (colour Grey))
-                (board Colour OuterVertices (colour Grey))
-                (board Colour InnerEdges (colour Black))
-                (board Colour OuterEdges (colour Black))
-                (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
-            (board Colour Phase0 (colour 150 190 120)) // (colour HumanLight))
-            //    (show Piece Value Middle scale:.85)
-            (show Symbol "Hex" ("DeficitWarehousesOf" All) fillColour:(colour LightRed) scaleY:1.03)
-            (show Symbol "Hex" (difference ("AllWarehousesOf" All) ("DeficitWarehousesOf" All)) fillColour:(colour Grey) scaleY:1.03)
-            (show Symbol "Base" (intersection (sites Occupied by:P1) ("AllWarehousesOf" All))
-                fillColour:(colour 120 36 0) scale:.7 // scaleY:1.03
-            )
-            (show Symbol "Base" (intersection (sites Occupied by:P2) ("AllWarehousesOf" All))
-                fillColour:(colour Cream) scale:.7 // scaleY:1.03
-            )
-            (show Symbol "Barn" (difference (sites Occupied by:P1) ("AllWarehousesOf" All))
-                fillColour:(colour 120 36 0) scale:.6 // scaleY:1.03
-            )
-            (show Symbol "Barn" (difference (sites Occupied by:P2) ("AllWarehousesOf" All))
-                fillColour:(colour Cream) scale:.6 // scaleY:1.03
-            )
-            }
-        )
+            Restrictions:
+            -- If you removed any of your friendly warehouses on your previous turn, you may not place a friend on the last space where the friend was removed.
+            -- It is important that phase 3 must always wait until phase 2 is complete.
+            
+            The game ends when both players pass consecutively.
+        The player with more warehouses wins, and if the count is the same, then the player with the most suppliers wins.")
+        (id "4207")
+        (version "1.3.14")
+        (classification "board/space/territory")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "10-09-2023")
+        }
     )
+    
+    (graphics 
+        {
+        (player Colour P1 (colour 120 36 0))
+        (player Colour P2 (colour Cream))
+        (piece Scale "Barn" .06)    
+        (board StyleThickness InnerEdges 0.4)
+        (board StyleThickness OuterEdges 0.7)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (board Background fillColour:(colour 170 160 140) edgeColour:(colour Grey) scale:1.3 )
+    (board Colour Phase0 (colour 150 190 120)) // (colour HumanLight))
+    //    (show Piece Value Middle scale:.85)
+    (show Symbol "Hex" ("DeficitWarehousesOf" All) fillColour:(colour LightRed) scaleY:1.03)
+    (show Symbol "Hex" (difference ("AllWarehousesOf" All) ("DeficitWarehousesOf" All)) fillColour:(colour Grey) scaleY:1.03)
+    (show Symbol "Base" (intersection (sites Occupied by:P1) ("AllWarehousesOf" All))
+        fillColour:(colour 120 36 0) scale:.7 // scaleY:1.03
+    )
+    (show Symbol "Base" (intersection (sites Occupied by:P2) ("AllWarehousesOf" All))
+        fillColour:(colour Cream) scale:.7 // scaleY:1.03
+    )
+    (show Symbol "Barn" (difference (sites Occupied by:P1) ("AllWarehousesOf" All))
+        fillColour:(colour 120 36 0) scale:.6 // scaleY:1.03
+    )
+    (show Symbol "Barn" (difference (sites Occupied by:P2) ("AllWarehousesOf" All))
+        fillColour:(colour Cream) scale:.6 // scaleY:1.03
+    )
+    }
+)
+)

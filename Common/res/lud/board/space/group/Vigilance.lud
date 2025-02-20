@@ -274,8 +274,41 @@
 (metadata
     (info
         {
+        (description "My first Line-of-Sight game was called Purview, invented in 23-26 APR 2020. It originally was: place a piece out-of-sight then slide a piece, then capture the enclosed pieces, - last to move wins. This was later modified to be first slide, then place out of site, and started with a two piece placement pie. 
+            
+            Shortly after inventing Purview, the game evolved into Shaka, which became a number of place-xor-move variants with constraints on sliding the piece; namely, the destination site must be closer to an enemy than the origin site. One version of Shaka under the name Epoxy has been scripted for Ludii.
+            
+            After neglecting Purview for some time, I have three years later,  come back to it with the use of perforated boards that reduce the cognitive load of line-of-sight games. 
+            
+            Capture turned out not to be essential, however the game is more exciting when it involves captures that the opponent must re-enter onto the board on the next turn. This capture rule keeps the game finite, and makes the nature and advantage of making captures evolve during the course of a play. 
+            
+            The game is presented here under a new name, Vigilance. - The option without capture is also included.
+        Rule correction: Slide - IF POSSIBLE. This allows re entry if all pieces are removed.")
+        (rules "Goal: Be the last player able to play complete their turn.
+            
+            The game also ends when the mover has blocked off more than half of the empty cells from his opponent, taking into account stones awaiting placement, because this means that the opponent will be the first to run out of places to play.
+            
+            Definitions:
+            -- A 'chain' is all the stones connected to a given stone by any series of steps from stone to stone of the same color, along the movement directions of the board.
+            
+            -- 'Placement liberties' are sites that are not in line-of-sight of an opponent's stone, along the movement directions of the board.
+            
+            -- A 'dead chain' is a chain with no adjacent placement liberties.
+            
+            Play:  
+            Play starts with Red placing 2 red stones and then a white stone, on any separate sites of the board as a 'pie offer.' 
+            
+            White then either takes a standard turn, or exchanges the stones by choosing to 'Decline and Swap'.
+            
+            A turn consists of the following actions, in order:
+            1. Slide a stone of your color, if possible;
+            2. Capture and return the stones of every opponent's dead chain (if any) to the opponent;
+            3. Place a new stone onto one of your placement liberties.
+            4. Place each captured stone that you received from the opponent's turn (if any) onto placement liberties.
+            
+        Turns alternate until the moving player's stones block the opponent from reaching half of the remaining empty sites.")
         (id "4200")
-        (version "1.3.13")
+        (version "1.3.14")
         (classification "board/space/group")
         (author "Dale W. Walton")
         (credit "Dale W. Walton")

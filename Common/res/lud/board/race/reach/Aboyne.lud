@@ -72,6 +72,17 @@
 //-------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (description "Aboyne is played on a 5x5 hexagonal board.")
+        (rules "Aboyne is a two-player strategy game played on a 5x5 hexagonal board. Each player has a set of stones, and the goal is to move one of your stones into your own goal cell, located on the opposite side of the board, or to stalemate your opponent. A stone is considered blocked if it is adjacent to an enemy stone, and a blocked stone cannot be moved. At each turn, a player must move one of their non-blocked stones to an adjacent empty cell or jump over a line of friendly stones, landing on the immediate next cell. If the landing cell is occupied by an enemy stone, that stone is captured. A stone cannot move into the opponent's goal cell. The game ends when one player achieves their goal or when neither player can make a legal move, resulting in a stalemate.")
+        (id "4257")
+        (source "<a href=\"https://jpneto.github.io/world_abstract_games/aboyne.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/race/reach")
+        (author "Paul Sijben")
+        (credit "Achille Morenville")
+        (date "1995")
+        }
+    )
 )

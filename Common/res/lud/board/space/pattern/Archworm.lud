@@ -311,6 +311,38 @@
 (metadata
     (info
         {
+        (description "Archworm is an evolution of Canoe Invented in the 1980's but first published as part of 'The Games Colloection' by Pin International and distributed 2003 to the Euopean market.
+            
+            The game was an attempt to create a pattern-forming game with movement and a pattern of fewer than 5 stones, without stacking. This was accomplished by requiring the pattern be free from self-interference, that is not touch any of one's own stones. 
+            
+            Through experimentation an arc pattern was found to work best,- but a forced win sequence could easily be found for the first player.  This was resolved by making the board narrow in one direction so that the win-sequence could not be executed.
+            
+            The whole board was themed as a canoe, and the piece count was limited to 13, as 14 pieces could theoretically form a stalemate pattern across that board, while 13 provided sufficient stones to form multiple arcs while frequently forcing removals. Since removals can be forced, strategy-stealing cannot be applied.
+            
+            In 2018, while developing Cairo boards for another game, the author realised that the curves on the Cairo board are all of limited length, and that might mean that Canoe could be played on the board without restriction to board size. This game was called 'Archworm' and was implemented by Stephen Tavener on his AiAi website.  Playtesting introduced some variant restrictions on the worms and proved that double move protocol could also be used with the game.
+            
+            In 2023, after creating a few games based on hexhex boards with cells removed such that all central cells have 5 neighbors, the author realized that this board also should be applicable to the Archworm concept, and wrote this script in Ludii for testing purposes. The Hexhex version has the advantage that the cells all have a regular relationship, making identification of the arc patterns easier.
+            
+            For all the games, minimal sized boards were found to be sufficient, and help the AI to do reasonable evaluation.
+            
+            All the versions of the game feature moves with numerous traps that reduce the decision tree drastically - but only after a lookahead of 3+ plies which is just outside the range of the Ai after heuristics have been added. This means the games have a puzzly feeling and players often lose through error. Long cycles are also possible and a move limit or repetition limit is technically required, but not commonly needed because positions are usually too opaque to correctly determine how and when to attempt to cycle. 
+            
+            The one arc game is more casual. Two arcs introduces more varied forms of pinning, and the opportunity to expand into areas next to an opponent's existing arc.
+            
+        Scores have been squared to assist the AI inprioritizing wins.")
+        (rules "Goal create a specified number of archworms (also called canoes).
+            An archworm is 4 of your stones that are arranged as an arc and that are not adjacent to any of your other stones. The angles of the arc are the same at each bend.
+            
+            These following stone-actions are available to choose from on your turn:
+            -- Place your stone.
+            -- Move your stone one step to an empty cell.
+        -- Remove your stone.")
+        (id "4222")
+        (version "1.3.14")
+        (classification "board/space/pattern")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton")
+        (date "10-10-2023")
         }
     )
     

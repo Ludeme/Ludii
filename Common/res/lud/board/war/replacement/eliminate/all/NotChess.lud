@@ -3,30 +3,30 @@
     (equipment {
         (board (square 8))	
         (piece "Knight" 
-        	("LeapCapture" "KnightWalk" ~
-        	(then 
-        		(and
-        			(remove (last To))
-        			(add (piece (id "Pawn" Mover)) (to (last To)))
-        		)
-        	)
-        	)
+            ("LeapCapture" "KnightWalk" ~
+                (then 
+                    (and
+                        (remove (last To))
+                        (add (piece (id "Pawn" Mover)) (to (last To)))
+                    )
+                )
+            )
         )
         (piece "Pawn" ("StepToNotFriend" Orthogonal
-            	(then 
-                		(and
-                			(remove (last To))
-                			(add (piece (id "Knight" Mover)) (to (last To)))
-                		)
-                	)
+                (then 
+                    (and
+                        (remove (last To))
+                        (add (piece (id "Knight" Mover)) (to (last To)))
+                    )
                 )
-        		)
+            )
+        )
     })
     (rules 
         (start {
             (place "Pawn1" (sites {"C1" "E1" "G1"}))
             (place "Knight1" (sites {"B1" "D1" "F1"}))
-
+            
             (place "Pawn2" (sites {"B8" "D8" "F8"}))
             (place "Knight2" (sites {"C8" "E8" "G8"}))
         })
@@ -39,8 +39,19 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (description "A Chess-like battle between two alternating pieces.")
+        (rules "On each turn, each player must move one of his pieces. A soldier moves/captures to an orthogonal adjacent cell. A knight jumps one orthogonal cell and then to a diagonal at the same direction (like the chess Knight) into an empty cell, or into an enemy piece (capturing it). After the move, the moved piece changes status (the soldier becomes a knight, and vice versa). Wins the player that captures all enemy pieces.")
+        (id "4287")
+        (source "<a href=\"https://www.di.fc.ul.pt/~jpn/gv/notchess.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/war/replacement/eliminate/all")
+        (author "Ronald Brierley")
+        (credit "Eric Piette")
+        (date "2003")
+        }
+    )
     
     (graphics {
         (board Style Chess)

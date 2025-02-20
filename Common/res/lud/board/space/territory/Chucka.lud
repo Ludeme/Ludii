@@ -5,42 +5,41 @@
         (piece "Disc" Each)
     })
     (rules
-    	phases:{
-    	(phase "Placement"
-		(play
-		    (move Add
-		                (piece (mover))
-		                (to (intersection (sites Outer) (sites Empty)))
-		                (then (addScore Mover 1))
-		            )
-		)
-		(nextPhase Mover (= (count Pieces Mover) 2) "Movement")
-		)
-	(phase "Movement"
-		(play
-			(or {
-				(move Select
-					(from
-					    (sites Occupied by:Mover)
-					)
-					(to 
-					    (intersection (sites Around (from) distance:(value Piece at:(from)) Orthogonal) (sites Empty))
-					) 
-					(then (and (add (piece (id "Disc" Mover)) (to (last To))) (addScore Mover 1)))
-				)
-				    (move Select
-				    	(from
-				    		(sites Occupied by:Mover)
-				    	)
-				    	(then
-				    		(set Value at:(last From) (+ (value Piece at:(last From)) 1))
-				    	)
-				    ) 
-				    (move Pass)
-				    })
-			
-		
-		))}
+        phases:{
+        (phase "Placement"
+            (play
+                (move Add
+                    (piece (mover))
+                    (to (intersection (sites Outer) (sites Empty)))
+                    (then (addScore Mover 1))
+                )
+            )
+            (nextPhase Mover (= (count Pieces Mover) 2) "Movement")
+        )
+        (phase "Movement"
+            (play
+                (or {
+                    (move Select
+                        (from
+                            (sites Occupied by:Mover)
+                        )
+                        (to 
+                            (intersection (sites Around (from) distance:(value Piece at:(from)) Orthogonal) (sites Empty))
+                        ) 
+                        (then (and (add (piece (id "Disc" Mover)) (to (last To))) (addScore Mover 1)))
+                    )
+                    (move Select
+                        (from
+                            (sites Occupied by:Mover)
+                        )
+                        (then
+                            (set Value at:(last From) (+ (value Piece at:(last From)) 1))
+                        )
+                    ) 
+                    (move Pass)
+                })
+                
+        ))}
         (end
             (if (or (is Full) (all Passed))
                 (byScore)
@@ -55,6 +54,14 @@
     
     (info
         {
+        (description "Throw pieces a certain distance based on their value.")
+        (rules "Each player places 2 pieces on the board perimeter with value 0. During each player's turn they can either increase the value of a piece by 1, or place a new piece on an empty site. New pieces must be placed N spaces away from an existing piece, where N is the value of that piece. New pieces always start with value 0. The game ends when all spots on the board are filled or all players pass. The player with the most pieces on the board wins.")
+        (id "4269")
+        (version "1.3.14")
+        (classification "board/space/territory")
+        (author "Matthew Stephenson")
+        (credit "Matthew Stephenson")
+        (date "2024")
         }
     )
     
@@ -62,5 +69,4 @@
         (show Piece Value Middle)
     })
 )
-
 

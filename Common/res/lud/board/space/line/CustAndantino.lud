@@ -24,20 +24,20 @@
                     )
                 )
                 (then
-                    	(custodial 
-                    	       (from (last To))
-                    		        (between  
-                    		            if:("IsEnemyAt" (between))
-                    		            (apply 
-                    		            	(and 
-                    		            		(remove (between))
-                    		            		(add (piece (mover)) (to (between)))
-                    		            	)
-                    		            )
-                    		        )
-                    		        (to if:("IsFriendAt" (to)))
-                    		    )		
-                    )
+                    (custodial 
+                        (from (last To))
+                        (between  
+                            if:("IsEnemyAt" (between))
+                            (apply 
+                                (and 
+                                    (remove (between))
+                                    (add (piece (mover)) (to (between)))
+                                )
+                            )
+                        )
+                        (to if:("IsFriendAt" (to)))
+                    )		
+                )
             )
         )
         
@@ -51,10 +51,10 @@
 //------------------------------------------------------------------------------
 
 (option "Tiling" <Tiling> args:{ <type> <tile> <numSides> <piece1> <piece2> }
-  {
-  (item "Hexagonal"  <Hexagonal> <"Hex"> <numSides:6> <"Hex1">  <"Hex2">  "The game uses hexagonal tiles.")** 
-  (item "Square"   <Square>  <"Square"> <numSides:4> <"Square1"> <"Square2"> "The game uses square tiles")  
-  (item "Triangle"  <Triangular> <"Triangle"> <numSides:3> <"Triangle1"> <"Triangle2"> "The game uses triangle tiles") 
+    {
+    (item "Hexagonal"  <Hexagonal> <"Hex"> <numSides:6> <"Hex1">  <"Hex2">  "The game uses hexagonal tiles.")** 
+    (item "Square"   <Square>  <"Square"> <numSides:4> <"Square1"> <"Square2"> "The game uses square tiles")  
+    (item "Triangle"  <Triangular> <"Triangle"> <numSides:3> <"Triangle1"> <"Triangle2"> "The game uses triangle tiles") 
 })
 
 //------------------------------------------------------------------------------
@@ -62,6 +62,13 @@
 (metadata 
     (info
         {
+        (description "CustAndantino is a variant of Andantino.")
+        (id "4274")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Eric Piette")
+        (credit "Eric Piette")
+        (date "2024")
         }
     )
     

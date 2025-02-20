@@ -69,8 +69,18 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (description "Mank is a modern Mancala game.")
+        (rules "The game is played on a board with two rows of 8 holes and a larger hole on either end. Each player starts with 6 seeds in each hole on their side of the board. Players take turns sowing seeds counterclockwise, one at a time, into the next hole, including their own larger hole but not the opponent's. If the last seed is placed in an empty hole, the player captures that seed and any seeds in the opposite hole. If the last seed falls in the larger hole, the player gets another turn. The game ends when one player has no seeds left in their holes. The other player captures all remaining seeds, and the player with the most captured seeds wins.")
+        (id "4283")
+        (version "1.3.14")
+        (classification "board/sow/two rows")
+        (author "Achille Morenville")
+        (credit "Achille Morenville")
+        (date "2024")
+        }
+    )
     (graphics {
         (board Style Mancala)
     })

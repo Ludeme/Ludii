@@ -729,6 +729,69 @@
 (metadata
     (info
         {
+        (description "Throngs a highly abstracted wargame (territorial invasion game) for two players. It is typically played on the intersections of a triangular grid, using Go stones. It is a double-move game: each player takes 2 full turns in succession before the next player takes control. 
+            
+            Movement: The game is distinguished by the way the power of a moving piece is determined according to the pieces around it: A piece can move as far as the difference in count of the friends and enemies in its immediate vicinity. 
+            
+            Removing an enemy and adding one's own piece take one power unit each. Remaining power goes into a series of steps or hops that may change direction at empty locations. 
+            
+            Strategy: Power to travel up to seven units per move can be developed during the game. As the offensive capacity develops, defensive measures are needed, first starting with limiting the mobility of enemy stones by approaching them, then by building walls, and thickening them along the axes of the opponent's catapulting sites (empty locations surrounded by many of that player's own stones.) These sites allow adding a stone and catapulting it up to a distance of 5, and are re-useable. In addition to these methods, defense is by scattering stones behind one's own lines to immobilise enemy stones that invade.
+            
+            The majority of turns naturally involve placement as well as movement, due to the benefit of gaining material; even though newly placed stones travel a reduced distance due to the cost of their placement. Occasional moves without placement are used mainly to initiate difficult invasions, as they risk simultaneously opening up positional weaknesses.  
+            
+            Individual stones may be captured by replacement when they are sufficiently out-numbered at a location, which means that towards the end of the game, chains of stones not anchored to a triangle, loop, or board edge will be consumed one-by-one by captures. Thus the shape and nature of territorial walls is worth contesting.
+            
+            Boards: The standard board is centerless, designed to allow maximal distance moves from the center, while minimizing the size of the board. The hexagonal corner regions help to stabilize invasions in outlying areas. The reverse angles along the edge are slightly less defensible than the other parts, breaking the edges into stategic zones.
+            
+            The game is easily adapted not only to to different size and shape boards, but also to different grid topologies, while remaining interesting and playable. A 'perforated' grid is included to demonstrate this, but there are many other possibilities as well. 
+            
+            The center of the board is very advantageous, and a pie rule or balanced starting positions are needed. The standard starting position places the initial pieces near the edges to allow players a wider variety of strategies. Placing multiple starting stones, and or playing on torus boards, leads to finer grained, denser, highly tactical games, while using few starting pieces and larger boards or boards with less connectivity (e.g. boards with holes, and boards on semi-regular grids) lead to a more territorial game.
+            
+            Play on a torus also eliminates the advantage of a board center, but requires a larger board because invasion is no longer from a single direction.
+            
+            In Dec 2023 I simplified the rules by removing the exception that allows adding a piece to neutral surrounded spaces, since these can always be filled by movements, and having capture end a stone's actions, as placing into a site where the rmaining actions could be used is foolish, and the number of cases where it is useful to surround a piece with extra stones instead of capturing it immediately is quite small. 
+            
+        These changes may make the game enough easier to learn and play that more people may be encouraged to try.")
+        (rules "Objective: Have a majority of pieces when the board is full and no captures are left to be made.
+            
+            Definitions:
+            - A ‘site’ is a node at the intersection of grid-lines that is intended to be occupied by pieces during play.
+            - The vicinity of a site is that site, together with all the sites immediately adjacent to it.
+            - The action-potential of a site is the number of the player’s stones in the site’s vicinity minus the number of the opponent’s stones there. 
+            -- Note: The default option shows the action-potentials for the pieces that can move. They are not shown for placement sites, but once a stone is placed, the remaining potential is shown. There is an option to hide these.
+            
+            The structure of the game:
+            Before play begins, one Black stone and two White stones are setup as shone. Then, beginning with Black, the players alternate taking turns, each turn consisting of two 'maneuvers', with 4 possible phases.
+            
+            Each maneuver starts with a Site Selection phase, followed by at least one other phase, each phase occurring only once during a maneuver, in the following order. These are:
+            
+            1. Site Selection – Every maneuver must begin with a site selection phase. During this phase the player chooses an intersection and calculates it’s action-potential. The intersection can be empty (requiring a deployment phase), occupied by an enemy stone (requiring a capture + deployment phase) or already occupied by one of the player’s pieces (allowing for immediate dispatch). In the case of simple deployment, the player can then dispatch the deployed piece if they still have action-potential remaining.
+            
+            2. Capture + Deployment -- The capture phase occurs together with deployment if the player chooses a site occupied by an opponent’s stone and the action potential of the site is at least 2. Capture + Deployment completes a maneuver.
+            
+            3. Deployment -- The deployment phase only occurs if the player chooses an empty site with an action potential of at least 1. The player must deduct 1 from their action-potential and place a stone of their own on the site.
+            
+            4. Dispatch -- dispatch is the last phase of an action. The player may now move the piece away from the selected site, in a sequence of steps and jumps, spending one action per site moved across or reached during the sequence.
+            - A step is a move to an adjacent empty site.
+            - A jump is a movement in a straight line over occupied sites, ending at an empty site.
+            - The piece may change direction after a step or after a jump.
+            The distance along the path the piece travels may not exceed the number of unspent actions.
+            
+            Voluntary passing and partial passing are allowed, with the following exception:
+            - If possible, a piece must be deployed during at least one action of the turn that follows a fully-passed turn.
+            
+            Ending the game:
+            Play continues until no actions are possible, and the player with the most pieces on the board wins.
+            
+            Scores shown are the values that a player can reasonably expect to defend.
+        -- The implementation will end the game when one player starts a turn with a score at least 2 more than half the size of the board.")
+        (id "1224")
+        (source "<a href=\"https://boardgamegeek.com/thread/2452882/throngs-new-attempt-describe-how-play\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG Forum</a>")
+        (version "1.3.14")
+        (classification "board/war/leaping/lines")
+        (author "Dale W. Walton")
+        (credit "Dale W. Walton 2020-11-11")
+        (date "18-11-2019")
         }
     )
     (graphics

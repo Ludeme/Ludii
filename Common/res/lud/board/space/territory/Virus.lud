@@ -54,15 +54,15 @@
         )
         (end
             {
-                (if ("NoSites" (sites Occupied by:Next)) 
-                    (result Mover Win)
-                )
-                (if (is Full)
-                    (byScore {
-                        (score P1 (count Sites in:(sites Occupied by:P1)))
-                        (score P2 (count Sites in:(sites Occupied by:P2)))
-                    })
-                )
+            (if ("NoSites" (sites Occupied by:Next)) 
+                (result Mover Win)
+            )
+            (if (is Full)
+                (byScore {
+                    (score P1 (count Sites in:(sites Occupied by:P1)))
+                    (score P2 (count Sites in:(sites Occupied by:P2)))
+                })
+            )
             }
         )
     )
@@ -71,6 +71,16 @@
 //------------------------------------------------------------------------------
 
 (metadata
-    (info {
-    })
+    (info
+        {
+        (description "A game created for a Kaggle competition.")
+        (rules "The game is played on an 8x8 board. Each player starts with one stone close to one corner of the board, with each player's stone in opposite corners. Players can either move a stone one space in any direction orthogonally or diagonally, or add a stone onto an empty space. If a stone is moved, another stone is added to the original space and all opposing stones adjacent to the space the player moved to now belong to the player who moved. If a player has no more stone left, he loses. If the board is full, the player with the most stones wins.")
+        (id "4306")
+        (version "1.3.14")
+        (classification "board/space/territory")
+        (author "Achille Morenville")
+        (credit "Achille Morenville")
+        (date "2024")
+        }
+    )
 )

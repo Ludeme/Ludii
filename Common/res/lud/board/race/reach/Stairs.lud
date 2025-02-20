@@ -117,9 +117,21 @@
 //-------------------------------------------------------------------------
 
 (metadata 
-    (info {
-        
-    })
+    (info
+        {
+        (description "Stairs is a stacking game consisting of a simple rule set. The goal is to place your piece higher than your opponent.")
+        (rules "Stairs is a stacking game consisting of a simple rule set. The goal is to place your piece higher than your opponent.
+            
+        All the turn player has to do is basically move one of their pieces to the adjacent space. However, the player must move it to exactly one level higher than before the move. The player must also move the piece on the lowest stack that can be moved.")
+        (id "4214")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/383703/stairs\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.14")
+        (classification "board/race/reach")
+        (author "Kanare Kato")
+        (credit "Takuro Kawasaki")
+        (date "2023")
+        }
+    )
     (graphics
         {
         (stackType DefaultAndCount 0.8)

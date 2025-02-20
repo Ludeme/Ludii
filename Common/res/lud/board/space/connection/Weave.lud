@@ -35,7 +35,18 @@
     
     (info
         {
-        
+        (description "This game is played on a 10x10 board.")
+        (rules "GROUP - A diagonal (orthogonal) group is a set of stones of the same color connected by diagonal (orthogonal) adjacency.
+            EDGES - The top and bottom rows are the edges of Black, and the left and right column are the edges of White.
+            TURN - On each turn, each player drops a friendly stone on an empty cell:
+        GOAL - Wins the player that connects his edges with an orthogonal or a diagonal group of friendly stones.")
+        (id "4224")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/weave.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The world of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/connection")
+        (author "Walter Joris")
+        (credit "Clémentine Sacré")
+        (date "2002")
         }
     )
     

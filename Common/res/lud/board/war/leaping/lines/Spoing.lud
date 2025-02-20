@@ -1,50 +1,49 @@
 (define "Capture"
-	(move
-		(from (sites Occupied by:#1))
-		(to (difference (sites Direction from:(from) #2 distance:2) (sites Direction from:(from) #2 distance:1)) 
-			if:(and {
-    			(is Occupied (to))
-    			(is Occupied 
-    				(regionSite
-    					(sites Direction from:(from) #2 distance:1)
-    					index:0
-    				)
-    			)
-    			(=
-        			(who at:
-        				(regionSite
-        					(sites Direction from:(from) #2 distance:1)
-        					index:0
-        				)
-        			)
-        			(id #3)
-        		)
-			})
-		)
-		(then
-			(remove 
-				(regionSite
-					(sites Direction from:(last From) #2 distance:1)
-					index:0
-				)
-				(then 
-					(add 
-	    				(piece #4)
-	    				(to 
-	    					(regionSite
-	    						(sites Direction from:(last From) #2 distance:1)
-	    						index:0
-	    					)
-	    				)
-	    			)
-				)
-			)	
-		)
-	)
+    (move
+        (from (sites Occupied by:#1))
+        (to (difference (sites Direction from:(from) #2 distance:2) (sites Direction from:(from) #2 distance:1)) 
+            if:(and {
+                (is Occupied (to))
+                (is Occupied 
+                    (regionSite
+                        (sites Direction from:(from) #2 distance:1)
+                        index:0
+                    )
+                )
+                (=
+                    (who at:
+                        (regionSite
+                            (sites Direction from:(from) #2 distance:1)
+                            index:0
+                        )
+                    )
+                    (id #3)
+                )
+            })
+        )
+        (then
+            (remove 
+                (regionSite
+                    (sites Direction from:(last From) #2 distance:1)
+                    index:0
+                )
+                (then 
+                    (add 
+                        (piece #4)
+                        (to 
+                            (regionSite
+                                (sites Direction from:(last From) #2 distance:1)
+                                index:0
+                            )
+                        )
+                    )
+                )
+            )	
+        )
+    )
 )
 
 //------------------------------------------------------------------------------
-
 
 (game "Spoing" 
     (players 2) 
@@ -54,57 +53,57 @@
         (piece "Ball" Neutral)
     }) 
     (rules
-		(start {
-        	(place "Ball1" {0 1 2 3 7 8 10 12})
-        	(place "Ball2" {29 28 27 26 22 20 18 17})
+        (start {
+            (place "Ball1" {0 1 2 3 7 8 10 12})
+            (place "Ball2" {29 28 27 26 22 20 18 17})
         })
         (play
-        	(or {
-        		("Capture" Mover N Next "Ball0")
-		    	("Capture" Mover N Neutral (next))
-		    	("Capture" Neutral N Mover (next))
-		    	("Capture" Neutral N Next (mover))
-		    	
-		    	("Capture" Mover S Next "Ball0")
-		    	("Capture" Mover S Neutral (next))
-		    	("Capture" Neutral S Mover (next))
-		    	("Capture" Neutral S Next (mover))
-		    	
-		    	("Capture" Mover E Next "Ball0")
-		    	("Capture" Mover E Neutral (next))
-		    	("Capture" Neutral E Mover (next))
-		    	("Capture" Neutral E Next (mover))
-		    	
-		    	("Capture" Mover W Next "Ball0")
-		    	("Capture" Mover W Neutral (next))
-		    	("Capture" Neutral W Mover (next))
-		    	("Capture" Neutral W Next (mover))
-		    	
-		    	("Capture" Mover NE Next "Ball0")
-		    	("Capture" Mover NE Neutral (next))
-		    	("Capture" Neutral NE Mover (next))
-		    	("Capture" Neutral NE Next (mover))
-		    	
-		    	("Capture" Mover SE Next "Ball0")
-		    	("Capture" Mover SE Neutral (next))
-		    	("Capture" Neutral SE Mover (next))
-		    	("Capture" Neutral SE Next (mover))
-		    	
-		    	("Capture" Mover NW Next "Ball0")
-		    	("Capture" Mover NW Neutral (next))
-		    	("Capture" Neutral NW Mover (next))
-		    	("Capture" Neutral NW Next (mover))
-		    	
-		    	("Capture" Mover SW Next "Ball0")
-		    	("Capture" Mover SW Neutral (next))
-		    	("Capture" Neutral SW Mover (next))
-		    	("Capture" Neutral SW Next (mover))
-        	})
+            (or {
+                ("Capture" Mover N Next "Ball0")
+                ("Capture" Mover N Neutral (next))
+                ("Capture" Neutral N Mover (next))
+                ("Capture" Neutral N Next (mover))
+                
+                ("Capture" Mover S Next "Ball0")
+                ("Capture" Mover S Neutral (next))
+                ("Capture" Neutral S Mover (next))
+                ("Capture" Neutral S Next (mover))
+                
+                ("Capture" Mover E Next "Ball0")
+                ("Capture" Mover E Neutral (next))
+                ("Capture" Neutral E Mover (next))
+                ("Capture" Neutral E Next (mover))
+                
+                ("Capture" Mover W Next "Ball0")
+                ("Capture" Mover W Neutral (next))
+                ("Capture" Neutral W Mover (next))
+                ("Capture" Neutral W Next (mover))
+                
+                ("Capture" Mover NE Next "Ball0")
+                ("Capture" Mover NE Neutral (next))
+                ("Capture" Neutral NE Mover (next))
+                ("Capture" Neutral NE Next (mover))
+                
+                ("Capture" Mover SE Next "Ball0")
+                ("Capture" Mover SE Neutral (next))
+                ("Capture" Neutral SE Mover (next))
+                ("Capture" Neutral SE Next (mover))
+                
+                ("Capture" Mover NW Next "Ball0")
+                ("Capture" Mover NW Neutral (next))
+                ("Capture" Neutral NW Mover (next))
+                ("Capture" Neutral NW Next (mover))
+                
+                ("Capture" Mover SW Next "Ball0")
+                ("Capture" Mover SW Neutral (next))
+                ("Capture" Neutral SW Mover (next))
+                ("Capture" Neutral SW Next (mover))
+            })
         )
         (end {
-        	(if (and (no Moves Next) (> (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))) (result Mover Win))
-        	(if (and (no Moves Next) (< (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))) (result Next Win))
-        	(if (and (no Moves Next) (= (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))) (result All Draw))
+            (if (and (no Moves Next) (> (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))) (result Mover Win))
+            (if (and (no Moves Next) (< (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))) (result Next Win))
+            (if (and (no Moves Next) (= (count Sites in:(sites Occupied by:Mover)) (count Sites in:(sites Occupied by:Next)))) (result All Draw))
         })
     )
 )
@@ -112,18 +111,28 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-		
-		(info
-			{
-			}
-		)
     
-	(graphics {
-		(piece Scale "Ball" 1.0)
-	    (board Style Shibumi)
-	    (piece Colour P1 fillColour:(colour White))
-	    (piece Colour P2 fillColour:(colour Black))
-	    (piece Colour Neutral fillColour:(colour Red))
-	})
-       
+    (info
+        {
+        (description "Spoing is a capture game that can be played with a Series: Shibumi set , as it uses a 4x4 holes board and balls in three colours (white, black and red).")
+        (rules "Two players, White and Black, alternate turns moving a ball of their colour or a neutral ball (red) to jump over a single ball of another colour and land on any ball to capture it. Jumps may be diagonal (as per Checkers) or orthogonal. Players must capture a ball each turn. The ball landed on is removed and the ball jumped over is converted to the colour that is not the jumper or the jumpee, e.g. if the jumper is a white ball and the jumpee is a black ball then the jumpee gets replaced with a neutral ball (red). The game ends immediately when a player can't move on their turn (which could happen if there are not three balls in a row somewhere, or if all remaining triples are unusable by the player). The winner is the player with the most balls of their colour on the board.")
+        (id "4244")
+        (source "<a href=\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />SHIBUMI Rulebook</a>")
+        (version "1.3.14")
+        (classification "board/war/leaping/lines")
+        (author "Stephen Tavener")
+        (publisher "Computational Creativity Group, nestorgames")
+        (credit "Cédric Antoine")
+        (date "2011")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+        (piece Colour Neutral fillColour:(colour Red))
+    })
+    
 )

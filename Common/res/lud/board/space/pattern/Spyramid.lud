@@ -5,21 +5,21 @@
         (piece "Ball" Each) 
     }) 
     (rules
-    	(meta {(noStackOn Fallen) (pin SupportMultiple) (gravity)})
+        (meta {(noStackOn Fallen) (pin SupportMultiple) (gravity)})
         (play
-        	(or 
-        		(move Add 
-	        		(to (sites Empty) 
-	        			if:(is Flat)
-	                )
-        		)
-        		(move
-                	(from (sites Occupied by:Mover))
-                	(to (sites Empty) 
-        	        		if:(is Flat)
-        	        )
+            (or 
+                (move Add 
+                    (to (sites Empty) 
+                        if:(is Flat)
+                    )
                 )
-        	)
+                (move
+                    (from (sites Occupied by:Mover))
+                    (to (sites Empty) 
+                        if:(is Flat)
+                    )
+                )
+            )
         )
         (end {
             (if (is PyramidCorners froms:(sites Occupied by:Mover)) (result Mover Win))
@@ -31,17 +31,27 @@
 //------------------------------------------------------------------------------
 
 (metadata 
-		
-	(info
-		{
-		}
-	)
-  
-  (graphics {
-      	(piece Scale "Ball" 1.0)
-      	(board Style Shibumi)
-      	(piece Colour P1 fillColour:(colour White))
-		(piece Colour P2 fillColour:(colour Black))
-  })
-     
+    
+    (info
+        {
+        (description "Spyramid is a pattern game that can be played with the Series: Shibumi set.")
+        (rules "Start: The board starts empty. Play: Players take turns either adding or moving a ball of their colour to any playable point. Balls cannot be moved onto any ball that dropped as a result of the move. End: A player wins by placing balls of their colour at the five corners of a pyramid of any size, pointing up or down. If pyramids of both colours are formed then the mover wins.")
+        (id "4247")
+        (source "<a href=\\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />SHIBUMI Rulebook</a>")
+        (version "1.3.14")
+        (classification "board/space/pattern")
+        (author "Nestor Romeral Andrés")
+        (publisher "Computational Creativity Group, nestorgames")
+        (credit "Cédric Antoine")
+        (date "2012")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+    })
+    
 )

@@ -2,24 +2,24 @@
     (players 2) 
     (equipment { 
         (board 
-        	(remove	
-        	(square 11)
-        		cells:{
-        			3 7 14 25 18 29 33 34 35 37 38 39 41 42 43
-        		    47 58 69 51 62 73 77 78 79 81 82 83 85 86 87
-        		    91 102 113 95 106 117
-        		}
-        	)
+            (remove	
+                (square 11)
+                cells:{
+                3 7 14 25 18 29 33 34 35 37 38 39 41 42 43
+                47 58 69 51 62 73 77 78 79 81 82 83 85 86 87
+                91 102 113 95 106 117
+                }
+            )
         ) 
         (piece "Disc" Each) 
         (piece "Cross" Each) 
     }) 
     (rules
         (play 
-        	(if (or (= (% (count Turns) 4) 0) (= (% (count Turns) 4) 1))
-        		(move Add (piece (mover)) (to (sites Empty)))
-        		(move Add (piece (+ 2 (mover))) (to (sites Empty)))
-        	)
+            (if (or (= (% (count Turns) 4) 0) (= (% (count Turns) 4) 1))
+                (move Add (piece (mover)) (to (sites Empty)))
+                (move Add (piece (+ 2 (mover))) (to (sites Empty)))
+            )
         )
         (end ("Line3Win"))
     )
@@ -31,6 +31,14 @@
     
     (info
         {
+        (description "This is a variant of Tic-Tac-Toe.")
+        (rules "Tic Tactics is for 2 to 4 players. The goal is to place three pieces of the same color in a diagonal, horizontal, or vertical row. The pieces may be in a single 3x3 square or bridge two of the 3x3 squares. The board consists of nine 3x3 squares with 1x1 squares that connect all nine 3x3 squares. All four colors are used when playing. With two players each player plays two colors. Each player plays one disc each turn and alternates between their two colors.")
+        (id "4302")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Eric Piette")
+        (credit "Eric Piette")
+        (date "2024")
         }
     )
     
