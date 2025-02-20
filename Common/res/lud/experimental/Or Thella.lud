@@ -1,0 +1,124 @@
+// 'Or Thella' - Meanings (beyond pun on Othello) Sea goddess? Ancient Jewish town? Strong medicinal tree in India to which Krishna tied his chariot....
+
+(define "Capture"
+ (custodial
+  (from (last To))
+  (between
+   if:(or
+    (and 
+     (is Friend (who at:(between)))
+     (!= (state at:(between)) (state at:(last To)))
+    )
+    (is Enemy (who at:(between)))
+   )
+   (apply 
+    (and
+     (add (to (between) (apply (remove (between)))))
+     (set State at:(between) (% (+ 1 (state at:(last To))) 2))
+  )))
+  (to
+   if:(and
+    (is Friend (who at:(to)))
+    (= (state at:(last From)) (state at:(to)))
+))))
+
+//-------------------------------------------------------------------------
+
+(game "Or Thella"
+ <Board:players>
+ (equipment
+  {
+   (board <Board:size> use:Cell)
+   (hand Each size:2)
+   (piece "Disc" Each)
+  }
+ )
+ (rules
+  <Board:start>
+  (play
+   (do
+    (move 
+     (from (sites Hand Mover))
+     (to 
+      (sites Around (sites Occupied by:All) if:(is Empty (to)))
+     )
+     copy:True
+    )
+    ifAfterwards:(can Move "Capture")
+    (then "Capture")
+  ))
+  (end
+   {
+    (if
+     (no Moves Next)  // State requires a move to be set to 0
+     (byScore
+      {
+       (score P1
+        (-
+         (count Pieces P1 in:(sites State 0)) 
+         (count Pieces P1 in:(sites State 1))
+       ))
+       (score P2
+        (-
+         (count Pieces P2 in:(sites State 0)) 
+         (count Pieces P2 in:(sites State 1))
+       ))
+      }
+    ))
+   }
+)))
+
+(option "Size" <Board> args:{<players> <size> <start>}
+ {
+  (item "10x10"
+   <(players 2)> 
+   <(square 10)> 
+   <(start      
+    {
+     (place "Disc1" {44 (handSite P1 0)} state:0)
+     (place "Disc1" {54 (handSite P1 1)} state:1)
+     (place "Disc2" {45 (handSite P2 0)} state:0)
+     (place "Disc2" {55 (handSite P2 1)} state:1)
+    }
+   )>
+   "10x10 board"
+  )
+  (item "8x8"
+   <(players 2)> 
+   <(square 8)> 
+   <(start      
+    {
+     (place "Disc1" {27 (handSite P1 0)} state:0)
+     (place "Disc1" {35 (handSite P1 1)} state:1)
+     (place "Disc2" {28 (handSite P2 0)} state:0)
+     (place "Disc2" {36 (handSite P2 1)} state:1)
+    }
+   )>
+   "8x8 board"
+  )**
+ }
+)
+ 
+//-------------------------------------------------------------------------
+
+(metadata
+ (info
+  {
+  }
+ ) 
+  
+ (graphics 
+  {
+   (player Colour P1 (colour DarkGrey))
+   (player Colour P2 (colour Cream))
+   (hand Placement P1 scale:0.2 offsetX:.1 offsetY:.95 vertical:False)
+   (hand Placement P2 scale:0.2 offsetX:.7 offsetY:.95 vertical:False)
+//   (piece Foreground P1 "Disc" state:0 text:"+" scale:.5)
+   (piece Foreground P1 "Disc" state:1 image:"Disc.svg" fillColour:(colour Cream) scale:.75)
+//   (piece Foreground P2 "Disc" state:0 text:"+" scale:.5)
+   (piece Foreground P2 "Disc" state:1 image:"Disc.svg" fillColour:(colour DarkGrey) scale:.67)
+  }
+))
+
+
+   
