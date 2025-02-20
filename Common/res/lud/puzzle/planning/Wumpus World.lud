@@ -1,0 +1,101 @@
+(define "IsNextToPit" (is In (where "Human" P1) (sites "Breeze")))
+(define "IsNextToWumpus" (is In (where "Human" P1) (sites "Stench")))
+(define "AtGold" (is In (where "Human" P1) (sites "Gold")))
+(define "AtPit" (is In (where "Human" P1) (sites "Pits")))
+(define "AtWumpus" (is In (where "Human" P1) (sites "Wumpus")))
+(define "ArrowPath" (sites Between Orthogonal from:(where "Arrow" P1) fromIncluded:True to:(where "Human" P1)))
+(define "ArrowLogic" (if (= 0 (size Array (intersection (array (sites "Wumpus")) (array ("ArrowPath")))))
+                        (and
+                            (note "Thunk! The arrow hits a wall. You have failed to kill the wumpus.")
+                            (remove (where "Arrow" P1) at:EndOfTurn)
+                        )
+                        (and
+                            (or
+                                (set Var "WumpusKilled" 1)
+                                (remove (where "Arrow" P1) at:EndOfTurn)
+                            )
+                            (note "The wumpus yells in pain and dies")
+                        )
+                     )
+)
+
+// "Binary" Variables: GoldFound, WumpusKilled (1 if true, Constants.UNDEFINED or -1 if not set / false)
+
+//-------------------------------------------------------------------------
+
+(game "Wumpus World"
+    (players 1)
+    (equipment
+        {
+            (board (square 4))
+            (piece "Human" P1
+                (move Step Orthogonal
+                    (to if:(is Empty (to) ))
+                    (then
+                        (or
+                            (if (and ("AtGold") (!= (var "GoldFound") 1))
+                                (and
+                                    (set Var "GoldFound" 1)
+                                    (note "You found the gold")
+                                )
+                            )
+                            (and
+                                (and
+                                    (if ("IsNextToPit") (note "You feel a breeze. A pit is nearby!"))
+                                    (if ("IsNextToWumpus") (note "Your nose wrinkles from the strong stench. A wumpus is nearby!"))
+                                )
+                                (and
+                                    (if ("AtPit") (note "You fall into a pit and die."))
+                                    (if (and ("AtWumpus") (!= (var "WumpusKilled") 1)) (note "You are eaten by the wumpus."))
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+            (hand P1 size:1)
+            (piece "Arrow" P1)
+            (regions "Gold" (sites {"B3"}))
+            (regions "Pits" (sites {"C1" "C3" "D4"}))
+            (regions "Wumpus" (sites {"A3"}))
+            (regions "Stench" (sites Around (sites "Wumpus") Orthogonal))
+            (regions "Breeze" (sites Around (sites "Pits") Orthogonal))
+        }
+    )
+    (rules
+        (start
+            {
+                (place "Human" coord:"A1")
+                (place "Arrow" (handSite P1))
+            }
+        )
+        (play
+            (or
+                (forEach piece)
+                (move
+                    (from (handSite P1))
+                    (to (sites LineOfSight Farthest at:(where "Human" P1) Orthogonal))
+                    (then ("ArrowLogic"))
+                )
+            )
+        )
+
+        (end {
+            (if (or (and ("AtWumpus") (!= (var "WumpusKilled") 1)) ("AtPit"))
+                (result Mover Loss)
+            )
+            (if (and (= (var "GoldFound") 1) (= (var "WumpusKilled") 1))
+                (result Mover Win)
+            )
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        }
+    )
+)
