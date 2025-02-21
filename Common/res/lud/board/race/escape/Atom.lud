@@ -1,0 +1,111 @@
+(define "JumpSite" (+ 7 #1))
+
+(define "EscapeAPiece" 
+    (if (and 
+            (is Occupied #1)
+            (= 2
+                (count Sites in:(intersection ("OuterRadial" #1) 
+                    (sites Occupied by:(player (who at:#1))))
+                )
+            )
+        )
+        (move Remove #1)	
+    )			
+)
+
+(define "PlaceAPiece" 
+    (if (not (is Empty (handSite Mover)))
+        (move
+            (from (handSite Mover))
+            (to (intersection (sites Centre) (sites Empty)))
+        )
+    )		
+)
+
+(define "OuterRadial" 
+    (sites {#1 (- #1 7) (- #1 14)})
+)
+
+(define "InnerRadial" 
+    (sites {#1 (- #1 7) (- #1 14) (- #1 21)})
+)
+
+(define "Jump"
+    (if (and (is Occupied #1) (is Empty ("JumpSite" #1)))
+        (if (= 3 (count Sites in:(intersection ("InnerRadial" #1) (sites Occupied by:(player (who at:#1))))))
+            (move
+                (from #1)
+                (to ("JumpSite" #1))
+            )
+        )
+    )		
+)
+
+(define "JumpMove"
+    (forEach Site (sites {21..27})
+        ("Jump" (site))	
+    )
+)
+
+(define "EscapeMove"
+    (forEach Site (sites {42..48})
+        ("EscapeAPiece" (site))	
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Atom" 
+    (players 2)
+    (equipment {
+        (board (concentric {7 7 7 7 0 7 7 7}) use:Vertex)
+        (piece "Marker" Each 
+            (move Step 
+                (to
+                    if:(is Empty (to))
+                )
+                (then
+                    (and
+                        ("JumpMove")
+                        ("EscapeMove")
+                    )
+                )
+            )
+        )
+        (hand Each)
+    })
+    (rules 
+        (start {
+            (place "Marker" "Hand" count:12)
+        })
+        (play
+            (or {
+                ("PlaceAPiece")
+                (forEach Piece)
+            })
+        )
+        (end (if (<= (count Pieces Mover) 7) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Atom is a two player strategy game where the aim is to get 5 of your pieces, or atoms, off the board first.")
+        (rules "Atom is a two player strategy game where the aim is to get 5 of your pieces, or atoms, off the board first. The game is played with 24 pieces of two different colours on a board made up of 7 circles called orbitals, divided into two layers: layer 1 is made up of the 4 central orbitals, and layer 2 is made up of the 3 remaining orbitals. To move from layer 1 to layer 2, at least 3 atoms of the same colour must be aligned on the same radius and one atom must be in the last orbital of the layer. To remove an atom from the board, at least 2 atoms of the same colour must be aligned on the same radius of layer 2 and one atom must be in the last orbital of the layer. If at any point during a player's turn the conditions are met for an atom to jump to another layer or off the board, the jump will be made during that turn. A chain reaction can occur. There can only be one atom per square and it is not possible to jump over an atom to a free square. The white player starts the game and on each turn a player can choose to place an atom of his colour on one of the 7 squares of the first orbital space or to move one of his pieces along a line on the board from one square to another adjacent square, but only within the same level.")
+        (id "4262")
+        (version "1.3.14")
+        (classification "board/race/escape")
+        (credit "Eric Piette")
+        (date "2024")
+        }
+    )
+    
+    (graphics {
+        (no Sunken)
+    })
+    
+)

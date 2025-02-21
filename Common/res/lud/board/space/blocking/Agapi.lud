@@ -1,0 +1,40 @@
+(game "Agapi" 
+    (players 2) 
+    (equipment { 
+        (board (square 8)) 
+        (piece "Bishop" Each (move Slide Diagonal (then (moveAgain))))
+        (piece "Dot" Neutral)
+    }) 
+    (rules 
+        (start { 
+            (place "Bishop1" {"C1" "F1" "A3" "H3"})
+            (place "Bishop2" {"C8" "F8" "A6" "H6"})
+        })
+        
+        (play 
+            (if (is Even (count Moves))
+                (forEach Piece)
+                (move Shoot (piece "Dot0") Orthogonal)
+            )
+        )
+        
+        (end ("NoMoves" Loss))
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "The game is variant of Amazons with Bishops.")
+        (rules "The game is played on a 8x8 board. Each player has four pieces. Two things happen on a turn: a piece can move any number of squares diagonally, but cannot jump over other pieces and cannot cross or enter a square occupied by another piece or a ball. It can then shoot a ball orthogonally from any distance. If a player cannot move or shoot, he loses.")
+        (id "4259")
+        (version "1.3.14")
+        (classification "board/space/blocking")
+        (author "Achille Morenville")
+        (credit "Achille Morenville")
+        (date "2024")
+        }
+    )
+)

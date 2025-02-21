@@ -1,0 +1,105 @@
+(game "Alquerkonane"
+    ("TwoPlayersNorthSouth")
+    (equipment
+        {
+        (board (rectangle <Rows:num> <Columns:num>))
+        (piece "Ball" Each
+            (or
+                (move Step (directions { FL FR }) (to if:(is Empty (to))))
+                (move
+                    Hop
+                    (between
+                        if:(is Enemy (who at:(between)))
+                        (apply (remove (between)))
+                    )
+                    (to if:(is Empty (to)))
+                )
+            )
+        )
+        }
+    )
+    (rules
+        (start
+            {
+            (set Score Each 0)
+            (place
+                "Ball2"
+                (intersection
+                    (sites Phase 0)
+                    (expand (sites Top) steps:1)
+                )
+            )
+            (place
+                "Ball1"
+                (intersection
+                    (sites Phase 1)
+                    (expand (sites Bottom) steps:1)
+                )
+            )
+            }
+        )
+        (play
+            <Result:play>
+        )
+        (end (<Result:end>))
+    )
+)
+
+(option "Rows" <Rows> args:{ <num> }
+    {
+    (item "2" <2> "The board has 2 rows.")
+    (item "3" <3> "The board has 3 rows.")
+    (item "4" <4> "The board has 4 rows.")*
+    (item "5" <5> "The board has 5 rows.")
+    (item "6" <6> "The board has 6 rows.")**
+    (item "7" <7> "The board has 7 rows.")
+    (item "8" <8> "The board has 8 rows.")*
+    (item "9" <9> "The board has 9 rows.")
+    (item "10" <10> "The board has 10 rows.")
+    }
+)
+(option "Columns" <Columns> args:{ <num> }
+    {
+    (item "2" <2> "The board has 2 columns.")
+    (item "3" <3> "The board has 3 columns.")
+    (item "4" <4> "The board has 4 columns.")**
+    (item "5" <5> "The board has 5 columns.")
+    (item "6" <6> "The board has 6 columns.")*
+    (item "7" <7> "The board has 7 columns.")
+    (item "8" <8> "The board has 8 columns.")*
+    (item "9" <9> "The board has 9 columns.")
+    (item "10" <10> "The board has 10 columns.")
+    }
+)
+(option "End Rules" <Result> args:{ <play> <end> } {
+    (item "Classical" <(forEach Piece)><"BlockWin"> "The last one to move wins.")*
+    (item "Scores" <(priority  (forEach Piece) (move Pass (then (if (= (score Mover) 0) (addScore Next 1)))))> <if (all Passed) (byScore)> "With a final score for tournaments.")
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Take the opponent's pieces or be the last to move a pawn.")
+        (aliases {"The reunionese checkers"})
+        (rules "Checkers without promotion. The winner is the last to move. One can move a pawn diagonally or hop orthogonally over an opponent's pawn, taking it.")
+        (id "4221")
+        (version "1.3.14")
+        (classification "board/war/leaping/diagonal")
+        (author "Anonymous creole")
+        (credit "Alain Busser")
+        (date "2016")
+        }
+    )
+    (graphics (board  Style Chess))
+    (ai
+        (alphaBeta
+            (heuristics
+                (score)
+            )
+        )
+    )
+)
+

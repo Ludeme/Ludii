@@ -1,0 +1,88 @@
+(define "GoalCell"
+    (if (is #1 P1)
+        34
+        26
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(game "Aboyne"
+    (players 2)
+    (equipment {
+        (board (hex 5))
+        (piece "Marker" Each)
+    })
+    (rules
+        (start {
+            (place "Marker1" (sites { 0 5 11 18 27 35 43 50 56 }))
+            (place "Marker2" (sites { 4 10 17 25 33 42 49 55 60 }))
+        })
+        (play
+            (forEach Piece
+                (or {
+                    (move Step
+                        (from
+                            if:(= (count Sites in:(intersection (sites Around (from)) (sites Occupied by:Next))) 0)
+                        )
+                        (to
+                            if:(and 
+                                (not ("IsFriendAt" (to)))
+                                (!= (to) ("GoalCell" Next))
+                            )
+                            (apply
+                                if:("IsEnemyAt" (to))
+                                (remove (to))
+                            )
+                        )
+                    )
+                    (move Hop
+                        (from
+                            if:(= (count Sites in:(intersection (sites Around (from)) (sites Occupied by:Next))) 0)
+                        )
+                        (between
+                            (max 7)
+                            if:("IsFriendAt" (between))
+                        )
+                        (to
+                            if:(and 
+                                (not ("IsFriendAt" (to)))
+                                (!= (to) ("GoalCell" Next))
+                            )
+                            (apply
+                                (if ("IsEnemyAt" (to)) (remove (to)))
+                            )
+                        )
+                    )
+                })
+            )
+        )
+        (end {
+            (if 
+                (is Mover (who at:("GoalCell" Mover)))
+                (result Mover Win)
+            )
+            (if (no Moves Next)
+                (result Mover Win)
+            )
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Aboyne is played on a 5x5 hexagonal board.")
+        (rules "Aboyne is a two-player strategy game played on a 5x5 hexagonal board. Each player has a set of stones, and the goal is to move one of your stones into your own goal cell, located on the opposite side of the board, or to stalemate your opponent. A stone is considered blocked if it is adjacent to an enemy stone, and a blocked stone cannot be moved. At each turn, a player must move one of their non-blocked stones to an adjacent empty cell or jump over a line of friendly stones, landing on the immediate next cell. If the landing cell is occupied by an enemy stone, that stone is captured. A stone cannot move into the opponent's goal cell. The game ends when one player achieves their goal or when neither player can make a legal move, resulting in a stalemate.")
+        (id "4257")
+        (source "<a href=\"https://jpneto.github.io/world_abstract_games/aboyne.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/race/reach")
+        (author "Paul Sijben")
+        (credit "Achille Morenville")
+        (date "1995")
+        }
+    )
+)

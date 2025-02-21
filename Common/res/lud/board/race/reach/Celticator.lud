@@ -1,0 +1,138 @@
+(define "EdgeInCommon" 
+    (intersection (sites Incident Edge of:Cell at:#1) 
+        (sites Incident Edge of:Cell at:#2)
+    ) 
+)
+
+(define "NoEdgeBetweenCells"
+    (all Sites (sites Occupied by:Shared on:Edge) if:(not (is In (site) ("EdgeInCommon" #1 #2))))
+)
+
+(define "ReachedTarget" (and (is LastTo Cell) (is In (last To) (sites Mover))))
+
+(define "SizePath" 
+    (count Steps
+        (step
+            (difference Adjacent Diagonal)
+            (to 
+                if:(and 
+                    (is Empty (to)) 
+                    ("NoEdgeBetweenCells" (from) (to))
+                )
+            )
+        )
+        (where "Pawn" #1)
+        (sites #1)
+    )	
+)
+
+(define "NumPlayers" <Players:num>)
+
+//------------------------------------------------------------------------------
+
+(game "Celticator" 
+    (players "NumPlayers")
+    (equipment {
+        (board (celtic 4))
+        (piece "Pawn" Each
+            (or
+                (move Step
+                    (difference Adjacent Diagonal)
+                    (to 
+                        if:(and 
+                            (is Empty (to)) 
+                            ("NoEdgeBetweenCells" (from) (to))
+                        )
+                    )
+                )
+                (move Hop
+                    (difference Adjacent Diagonal)
+                    (between if:("IsEnemyAt" (between)))
+                    (to if:(and {
+                            (is Empty (to))
+                            ("NoEdgeBetweenCells" (from) (between))
+                            ("NoEdgeBetweenCells" (between) (to))
+                        })
+                    )
+                )
+            )
+        )
+        (piece "Cross" Shared)
+        (hand Each)
+        <Players:regions>
+    })
+    (rules 
+        <Players:start>
+        (play 
+            (or
+                (do
+                    (if (is Occupied (handSite Mover))
+                        (move 
+                            (from (handSite Mover)) 
+                            (to Edge (difference (sites Empty Edge) (sites Outer Edge)))
+                        )
+                    )
+                    ifAfterwards:<Players:pathRule>
+                )
+                (forEach Piece)
+            )
+        )
+        (end (if "ReachedTarget" (result Mover Win))) 
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Players " <Players> args:{ <num> <regions> <start> <pathRule>} {
+    (item "2" <2> 
+        <
+        (regions P1 (sites Side N))
+        (regions P2 (sites Side S))
+        >
+        <
+        (start {
+            (place "Cross" (handSite P1) count:10)
+            (place "Cross" (handSite P2) count:10)
+            (place "Pawn1" {"F2"})
+            (place "Pawn2" {"F10"})
+        })
+        >
+        <
+        (and {
+            (!= Infinity ("SizePath" P1))
+            (!= Infinity ("SizePath" P2))
+        })
+        >
+    "The game has 2 players")* 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Celticator is a variant of Quoridor played on Celtic tilings.")
+        (rules "The abstract strategy game Corridor is surprisingly deep for its simple rules. The object of the game is to advance your pawn to the opposite edge of the board. On your turn you may either move your pawn or place a wall. You may hinder your opponent with wall placement, but not completely block them off. Meanwhile, they are trying to do the same to you. The first pawn to reach the opposite side wins.")
+        (id "4267")
+        (version "1.3.14")
+        (classification "board/race/reach")
+        (author "Eric Piette")
+        (credit "Eric Piette")
+        (date "2024")
+        }
+    )
+    
+    (graphics {
+        (player Colour Shared (colour Red))
+        (board Colour InnerVertices (colour Hidden))
+        (board Colour OuterVertices (colour Hidden))
+        
+        (piece Scale "Pawn" 0.825)
+        (board Placement scale:0.9)
+        (hand Placement P1 scale:0.1 offsetX:0.45 offsetY:0.1)
+        (hand Placement P2 scale:0.1 offsetX:0.45 offsetY:0.95)
+        (hand Placement P3 scale:0.1 offsetX:0.025 offsetY:0.5)
+        (hand Placement P4 scale:0.1 offsetX:0.875 offsetY:0.5)
+    })
+)

@@ -1,0 +1,134 @@
+//----------------------------
+//Utility defines 
+
+(define "IsPlayableSiteType" (is In (to) (difference <Board:area> (sites Occupied by:Mover))))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Unlace"
+    (players 2)
+    (equipment
+        {
+        (board (hex Hexagon <Board:side>) use:Cell)
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (start {<Board:white> <Board:black>})
+        (play
+            (forEach Piece 
+                (do
+                    (set Var "StartGroupSize" (size Group at:(from) if:(is Mover (who at:(to)))))
+                    next:(do
+                        (move Step
+                            (to if:"IsPlayableSiteType" (apply (remove (to))))
+                        )
+                        ifAfterwards:(< (var "StartGroupSize") (size Group at:(last To) if:(is Mover (who at:(to)))))
+        ))))
+        (end 
+            "StalemateEnd"
+)))
+
+//--------------------------------------
+// End conditions
+
+(define "StalemateEnd"
+    {
+    (if 
+        (no Moves Next)
+        (result Mover Win)
+    )
+    (if 
+        (no Moves Mover)
+        (result Mover Loss)
+    )
+    }
+)
+
+//-------------------------------------------------
+// Options
+
+(option "Board Size" <Board> args:{<side> <area> <white> <black>} 
+    {
+    (item "Order 4"
+        <5> 
+        <(sites Inner)> 
+        <(place "Disc1" {7 12 15 21 24 28 31 38 41 44 47 52})>
+        <(place "Disc2" {8 13 16 19 22 29 32 36 39 45 48 53})>
+    "Order 4 board")*
+    
+    (item "Order 5"
+        <5> 
+        <(sites Board)> 
+        <(place "Disc1" {0 3 7 10 12 15 18 21 24 28 31 34 35 38 41 44 47 52 55 56 59})>
+        <(place "Disc2" {1 4 5 8 13 16 19 22 25 26 29 32 36 39 42 45 48 50 53 57 60})>
+    "Order 5 board")
+    
+    (item "Order 6"
+        <6> 
+        <(sites Board)>
+        <(place "Disc1" {0 3 8 11 14 17 20 21 24 27 32 35 38 41 44 47 50 53 56 59 61 64 67 71 74 77 80 83 85 88})>
+        <(place "Disc2" {2 5 7 10 13 16 19 23 26 29 31 34 37 40 43 46 49 52 55 58 63 66 69 70 73 76 79 82 87 90})>
+    "Order 6 board")
+    }
+)
+
+//---------------------------------------------
+(define "ColourBackground" (colour 245 245 245)) 
+
+(metadata
+    (info
+        {
+        (description "Unlace is a game based on the game Squish.
+            It was invented with the idea of creating a pure stalemate game (a game where players compete for room to move) from the same initial layout as 
+        Squish. Contrary to Squish, if you unify all your pieces first, you often lose.")
+        (rules "Unlace is a game based on the game Squish.
+            Goal: Be the last player able to take a turn.
+            
+            Definition (size of a group)
+            A group is a single piece and all the pieces that can be reached from it by a series of connections.
+            A connection means two pieces of the same color that are next to each other.
+            The size of a group is the number of pieces in it.
+            
+            Play:
+            The board starts with pieces of each color distributed symmetrically on every 3rd cell of the board.
+            (For a game on an order 4 board, the outer cells are not used.)
+            
+            Decide which player will play with which color (Dark or Light). Light is the first player to play.
+            
+            On your turn, you move one of your pieces onto an adjacent hex. However after moving, it must belong to a larger group than the one it was part of before. 
+            
+            If there is an enemy piece at the destination, the enemy piece is captured and removed from the board. You cannot move to a place where there is a friendly piece.
+            
+        The game ends with the player who cannot move on his turn losing.")
+        (id "4213")
+        (version "1.3.14")
+        (classification "experimental")
+        (author "Kanare Kato")
+        (credit "Dale W. Walton")
+        (date "22-10-2021")
+        }
+    )
+    (graphics 
+        {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (piece Scale "Disc" 0.91)
+        (piece Colour P1 strokeColour:(colour Black))
+        (piece Colour P2 strokeColour:(colour DarkGrey))
+        (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:-1 offsetY:2)
+        (board Colour Phase0 (colour 242 242 242))
+        (board StyleThickness InnerEdges 1.6)
+        (board StyleThickness OuterEdges 1.6)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (region Colour (sites Outer) (colour 212 212 215))
+        
+        }
+    )
+)

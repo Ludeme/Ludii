@@ -1,0 +1,178 @@
+(define "IsUnpromoted" ("IsPieceAt" "Disc" Mover (last To)))
+
+(define "HopUnpromoted"
+    (move Hop
+        #1
+        Diagonal
+        (between
+            if:(and
+                (not (is Mover (who at:(between)))) 
+                (or
+                    (= (id "Disc1") (what at:(between)))
+                    (= (id "Disc2") (what at:(between)))
+            ))
+            (apply
+                (promote (between) (piece "DoubleCounter") Prev)
+        ))
+        (to if:(is Empty (to)))
+        #2
+))
+
+(define "BlackCellsSetup"
+    (start {
+        (place "Disc1" (difference (expand (sites Bottom) steps:(- #1 1)) (sites Phase 1)))
+        (place "Disc2" (difference (expand (sites Top) steps:(- #1 1)) (sites Phase 1)))
+    })
+)
+
+(define "AllowedJumps"   
+    (or 
+        (forEach Piece "Disc"
+            ("HopUnpromoted" (from)
+                (then 
+                    ("ReplayIfCanMove"
+                        ("HopUnpromoted" (from (last To))) 
+                        ("PromoteIfReach" (sites Next) "DoubleCounter")
+        ))))
+        (forEach Piece "DoubleCounter" ("HopDiagonalSequenceCapture" before:(count Rows) after:<Variant:kingJumpType> at:EndOfTurn))
+))
+
+(define "CounterMove" 
+    (forEach Piece "Disc" 
+        ("StepToEmpty" (directions {FR FL}))
+        (then ("PromoteIfReach" (sites Next) "DoubleCounter"))
+)) 
+
+(define "StartATurn"
+    (priority
+        {    
+        "AllowedJumps"
+        (or 
+            {
+            "CounterMove"
+            <Variant:kingMovement>
+            }
+        )    
+        }
+))
+//------------------------------------------------------------------------------
+
+(game "Wild Draughts" 
+    (players {(player N) (player S)})
+    
+    (equipment {
+        (board (square 8))
+        (piece "Disc" P1 N)
+        (piece "Disc" P2 S)
+        (piece "DoubleCounter" Each)
+        (regions P1 (sites Bottom))
+        (regions P2 (sites Top))
+    })
+    
+    (rules 
+        (start {
+            (place "Disc1" (difference (expand (sites Bottom) steps:(- 3 1)) (sites Phase 1)))
+            (place "Disc2" (difference (expand (sites Top) steps:(- 3 1)) (sites Phase 1)))
+        })
+        
+        (play 
+            (if "SameTurn"
+                
+                (if "IsUnpromoted"
+                    ("HopUnpromoted"
+                        (from (last To)) 
+                        (then 
+                            ("ReplayIfCanMove"
+                                ("HopUnpromoted" (from (last To)) ~)
+                                ("PromoteIfReach" (sites Next) "DoubleCounter")
+                    ))) 
+                    ("HopDiagonalSequenceCaptureAgain" before:(count Rows) after:0 at:EndOfTurn)
+                )
+                (if
+                    (can Move (or "AllowedJumps"  "CounterMove"))
+                    ("StartATurn")
+        )))
+        (end 
+            (if
+                (no Moves Next)
+                (byScore
+                    {
+                    (score P1
+                        (+
+                            (* "DiscValue" (count Sites in:(sites Occupied by:P1 component:"Disc")))
+                            (* "KingValue" (count Sites in:(sites Occupied by:P2 component:"DoubleCounter")))
+                    ))
+                    (score P2
+                        (+
+                            (* "DiscValue" (count Sites in:(sites Occupied by:P2 component:"Disc")))
+                            (* "KingValue" (count Sites in:(sites Occupied by:P1 component:"DoubleCounter")))
+                    ))
+                    }
+)))))
+
+(define "DiscValue" <Variant:counterValue>)
+(define "KingValue" <Variant:kingValue>)
+
+//------------------------------------------------------------------------------
+
+(option "Variant" <Variant> args:{<counterValue> <kingValue> <kingMovement> <kingJumpType>}
+    {
+    (item "Original" <11> <30> <(forEach Piece "DoubleCounter" (move Slide Diagonal))> <0> "Original script
+        Kings can slide. 
+        Flying king to first free space after piece jumped. 
+        Must jump, but not necessarily maximum count. 
+    Piece scoring counters:Kings 11:30")
+    (item "Counters only break ties" <1> <10> <(forEach Piece "DoubleCounter" (move Slide Diagonal))> <0> "Counters only break ties
+        Kings can slide.
+        Flying king to first free space after piece jumped. 
+        Must jump, but not necessarily maximum count. 
+    Piece scoring counters:Kings 1:10")
+    (item "No King Moves" <11> <25> <> <0> "No King Moves (except forced jumps)
+        Flying king to first free space after piece jumped. 
+        Must jump, but not necessarily maximum count. 
+    Piece scoring counters:Kings 11:25")
+    (item "Flying King, No Moves" <11> <25> <> <(count Rows)> "No King Moves (except forced jumps)
+        Flying king to any free space after piece jumped.
+        Must jump, but not necessarily maximum count. 
+    Piece scoring counters:Kings 11:25")**
+    }
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Wild Draughts is a temporary handle
+            In this game, players jump the opponent to promote them, but gain points at the end of the game for every remaining opponent's king, (plus points for their own unpromoted pieces if any.) Only kings remove pieces with jumps, and only kings can jump kings. The game ends when a player can neither jump, nor move a counter.  
+            
+        If the scores assigned to kings and to counters have a high LCM, this scheme yields drawless games with a mixture of capture and giveaway tactics.")
+        (rules "8x8 board, 12 pieces per player. Objective Highest Score
+            
+            Counters promote the opponent's counters to Kings by jumping them. Jumps can be forwards or backwards.        Counters normally move diagonally forward, and promote to Kings at the last rank. They cannot jump Kings.
+            
+            In some options Kings move by sliding; in others Kings can only jump. They capture pieces by jumping them using flying jumps -- exact kind of jump is according to the option.
+            
+            The same piece cannot be jumped twice in a turn, and all pieces are removed at the end of the turn. 
+            
+            If any piece can make a jump, one piece must be chosen to do so. It continues jumping until no more jumps are available.
+            
+            The game ends when a player can neither jump nor move a counter. 
+        Winning is by score: Opponents' kings count 30 remaining friendly Discs count 11.")
+        (id "4217")
+        (version "1.3.14")
+        (classification "experimental")
+        (author "Dale Walton")
+        (credit "Dale Walton")
+        (date "30-12-2023")
+        }
+    )
+    
+    (graphics {
+        (board Style Chess)
+        (player Colour P2 (colour DarkGrey))
+        (piece Families {"Defined" "Isometric"})
+    })
+)
+

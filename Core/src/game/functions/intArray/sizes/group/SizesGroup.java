@@ -1,7 +1,9 @@
 package game.functions.intArray.sizes.group;
 
 import java.util.BitSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import annotations.Hide;
 import annotations.Name;
@@ -19,6 +21,7 @@ import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.util.directions.AbsoluteDirection;
 import game.util.directions.Direction;
+import game.util.graph.Step;
 import gnu.trove.list.array.TIntArrayList;
 import other.concept.Concept;
 import other.context.Context;
@@ -56,6 +59,9 @@ public final class SizesGroup extends BaseIntArrayFunction
 
 	/** Variable to know if all the pieces have to be check */
 	private final boolean allPieces;
+	
+	/** The condition of visibility of group members */
+	private final BooleanFunction isVisibleFn;
 
 	//-------------------------------------------------------------------------
 
@@ -67,6 +73,7 @@ public final class SizesGroup extends BaseIntArrayFunction
 	 * @param of         The index of the player.
 	 * @param If         The condition on the pieces to include in the group.
 	 * @param min        Minimum size of each group [0].
+	 * @param isVisible  If all items of group have to be visible and visibly connected.
 	 */
 	public SizesGroup
 	(       
@@ -75,7 +82,8 @@ public final class SizesGroup extends BaseIntArrayFunction
 			@Opt @Or	    final RoleType          role,
 			@Opt @Or  @Name final IntFunction       of,
 			@Opt @Or  @Name final BooleanFunction   If,
-			@Opt      @Name final IntFunction       min
+			@Opt      @Name final IntFunction       min,
+			@Opt 	  @Name final BooleanFunction 	isVisible
 	)
 	{
 
@@ -87,6 +95,7 @@ public final class SizesGroup extends BaseIntArrayFunction
 		condition = If;
 		allPieces = (If == null && of == null && role == null)
 				|| (role != null && (role.equals(RoleType.All) || role.equals(RoleType.Shared)));
+		this.isVisibleFn = isVisible;
 	}
 
 	//-------------------------------------------------------------------------
@@ -95,6 +104,7 @@ public final class SizesGroup extends BaseIntArrayFunction
 	public int[] eval(final Context context)
 	{
 		final Topology topology = context.topology();
+		final List<? extends TopologyElement> sites = context.topology().getGraphElements(type);
 		final int maxIndexElement = context.topology().getGraphElements(type).size();
 		final ContainerState cs = context.containerState(0);
 		final int origFrom = context.from();
@@ -138,11 +148,22 @@ public final class SizesGroup extends BaseIntArrayFunction
 				continue;
 
 			final TIntArrayList groupSites = new TIntArrayList();
+			
+			boolean fromCovered = false;
+			if (isVisibleFn != null && isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[from]].isHand()) {
+				for(final TopologyElement temp_elem : sites) {
+					TopologyElement to_elem = sites.get(from);
+					if (temp_elem.centroid3D().x() == to_elem.centroid3D().x() && temp_elem.centroid3D().y() == to_elem.centroid3D().y() && temp_elem.index() > to_elem.index()) {
+						if(cs.what(temp_elem.index(), type) != 0)
+							fromCovered = true;
+					}
+				}
+			}
 
 			context.setFrom(from);
-			if ((who == cs.who(from, type) && condition == null) || (condition != null && condition.eval(context)))
+			if ((who == cs.who(from, type) && condition == null && !fromCovered) || (condition != null && condition.eval(context) && !fromCovered))
 				groupSites.add(from);
-			else if (allPieces && cs.what(from, type) != 0)
+			else if (allPieces && cs.what(from, type) != 0 && !fromCovered)
 				groupSites.add(from);
 
 			if (groupSites.size() > 0)
@@ -152,11 +173,28 @@ public final class SizesGroup extends BaseIntArrayFunction
 				int i = 0;
 				while (sitesExplored.size() != groupSites.size())
 				{
+					
+					TIntArrayList locnUpwards = new TIntArrayList(); 
+					TIntArrayList indexUpwards = new TIntArrayList(); 
+					
 					final int site = groupSites.get(i);
 					final TopologyElement siteElement = topology.getGraphElements(type).get(site);
 					final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(type, siteElement, null,
 							null, null, context);
 
+					if (isVisibleFn != null && isVisibleFn.eval(context) == true) { 
+						final List<game.util.graph.Step> steps = context.game().board().topology().trajectories() 
+								.steps(SiteType.Vertex, site, SiteType.Vertex, AbsoluteDirection.Upward); 
+
+						for (final Step step : steps) 
+						{
+							final int toSite = step.to().id(); 
+							if (cs.what(toSite, SiteType.Vertex) != 0) { 
+								locnUpwards.add(toSite); 
+							}
+						}
+					}
+					
 					for (final AbsoluteDirection direction : directions)
 					{
 						final List<game.util.graph.Step> steps = topology.trajectories().steps(type,
@@ -164,7 +202,43 @@ public final class SizesGroup extends BaseIntArrayFunction
 
 						for (final game.util.graph.Step step : steps)
 						{
+							
+							indexUpwards = new TIntArrayList();
 							final int to = step.to().id();
+							
+							if (isVisibleFn != null && isVisibleFn.eval(context) == true && !context.equipment().containers()[context.containerId()[to]].isHand()) {
+								boolean covered = false;
+								for(final TopologyElement temp_elem : sites) {
+									TopologyElement to_elem = sites.get(to);
+									if (temp_elem.centroid3D().x() == to_elem.centroid3D().x() && temp_elem.centroid3D().y() == to_elem.centroid3D().y() && temp_elem.index() > to_elem.index()) {
+										if(cs.what(temp_elem.index(), type) != 0)
+											covered = true;
+									}
+								}
+								if (covered)
+									continue;
+							}
+							
+							
+							if (isVisibleFn != null && isVisibleFn.eval(context) == true) { 
+								final List<game.util.graph.Step> stepsbis = context.game().board().topology().trajectories() 
+										.steps(SiteType.Vertex, to, SiteType.Vertex, AbsoluteDirection.Upward); 
+								
+								for (final Step stepbis : stepsbis) 
+								{
+									final int toSite = stepbis.to().id(); 
+									if (cs.what(toSite, type) != 0) 
+										indexUpwards.add(toSite); 
+								}
+								
+								int[] locnUp = locnUpwards.toArray();	
+								int[] indexUp = indexUpwards.toArray();	
+								
+								if (getIntersectionLength(locnUp, indexUp) >= 2) { 
+									continue; 
+								}
+
+							}
 
 							// If we already have it we continue to look the others.
 							if (groupSites.contains(to))
@@ -197,6 +271,30 @@ public final class SizesGroup extends BaseIntArrayFunction
 	}
 
 	//-------------------------------------------------------------------------
+	
+		/**
+	     * function to compute length of intersection of two int arrays
+	     */
+		private static int getIntersectionLength(int[] array1, int[] array2) {
+	        Set<Integer> set1 = new HashSet<>();
+	        Set<Integer> intersection = new HashSet<>();
+	        
+	        // Add elements of the first array to the set
+	        for (int num : array1) {
+	            set1.add(num);
+	        }
+	        
+	        // Check elements of the second array against the set
+	        for (int num : array2) {
+	            if (set1.contains(num)) {
+	                intersection.add(num);
+	            }
+	        }
+	        
+	        return intersection.size();
+	    }
+	
+	//-------------------------------------------------------------------------
 
 	@Override
 	public boolean isStatic()
@@ -216,6 +314,8 @@ public final class SizesGroup extends BaseIntArrayFunction
 		long gameFlags = whoFn.gameFlags(game) | minFn.gameFlags(game);
 		if (condition != null)
 			gameFlags |= condition.gameFlags(game);
+		if (isVisibleFn != null)
+			gameFlags |= isVisibleFn.gameFlags(game);
 		gameFlags |= SiteType.gameFlags(type);
 		return gameFlags;
 	}
@@ -230,6 +330,8 @@ public final class SizesGroup extends BaseIntArrayFunction
 		concepts.set(Concept.Group.id(), true);
 		if (condition != null)
 			concepts.or(condition.concepts(game));
+		if (isVisibleFn != null)
+			concepts.or(isVisibleFn.concepts(game));
 		if (dirnChoice != null)
 			concepts.or(dirnChoice.concepts(game));
 		return concepts;
@@ -245,6 +347,8 @@ public final class SizesGroup extends BaseIntArrayFunction
 			writeEvalContext.or(condition.writesEvalContextRecursive());
 		if (dirnChoice != null)
 			writeEvalContext.or(dirnChoice.writesEvalContextRecursive());
+		if (isVisibleFn != null)
+			writeEvalContext.or(isVisibleFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 	
@@ -267,6 +371,8 @@ public final class SizesGroup extends BaseIntArrayFunction
 			readEvalContext.or(condition.readsEvalContextRecursive());
 		if (dirnChoice != null)
 			readEvalContext.or(dirnChoice.readsEvalContextRecursive());
+		if (isVisibleFn != null)
+			readEvalContext.or(isVisibleFn.readsEvalContextRecursive());
 		return readEvalContext;
 	}
 
@@ -278,6 +384,8 @@ public final class SizesGroup extends BaseIntArrayFunction
 		minFn.preprocess(game);
 		if (condition != null)
 			condition.preprocess(game);
+		if (isVisibleFn != null)
+			isVisibleFn.preprocess(game);
 	}
 
 	@Override
@@ -288,6 +396,8 @@ public final class SizesGroup extends BaseIntArrayFunction
 		missingRequirement |= minFn.missingRequirement(game);
 		if (condition != null)
 			missingRequirement |= condition.missingRequirement(game);
+		if (isVisibleFn != null)
+			missingRequirement |= isVisibleFn.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -299,6 +409,8 @@ public final class SizesGroup extends BaseIntArrayFunction
 		willCrash |= minFn.willCrash(game);
 		if (condition != null)
 			willCrash |= condition.willCrash(game);
+		if (isVisibleFn != null)
+			willCrash |= isVisibleFn.willCrash(game);
 		return willCrash;
 	}
 	

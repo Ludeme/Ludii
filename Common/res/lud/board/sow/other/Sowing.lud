@@ -1,0 +1,59 @@
+(game "Sowing" 
+    (players 2) 
+    (equipment { 
+        (board (rectangle 1 8)
+            {
+            (track "Track1" "0,E" P1 directed:True)
+            (track "Track2" "7,W" P2 directed:True)
+            }
+            use: Vertex
+        )
+        (regions P1 (sites Top))      // P1 home
+        (regions P2 (sites Top))      // P2 home
+        (piece "Seed" Shared)
+        (hand Each)
+    }) 
+    
+    (rules 
+        (start (place Stack "Seed" (sites { 0..7 }) counts:{1 2 2 1 1 2 2 1}))        
+        (play 
+            (move Select 
+                (from 
+                    (sites Mover) 
+                    if:(
+                        (and
+                            {
+                            (is Occupied (from))
+                            (is Occupied (trackSite Move Mover steps:(size Stack at:(from))))
+                            }
+                        )
+                    )
+                )
+                (then (sow "Track" owner:(mover)))
+            )
+        )
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Sowing is a two players game.")
+        (rules "The last to move wins.")
+        (id "4230")
+        (source "<a href=\"https://jeffe.cs.illinois.edu/pubs/pdf/sowing.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />jeffe.cs</a>")
+        (version "1.3.14")
+        (classification "board/sow")
+        (author "Alain Busser")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)
+

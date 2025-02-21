@@ -1,0 +1,48 @@
+(game "Roots"
+    (players 2)
+    (equipment {
+        (board (hex 6))
+        (piece "Disc" Each)
+    })
+    (rules
+        (start {
+            (place "Disc1" (sites {5 40 90}))
+            (place "Disc2" (sites {0 50 85}))
+        })
+        (play
+            (move Add
+                (to
+                    (sites Empty)
+                    if:(= 
+                        (count Sites
+                            in:(sites Around
+                                (to)
+                                Own
+                                Orthogonal
+                            )
+                        )
+                        1
+                    )
+                )
+            )  
+        )
+        (end ("NoMoves" Loss))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Roots is a variant of the game Root.")
+        (rules "The game is played on a hexagonal board with six squares per side. The initial stones are placed in the corners, alternating colours. Players take it in turns to place a stone of their colour on an empty square. The stone must be adjacent to a single previously placed allied stone. The last player to make a legal move wins.")
+        (id "4295")
+        (version "1.3.14")
+        (classification "board/space/blocking")
+        (author "Achille Morenville")
+        (credit "Achille Morenville")
+        (date "2024")
+        }
+    )
+)

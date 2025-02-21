@@ -1,0 +1,85 @@
+(define "MovePiece"
+    (move Slide 
+        (to
+            (sites Empty)
+            (apply
+                if:(or {
+                    (is In 
+                        (ahead (to) steps:1 (directions Cell from:(from) to:(to)))
+                        (sites Occupied by:All)
+                    )
+                    (= (ahead (to) steps:1 (directions Cell from:(from) to:(to))) (to))
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Neutron"
+    (players 2)
+    (equipment {
+        (board (square 5))
+        (piece "Disc" Each)
+        (piece "Neutron" Shared)
+    })
+    (rules
+        (start {
+            (place "Disc1" (sites Bottom))
+            (place "Disc2" (sites Top))
+            (place "Neutron" (sites {12}))
+        })
+        (play
+            (if (= (count Moves) 0)
+                (forEach Piece "Disc"
+                    ("MovePiece")
+                )
+                (if ("SameTurn")
+                    (forEach Piece "Disc"
+                        ("MovePiece")
+                    )
+                    (forEach Piece "Neutron"
+                        ("MovePiece")
+                        Shared
+                        (then
+                            (moveAgain)
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if (is In (where "Neutron" Shared) (sites Bottom)) 
+                (result P1 Win)
+            )
+            (if (is In (where "Neutron" Shared) (sites Top)) 
+                (result P2 Win)
+            )
+            (if (and (no Moves Next) (is Next P1))
+                (result P2 Win)
+            )
+            (if (and (no Moves Next) (is Next P2))
+                (result P1 Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Move the neutron to your baseline, or prevent your opponent from moving it.")
+        (rules "Neutron is a two-player strategy game played on a 5x5 square board. Each player has a set of soldiers that move in a straight line (orthogonal or diagonal) as far as they can until they reach an edge or another stone. The neutron is a special piece that moves like a soldier, and players must first move the neutron and then one of their soldiers on their turn. The first player does not move the neutron on their first turn. The game is won by the player who moves the neutron to their first row (the row where their soldiers start) or by stalemating their opponent so that they cannot complete their turn. There is no capturing in the game.")
+        (id "4285")
+        (source "<a href='https://boardgamegeek.com/boardgame/6978/neutron' target='_blank' class='style1' style='color=#0000EE'>BGG</a>")
+        (version "1.3.14")
+        (classification "board/race/reach")
+        (author "Robert A. Kraus")
+        (credit "Achille Morenville")
+        (date "1978")
+        }
+    )
+)

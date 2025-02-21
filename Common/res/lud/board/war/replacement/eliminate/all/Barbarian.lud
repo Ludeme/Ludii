@@ -1,0 +1,69 @@
+(define "HopSequence" ("HopCapture" (from #1) #2 (then ("ReplayIfCanMove" ("HopCapture" (from (last To)) SameDirection)))))
+
+//------------------------------------------------------------------------------
+
+(game "Barbarian" 
+    (players 2) 
+    (equipment { 
+        (board (square 8))
+        (piece "Marker" Each)
+    }) 
+    (rules 
+        (start { 
+            (place "Marker1" (difference (sites Phase 1) (sites Centre)))
+            (place "Marker2" (difference (sites Phase 0) (sites Centre)))
+        })
+        (play 
+            (if "SameTurn"
+                (or
+                    ("HopSequence" (last To) SameDirection)
+                    (move Pass)
+                )
+                (priority {
+                    (forEach Piece "Marker" ("HopSequence" (from) Orthogonal)) 
+                    (forEach Piece "Marker" 
+                        (move Step Diagonal 
+                            (to if:(and 
+                                    (is In (to) (sites Empty)) 
+                                    (>=
+                                        (count Sites
+                                            in:(sites Around
+                                                (to)
+                                                Enemy
+                                                Orthogonal
+                                            )
+                                        )
+                                        1
+                                    )
+                            ))
+                        )
+                    )
+                    (forEach Piece "Marker" 
+                        (move Step Diagonal 
+                            (to if:(is In (to) (sites Empty)))
+                        )
+                    )
+                })
+            )
+        )
+        
+        (end 
+            (if (= (count Sites in:(sites Occupied by:Mover)) 0) (result Mover Loss))
+        )
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "The game is played on an 8x8 board. The pieces are placed like a checkerboard, alternating the colors, except on the 4 central squares.")
+        (rules "The game is played on an 8x8 board. The pieces are placed like a checkerboard, alternating the colors, except on the 4 central squares. There are 3 possible movements given in the order of proirity: a piece can jump over an opposing orthogonal piece and capture it (several captures can be made but only by continuing in the same direction), a piece can take a step diagonally towards a free space orthogonal to an opposing piece and a piece can take a step diagonally towards a free space. The player who has no more pieces loses.")
+        (id "4263")
+        (version "1.3.14")
+        (classification "board/war/replacement/eliminate/all")
+        (credit "Achille Morenville")
+        }
+    )
+)

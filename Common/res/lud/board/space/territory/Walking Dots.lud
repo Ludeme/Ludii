@@ -1,0 +1,91 @@
+(define "CaptureSurroundedPiece"
+    (enclose 
+        (from (last To)) 
+        Orthogonal 
+        (between 
+            if:("IsEnemyAt" (between)) 
+            (apply    
+                (remove (between)) 
+            ) 
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Walking Dots" 
+    (players 2) 
+    (equipment { 
+        (board (square 8) use:Vertex) 
+        (piece "Marker" Each)
+    })
+    
+    (rules 
+        phases:{
+        (phase "Init"
+            (play (move Add (to (sites Empty))))
+            (nextPhase (= 4 (count Sites in:(sites Occupied by:All))) "Main")
+        )
+        (phase "Main"
+            (play (or 
+                    (move Add 
+                        (to (sites Around 
+                                (sites Occupied by:Mover)
+                                Orthogonal
+                                if:(is Empty (to))
+                            )
+                        )
+                        (then "CaptureSurroundedPiece")
+                        
+                    )
+                    
+                    (move Pass)
+                )
+            )
+        )
+        }
+        
+        (end
+            (if (all Passed)
+                (byScore {
+                    (score P1 (+ 
+                            (size Territory P1) 
+                            (count Pieces P1)
+                        )
+                    ) 
+                    (score P2 (+ 
+                            (size Territory P2) 
+                            (count Pieces P2)
+                        )
+                    )
+                })
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "This game can be player with just pencil and paper. It is presented at 100 Strategic Games for Pen and Paper by Walter Joris.")
+        (rules "Each player starts by droping two friendly stones on empty cells. Then, on each turn, each player passes or drops a friendly stone on an empty cell orthogonally adjacent to another friendly stone. When both players pass, wins the player with more stones. Notice that a player which encloses an area of empty cells, can automatically claim it.")
+        (id "4307")
+        (source "<a href=\\"https://www.di.fc.ul.pt/~jpn/gv/walkdots.htm\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/territory")
+        (author "Walter Joris")
+        (credit "Eric Piette")
+        (date "2002")
+        }
+    )
+    
+    (graphics {
+        (board Style Go)
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+    })
+    
+)

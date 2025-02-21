@@ -1,0 +1,175 @@
+(define "Intersect"
+    (union {
+        (intersection {
+            (sites Empty) 
+            (sites Layer (layer of:(last To))) 
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) N) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) S))
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) N) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) S))
+        })
+        (intersection {
+            (sites Empty) 
+            (sites Layer (layer of:(last To))) 
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) E) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) W))
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) E) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) W))
+        })
+        (intersection {
+            (sites Empty) 
+            (sites Layer (layer of:(last To))) 
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) NE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SW))
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) NE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SW))
+        })
+        (intersection {
+            (sites Empty) 
+            (sites Layer (layer of:(last To))) 
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) NW))
+            (union (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SE) (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) NW))
+        })
+    })
+)
+
+(define "ComputeScore"
+    (if 
+        (and 
+            (= (layer of:(last To)) 0)
+            (= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 0))) 16)
+        )
+        (addScore Mover 1)
+        (if 
+            (and 
+                (= (layer of:(last To)) 1)
+                (= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 1))) 9)
+            )
+            (addScore Mover 1)
+            (if 
+                (and 
+                    (= (layer of:(last To)) 2)
+                    (= (count Pieces in:(intersection (sites Occupied by:All container:"Board") (sites Layer 2))) 4)
+                )
+                (addScore Mover 1)
+                (if 
+                    (= (layer of:(last To)) 3)
+                    (addScore Mover 2)	
+                )
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Madrod" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each maxValue:15)
+    }) 
+    
+    (rules 
+        
+        (play 
+            (if
+                (not ((is Prev Mover)))
+                (move Add 
+                    (to 
+                        (sites Empty) 
+                        if:(is Flat)
+                    )
+                    (then 
+                        (and {
+                            (forget Value "FirstLoc" All)
+                            (remember Value "FirstLoc" (last To))
+                            "ComputeScore"
+                            (moveAgain)
+                        })
+                    )
+                )
+                (if
+                    (and (is Prev Mover) (not (is Pending)))
+                    (or
+                        (move Add 
+                            (to 
+                                (intersection {(sites Empty) (sites Layer (layer of:(last To))) (sites Direction from:(last To) SameLayer distance:1)})
+                                if:(is Flat)
+                            )
+                            (then 
+                                (and {
+                                    (set Pending (last To))
+                                    (remember Value "FirstLoc" (last To))
+                                    "ComputeScore"
+                                    (moveAgain)
+                                })
+                            )
+                        )
+                        (move Pass)
+                    )
+                    (if
+                        (and (is Prev Mover) (is Pending))
+                        (or
+                            (move Add 
+                                (to 
+                                    (union
+                                        (intersection 
+                                            "Intersect" (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:0) SameLayer distance:1)
+                                        )
+                                        (intersection
+                                            "Intersect" (sites Direction from:(arrayValue (values Remembered "FirstLoc") index:1) SameLayer distance:1)
+                                        )
+                                    )
+                                    if:(is Flat)
+                                )
+                                (then
+                                    "ComputeScore"
+                                )
+                            )
+                            (move Pass)
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end {
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (> (score P1) (score P2)))
+                (result P1 Win)
+            )
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (< (score P1) (score P2)))
+                (result P2 Win)
+            )	
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 30) (= (score P1) (score P2)))
+                (result All Draw)
+            )
+        })
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Madrod is a simple two-player game, playable with the Series: Shibumi game system. It uses the 4×4 board, 15 white balls and 15 black ones.")
+        (rules "The players draw lots to their colour. White colour starts. The board starts empty. Two players, white and black, take turns placing a single ball, or two balls in a line or three balls in a line – orthogonal, contiguous and at the same level - of their colour, either on empty board holes or stacking on 2×2 platforms of existing balls. A player scores one point when he completes the first, the second or the third level, and two points when he puts the last ball of the pyramid, thus completing the fourth level. Players are not allowed to pass and if a player has not legal moves the other player ends the game by placing his remaining balls to complete the pyramid. The game ends when the board is full with the 30 balls and the winner is the player with the highest score. The game can’t end in a draw.")
+        (id "4282")
+        (source "<a href=\\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\">SHIBUMI Rulebook</a>")
+        (version "1.3.14")
+        (classification "board/space/connection")
+        (author "Giacomo Galimberti")
+        (publisher "Computational Creativity Group, nestorgames")
+        (credit "Cédric Antoine")
+        (date "2012")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+    })
+    
+)

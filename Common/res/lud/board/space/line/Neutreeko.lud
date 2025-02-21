@@ -1,0 +1,71 @@
+(game "Neutreeko"
+    (players 2)
+    
+    (equipment
+        {
+        (board (square 5))
+        (piece "Ball" Each (move (from (from)) (to (sites LineOfSight Farthest at:(from)))))
+        }
+    )
+    
+    (rules
+        (start
+            {
+            (place "Ball1" (coord "C4"))
+            (place "Ball1" (coord "B1"))
+            (place "Ball1" (coord "D1"))
+            (place "Ball2" (coord "C2"))
+            (place "Ball2" (coord "B5"))
+            (place "Ball2" (coord "D5"))
+            }
+        )
+        
+        (play 
+            (forEach Piece)
+        )
+        
+        (end (if (is Line 3) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Neutreeko is a simple game played on a board with 5×5 squares with only 6 pieces.
+        The name is a portmanteau of Neutron and Teeko, two games on which it is based.")
+        (rules "Pieces move by sliding orthogonally or diagonally until blocked by the edge of the board or another piece.
+        The object of the game is to arrange your pieces in a line of three either orthogonally or diagonally.")
+        (id "4219")
+        (source "<a href=\\"https://boardgamegeek.com/boardgame/3319/neutreeko\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />BGG</a>")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Jan Kristian Haugland")
+        (credit "Diego Soranzo")
+        (date "2001")
+        }
+    )
+    
+    (graphics 
+        {
+        (board Colour Phase0 (colour 165 203 111))
+        (board Colour InnerEdges (colour  254 254 231))  
+        (board StyleThickness InnerEdges 0.45)
+        (board StyleThickness OuterEdges 0.0)
+        
+        (player Colour P1 (colour Black))
+        (player Colour P2 (colour White))
+        
+        (piece Scale 0.78)
+        }
+    )
+    
+    (ai
+        (bestAgent "Alpha-Beta")
+        trainedHeuristics:(heuristics {
+            (lineCompletionHeuristic)
+        })
+    )
+)
+

@@ -1,0 +1,180 @@
+//----------------------------
+//Utility defines 
+
+(define "DestinationGroupSize"
+    (count Sites
+        in:(sites Distance Orthogonal
+            (step (to if:(and (!= (var "From") (to)) (is Mover (who at:(to))))))
+            from:(to)
+            (min 0)
+)))
+
+(define "IsPlayableSiteType" (is In (to) (difference <Board:area> (sites Occupied by:Mover))))
+
+(define "AlongLine" (sites Distance (step #1 (to if:True)) from:(from) (min 1)))
+(define "FurtherAlongLine" (sites Distance (step #1 (to if:True)) from:(to) (min 1)))
+
+(define "MoveTowardFriendInSameLine"
+    (< 0 (count Pieces Mover in:("FurtherAlongLine" #1)))
+) 
+
+(define "MoveToSiteWithFriendVisible"
+    (< 1 (count Pieces Mover in:(sites LineOfSight Piece at:(to) Orthogonal)))
+    //1 because it counts the moving piece as visible, since it was in the from location
+) 
+
+// Variants
+
+(define "SquishMove"
+    (move Step
+        #1
+        (to 
+            if:(and
+                ("IsPlayableSiteType")
+                ("MoveTowardFriendInSameLine" #1)
+            )
+            (apply 
+                (remove (to))
+))))
+
+//-----------------------------------------------
+// Main routine
+
+(game "Squish"
+    (players 2)
+    (equipment
+        {
+        (board (hex Hexagon <Board:side>) use:Cell)
+        (piece "Disc" Each)
+        }
+    )
+    (rules
+        (start {<Board:white> <Board:black>})
+        (play
+            (forEach Piece
+                (or
+                    {
+                    ("SquishMove" NNE)
+                    ("SquishMove" E)
+                    ("SquishMove" SSE)
+                    ("SquishMove" SSW)
+                    ("SquishMove" W)
+                    ("SquishMove" NNW)
+                    }
+        )))
+        (end 
+            "StandardEnd"
+)))
+
+//--------------------------------------
+// End conditions
+
+(define "StandardEnd"
+    {
+    (if 
+        (= 1
+            (count Groups Cell Orthogonal
+                if:(is Mover (who at:(to)))
+        ))
+        (result Mover Win)
+    )
+    (if 
+        (= 1
+            (count Groups Cell Orthogonal
+                if:(is Next (who at:(to)))
+        ))
+        (result Next Win)
+    )
+    (if 
+        (no Moves Next)
+        (result Mover Win)
+    )
+    (if 
+        (no Moves Mover)
+        (result Mover Loss)
+    )
+    }
+)
+
+//-------------------------------------------------
+// Options
+
+(option "Board Size" <Board> args:{<side> <area> <white> <black>} 
+    {
+    (item "Order 4"
+        <5> 
+        <(sites Inner)> 
+        <(place "Disc1" {7 12 15 21 24 28 31 38 41 44 47 52})>
+        <(place "Disc2" {8 13 16 19 22 29 32 36 39 45 48 53})>
+    "Order 4 board")*
+    
+    (item "Order 5"
+        <5> 
+        <(sites Board)> 
+        <(place "Disc1" {0 3 7 10 12 15 18 21 24 28 31 34 35 38 41 44 47 52 55 56 59})>
+        <(place "Disc2" {1 4 5 8 13 16 19 22 25 26 29 32 36 39 42 45 48 50 53 57 60})>
+    "Order 5 board")
+    
+    (item "Order 6"
+        <6> 
+        <(sites Board)>
+        <(place "Disc1" {0 3 8 11 14 17 20 21 24 27 32 35 38 41 44 47 50 53 56 59 61 64 67 71 74 77 80 83 85 88})>
+        <(place "Disc2" {2 5 7 10 13 16 19 23 26 29 31 34 37 40 43 46 49 52 55 58 63 66 69 70 73 76 79 82 87 90})>
+    "Order 6 board")
+    }
+)
+
+//---------------------------------------------
+(define "ColourBackground" (colour 245 245 245)) 
+
+(metadata
+    (info
+        {
+        (description "Squish is an unification game based with the theme of 'condensation'. Players take turns moving one of their pieces one space at a time toward an allied piece on the same line. If a player's piece moves to a space occupied by an opponent's piece, the opponent's piece is captured by replacement. If there is no friendly piece on the same line, the piece cannot move.
+            
+        The first player to move all of his or her pieces on the board adjacent to each other or to prevent the opponent from moving wins the game.")
+        (rules "Goal: Take turns without passing until you unify the pieces of your color into a single group.
+            
+            The board starts with pieces of each color distributed symmetrically on every 3rd cell of the board.
+            (For a game on an order 4 board, the outer cells are not used.)
+            
+            Play:
+            Decide which player will play with which color (Dark or Light). Light is the first player to play.
+            
+            On each turn, the move one of your pieces to an adjacent space so that it is one step closer to a friendly that lies anywhere along the line of movement. 
+            If that cell is occupied by the opponent's piece, the opponent's piece is removed from the game as part of the move. 
+            The moving piece cannot move onto a space occupied by a friendly piece.
+            
+            The game ends in a win for a player who moves all his pieces into a single group.  Otherwise, if the player captures an opponent's piece leaving the opponent with only a single group of pieces, the game ends in a win for the opponent. (Unifying the pieces of both players on the same move is a win for the moving player.)
+            
+        The game also ends in a loss for the first player who is unable to move, if the pieces are not yet unified.")
+        (id "4212")
+        (version "1.3.14")
+        (classification "experimental")
+        (author "Kanare Kato")
+        (credit "Dale W. Walton")
+        (date "22-10-2021")
+        }
+    )
+    (graphics 
+        {
+        (player Colour P1 (colour White))
+        (player Colour P2 (colour Black))
+        (piece Scale "Disc" 0.91)
+        (piece Colour P1 strokeColour:(colour VeryDarkGrey))
+        (piece Colour P2 strokeColour:(colour DarkGrey))
+        (piece Background "Disc" image:"Disc" fillColour:(colour 0 0 0 75) edgeColour:(colour 0 0 0 0) scale:0.95 offsetX:-1 offsetY:2)
+        (board Colour Phase0 (colour 242 242 242))
+        (board StyleThickness InnerEdges 1.6)
+        (board StyleThickness OuterEdges 1.6)
+        (board StyleThickness InnerVertices 0.45)
+        (board StyleThickness OuterVertices 0.45)
+        (board Colour InnerVertices (colour Grey))
+        (board Colour OuterVertices (colour Grey))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterEdges (colour Black))
+        (region Colour (sites Outer) (colour 212 212 215))
+        
+        }
+    )
+)

@@ -1,0 +1,75 @@
+(define "NextHoleFrom" ("NextSiteOnTrack" #2 from:#1))
+
+(define "LastHole" (last To afterConsequence:True))
+
+(define "PiecesOwnedBy" (count Cell at:(handSite #1)))
+
+(define "NextFilled"
+    (trackSite FirstSite from:(trackSite Move from:#1 steps:1)
+        if:(> (count at:(to)) 0)
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Cirgol"
+    (players 2)
+    (equipment {
+        (board 
+            (concentric { 10 }) 
+            (track "Track" { 0 2 4 6 8 9 7 5 3 1 } loop:True)
+            use:Vertex
+        )
+        (piece "Seed" Shared)
+        (hand Each)
+    })
+    (rules
+        (start (set Count 4 to:(sites Board)))
+        (play 
+            (move Select 
+                (from 
+                    (sites Board) 
+                    if:(> (count at:(from)) 0)
+                )
+                (then 
+                    (sow 
+                        apply:(if 
+                            (and {
+                                (= 1 (count at:(to)))
+                                (>= (count at:("NextHoleFrom" (to) 1)) 1)
+                                (> (count Moves) 3)
+                            })
+                            (fromTo 
+                                (from ("NextHoleFrom" (to) 1))
+                                (to (handSite Mover))
+                                count:(count at:("NextHoleFrom" (to) 1))
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        (end ("MancalaByScoreWhen" (<= (count Pieces in:(sites Board)) 3)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Cirgol is a tiny Mancala game invented for a Kaggle competition")
+        (rules "The game is played on a board with ten holes arranged in a circle, with four counters in each hole at the start of the game. Players take turns sowing counters in an anti-clockwise direction. If the final counter lands in an empty hole, the contents of the next hole are captured. During the first three turns, no capture can be made. The game continues until there are less than three counters left on the board. The player with the most captured counters wins.")
+        (id "4270")
+        (version "1.3.14")
+        (classification "board/sow")
+        (author "Achille Morenville")
+        (credit "Achille Morenville")
+        (date "2024")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+)

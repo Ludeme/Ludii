@@ -1,0 +1,193 @@
+(define "CaptureToPiece"
+    (apply 
+        (if (is Occupied (to))
+            (remove (to))
+        )
+    ) 
+)
+
+(define "EmptySitesInHome" 
+    (forEach 
+        (sites Mover "Home") 
+        if:(is Empty (site))
+    )
+)
+
+(define "CubeInHand" 
+    (sites Occupied by:Mover container:(mover))
+)
+
+(define "MoveForwards" 
+    (move Step
+        Forwards
+        (to 
+            if:True
+            "CaptureToPiece"
+        ) 
+    )
+)
+
+(define "SameValue" 
+    (= (state at:(from)) (count Pips))
+)
+
+(define "ValueNextHigher" 
+    (if ("IsNotOffBoard" (where "Triangle" Mover state:(+ (count Pips) 1)))
+        (= (state at:(from)) (+ (count Pips) 1))
+        (if ("IsNotOffBoard" (where "Triangle" Mover state:(+ (count Pips) 2)))
+            (= (state at:(from)) (+ (count Pips) 2))
+            (if ("IsNotOffBoard" (where "Triangle" Mover state:(+ (count Pips) 3)))
+                (= (state at:(from)) (+ (count Pips) 3))
+                (if ("IsNotOffBoard" (where "Triangle" Mover state:(+ (count Pips) 4)))
+                    (= (state at:(from)) (+ (count Pips) 4))
+                    (= (state at:(from)) (+ (count Pips) 5))
+                )
+            )
+        )
+    )
+)
+
+(define "ValueNextLower" 
+    (if ("IsNotOffBoard" (where "Triangle" Mover state:(- (count Pips) 1)))
+        (= (state at:(from)) (- (count Pips) 1))
+        (if ("IsNotOffBoard" (where "Triangle" Mover state:(- (count Pips) 2)))
+            (= (state at:(from)) (- (count Pips) 2))
+            (if ("IsNotOffBoard" (where "Triangle" Mover state:(- (count Pips) 3)))
+                (= (state at:(from)) (- (count Pips) 3))
+                (if ("IsNotOffBoard" (where "Triangle" Mover state:(- (count Pips) 4)))
+                    (= (state at:(from)) (- (count Pips) 4))
+                    (= (state at:(from)) (- (count Pips) 5))
+                )
+            )
+        )
+    )
+)
+
+(define "MoveAPieceOf" 
+    (forEach Piece  
+        (if 
+            #1
+            ("MoveForwards")
+        )
+    )
+)
+
+(define "PieceIsOnTheBoard" 
+    ("IsNotOffBoard" (where "Triangle" Mover state:(count Pips)))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Tri EinStein Wurfelt Nicht" 
+    (players {(player E) (player W)}) 
+    (equipment { 
+        (board (tri Hexagon 4)) 
+        (piece "Triangle" Each) 
+        (hand Each size:<Board:numPieces>)
+        (dice num:<Board:numDice>)
+        (regions "Home" P1 (expand (sites Left) steps:<Board:sizeHome> Orthogonal))
+        (regions "Home" P2 (expand (sites Right) steps:<Board:sizeHome> Orthogonal))
+        (regions "Goal" P1 (sites Right))
+        (regions "Goal" P2 (sites Left))
+    }) 
+    (rules 
+        (start {
+            <Board:start>
+        })
+        phases:{
+        (phase "Placement" 	  
+            (play 
+                (move 
+                    (from ("CubeInHand")) 
+                    (to ("EmptySitesInHome"))
+                )
+            )
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        (phase "Movement" 	  
+            (play 
+                ("RollMove"
+                    (if ("PieceIsOnTheBoard")
+                        ("MoveAPieceOf" ("SameValue"))
+                        (or
+                            ("MoveAPieceOf" ("ValueNextHigher"))
+                            ("MoveAPieceOf" ("ValueNextLower"))
+                        )
+                    )
+                )
+            )
+        )
+        }
+        
+        (end 
+            (if 
+                (or 
+                    (no Pieces Next) 
+                    (is In (last To) (sites Mover "Goal"))
+                )
+                (result Mover Win)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <numPieces> <numDice> <sizeHome> <start>}
+    {
+    (item "5" 
+        <8>
+        <1>
+        <2>
+        < 
+        (place "Triangle1" (handSite P1) state:1) 
+        (place "Triangle1" (handSite P1 1) state:2) 
+        (place "Triangle1" (handSite P1 2) state:3) 
+        (place "Triangle1" (handSite P1 3) state:4) 
+        (place "Triangle1" (handSite P1 4) state:5) 
+        (place "Triangle1" (handSite P1 5) state:6) 
+        (place "Triangle1" (handSite P1 6) state:7) 
+        (place "Triangle1" (handSite P1 7) state:8) 
+        
+        (place "Triangle2" (handSite P2) state:1) 
+        (place "Triangle2" (handSite P2 1) state:2) 
+        (place "Triangle2" (handSite P2 2) state:3) 
+        (place "Triangle2" (handSite P2 3) state:4) 
+        (place "Triangle2" (handSite P2 4) state:5) 
+        (place "Triangle2" (handSite P2 5) state:6) 
+        (place "Triangle2" (handSite P2 6) state:7) 
+        (place "Triangle2" (handSite P2 7) state:8) 
+        >
+        "The version of the game played on 5x5 triangle board."
+    )* 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Tri EinStein Würfelt Nichtame is a triangular variant of EinStein Würfelt Nichtame.")
+        (rules "The game is played on a square board with a 4x4 triangular grid. Each player has eight cubes, numbered one to eight. During setup, each player can arrange the cubes as he or she sees fit within the area of their own color.
+            
+            The players take turns rolling a eight-sided die and then moving the matching cube. If the matching cube is no longer on the board, the player moves a remaining cube whose number is next-higher or next-lower to the rolled number. The player can move only in the direction of the opponent area. Any cube which already lies in the target square is removed from the board.
+            
+        The objective of the game is for a player to either get one of their cubes to the left/right side of the board or to remove all of their opponent's cubes from the board.")
+        (id "4303")
+        (version "1.3.14")
+        (classification "board/race/reach")
+        (author "Eric Piette")
+        (credit "Eric Piette")
+        (date "2024")
+        }
+    )
+    
+    (graphics {
+        (region Colour "Home" Edge)
+        (player Colour P1 (colour Red))
+        (player Colour P2 (colour Blue))
+        (show Piece State Middle scale:0.75)
+        (show RegionOwner)
+    })
+    
+)

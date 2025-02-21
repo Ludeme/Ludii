@@ -1,0 +1,159 @@
+(define "Repel"
+    (if
+        (=
+            (ahead (site) steps:1 (directions Cell from:(last To) to:(site)))
+            (site)
+        )
+        (remove (site))
+        (slide (from (site)) (directions Cell from:(last To) to:(from)))
+    )
+)
+(define "PromoteLine3"
+    (move Select
+        (from (sites Occupied by:Mover))
+        (to 
+            (sites Around (from) Own distance:2)
+            if:(all Sites (sites Between from:(from) to:(to)) if:(= (mover) (who at:(site))))
+        )
+        (then
+            (forEach Site
+                (sites Between from:(last From) fromIncluded:True to:(last To) toIncluded:True)
+                ("GraduateKitty" (site))
+            )
+        )
+    )
+)
+(define "PromoteFullBoard"
+    (if "IsFullBoard"
+        (move Select
+            (from (sites Occupied by:Mover container:0))
+            (then 
+                ("GraduateKitty" (last To))
+            )
+        )
+    )
+)
+(define "GraduateKitty"
+    (if (= (id "SmallCat" Mover) (what at:#1))
+        (seq {
+            (remove #1)
+            (addScore Mover 1)
+        })
+        (remove #1)
+    )
+)
+(define "PiecesAvailableForPromotion"
+    (>= 
+        (count Sites
+            in:(forEach 
+                (sites Occupied by:Mover container:0)
+                if:(>=
+                    (count Sites
+                        in:(sites Around (site) Own distance:2
+                            if:(all Sites (sites Between from:(site) to:(to)) if:(= (mover) (who at:(site))))
+                        )
+                    )
+                    1
+                )
+            )
+        )
+        1
+    )
+)
+(define "IsFullBoard"
+    (= 8 (count Pieces in:(sites Occupied by:Mover container:0)))
+)
+
+//------------------------------------------------------------------------------
+
+(game "Boop"
+    (players 2) 
+    (equipment {
+        (board (square 6))
+        (piece "SmallCat" Each)
+        (piece "BigCat" Each)
+    })
+    (rules
+        (play
+            (if "SameTurn"
+                (or
+                    ("PromoteLine3")
+                    ("PromoteFullBoard")
+                )
+                (or
+                    (if
+                        (< (count Pieces Mover "SmallCat") (- 8 (score Mover)))
+                        (move Add (piece (id "SmallCat" Mover)) (to (sites Empty)))
+                    )
+                    (if
+                        (< (count Pieces Mover "BigCat") (score Mover))
+                        (move Add (piece (id "BigCat" Mover)) (to (sites Empty)))
+                    )
+                    (then
+                        (seq {
+                            (forEach Site (sites Distance from:(last To) (range 1))
+                                (if 
+                                    (or
+                                        (= (id "BigCat" Mover) (what at:(last To)))
+                                        (or 
+                                            (= (id "SmallCat1") (what at:(site)))
+                                            (= (id "SmallCat2") (what at:(site)))
+                                        )
+                                    )
+                                    ("Repel")
+                                )
+                            )
+                            (if 
+                                (or
+                                    "PiecesAvailableForPromotion"
+                                    "IsFullBoard"
+                                )
+                                (moveAgain)
+                            )
+                        })
+                    )
+                )
+            )
+        )
+        (end {
+            (if (is Line 3 what:(id "BigCat" Mover))
+            (result Mover Win))
+            (if
+                (= 8 (count Pieces Mover "BigCat"))
+                (result Mover Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "A deceptively cute, deceivingly challenging abstract strategy game for two players.")
+        (rules "Every time you place a kitten on the bed, it goes “boop.” Which is to say that it pushes every other kitten on the board one space away. Line up three kittens in a row to graduate them into cats… and then, get three cats in a row to win.
+            
+            But that isn’t easy with both you AND your opponent constantly “booping” kittens around. It’s like… herding cats!
+            Can you “boop” your cats into position to win?
+            Or will you just get “booped” right off the bed?
+            
+            Approachable but challenging abstract game. Plays in 20 to 30 minutes.
+        Features a quilted, fabric board that lays over the back of the box, completing the miniature bed playing surface. 8 wood kittens and cats per player - 32 adorable cat pieces in all!")
+        (id "4206")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/355433/boop\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Scott Brady")
+        (credit "endoKarb")
+        (date "2022")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour Grey))
+        (player Colour P2 (colour Orange))
+        (piece Scale "SmallCat" scaleX:0.65 scaleY:0.65)
+        (piece Scale "SmallCat" scaleX:1.4 scaleY:1.4)
+    })
+)

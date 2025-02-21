@@ -1,0 +1,136 @@
+(define "CountDiagonalPoints"
+    (and {
+        (if
+            (> (count Sites in:(intersection (sites Occupied by:P1) (sites {1 4 7}))) (count Sites in:(intersection (sites Occupied by:P2) (sites {1 4 7}))))
+            (addScore P1 1)
+            (addScore P2 1)
+        )
+        (if
+            (> (count Sites in:(intersection (sites Occupied by:P1) (sites {2 5 9 13 17}))) (count Sites in:(intersection (sites Occupied by:P2) (sites {2 5 9 13 17}))))
+            (addScore P1 1)
+            (addScore P2 1)
+        )
+        (if
+            (> (count Sites in:(intersection (sites Occupied by:P1) (sites {3 6 11 15 19 23 26}))) (count Sites in:(intersection (sites Occupied by:P2) (sites {3 6 11 15 19 23 26}))))
+            (addScore P1 1)
+            (addScore P2 1)
+        )
+        (if
+            (> (count Sites in:(intersection (sites Occupied by:P1) (sites {12 16 21 24 27}))) (count Sites in:(intersection (sites Occupied by:P2) (sites {12 16 21 24 27}))))
+            (addScore P1 1)
+            (addScore P2 1)
+        )
+        (if
+            (> (count Sites in:(intersection (sites Occupied by:P1) (sites {22 25 28}))) (count Sites in:(intersection (sites Occupied by:P2) (sites {22 25 28}))))
+            (addScore P1 1)
+            (addScore P2 1)
+        )
+    })
+)
+
+//------------------------------------------------------------------------------
+
+(game "Spodd" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+        (piece "Ball" Neutral)
+    }) 
+    (rules
+        (start {
+            (place "Ball0" 0)
+            (place "Ball0" 29)
+        })
+        (play  		
+            (if
+                (not ((is Prev Mover)))
+                (or
+                    (move Add (piece 1)
+                        (to 
+                            (sites Empty) 
+                            if:(is Flat)
+                        )
+                        (then 
+                            (if (= (count Sites in:(sites Occupied by:All)) 30)
+                                "CountDiagonalPoints"
+                                (moveAgain)
+                            )				
+                        )
+                    )
+                    (move Add (piece 2)
+                        (to 
+                            (sites Empty) 
+                            if:(is Flat)
+                        )
+                        (then 
+                            (if (= (count Sites in:(sites Occupied by:All)) 30)
+                                "CountDiagonalPoints"
+                                (moveAgain)
+                            )				
+                        )
+                    )
+                )
+                (if (= (who at:(last To)) 1)
+                    (move Add (piece 2)
+                        (to 
+                            (intersection (sites Empty) (sites Around (last To)))  
+                            if:(is Flat)
+                        )
+                        (then 
+                            (if (= (count Sites in:(sites Occupied by:All)) 30)
+                                "CountDiagonalPoints"
+                            )				
+                        )
+                    )
+                    (move Add (piece 1)
+                        (to 
+                            (intersection (sites Empty) (sites Around (last To))) 	    	    		
+                            if:(is Flat)
+                        )
+                        (then 
+                            (if (= (count Sites in:(sites Occupied by:All)) 30)
+                                "CountDiagonalPoints"
+                            )				
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if 
+                (= (count Sites in:(sites Occupied by:All)) 30)
+                (byScore)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Spodd is a two player game with a twist for the Series: Shibumi game system.")
+        (rules "The board starts with two red balls placed in one left and one right corner hole. Two players, White and Black, take turns placing one ball of each color adjacent to each other. The balls can be placed on board holes or on top of 2x2 platforms of existing balls. You can place a ball on a hole and the other on a platform, as long as they touch each other. When the pyramid is complete, the player with the most visible balls in a column (from bottom to left side) wins that column. The winner is the player who has won at least 3 columns.")
+        (id "4253")
+        (source "<a href=\\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\">SHIBUMI Rulebook</a>")
+        (version "1.3.14")
+        (classification "board/space/territory")
+        (author "Giacomo Galimberti")
+        (publisher "Computational Creativity Group, nestorgames")
+        (credit "Cedric Antoine")
+        (date "2012")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+        (piece Colour Neutral fillColour:(colour Red))
+    })
+    
+)

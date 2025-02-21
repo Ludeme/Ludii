@@ -4,7 +4,9 @@ import java.util.BitSet;
 import java.util.List;
 
 import annotations.Hide;
+import annotations.Name;
 import annotations.Opt;
+import annotations.Or;
 import game.Game;
 import game.functions.ints.BaseIntFunction;
 import game.functions.ints.IntFunction;
@@ -14,13 +16,14 @@ import game.types.play.RoleType;
 import game.types.state.GameType;
 import game.util.directions.AbsoluteDirection;
 import game.util.graph.Step;
+import gnu.trove.list.array.TIntArrayList;
 import main.Constants;
 import other.context.Context;
 import other.state.container.ContainerState;
 import other.topology.Topology;
 
 /**
- * Returns the number of groups.
+ * Returns the number of specific pieces on sites below a given site.
  * 
  * @author Eric.Piette & Cedric.Antoine
  */
@@ -34,8 +37,11 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	/** The graph element type. */
 	private SiteType type;
 
-	/** The owner of the pieces to make a line */
+	/** The owner of the pieces to count on the lower platform */
 	private final IntFunction whoFn;
+	
+	/** To simulate this kind of piece is on the pivot. (e.g. Dara) */
+	private final IntFunction[] whatFn;
 	
 	/** The site to test. */
 	private final IntFunction siteFn;
@@ -43,20 +49,38 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	//-------------------------------------------------------------------------
 
 	/**
-	 * @param type       		The graph element type [default SiteType of the board].
+	 * @param type      The graph element type [default SiteType of the board].
 	 * @param site 		The site to check [(to)].
 	 * @param who  		Player id the counted items belong to
+	 * @param what  	Piece id of the counted items
+	 * @param whats  	Piece id's of the counted items
 	 */
 	public CountSitesPlatformBelow
 	(
-		@Opt        final SiteType type,
-		@Opt 		final IntFunction site,
-					final RoleType who
+		@Opt        	final SiteType type,
+		@Opt    	final IntFunction site,
+		@Opt	@Or	@Name	final RoleType who,
+			@Opt	@Or @Name   final IntFunction what,
+			@Opt	@Or @Name 	final IntFunction[] whats
 	)
 	{
 		this.type = type;
 		siteFn = (site == null) ? To.instance() : site;
-		whoFn = RoleType.toIntFunction(who);
+		if (whats != null)
+		{
+			whatFn = whats;
+		}
+		else if (what != null)
+		{
+			whatFn = new IntFunction[1];
+			whatFn[0] = what;
+		}
+		else
+		{
+			whatFn = null;
+		}
+
+		whoFn = (who != null) ? RoleType.toIntFunction(who) : null;
 	}
 
 	//-------------------------------------------------------------------------
@@ -65,6 +89,13 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	public int eval(final Context context)
 	{
 		final int site = siteFn.eval(context);
+		final TIntArrayList whats  = new TIntArrayList();
+		
+		if (whatFn != null)
+		{
+			for (final IntFunction what : whatFn)
+				whats.add(what.eval(context));
+		}
 
 		if (site == Constants.OFF && site >= context.topology().vertices().size())
 			return -1;
@@ -83,8 +114,15 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 		int count = 0;
 
 		for (final Step step : steps) {
-			if (cs.who(step.to().id(), SiteType.Vertex) == whoFn.eval(context)) {
-				count++;
+			if (whatFn == null) {
+				if (cs.who(step.to().id(), SiteType.Vertex) == whoFn.eval(context)) {
+					count++;
+				}
+			}
+			else {
+				if (whats.contains(cs.what(step.to().id(), SiteType.Vertex))) {
+					count++;
+				}
 			}
 		}
 
@@ -111,7 +149,13 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 		long flags = siteFn.gameFlags(game);
 		if (type != null && (type.equals(SiteType.Edge) || type.equals(SiteType.Vertex)))
 			flags |= GameType.Graph;
-		flags |= whoFn.gameFlags(game);
+		if (whoFn != null)
+			flags |= whoFn.gameFlags(game);
+		if (whatFn != null)
+		{
+			for (final IntFunction what : whatFn)
+				flags |= what.gameFlags(game);
+		}
 		return flags;
 	}
 
@@ -120,7 +164,11 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	{
 		final BitSet concepts = new BitSet();
 		concepts.or(siteFn.concepts(game));
-		concepts.or(whoFn.concepts(game));
+		if (whoFn != null)
+			concepts.or(whoFn.concepts(game));
+		if (whatFn != null)
+			for (final IntFunction what : whatFn)
+				concepts.or(what.concepts(game));
 		return concepts;
 	}
 
@@ -129,7 +177,13 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	{
 		final BitSet writeEvalContext = writesEvalContextFlat();
 		writeEvalContext.or(siteFn.writesEvalContextRecursive());
-		writeEvalContext.or(whoFn.writesEvalContextRecursive());
+		if (whoFn != null)
+			writeEvalContext.or(whoFn.writesEvalContextRecursive());
+		if (whatFn != null)
+			for (final IntFunction what : whatFn)
+				writeEvalContext.or(what.writesEvalContextRecursive());
+		if (siteFn != null)
+			writeEvalContext.or(siteFn.writesEvalContextRecursive());
 		return writeEvalContext;
 	}
 
@@ -138,7 +192,12 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	{
 		final BitSet readEvalContext = new BitSet();
 		readEvalContext.or(siteFn.writesEvalContextRecursive());
-		readEvalContext.or(whoFn.writesEvalContextRecursive());
+		if (whoFn != null)
+			readEvalContext.or(whoFn.writesEvalContextRecursive());
+		if (whatFn != null)
+			for (final IntFunction what : whatFn)
+				readEvalContext.or(what.readsEvalContextRecursive());
+
 		return readEvalContext;
 	}
 
@@ -147,7 +206,13 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	{
 		type = SiteType.use(type, game);
 		siteFn.preprocess(game);
-		whoFn.preprocess(game);
+		if (whoFn != null)
+			whoFn.preprocess(game);
+		if (whatFn != null)
+		{
+			for (final IntFunction what : whatFn)
+				what.preprocess(game);
+		}
 	}
 
 	@Override
@@ -155,7 +220,11 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	{
 		boolean missingRequirement = false;
 		missingRequirement |= siteFn.missingRequirement(game);
-		missingRequirement |= whoFn.missingRequirement(game);
+		if (whoFn != null)
+			missingRequirement |= whoFn.missingRequirement(game);
+		if (whatFn != null)
+			for (final IntFunction what : whatFn)
+				missingRequirement |= what.missingRequirement(game);
 		return missingRequirement;
 	}
 
@@ -164,7 +233,11 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	{
 		boolean willCrash = false;
 		willCrash |= siteFn.willCrash(game);
-		willCrash |= whoFn.willCrash(game);
+		if (whoFn != null)
+			willCrash |= whoFn.willCrash(game);
+		if (whatFn != null)
+			for (final IntFunction what : whatFn)
+				willCrash |= what.willCrash(game);
 		return willCrash;
 	}
 	
@@ -173,7 +246,13 @@ public final class CountSitesPlatformBelow extends BaseIntFunction
 	@Override
 	public String toEnglish(final Game game) 
 	{		
-		return "site " + siteFn.toEnglish(game) + " is counted sites bellow it bellonging to " + whoFn.toEnglish(game);
+		String whoString = "of their";
+		if (whatFn != null)
+			whoString = whatFn.toString();
+		if (whoFn != null)
+			whoString = whoFn.toString();
+		
+		return "site " + siteFn.toEnglish(game) + " is counted sites bellow it bellonging to " + whoString;
 	}
 	
 	//-------------------------------------------------------------------------

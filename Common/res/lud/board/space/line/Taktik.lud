@@ -1,0 +1,74 @@
+//-----------------------------------------------
+// Main routine
+
+(game "Taktik"
+    (players 2)
+    (equipment {
+        (board (rotate 90 (hex Prism <Board:size>)))
+        (piece "Ball" Each (move Slide (directions {FL FR BL BR Rightward Leftward} of:All)))
+        (piece "Square" Neutral)
+    })
+    (rules
+        (start {
+            <Board:placement>
+        })
+        (play (forEach Piece))
+        (end (if (is Line 4) (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> <placement> }
+    {
+    (item "5x8" <5 8>
+        <(place "Square0" {"A5" "A4" "A3" "B5" "B6" "C7" "J3" "K4" "K5" "L5" "L6" "L7"})
+        (place "Ball1" (coord "A2"))
+        (place "Ball1" (coord "D8"))
+        (place "Ball1" (coord "K6"))
+        (place "Ball1" (coord "J4"))
+        (place "Ball2" (coord "B4"))
+        (place "Ball2" (coord "C6"))
+        (place "Ball2" (coord "L8"))
+        (place "Ball2" (coord "I2"))>
+    "The game is played on a 5x8 board.")*
+    (item "5x10" <5 10>
+        <(place "Square0" {"A5" "A4" "A3" "B5" "B6" "C7" "L3" "M4" "M5" "N5" "N6" "N7"})
+        (place "Ball1" (coord "A2"))
+        (place "Ball1" (coord "D8"))
+        (place "Ball1" (coord "M6"))
+        (place "Ball1" (coord "L4"))
+        (place "Ball2" (coord "B4"))
+        (place "Ball2" (coord "C6"))
+        (place "Ball2" (coord "N8"))
+        (place "Ball2" (coord "K2"))>
+    "The game is played on a 5x10 board.")
+})
+
+//---------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "Inspired by the traditional Tic-Tac-Toe game beloved of high-school students, Taktik is a simple but highly enjoyable game.")
+        (aliases {"Brainline"})
+        (rules "MOVE - Each stone may slide any number of empty cells on any direction (they cannot jump other stones).
+        GOAL - Wins the player that aligns his 4 stones.")
+        (id "4225")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/taktik.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Berliner Spiele")
+        (credit "Clémentine Sacré")
+        (date "1978")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Square" 0.5)
+        (piece Colour "Square" fillColour:(colour Black))
+        (piece Scale "Ball" 0.6)
+        (board Style Board)
+    })
+)

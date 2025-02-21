@@ -9,6 +9,8 @@ import annotations.Opt;
 import game.Game;
 import game.equipment.component.Component;
 import game.functions.ints.IntConstant;
+import game.functions.booleans.BooleanConstant;
+import game.functions.booleans.BaseBooleanFunction;
 import game.functions.ints.IntFunction;
 import game.functions.region.RegionFunction;
 import game.functions.region.sites.simple.SitesBoard;
@@ -23,6 +25,8 @@ import other.concept.Concept;
 import other.context.Context;
 import other.state.container.ContainerState;
 import other.trial.Trial;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Places pieces randomly in a specified container.
@@ -67,6 +71,9 @@ public final class PlaceRandom extends StartRule
 
 	/** Cell, Edge or Vertex. */
 	private SiteType type;
+	
+	/** If order of piece types to be placed is random or not. */
+	private BaseBooleanFunction randPiecOrderFn;
 
 	//-------------------------------------------------------------------------
 
@@ -77,15 +84,17 @@ public final class PlaceRandom extends StartRule
 	 * @param value  The piece value to place [Undefined].
 	 * @param state  The state value to place [Undefined].PlaceRandom
 	 * @param type   The graph element type [default SiteType of the board].
+	 * @param randPiecOrder   If order of piece types to be placed is random or not [False].
 	 */
 	public PlaceRandom
 	(
-		@Opt 	   final RegionFunction region,
-				   final String[]       item,
-		@Opt @Name final IntFunction    count,
-		@Opt @Name final IntFunction    value,
-		@Opt @Name final IntFunction    state,
-		@Opt 	   final SiteType       type
+		@Opt 	   final RegionFunction  region,
+				   final String[]        item,
+		@Opt @Name final IntFunction     count,
+		@Opt @Name final IntFunction     value,
+		@Opt @Name final IntFunction     state,
+		@Opt 	   final SiteType        type,
+		@Opt 	   final BooleanConstant randPiecOrder
 	) 
 	{
 		this.region = (region == null ? new SitesBoard(type) : region);
@@ -98,6 +107,7 @@ public final class PlaceRandom extends StartRule
 
 		stateFn = (state == null) ? new IntConstant(Constants.OFF) : state;
 		valueFn = (value == null) ? new IntConstant(Constants.OFF) : value;
+		randPiecOrderFn = (randPiecOrder == null) ? new BooleanConstant(false) : randPiecOrder;
 		
 		this.type = type;
 	}
@@ -177,6 +187,53 @@ public final class PlaceRandom extends StartRule
 		if (stack)
 		{
 			evalStack(context);
+		}
+		else if(randPiecOrderFn.eval(context))
+		{
+//			System.out.println("Test");
+			final SiteType realType = (type == null) ? context.board().defaultSite() : type;
+			final TIntArrayList sites = new TIntArrayList(region.eval(context).sites());
+			List<String> Aitems = new ArrayList<>(Arrays.asList(item));		
+			
+			for (int iter=0; iter < Aitems.size()-1;iter ++)
+			{
+				int randomIndex = context.rng().nextInt(Aitems.size());
+//				System.out.println(randomIndex);
+	            String it = Aitems.remove(randomIndex);
+
+				final Component component = context.game().getComponent(it);
+				if (component == null)
+					throw new RuntimeException("Component " + item + " is not defined.");
+
+				final int what = component.index();
+
+				// remove the non empty sites in that region.
+				for (int index = sites.size() - 1; index >= 0; index--)
+				{
+					final int site = sites.get(index);
+					final int cid = (realType.equals(SiteType.Cell) || realType.equals(SiteType.Vertex)) ? context.containerId()[site] : 0;
+					final ContainerState cs = context.containerState(cid);
+					if (cs.what(site, realType) != 0)
+						sites.removeAt(index);
+				}
+
+				final int state = stateFn.eval(context);
+				final int value = valueFn.eval(context);
+
+				for (int i = 0; i < countFn.eval(context); i++)
+				{
+//						System.out.println("test4");
+						final int[] emptySites = sites.toArray();
+						// If no empty site we stop here.
+						if (emptySites.length == 0)
+							break;
+						// We randomly take an empty site.
+						final int site = emptySites[context.rng().nextInt(emptySites.length)];
+						sites.remove(site);
+						Start.placePieces(context, site, what, 1, state, Constants.OFF, value, false, realType);
+//						System.out.println("test3");
+				}
+			}
 		}
 		else
 		{
@@ -313,6 +370,9 @@ public final class PlaceRandom extends StartRule
 
 		if (stateFn.eval(new Context(game, new Trial(game))) != Constants.UNDEFINED)
 			flags |= GameType.SiteState;
+		
+		if (randPiecOrderFn != null)
+			flags |= randPiecOrderFn.gameFlags(game);
 
 		flags |= stateFn.gameFlags(game);
 		flags |= valueFn.gameFlags(game);
@@ -360,6 +420,9 @@ public final class PlaceRandom extends StartRule
 		if (counts != null)
 			for (final IntFunction func : counts)
 				concepts.or(func.concepts(game));
+		
+		if (randPiecOrderFn != null)
+			concepts.or(randPiecOrderFn.concepts(game));
 
 		concepts.or(countFn.concepts(game));
 		concepts.or(stateFn.concepts(game));
@@ -380,6 +443,10 @@ public final class PlaceRandom extends StartRule
 		if (counts != null)
 			for (final IntFunction func : counts)
 				writeEvalContext.or(func.writesEvalContextRecursive());
+		
+		if (randPiecOrderFn != null)
+			writeEvalContext.or(randPiecOrderFn.writesEvalContextRecursive());
+
 
 		writeEvalContext.or(countFn.writesEvalContextRecursive());
 		writeEvalContext.or(stateFn.writesEvalContextRecursive());
@@ -399,6 +466,9 @@ public final class PlaceRandom extends StartRule
 		if (counts != null)
 			for (final IntFunction func : counts)
 				readEvalContext.or(func.readsEvalContextRecursive());
+		
+		if (randPiecOrderFn != null)
+			readEvalContext.or(randPiecOrderFn.readsEvalContextRecursive());
 
 		readEvalContext.or(countFn.readsEvalContextRecursive());
 		readEvalContext.or(stateFn.readsEvalContextRecursive());
@@ -422,6 +492,9 @@ public final class PlaceRandom extends StartRule
 			for (final IntFunction func : counts)
 				func.preprocess(game);
 		}
+		
+		if (randPiecOrderFn != null)
+			randPiecOrderFn.preprocess(game);
 
 		countFn.preprocess(game);
 		stateFn.preprocess(game);

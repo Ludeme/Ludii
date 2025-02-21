@@ -24,4 +24,7 @@ public enum CountSiteType
 	
 	/** Number of off-diagonal elements. */
 	Off,
+
+	/** Number of sites occupied by an item of a given player on the sites (platform) bellow another site. */
+	SitesPlatformBelow,
 }

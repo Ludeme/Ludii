@@ -1,0 +1,198 @@
+(define "Columns" <Row:size>)
+
+(define "NoPiece" (all Sites (sites Player "Home") if:(= 0 (count at:(site)))))
+
+//------------------------------------------------------------------------------
+
+(game "Katrayo" 
+    (players 2) 
+    
+    (equipment { 
+        (mancalaBoard 2 "Columns" store:None
+            <Row:tracks>	
+        )
+        (piece "Seed" Shared)
+        (regions "Home" P1 (sites Track "TrackCCW1")) // P1 Home
+        (regions "Home" P2 (sites Track "TrackCCW2")) // P2 home
+    }) 
+    (rules 
+        
+        (start (set Count 2 to:(sites Board)))
+        
+        (play 
+            (or {
+                (if (or (= (value Player Mover) 1) (<= (value Player Mover) 0))
+                    (move Select
+                        (from 
+                            (if ("SameTurn") 
+                                "LastHoleSowed" 
+                                (sites Mover "Home")
+                            ) 
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then
+                            (sow
+                                "TrackCCW"
+                                owner:(mover)
+                                apply:(if (> (count at:(to)) 1)
+                                    (and {
+                                        (if (<= (value Player Mover) 0)
+                                            (set Value Mover 1)
+                                        )
+                                        (moveAgain)
+                                        (if (is In (to) (sites Mover "Home"))
+                                            (if (!= 0 (count at:("OppositePit" (to))))
+                                                (fromTo
+                                                    (from ("OppositePit" (to)))
+                                                    (to (to))
+                                                    count:(count at:("OppositePit" (to)))
+                                                )
+                                            )
+                                        )
+                                    })
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                    )
+                )
+                (if (or (= (value Player Mover) 2) (<= (value Player Mover) 0))
+                    (move Select
+                        (from 
+                            (if ("SameTurn") 
+                                "LastHoleSowed" 
+                                (sites Mover "Home") 
+                            ) 
+                            if:(> (count at:(from)) 0)
+                        )
+                        (then 
+                            (sow
+                                "TrackCW"
+                                owner:(mover)
+                                apply:(if (> (count at:(to)) 1)
+                                    (and {
+                                        (if (<= (value Player Mover) 0)
+                                            (set Value Mover 2)
+                                        )
+                                        (moveAgain)
+                                        (if (is In (to) (sites Mover "Home"))
+                                            (if (!= 0 (count at:("OppositePit" (to))))
+                                                (fromTo
+                                                    (from ("OppositePit" (to)))
+                                                    (to (to))
+                                                    count:(count at:("OppositePit" (to)))
+                                                )
+                                            )
+                                        )
+                                    })
+                                    (set Value Mover 0)
+                                )
+                            )
+                        )
+                    )
+                )
+            })
+        )
+        
+        (end
+            (forEach NonMover
+                if:("NoPiece")
+                (result Player Loss)
+            )
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Row> args:{ <size> <tracks>}
+    {
+    (item "3" 
+        <3> 
+        <
+        {
+        (track "TrackCCW1" "0,E" loop:True P1)
+        (track "TrackCW1" "2,W" loop:True P1)
+        (track "TrackCW2" "3,E" loop:True P2)
+        (track "TrackCCW2" "5,W" loop:True P2)
+        }
+        >
+    "3 Holes per row.") 
+    (item "4" 
+        <4> 
+        <
+        {
+        (track "TrackCCW1" "0,E" loop:True P1)
+        (track "TrackCW1" "3,W" loop:True P1)
+        (track "TrackCW2" "4,E" loop:True P2)
+        (track "TrackCCW2" "7,W" loop:True P2)
+        }
+        >
+    "4 Holes per row.")*** 
+    (item "5" 
+        <5> 
+        <
+        {
+        (track "TrackCCW1" "0,E" loop:True P1)
+        (track "TrackCW1" "4,W" loop:True P1)
+        (track "TrackCW2" "5,E" loop:True P2)
+        (track "TrackCCW2" "9,W" loop:True P2)
+        }
+        >
+    "5 Holes per row.") 
+    (item "6" 
+        <6> 
+        <
+        {
+        (track "TrackCCW1" "0,E" loop:True P1)
+        (track "TrackCW1" "5,W" loop:True P1)
+        (track "TrackCW2" "6,E" loop:True P2)
+        (track "TrackCCW2" "11,W" loop:True P2)
+        }
+        >
+    "6 Holes per row.")**** 
+    (item "7" 
+        <7> 
+        <
+        {
+        (track "TrackCCW1" "0,E" loop:True P1)
+        (track "TrackCW1" "6,W" loop:True P1)
+        (track "TrackCW2" "7,E" loop:True P2)
+        (track "TrackCCW2" "13,W" loop:True P2)
+        }
+        >
+    "7 Holes per row.") 
+    (item "8" 
+        <8> 
+        <
+        {
+        (track "TrackCCW1" "0,E" loop:True P1)
+        (track "TrackCW1" "7,W" loop:True P1)
+        (track "TrackCW2" "8,E" loop:True P2)
+        (track "TrackCCW2" "15,W" loop:True P2)
+        }
+        >
+    "8 Holes per row.")* 
+})
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Katrayo is a two-row mancala-style board inspired by a Betsileo game played in Madagascar.")
+        (rules "2x4 or 6 board. Two counters in each hole. Sowing occurs from one of the holes in the player's row which contains counters, in either direction. Sowing moves in a boustrophedon path. When the final counter lands in an occupied hole, the contents of this hole are picked up and sowing continues. If this hole is in the player's inner row, the contents of the opponent's hole opposite it are captured, and these counters are also used along with the hole in which the last counter fell for the sowing to continue. Sowing ends when the final counter lands in an empty hole. Play continues until one player has captured all of the counters.")
+        (id "4205")
+        (version "1.3.14")
+        (classification "board/sow/two rows")
+        (credit "Alain Busser")
+        (date "01-07-2024")
+        }
+    )
+    
+    (graphics {
+        (board Style Mancala)
+    })
+    
+)

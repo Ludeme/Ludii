@@ -1,0 +1,60 @@
+(define "NonContiguousLineDirection" 
+    (if (is Line #1 #2 exact:True contiguous:False) (addScore Mover (/ #1 3)))
+)
+
+//-------------------------------------------------------------------------
+
+(game "3 6 9"
+    (players 2)
+    (equipment {
+        (board (square 9))
+        (piece "Disc" Shared)
+    })
+    (rules
+        (play 
+            (move Add (piece "Disc") (to (sites Empty))
+                (then
+                    (and {
+                        ("NonContiguousLineDirection" 9 N)
+                        ("NonContiguousLineDirection" 6 N)
+                        ("NonContiguousLineDirection" 3 N)
+                        ("NonContiguousLineDirection" 9 E)
+                        ("NonContiguousLineDirection" 6 E)
+                        ("NonContiguousLineDirection" 3 E)
+                        ("NonContiguousLineDirection" 9 NE)
+                        ("NonContiguousLineDirection" 6 NE)
+                        ("NonContiguousLineDirection" 3 NE)
+                        ("NonContiguousLineDirection" 9 NW)
+                        ("NonContiguousLineDirection" 6 NW)
+                        ("NonContiguousLineDirection" 3 NW)
+                    })
+                )
+            )
+        )
+        (end (if (is Full) (byScore)))
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "3 6 9 is an original scoring game.")
+        (rules "This game is played on an empty 9x9 square board with 81 stones of just one color.
+            Turns - At each turn, each player drop a stone at an empty cell.
+            For every 3 stones in any (non contiguous) line (orthogonal or diagonal) the player gets 1 point;
+            For every 6 stones in any (non contiguous) line (orthogonal or diagonal) the player gets 2 points;
+            For every 9 stones in any (non contiguous) line (orthogonal or diagonal) the player gets 3 points;
+        When the board is full, the game ends. The player with the higher score wins.")
+        (id "4255")
+        (source "<a href=\"https://jpneto.github.io/world_abstract_games/369.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>
+        ")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Paul Townsend")
+        (credit "Eric Piette")
+        (date "1995")
+        }
+    )
+)

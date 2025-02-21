@@ -5,6 +5,7 @@ import annotations.Opt;
 import annotations.Or;
 import annotations.Or2;
 import game.Game;
+import game.functions.booleans.BooleanConstant;
 import game.functions.ints.IntFunction;
 import game.functions.region.RegionFunction;
 import game.rules.Rule;
@@ -187,13 +188,14 @@ public final class Place extends StartRule
 	/**
 	 * For placing randomly pieces.
 	 * 
-	 * @param placeType The property to place.
-	 * @param region    The region in which to randomly place piece(s).
-	 * @param item      The names of the item to place.
-	 * @param count     The number of items to place [1].
-	 * @param state     The state value to place [Undefined].
-	 * @param value     The piece value to place [Undefined].
-	 * @param type      The graph element type [default SiteType of the board].
+	 * @param placeType 	The property to place.
+	 * @param region    	The region in which to randomly place piece(s).
+	 * @param item      	The names of the item to place.
+	 * @param count     	The number of items to place [1].
+	 * @param state     	The state value to place [Undefined].
+	 * @param value     	The piece value to place [Undefined].
+	 * @param type      	The graph element type [default SiteType of the board].
+	 * @param randPiecOrder Whether the given 'items' should be selected in random order for placement.
 	 * 
 	 * @example (place Random {"Pawn1" "Pawn2"})
 	 */
@@ -205,10 +207,11 @@ public final class Place extends StartRule
 			@Opt @Name final IntFunction     count,
 			@Opt @Name final IntFunction 	 state,
 			@Opt @Name final IntFunction 	 value,
-		    @Opt 	   final SiteType        type
+		    @Opt 	   final SiteType        type,
+		    @Opt 	   final BooleanConstant randPiecOrder
 	)
 	{
-		return new PlaceRandom(region, item, count, value, state, type);
+		return new PlaceRandom(region, item, count, value, state, type, randPiecOrder);
 	}
 	
 	//-------------------------------------------------------------------------

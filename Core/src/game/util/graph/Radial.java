@@ -1,6 +1,6 @@
 package game.util.graph;
 
-import java.awt.geom.Point2D;
+//import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,9 +131,9 @@ public class Radial
 		final GraphElement geB = steps[0];
 		final GraphElement geC = other.steps[1];
 		
-		final Point2D ptA = geA.pt2D();
-		final Point2D ptB = geB.pt2D();
-		final Point2D ptC = geC.pt2D();
+//		final Point2D ptA = geA.pt2D();
+//		final Point2D ptB = geB.pt2D();
+//		final Point2D ptC = geC.pt2D();
 		
 		//final double diff = MathRoutines.angleDifference(ptA, ptB, ptC);
 		//
@@ -141,7 +141,8 @@ public class Radial
 		
 		// Same optimisation as in Trajectories::followRadial()
 		// see comments in that method for extensive explanation
-		final double absTanDiff = MathRoutines.absTanAngleDifferencePosX(ptA, ptB, ptC);
+		final double absTanDiff = MathRoutines.absTanAngleDifference3D(geA.pt(), geB.pt(), geC.pt());
+//		final double absTanDiff = MathRoutines.absTanAngleDifferencePosX(ptA, ptB, ptC);
 		return absTanDiff < tanThreshold;
 	}
 

@@ -1,0 +1,179 @@
+(define "RemainingActions"
+    (if (= Undefined (var "NbrActions"))
+        3
+        (var "NbrActions")
+    )
+)
+
+(define "RemainingMoves"
+    (if (= Undefined (var "NbrMoves"))
+        2
+        (var "NbrMoves")
+    )
+)
+
+(define "RemainingThrows"
+    (if (= Undefined (var "NbrThrows"))
+        1
+        (var "NbrThrows")
+    )
+)
+
+(define "Connectable"
+    (>=
+        (count Sites 
+            in:(intersection 
+                #2
+                (sites Group Cell at:(where "Ball" #1) Orthogonal if:(or (= (what at:(to)) (id "Disc" #1)) (is Empty (to))))
+            )
+        ) 
+        1
+    )
+)
+
+(define "IsAgainst"
+    (>=
+        (count Sites 
+            in:(forEach
+                (sites Occupied by:#1)
+                if:(>= 
+                    (count Sites 
+                        in:(intersection 
+                            (sites Occupied by:#2)
+                            (sites Around (site) Orthogonal)
+                        )
+                    )
+                    1
+                )
+            )
+        )
+        3
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(game "Diaballik"
+    (players 2)
+    (equipment {
+        (board (square 7))
+        (piece "Disc" Each)
+        (piece "Ball" Each)
+    })
+    (rules
+        (start {
+            (place "Disc1" (sites Bottom))
+            (place "Disc2" (sites Top))
+            (place Stack "Ball1" (sites {3}))
+            (place Stack "Ball2" (sites {45}))
+        })
+        (play
+            (or {
+                (if (> ("RemainingMoves") 0)
+                    (move
+                        (from
+                            (sites Occupied by:Mover)
+                            if:(!= (what at:(from) level:(topLevel at:(from))) (id "Ball" Mover))
+                        )
+                        (to
+                            (intersection (sites Around (from) Orthogonal) (sites Empty))
+                        )
+                        (then
+                            (if (<= ("RemainingActions") 1)
+                                (and {
+                                    (set Var "NbrActions" 3)
+                                    (set Var "NbrMoves" 2)
+                                    (set Var "NbrThrows" 1)
+                                })
+                                (and {
+                                    (set Var "NbrActions" (- ("RemainingActions") 1))
+                                    (set Var "NbrMoves" (- ("RemainingMoves") 1))
+                                    (moveAgain)
+                                })
+                            )
+                        )
+                    )
+                )
+                (if (> ("RemainingThrows") 0)
+                    (forEach Piece "Ball"
+                        (move Slide
+                            (between
+                                if:(or (is Friend (who at:(between))) (is Empty (between)))
+                            )
+                            (to
+                                (apply
+                                    if:(is Friend (who at:(to)))
+                                )
+                            )
+                            (then
+                                (if (<= ("RemainingActions") 1)
+                                    (and {
+                                        (set Var "NbrActions" 3)
+                                        (set Var "NbrMoves" 2)
+                                        (set Var "NbrThrows" 1)
+                                    })
+                                    (and {
+                                        (set Var "NbrActions" (- ("RemainingActions") 1))
+                                        (set Var "NbrThrows" (- ("RemainingThrows") 1))
+                                        (moveAgain)
+                                    })
+                                )
+                            )
+                        )
+                    )
+                )
+                (if (< ("RemainingActions") 3)
+                    (move Pass
+                        (then
+                            (and {
+                                (set Var "NbrActions" 3)
+                                (set Var "NbrMoves" 2)
+                                (set Var "NbrThrows" 1)
+                            })
+                        )
+                    )
+                )
+            })
+        )
+        (end {
+            (if (is In (where "Ball" P1) (sites Top)) 
+                (result P1 Win)
+            )
+            (if (is In (where "Ball" P2) (sites Bottom)) 
+                (result P2 Win)
+            )
+            (if 
+                (and 
+                    (not ("Connectable" P1 (sites Top)))
+                    ("IsAgainst" P1 P2)
+                )
+                (result P1 Win)
+            )
+            (if 
+                (and
+                    (not ("Connectable" P2 (sites Bottom)))
+                    ("IsAgainst" P2 P1)
+                )
+                (result P2 Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Diaballik is an abstract strategy game for 2 players. The game attempts to simulate a sport whereby 2 teams are simultaneously trying to get their ball to the opposite teams starting goal line.")
+        (rules "In this game, each opponent has a team of seven players, one of whom has a ball. The goal is to bring a player with the ball to the opponent's side. Opponents take turns and can optionally take three actions during their turn in any order: two moves and one ball throw. A move is to move one player just one horizontal or vertical space. The player with the ball can throw it to another player of their team who is located in the vertical, horizontal, or diagonal line and if no opposing player is in the way. The player with the ball cannot move while they have it, so they must pass it to a teammate to move. Moves can only be made in the horizontal or vertical direction and only if the destination is unoccupied. Moving diagonally requires two moves, one horizontally and then one vertically. The game is won by the player who brings the ball to the opponent's side or stalemates the opponent so that they cannot finish their turn.")
+        (id "4275")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/20253/diaballik\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.14")
+        (classification "board/race/reach")
+        (author "Philippe Lefrancois")
+        (credit "Achille Morenville")
+        (date "2004")
+        }
+    )
+)

@@ -201,122 +201,131 @@ public class WriteRulesEnglishAndLud
 		for (int i = 0; i < gamePaths.size(); ++i)
 		{
 			final String gamePath = gamePaths.get(i).replaceAll(Pattern.quote("\\"), "/");
-			final String rulesetName;
 			
-			final Game game;
-			
-			boolean gameNameIsPath = (gamePath.contains("/"));
-			
-			if (gameNameIsPath)
+			try
 			{
-				// This is a filepath
-				game = GameLoader.loadGameFromFile(new File(gamePath));
-				rulesetName = "";
-			}
-			else
-			{
-				// This is a built-in game
-				rulesetName = rulesetNames.get(i);
-				game = GameLoader.loadGameFromName(gamePath, rulesetName);
-			}
-						
-			if (game.players().count() != 2)
-			{
-				System.err.println("Error: " + gamePath + " does not have 2 players");
-				continue;
-			}
-			
-			if (game.isDeductionPuzzle())
-			{
-				System.err.println("Error: " + gamePath + " is a deduction puzzle");
-				continue;
-			}
-			
-			if (game.isSimulationMoveGame())
-			{
-				System.err.println("Error: " + gamePath + " is a simulation");
-				continue;
-			}
-			
-			if (!game.isAlternatingMoveGame())
-			{
-				System.err.println("Error: " + gamePath + " is a simultaneous-move game");
-				continue;
-			}
-			
-			if (game.hasSubgames())
-			{
-				System.err.println("Error: " + gamePath + " has subgames");
-				continue;
-			}
-			
-			if (game.hiddenInformation())
-			{
-				System.err.println("Error: " + gamePath + " has partial observability");
-				continue;
-			}
-			
-			String gameName = gamePath;
-			final String[] gamePathParts = gameName.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
-			
-			if (gameNameIsPath)
-			{
-				gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
-			}
-			else
-			{
-				gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
-			}
-			
-			final String filepathsGameName = StringRoutines.cleanGameName(gameName);
-			final String filepathsRulesetName = 
-					StringRoutines.cleanRulesetName(rulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
-			
-			final File csvFile = new File(outDir + filepathsGameName + filepathsRulesetName + "/Rules.csv");
-			csvFile.getParentFile().mkdirs();
-			
-			try (final PrintWriter writer = new UnixPrintWriter(csvFile, "UTF-8"))
-			{
-				// Write the header
-				writer.println("EnglishRules,LudRules");
+				final String rulesetName;
 				
-				// Write the actual data
-				final String englishRules = 
-						StringRoutines.cleanWhitespace(StringRoutines.join(" ", game.metadata().info().getRules()).replaceAll(Pattern.quote("\n"), " "))
-						.replaceAll(Pattern.quote("\""), Matcher.quoteReplacement("\\\""));
-				final String ludDescription = 
-						StringRoutines.cleanWhitespace(game.description().expanded().replaceAll(Pattern.quote("\n"), " "));
+				final Game game;
 				
-				if (englishRules.isEmpty())
+				boolean gameNameIsPath = (gamePath.contains("/"));
+				
+				if (gameNameIsPath)
 				{
-					System.err.println("Empty English rules description for: " + gameName + " - " + rulesetName);
+					// This is a filepath
+					game = GameLoader.loadGameFromFile(new File(gamePath));
+					rulesetName = "";
 				}
-				if (ludDescription.isEmpty())
+				else
 				{
-					System.err.println("Empty .lud description for: " + gameName + " - " + rulesetName);
+					// This is a built-in game
+					rulesetName = rulesetNames.get(i);
+					game = GameLoader.loadGameFromName(gamePath, rulesetName);
+				}
+							
+				if (game.players().count() != 2)
+				{
+					System.err.println("Error: " + gamePath + " does not have 2 players");
+					continue;
 				}
 				
-				try 
+				if (game.isDeductionPuzzle())
 				{
-					@SuppressWarnings("unused")
-					final Game testGame = (Game) Compiler.compile
-					(
-						new Description(ludDescription), 
-						new UserSelections(new ArrayList<String>()), 
-						new Report(),
-						false
-					);
+					System.err.println("Error: " + gamePath + " is a deduction puzzle");
+					continue;
+				}
+				
+				if (game.isSimulationMoveGame())
+				{
+					System.err.println("Error: " + gamePath + " is a simulation");
+					continue;
+				}
+				
+				if (!game.isAlternatingMoveGame())
+				{
+					System.err.println("Error: " + gamePath + " is a simultaneous-move game");
+					continue;
+				}
+				
+				if (game.hasSubgames())
+				{
+					System.err.println("Error: " + gamePath + " has subgames");
+					continue;
+				}
+				
+				if (game.hiddenInformation())
+				{
+					System.err.println("Error: " + gamePath + " has partial observability");
+					continue;
+				}
+				
+				String gameName = gamePath;
+				final String[] gamePathParts = gameName.replaceAll(Pattern.quote("\\"), "/").split(Pattern.quote("/"));
+				
+				if (gameNameIsPath)
+				{
+					gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
+				}
+				else
+				{
+					gameName = gamePathParts[gamePathParts.length - 1].replaceAll(Pattern.quote(".lud"), "");
+				}
+				
+				final String filepathsGameName = StringRoutines.cleanGameName(gameName);
+				final String filepathsRulesetName = 
+						StringRoutines.cleanRulesetName(rulesetName.replaceAll(Pattern.quote("Ruleset/"), ""));
+				
+				final File csvFile = new File(outDir + filepathsGameName + filepathsRulesetName + "/Rules.csv");
+				csvFile.getParentFile().mkdirs();
+				
+				try (final PrintWriter writer = new UnixPrintWriter(csvFile, "UTF-8"))
+				{
+					// Write the header
+					writer.println("EnglishRules,LudRules");
+					
+					// Write the actual data
+					final String englishRules = 
+							StringRoutines.cleanWhitespace(StringRoutines.join(" ", game.metadata().info().getRules()).replaceAll(Pattern.quote("\n"), " "))
+							.replaceAll(Pattern.quote("\""), Matcher.quoteReplacement("\\\""));
+					final String ludDescription = 
+							StringRoutines.cleanWhitespace(game.description().expanded().replaceAll(Pattern.quote("\n"), " "));
+					
+					if (englishRules.isEmpty())
+					{
+						System.err.println("Empty English rules description for: " + gameName + " - " + rulesetName);
+					}
+					if (ludDescription.isEmpty())
+					{
+						System.err.println("Empty .lud description for: " + gameName + " - " + rulesetName);
+					}
+					
+					try 
+					{
+						@SuppressWarnings("unused")
+						final Game testGame = (Game) Compiler.compile
+						(
+							new Description(ludDescription), 
+							new UserSelections(new ArrayList<String>()), 
+							new Report(),
+							false
+						);
+					}
+					catch (final Exception e)
+					{
+						System.out.println("Failed to compile game without newlines!");
+						e.printStackTrace();
+					}
+					
+					writer.println("\"" + englishRules + "\",\"" + ludDescription.replaceAll(Pattern.quote("\""), Matcher.quoteReplacement("\\\"")) + "\"");
 				}
 				catch (final Exception e)
 				{
-					System.out.println("Failed to compile game without newlines!");
 					e.printStackTrace();
 				}
-				
-				writer.println("\"" + englishRules + "\",\"" + ludDescription.replaceAll(Pattern.quote("\""), Matcher.quoteReplacement("\\\"")) + "\"");
 			}
 			catch (final Exception e)
 			{
+				System.err.println("Error processing game path: " + gamePath);
 				e.printStackTrace();
 			}
 		}

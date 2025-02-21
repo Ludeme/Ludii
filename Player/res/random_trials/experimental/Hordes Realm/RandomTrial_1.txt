@@ -1,0 +1,66 @@
+game=../Common/res/lud/experimental/Hordes Realm.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-76,76,110,-72,-28,-112,56,100
+Move=[Move:mover=0,from=21,to=21,actions=[Add:type=Cell,to=21,what=2]]
+Move=[Move:mover=0,actions=[RememberValue:name=null,value=1]]
+Move=[Move:mover=1,from=24,to=24,actions=[Add:type=Cell,to=24,what=1,decision=true],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=5,to=5,actions=[Add:type=Cell,to=5,what=1,decision=true]]
+Move=[Move:mover=2,from=0,to=0,actions=[Add:type=Cell,to=0,what=4,decision=true]]
+Move=[Move:mover=1,from=25,to=25,actions=[Add:type=Cell,to=25,what=3,decision=true]]
+Move=[Move:mover=2,from=21,to=20,actions=[ForgetValue:name=null,value=1],[SetVar:name=StalemateIn,value=5],[SetValueOfPlayer:player=2,value=2],[SetVar:name=LF,value=21],[Select:typeFrom=Cell,from=21,typeTo=Cell,to=20,decision=true],[SetVar:name=LT,value=20],[RememberValue:name=Origins,value=21],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=21],[Add:type=Cell,to=20,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=1,from=24,to=23,actions=[ForgetValue:name=Origins,value=21],[SetVar:name=StalemateIn,value=4],[SetValueOfPlayer:player=1,value=3],[SetVar:name=LF,value=24],[Select:typeFrom=Cell,from=24,typeTo=Cell,to=23,decision=true],[SetVar:name=LT,value=23],[RememberValue:name=Origins,value=24],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=24],[Add:type=Cell,to=23,what=1],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=2,from=0,to=42,actions=[ForgetValue:name=Origins,value=24],[SetVar:name=StalemateIn,value=3],[SetValueOfPlayer:player=2,value=2],[SetVar:name=RD,value=0],[Move:typeFrom=Cell,from=0,typeTo=Cell,to=42,decision=true],[Add:type=Cell,to=12,what=2]]
+Move=[Move:mover=1,from=25,to=17,actions=[SetValueOfPlayer:player=1,value=3],[SetVar:name=StalemateIn,value=5],[SetVar:name=RD,value=25],[Move:typeFrom=Cell,from=25,typeTo=Cell,to=17,decision=true],[Add:type=Cell,to=24,what=1]]
+Move=[Move:mover=2,from=42,to=1,actions=[SetValueOfPlayer:player=2,value=3],[SetVar:name=StalemateIn,value=5],[SetVar:name=RD,value=42],[Move:typeFrom=Cell,from=42,typeTo=Cell,to=1,decision=true],[Add:type=Cell,to=28,what=2]]
+Move=[Move:mover=1,from=23,to=22,actions=[SetValueOfPlayer:player=1,value=4],[SetVar:name=StalemateIn,value=5],[SetVar:name=LF,value=23],[Select:typeFrom=Cell,from=23,typeTo=Cell,to=22,decision=true],[SetVar:name=LT,value=22],[RememberValue:name=Origins,value=23],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=23],[Add:type=Cell,to=22,what=1],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=2,from=12,to=13,actions=[ForgetValue:name=Origins,value=23],[SetVar:name=StalemateIn,value=4],[SetValueOfPlayer:player=2,value=4],[SetVar:name=LF,value=12],[Select:typeFrom=Cell,from=12,typeTo=Cell,to=13,decision=true],[SetVar:name=LT,value=13],[RememberValue:name=Origins,value=12],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=12],[Add:type=Cell,to=13,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=20,to=20,actions=[Select:typeFrom=Cell,from=20,decision=true],[SetVar:name=ALF,value=20],[RememberValue:name=Origins,value=20],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=20],[Add:type=Cell,to=21,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=28,to=28,actions=[Select:typeFrom=Cell,from=28,decision=true],[SetVar:name=ALF,value=28],[RememberValue:name=Origins,value=28],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=28],[Add:type=Cell,to=29,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=1,from=17,to=41,actions=[ForgetValue:name=Origins,value=12],[SetVar:name=StalemateIn,value=3],[ForgetValue:name=Origins,value=20],[ForgetValue:name=Origins,value=28],[SetValueOfPlayer:player=1,value=4],[SetVar:name=RD,value=17],[Move:typeFrom=Cell,from=17,typeTo=Cell,to=41,decision=true],[Add:type=Cell,to=4,what=1],[Add:type=Cell,to=23,what=1]]
+Move=[Move:mover=2,from=13,to=14,actions=[SetValueOfPlayer:player=2,value=4],[SetVar:name=StalemateIn,value=5],[SetVar:name=LF,value=13],[Select:typeFrom=Cell,from=13,typeTo=Cell,to=14,decision=true],[SetVar:name=LT,value=14],[RememberValue:name=Origins,value=13],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=13],[Add:type=Cell,to=14,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=21,to=21,actions=[Select:typeFrom=Cell,from=21,decision=true],[SetVar:name=ALF,value=21],[RememberValue:name=Origins,value=21],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=21],[Remove:type=Cell,to=22],[SetVar:name=PiecesMoved,value=1],[SetNextPlayer:player=2]]
+Move=[Move:mover=2,from=29,to=29,actions=[Select:typeFrom=Cell,from=29,decision=true],[SetVar:name=ALF,value=29],[RememberValue:name=Origins,value=29],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=29],[Add:type=Cell,to=30,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=1,from=24,to=22,actions=[ForgetValue:name=Origins,value=13],[SetVar:name=StalemateIn,value=5],[ForgetValue:name=Origins,value=21],[ForgetValue:name=Origins,value=29],[SetValueOfPlayer:player=1,value=5],[SetVar:name=LF,value=24],[Select:typeFrom=Cell,from=24,typeTo=Cell,to=22,decision=true],[SetVar:name=LT,value=22],[RememberValue:name=Origins,value=24],[SetVar:name=LD,value=2],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=2],[Remove:type=Cell,to=23],[Remove:type=Cell,to=24],[Add:type=Cell,to=22,what=1],[SetVar:name=Offset,value=3],[SetVar:name=PiecesMoved,value=1],[Add:type=Cell,to=21,what=1],[SetVar:name=Offset,value=4],[SetVar:name=PiecesMoved,value=2]]
+Move=[Move:mover=2,from=14,to=15,actions=[ForgetValue:name=Origins,value=24],[SetVar:name=StalemateIn,value=4],[SetValueOfPlayer:player=2,value=3],[SetVar:name=LF,value=14],[Select:typeFrom=Cell,from=14,typeTo=Cell,to=15,decision=true],[SetVar:name=LT,value=15],[RememberValue:name=Origins,value=14],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=14],[Add:type=Cell,to=15,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=1,from=41,to=42,actions=[ForgetValue:name=Origins,value=14],[SetVar:name=StalemateIn,value=3],[SetValueOfPlayer:player=1,value=5],[SetVar:name=RD,value=41],[Move:typeFrom=Cell,from=41,typeTo=Cell,to=42,decision=true],[Add:type=Cell,to=8,what=1],[Add:type=Cell,to=28,what=1]]
+Move=[Move:mover=2,from=15,to=10,actions=[SetValueOfPlayer:player=2,value=3],[SetVar:name=StalemateIn,value=5],[SetVar:name=LF,value=15],[Select:typeFrom=Cell,from=15,typeTo=Cell,to=10,decision=true],[SetVar:name=LT,value=10],[RememberValue:name=Origins,value=15],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=15],[Add:type=Cell,to=10,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=1,from=21,to=20,actions=[ForgetValue:name=Origins,value=15],[SetVar:name=StalemateIn,value=4],[SetValueOfPlayer:player=1,value=7],[SetVar:name=LF,value=21],[Select:typeFrom=Cell,from=21,typeTo=Cell,to=20,decision=true],[SetVar:name=LT,value=20],[RememberValue:name=Origins,value=21],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=21],[Add:type=Cell,to=20,what=1],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1],[SetNextPlayer:player=1]]
+Move=[Move:mover=1,from=28,to=28,actions=[Select:typeFrom=Cell,from=28,decision=true],[SetVar:name=ALF,value=28],[RememberValue:name=Origins,value=28],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=28],[Add:type=Cell,to=27,what=1],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=2,from=10,to=15,actions=[ForgetValue:name=Origins,value=21],[SetVar:name=StalemateIn,value=3],[ForgetValue:name=Origins,value=28],[SetValueOfPlayer:player=2,value=3],[SetVar:name=LF,value=10],[Select:typeFrom=Cell,from=10,typeTo=Cell,to=15,decision=true],[SetVar:name=LT,value=15],[RememberValue:name=Origins,value=10],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=10],[Add:type=Cell,to=15,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=1,from=27,to=32,actions=[ForgetValue:name=Origins,value=10],[SetVar:name=StalemateIn,value=2],[SetValueOfPlayer:player=1,value=7],[SetVar:name=LF,value=27],[Select:typeFrom=Cell,from=27,typeTo=Cell,to=32,decision=true],[SetVar:name=LT,value=32],[RememberValue:name=Origins,value=27],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=27],[Add:type=Cell,to=32,what=1],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=2,from=15,to=16,actions=[ForgetValue:name=Origins,value=27],[SetVar:name=StalemateIn,value=1],[SetValueOfPlayer:player=2,value=3],[SetVar:name=LF,value=15],[Select:typeFrom=Cell,from=15,typeTo=Cell,to=16,decision=true],[SetVar:name=LT,value=16],[RememberValue:name=Origins,value=15],[SetVar:name=LD,value=1],[SetVar:name=PiecesMoved,value=0],[SetVar:name=Offset,value=1],[Remove:type=Cell,to=15],[Add:type=Cell,to=16,what=2],[SetVar:name=Offset,value=2],[SetVar:name=PiecesMoved,value=1]]
+Move=[Move:mover=1,actions=[ForgetValue:name=Origins,value=15],[SetVar:name=StalemateIn,value=0],[SetValueOfPlayer:player=1,value=7],[Pass:decision=true]]
+LEGAL MOVES LIST SIZE = 18
+LEGAL MOVES LIST SIZE = 17
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 5
+LEGAL MOVES LIST SIZE = 14
+LEGAL MOVES LIST SIZE = 6
+LEGAL MOVES LIST SIZE = 14
+LEGAL MOVES LIST SIZE = 21
+LEGAL MOVES LIST SIZE = 23
+LEGAL MOVES LIST SIZE = 27
+LEGAL MOVES LIST SIZE = 31
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 28
+LEGAL MOVES LIST SIZE = 16
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 14
+LEGAL MOVES LIST SIZE = 12
+LEGAL MOVES LIST SIZE = 38
+LEGAL MOVES LIST SIZE = 12
+LEGAL MOVES LIST SIZE = 57
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 10
+LEGAL MOVES LIST SIZE = 54
+LEGAL MOVES LIST SIZE = 12
+LEGAL MOVES LIST SIZE = 1
+numInitialPlacementMoves=2
+winner=1
+endtype=NaturalEnd
+rankings=0.0,1.0,2.0
+SANDBOX=false
+LUDII_VERSION=1.3.13

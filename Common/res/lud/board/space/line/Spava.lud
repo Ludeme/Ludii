@@ -1,25 +1,43 @@
 (game "Spava" 
-    (players <Version:numPlayers>) 
+    (players 2) 
     (equipment { 
-        (board (square <Board> pyramidal:True) use:Vertex) 
-        (piece "Ball" Each) 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+        (piece "Ball" Neutral)
+        (hand Each)
+        (hand Shared)
     }) 
-    (rules 
+    (rules 		
+        (start {
+            (place "Ball" "Hand" count:16)
+            (place "Ball0" 32 count:16)
+        })
         (play 
-            (move Add 
-                (to (sites Empty) 
-                    if:(is Flat)
+            (or
+                (move 
+                    (from (handSite Mover))
+                    (to 
+                        (sites Empty) 
+                        if:(is Flat)
+                    )
+                )
+                (move
+                    (from (handSite Shared))
+                    (to
+                        (sites Empty)
+                        if: (is Flat)
+                    )
                 )
             )
         )
         (end {
             (if 
-                (is Line (- (count Rows) (layer of:(last To))) SameLayer) 
+                (and (is Line (- (count Rows) (layer of:(last To))) SameLayer what:(id "Ball" Mover)) (<= 2 (- (count Rows) (layer of:(last To))))) 
                 (result Mover Win)
             )
             (if 
-                (is Line (- (- (count Rows) (layer of:(last To))) 1) SameLayer) 
-                (result Mover Loss)
+                (and (is Line (- (- (count Rows) (layer of:(last To))) 1) SameLayer what:(id "Ball" Mover)) (<= 2 (- (- (count Rows) (layer of:(last To))) 1)))
+                (result Next Win)
             )
         })
     )
@@ -27,41 +45,18 @@
 
 //------------------------------------------------------------------------------
 
-(option "Players" <Version> args:{<numPlayers> <playRules>}
-    {
-    (item "2 Players" <2> <(meta (swap)) (play (move Add (to (sites Empty))))> "Two players.")**
-    (item "3 Players" <3> <(play (priority {(move Add (to (union (sites Winning Mover (add (to (sites Empty) if:(is Flat)))) (sites Winning Next (add (to (sites Empty) if:(is Flat))))))) (move Add (to (sites Empty) if:(is Flat))) }))> "Three players.")
-    (item "4 Players" <4> <(play (priority {(move Add (to (union (sites Winning Mover (add (to (sites Empty) if:(is Flat)))) (sites Winning Next (add (to (sites Empty) if:(is Flat))))))) (move Add (to (sites Empty) if:(is Flat))) }))> "Four players.")
-    }
-)
-
-(option "Board Size" <Board> args:{ <size> }
-    {
-    (item "2x2" <2> "2x2 square pyramidal board.") 
-    (item "3x3" <3> "3x3 square pyramidal board.") 
-    (item "4x4" <4> "4x4 square pyramidal board.")* 
-    (item "5x5" <5> "5x5 square pyramidal board.") 
-    (item "6x6" <6> "6x6 square pyramidal board.") 
-    (item "7x7" <7> "7x7 square pyramidal board.") 
-    (item "8x8" <8> "8x8 square pyramidal board.") 
-    (item "9x9" <9> "9x9 square pyramidal board.") 
-})
-
-//------------------------------------------------------------------------------
-
 (metadata 
     
     (info
         {
-        (description "Spava is based on Yavalath but adapted to the Shibumi set.")
-        (rules "Starting with white, each player places a marble on an empty space or platform (2x2 arrangement of marbles). A player wins by making a line of L pieces of their colour orthogonally or diagonally (where L is the layer size) but loses by making a line of L-1 of their colour beforehand (without also making a line of L).")
+        (description "Spava is a game for the Shibumi set, made as an entry for Shibumi Challenge.")
+        (rules "Two players, White and Black, take turns adding either a ball of their colour or a neutral red ball. A player wins by completing a line of length L of their colour on any LxL level. A player loses by completing a line of length L-1 on any LxL level. Lines can be orthogonal or diagonal but must contain at least two balls.")
         (id "1655")
-        (source "<a href=\"https://boardgamegeek.com/boardgame/119107/spava\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
-        (version "1.3.13")
+        (source "<a href=\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
+        (version "1.3.14")
         (classification "board/space/line")
         (author "Cameron Browne")
-        (publisher "<a href=\"https://www.nestorgames.com\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a> (used with permission)")
-        (credit "Cameron Browne")
+        (credit "Cédric Antoine")
         (date "2012")
         }
     )
@@ -69,8 +64,8 @@
     (graphics {
         (piece Scale "Ball" 1.0)
         (board Style Shibumi)
-    }) 
-    (ai
-        "Spava_ai"
-    )
+        (piece Colour Neutral fillColour:(colour Red))
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+    })
 )

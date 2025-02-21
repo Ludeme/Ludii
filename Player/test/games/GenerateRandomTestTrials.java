@@ -94,12 +94,13 @@ public class GenerateRandomTestTrials
 			if (fileEntry.getName().contains(".lud"))
 			{
 				final String ludPath = fileEntry.getPath().replaceAll(Pattern.quote("\\"), "/");
+				
 				final String trialDirPath = 
 						ludPath
-						.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/../TravisTrials/"))
+						.replaceFirst(Pattern.quote("/Common/res/"), Matcher.quoteReplacement("/Player/res/"))
 						.replaceFirst(Pattern.quote("/lud/"), Matcher.quoteReplacement("/random_trials/"))
 						.replace(".lud", "");
-				
+
 				for (int i = 0; i < NUM_TRIALS_PER_GAME; ++i)
 				{
 					final String trialFilepath = trialDirPath + File.separator + "RandomTrial_" + i + ".txt";

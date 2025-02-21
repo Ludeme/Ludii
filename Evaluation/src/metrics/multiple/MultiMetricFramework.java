@@ -75,7 +75,20 @@ public abstract class MultiMetricFramework extends Metric
 			metricValueLists.add(getMetricValueList(evaluation, trial, context));
 		}
 
-		return metricValueLists.toArray(new double[0][0]);
+		// To fix the conversion issue.
+		final double[][] metricValueListsReturned = new double[metricValueLists.size()][];
+		for(int i = 0; i < metricValueLists.size(); i++)
+		{			
+			double[] resultDouble = new double[metricValueLists.get(i).length];
+			for(int j = 0; j< resultDouble.length; j++)
+			{
+				Double d = resultDouble[j];
+				resultDouble[j] = d;
+			}
+			metricValueListsReturned[i] = resultDouble;
+		}
+		
+		return metricValueListsReturned;
 	}
 	
 	//-------------------------------------------------------------------------

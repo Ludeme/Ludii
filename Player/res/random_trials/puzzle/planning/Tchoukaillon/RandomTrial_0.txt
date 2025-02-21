@@ -1,0 +1,34 @@
+game=../Common/res/lud/puzzle/planning/Tchoukaillon.lud
+START GAME OPTIONS
+END GAME OPTIONS
+RNG internal state=-32,-100,-118,46,-123,57,-7,62
+Move=[Move:mover=0,from=2,to=2,actions=[Add:type=Vertex,to=2,level=0,what=1,stack=true]]
+Move=[Move:mover=0,from=2,to=2,actions=[Add:type=Vertex,to=2,level=1,what=1,stack=true]]
+Move=[Move:mover=0,from=3,to=3,actions=[Add:type=Vertex,to=3,level=0,what=1,stack=true]]
+Move=[Move:mover=0,from=3,to=3,actions=[Add:type=Vertex,to=3,level=1,what=1,stack=true]]
+Move=[Move:mover=0,from=4,to=4,actions=[Add:type=Vertex,to=4,level=0,what=1,stack=true]]
+Move=[Move:mover=0,from=4,to=4,actions=[Add:type=Vertex,to=4,level=1,what=1,stack=true]]
+Move=[Move:mover=0,from=4,to=4,actions=[Add:type=Vertex,to=4,level=2,what=1,stack=true]]
+Move=[Move:mover=0,from=4,to=4,actions=[Add:type=Vertex,to=4,level=3,what=1,stack=true]]
+Move=[Move:mover=1,from=2,to=2,actions=[Select:typeFrom=Vertex,from=2,levelFrom=1,decision=true],[Move:typeFrom=Vertex,from=2,typeTo=Vertex,to=1],[Move:typeFrom=Vertex,from=2,typeTo=Vertex,to=0]]
+Move=[Move:mover=1,from=1,to=1,actions=[Select:typeFrom=Vertex,from=1,levelFrom=0,decision=true],[Move:typeFrom=Vertex,from=1,typeTo=Vertex,to=0]]
+Move=[Move:mover=1,from=4,to=4,actions=[Select:typeFrom=Vertex,from=4,levelFrom=3,decision=true],[Move:typeFrom=Vertex,from=4,typeTo=Vertex,to=3],[Move:typeFrom=Vertex,from=4,typeTo=Vertex,to=2],[Move:typeFrom=Vertex,from=4,typeTo=Vertex,to=1],[Move:typeFrom=Vertex,from=4,typeTo=Vertex,to=0]]
+Move=[Move:mover=1,from=1,to=1,actions=[Select:typeFrom=Vertex,from=1,levelFrom=0,decision=true],[Move:typeFrom=Vertex,from=1,typeTo=Vertex,to=0]]
+Move=[Move:mover=1,from=3,to=3,actions=[Select:typeFrom=Vertex,from=3,levelFrom=2,decision=true],[Move:typeFrom=Vertex,from=3,typeTo=Vertex,to=2],[Move:typeFrom=Vertex,from=3,typeTo=Vertex,to=1],[Move:typeFrom=Vertex,from=3,typeTo=Vertex,to=0]]
+Move=[Move:mover=1,from=1,to=1,actions=[Select:typeFrom=Vertex,from=1,levelFrom=0,decision=true],[Move:typeFrom=Vertex,from=1,typeTo=Vertex,to=0]]
+Move=[Move:mover=1,from=2,to=2,actions=[Select:typeFrom=Vertex,from=2,levelFrom=1,decision=true],[Move:typeFrom=Vertex,from=2,typeTo=Vertex,to=1],[Move:typeFrom=Vertex,from=2,typeTo=Vertex,to=0]]
+Move=[Move:mover=1,from=1,to=1,actions=[Select:typeFrom=Vertex,from=1,levelFrom=0,decision=true],[Move:typeFrom=Vertex,from=1,typeTo=Vertex,to=0]]
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 2
+LEGAL MOVES LIST SIZE = 1
+LEGAL MOVES LIST SIZE = 1
+numInitialPlacementMoves=8
+winner=1
+endtype=NaturalEnd
+rankings=0.0,1.0
+SANDBOX=false
+LUDII_VERSION=1.3.13

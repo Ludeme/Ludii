@@ -64,6 +64,95 @@ public class QrCodeGeneration
 			e1.printStackTrace();
 		} 
 	}
+	/**
+	 * To be used only for GameTable QR codes.
+	 */
+//	public static void main(String[] args) 
+//	{
+//		// Determine the file name
+//		String fileNameGameTable = "qr-gametable";
+//		fileNameGameTable += ".png";
+//		
+//		// Determine URL to encode
+//		String urlGameTable = "https://gametable.network/";
+//		urlGameTable = urlGameTable.replaceAll(" ", "%20");  // make URL valid HTML (yuck)
+//		
+//		final QrCode qrGameTable = QrCode.encodeText(urlGameTable, QrCode.Ecc.MEDIUM);
+//	
+//		// Make the image
+//		final BufferedImage imgGameTable = ToImage.toImage(qrGameTable, 10, 4);   
+//		try
+//		{
+//			ImageIO.write(imgGameTable, "png", new File(fileNameGameTable));
+//		}
+//		catch (final IOException e1)
+//		{
+//			e1.printStackTrace();
+//		} 
+//		
+//		// Determine the file name
+//		String fileNameYoutube = "qr-gametable-youtube";
+//		fileNameYoutube += ".png";
+//		
+//		// Determine URL to encode
+//		String urlYoutube = "https://www.youtube.com/@GameTableNetwork";
+//		urlYoutube = urlYoutube.replaceAll(" ", "%20");  // make URL valid HTML (yuck)
+//		
+//		final QrCode qrYoutube = QrCode.encodeText(urlYoutube, QrCode.Ecc.MEDIUM);
+//	
+//		// Make the image
+//		final BufferedImage img = ToImage.toImage(qrYoutube, 10, 4);   
+//		try
+//		{
+//			ImageIO.write(img, "png", new File(fileNameYoutube));
+//		}
+//		catch (final IOException e1)
+//		{
+//			e1.printStackTrace();
+//		} 
+//		
+//		// Determine the file name
+//		String fileNameFacebook = "qr-gametable-facebook";
+//		fileNameFacebook += ".png";
+//		
+//		// Determine URL to encode
+//		String urlFacebook = "https://www.facebook.com/GameTableNetwork";
+//		urlFacebook = urlFacebook.replaceAll(" ", "%20");  // make URL valid HTML (yuck)
+//		
+//		final QrCode qrFacebook = QrCode.encodeText(urlFacebook, QrCode.Ecc.MEDIUM);
+//	
+//		// Make the image
+//		final BufferedImage imgFacebook = ToImage.toImage(qrFacebook, 10, 4);   
+//		try
+//		{
+//			ImageIO.write(imgFacebook, "png", new File(fileNameFacebook));
+//		}
+//		catch (final IOException e1)
+//		{
+//			e1.printStackTrace();
+//		} 
+//		
+//		// Determine the file name
+//		String fileNameTwitter = "qr-gametable-twitter";
+//		fileNameTwitter += ".png";
+//		
+//		// Determine URL to encode
+//		String urlTwitter = "https://x.com/GameTableNet";
+//		urlFacebook = urlTwitter.replaceAll(" ", "%20");  // make URL valid HTML (yuck)
+//		
+//		final QrCode qrTwitter = QrCode.encodeText(urlTwitter, QrCode.Ecc.MEDIUM);
+//	
+//		// Make the image
+//		final BufferedImage imgTwitter = ToImage.toImage(qrTwitter, 10, 4);   
+//		try
+//		{
+//			ImageIO.write(imgTwitter, "png", new File(fileNameTwitter));
+//		}
+//		catch (final IOException e1)
+//		{
+//			e1.printStackTrace();
+//		} 
+//	}
 	
 	/**
 	 * To be used only for exhibition QR codes.

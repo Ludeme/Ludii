@@ -1,0 +1,173 @@
+(game "Sparro" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+        (piece "Ball" Neutral)
+        (hand Each)
+    }) 
+    
+    (rules 
+        (start {
+            (place "Ball0" {8 10 14 18 20})
+            (place "Ball" "Hand" count:12)
+        })
+        
+        (play 
+            (if 
+                (= (size Array (array (sites Occupied by:All))) 6)
+                (if
+                    (is In (last To) (sites Corners))
+                    (move 
+                        (from (handSite Mover)) 
+                        (to 
+                            (intersection (difference (sites Perimeter) (sites Corners))(sites Empty))
+                            if:(is Flat)
+                        )
+                    )
+                    (move 
+                        (from (handSite Mover)) 
+                        (to 
+                            (intersection (sites Corners) (sites Empty))
+                            if:(is Flat)
+                        )
+                    )
+                )
+                (move 
+                    (from (handSite Mover)) 
+                    (to 
+                        (sites Empty) 
+                        if:(is Flat)
+                    )
+                    (then //not working, have to change it (take into account one ball possibly making 2 lines and lines not being made of ups and downs)
+                        (if 
+                            (and {(is Line 3 DSW through:(last To) Mover useOpposites:False) (is Line 3 DNE through:(last To) Mover useOpposites:False)	(or (is Line 3 DSE through:(last To) Mover useOpposites:False) (is Line 3 DNW through:(last To) Mover useOpposites:False))})
+                            (and {
+                                (addScore Mover 3)
+                                (forget Value "LastScored" All)
+                                (remember Value "LastScored" (mover))
+                            })
+                            (if
+                                (and {(is Line 3 DNW through:(last To) Mover useOpposites:False) (is Line 3 DSE through:(last To) Mover useOpposites:False)	(or (is Line 3 DNE through:(last To) Mover useOpposites:False) (is Line 3 DSW through:(last To) Mover useOpposites:False))})
+                                (and {
+                                    (addScore Mover 3)
+                                    (forget Value "LastScored" All)
+                                    (remember Value "LastScored" (mover))
+                                })
+                                (if
+                                    (and (is Line 3 DNW through:(last To) Mover useOpposites:False) (or {(is Line 3 DNE through:(last To) Mover useOpposites:False) (is Line 3 DSW through:(last To) Mover useOpposites:False) (is Line 3 DSE through:(last To) Mover useOpposites:False)}))
+                                    (and {
+                                        (addScore Mover 2)
+                                        (forget Value "LastScored" All)
+                                        (remember Value "LastScored" (mover))
+                                    })
+                                    (if
+                                        (and (is Line 3 DNE through:(last To) Mover useOpposites:False) (or (is Line 3 DSW through:(last To) Mover useOpposites:False) (is Line 3 DSE through:(last To) Mover useOpposites:False)))
+                                        (and {
+                                            (addScore Mover 2)
+                                            (forget Value "LastScored" All)
+                                            (remember Value "LastScored" (mover))
+                                        })
+                                        (if
+                                            (and (is Line 3 DSW through:(last To) Mover useOpposites:False) (is Line 3 DSE through:(last To) Mover useOpposites:False))
+                                            (and {
+                                                (addScore Mover 2)
+                                                (forget Value "LastScored" All)
+                                                (remember Value "LastScored" (mover))
+                                            })
+                                            (if
+                                                (and (is Line 3 N through:(last To) Mover useOpposites:False) (or (is Line 3 W through:(last To) Mover useOpposites:False) (is Line 3 E through:(last To) Mover useOpposites:False)))
+                                                (and {
+                                                    (addScore Mover 2)
+                                                    (forget Value "LastScored" All)
+                                                    (remember Value "LastScored" (mover))
+                                                })
+                                                (if
+                                                    (and (is Line 3 S through:(last To) Mover useOpposites:False) (or (is Line 3 W through:(last To) Mover useOpposites:False) (is Line 3 E through:(last To) Mover useOpposites:False)))
+                                                    (and {
+                                                        (addScore Mover 2)
+                                                        (forget Value "LastScored" All)
+                                                        (remember Value "LastScored" (mover))
+                                                    })
+                                                    (if
+                                                        (and (is Line 4 SameLayer through:(last To) Mover) (not ((is Line 4 SameLayer through:(last To) Mover useOpposites:False))))
+                                                        (and {
+                                                            (addScore Mover 2)
+                                                            (forget Value "LastScored" All)
+                                                            (remember Value "LastScored" (mover))
+                                                        })
+                                                        (if
+                                                            (or {(is Line 3 SameLayer through:(last To) Mover) (is Line 3 DNW through:(last To) Mover useOpposites:False) (is Line 3 DNE through:(last To) Mover useOpposites:False) (is Line 3 DSE through:(last To) Mover useOpposites:False) (is Line 3 DSW through:(last To) Mover useOpposites:False)})
+                                                            (and {
+                                                                (addScore Mover 1)
+                                                                (forget Value "LastScored" All)
+                                                                (remember Value "LastScored" (mover))
+                                                            })
+                                                            (addScore Mover 0)
+                                                        )
+                                                    )
+                                                )        							
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end {
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (> (score Next) (score Mover)))
+                (result Next Win)
+            )
+            (if 
+                (and (= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (< (score Next) (score Mover)))
+                (result Mover Win)
+            )
+            (if 
+                (and {(= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (= (score Next) (score Mover)) (= (arrayValue (values Remembered "LastScored") index:0) 1)})
+                (result P1 Win)
+            )
+            (if 
+                (and {(= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (= (score Next) (score Mover)) (= (arrayValue (values Remembered "LastScored") index:0) 2)})
+                (result P2 Win)
+            )
+            (if 
+                (and {(= (count Pieces in:(sites Occupied by:All container:"Board")) 29) (= (score Next) (score Mover))})
+                (result P2 Win)
+            )
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Sparro is an adaptation of the game Captain's Mistress (think Connect Four) for the Series: Shibumi game platform.")
+        (rules "Start with five neutral balls filling the interior points. Players start with 12 balls of their colour. Players take turns placing a ball of their colour at any playable point. If the first move is to a corner hole then the second move must be to a non-corner hole, and vice versa. The game ends when all 24 balls have been played. The player with the most lines of size 3 in their colour wins. If tied, the last player to make a line of size 3 wins, otherwise Black wins.")
+        (id "4242")
+        (source "<a href=\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />nestorgames</a>")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Phil Leduc")
+        (credit "Cédric Antoine")
+        (date "2011")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour Neutral fillColour:(colour Red))
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+        (show Score)
+    })
+    
+)

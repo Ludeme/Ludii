@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -15,21 +16,43 @@ import main.options.Ruleset;
 import other.GameLoader;
 
 /**
- * Script to generate all the .sh to generate the different trials for the Snellius cluster on thin nodes.
+ * Script to generate all the .sh to generate the different trials for LeMaitre4 cluster.
  * 
  * @author Eric.Piette
  */
 public class CreateLeMaitre4ClusterTrialsScript
 {
+	/** Max wall time (in minutes) */
+	private static final int MAX_WALL_TIME = 1500;
+
+	/** Memory to assign to JVM */
+	private static final String JVM_MEM_MIN = "512g"; // 128g
+	
+	/** Memory to assign to JVM */
+	private static final String JVM_MEM_MAX = "512g"; // 128g
+	
+	// TODO no idea what this should be on Lemaitre4
+	/** Cluster doesn't seem to let us request more memory than this for any single job (on a single node) */
+	private static final int MAX_REQUEST_MEM = 600; // 600
+	
+	/** Number of cores per node (this is for Lemaitre4) */
+	private static final int CORES_PER_NODE = 128; // 32
+	
+	/** Number of cores per Java call */
+	private static final int CORES_PER_PROCESS = 128;
+	
+	/**Number of processes we can put in a single job (on a single node) */
+	private static final int PROCESSES_PER_JOB = CORES_PER_NODE / CORES_PER_PROCESS;
+	
 	public static void main(final String[] args)
 	{
 		final int numPlayout = 100;
 		final int maxMove = 5000; // Constants.DEFAULT_MOVES_LIMIT;
-		//final int allocatedMemoryJava = 4096;
 		final int thinkingTime = 1;
-		final String agentName = "Alpha-Beta"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
+		final String agentName = "Random"; // Can be "UCT",  "Alpha-Beta", "Alpha-Beta-UCT", "AB-Odd-Even", or "Random"
 		final String clusterLogin = "epiette";
 		final String mainScriptName = "GenTrials.sh";
+		final int numRulesetsPerBatch = 1; // 48
 		
 		final ArrayList<String> rulesetNames = new ArrayList<String>();
 		try (final PrintWriter mainWriter = new UnixPrintWriter(new File(mainScriptName), "UTF-8"))
@@ -95,10 +118,13 @@ public class CreateLeMaitre4ClusterTrialsScript
 				}
 			}
 
+			// Write scripts with all the processes
+			Collections.shuffle(rulesetNames);
+			
 			System.out.println("***************************" + rulesetNames.size() + " rulesets ***************************");
 			int scriptId = 0;
-			
-			for(int i = 0; i < (rulesetNames.size() / 42 + 1); i++)
+
+			for(int i = 0; i < (rulesetNames.size() / numRulesetsPerBatch + 1); i++)
 			{
 				final String scriptName = "GenTrial_" + scriptId + ".sh";
 				mainWriter.println("sbatch " + scriptName);
@@ -108,25 +134,29 @@ public class CreateLeMaitre4ClusterTrialsScript
 					writer.println("#!/bin/bash");
 					writer.println("#SBATCH -J GenTrials"+agentName+"Script" + scriptId);
 					writer.println("#SBATCH -p batch");
-					writer.println("#SBATCH -o /home/ucl/ingi/" + clusterLogin + "/Out/Out_%J.out");
-					writer.println("#SBATCH -e /home/ucl/ingi/" + clusterLogin + "/Out/Err_%J.err");
-					writer.println("#SBATCH -t 2880");
+					writer.println("#SBATCH -o /globalscratch/ucl/ingi/" + clusterLogin + "/Out/Out_%J.out");
+					writer.println("#SBATCH -e /globalscratch/ucl/ingi/" + clusterLogin + "/Err/Err_%J.err");
+					writer.println("#SBATCH -t " + MAX_WALL_TIME);
 					writer.println("#SBATCH -N 1");
-					writer.println("#SBATCH --cpus-per-task=128");
-					writer.println("#SBATCH --mem=224G");
+
+					final int numProcessesThisJob = PROCESSES_PER_JOB;
+					
+					writer.println("#SBATCH --cpus-per-task=" + (numProcessesThisJob * CORES_PER_PROCESS));
+					writer.println("#SBATCH --mem=" + MAX_REQUEST_MEM + "G");
 					writer.println("#SBATCH --exclusive");
 					writer.println("module load Java/11.0.20");
 					
-					for(int j = 0; j < 42; j++)
+					for(int j = 0; j < numRulesetsPerBatch; j++)
 					{
-						if((i*42+j) < rulesetNames.size())
+						if((i*numRulesetsPerBatch+j) < rulesetNames.size())
 						{
-							String jobLine = "taskset -c ";
-							jobLine += (3*j) + "," + (3*j + 1) + "," +  (3*j + 2) + " "; 
-							jobLine += "java -Xms5120M -Xmx5120M -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/home/ucl/ingi/" + clusterLogin + "/ludii/Trials/Ludii.jar\" --generate-trials-parallel ";
+							String jobLine = "";
+							//jobLine += "taskset -c ";
+							//jobLine += (CORES_PER_PROCESS*j) + "," + (CORES_PER_PROCESS*j + 1) + "," +  (CORES_PER_PROCESS*j + 2) + "," +  (CORES_PER_PROCESS*j + 3) + " "; 
+							jobLine += "java -Xms" + JVM_MEM_MIN + " -Xmx" + JVM_MEM_MAX + " -XX:+HeapDumpOnOutOfMemoryError -da -dsa -XX:+UseStringDeduplication -jar \"/globalscratch/ucl/ingi/" + clusterLogin + "/ludii/Trials/Ludii.jar\" --generate-trials-parallel ";
 							jobLine += maxMove + " " + thinkingTime + " " + numPlayout + " "  + "\"" + agentName + "\"" + " " + "\"";
-							jobLine += rulesetNames.get(i*42+j);
-							jobLine += " " + "> /home/ucl/ingi/" + clusterLogin + "/Out/Out_${SLURM_JOB_ID}_"+ j +".out &";
+							jobLine += rulesetNames.get(i*numRulesetsPerBatch+j);
+							jobLine += " " + "> /globalscratch/ucl/ingi/" + clusterLogin + "/Out/Out_${SLURM_JOB_ID}_"+ j +".out &";
 							writer.println(jobLine);
 						}
 					}

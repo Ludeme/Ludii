@@ -1,0 +1,234 @@
+(define "CanSlide"
+    (not (all Sites (difference (sites Occupied by:Shared) (sites #1))
+            if:(and
+                (= 0 (count Sites in:(sites LineOfSight Farthest at:(site) #2)))
+                (!= 
+                    (what at:(site))
+                    (what at:(regionSite (sites LineOfSight Piece at:(site) #2) index:0))
+                )
+            )
+        )
+    )
+)
+
+(define "CanSlideW" ("CanSlide" Left W))
+(define "CanSlideE" ("CanSlide" Right E))
+(define "CanSlideN" ("CanSlide" Top N))
+(define "CanSlideS" ("CanSlide" Bottom S))
+
+(define "SlideW" (move Select (from 6) (to 5) (then #1)))
+(define "SlideE" (move Select (from 5) (to 6) (then #1)))
+(define "SlideN" (move Select (from 6) (to 10) (then #1)))
+(define "SlideS" (move Select (from 10) (to 6) (then #1)))
+
+(define "LineOfSightPiece" (regionSite (sites LineOfSight Piece at:(site) #1) index:0))
+(define "LineOfSightEmpty" (sites LineOfSight Farthest at:(site) #1))
+
+(define "ApplySlideLine"
+    (forEach Site (sites #1 #2)
+        (if (is Occupied (site))
+            (if 
+                (and
+                    (= 
+                        (what at:(site))
+                        (what at:("LineOfSightPiece" #3))
+                    )
+                    (= 0 (state at:("LineOfSightPiece" #3)))
+                )
+                (and {
+                    (remove (site))
+                    (remove ("LineOfSightPiece" #3))
+                    (add 
+                        (piece (mapEntry "Promotion" (what at:(site))))
+                        (to ("LineOfSightPiece" #3))
+                    )
+                    (set State at:("LineOfSightPiece" #3) 1)
+                    (addScore Mover (mapEntry "Score" (mapEntry "Promotion" (what at:(site)))))
+                })
+                (if (!= 0 (count Sites in:("LineOfSightEmpty" #3)))
+                    (fromTo (from (site)) (to ("LineOfSightEmpty" #3)))
+                )
+            )
+        )
+    )
+)
+
+(define "ResetState" (forEach Site (sites State 1) (set State at:(site) 0)))
+
+(define "ApplySlideW"
+    (seq {
+        ("ApplySlideLine" Column 1 W)
+        ("ApplySlideLine" Column 2 W)
+        ("ApplySlideLine" Column 3 W)
+        ("ResetState")
+    })
+)
+
+(define "ApplySlideE"
+    (seq {
+        ("ApplySlideLine" Column 2 E)
+        ("ApplySlideLine" Column 1 E)
+        ("ApplySlideLine" Column 0 E)
+        ("ResetState")
+    })
+)
+
+(define "ApplySlideN"
+    (seq {
+        ("ApplySlideLine" Row 2 N)
+        ("ApplySlideLine" Row 1 N)
+        ("ApplySlideLine" Row 0 N)
+        ("ResetState")
+    })
+)
+
+(define "ApplySlideS"
+    (seq {
+        ("ApplySlideLine" Row 1 S)
+        ("ApplySlideLine" Row 2 S)
+        ("ApplySlideLine" Row 3 S)
+        ("ResetState")
+    })
+)
+
+//------------------------------------------------------------------------------
+
+(game "Competitive 2048"
+    (players 2)
+    (equipment {
+        (board (square 4))
+        (piece "Square2" Shared)
+        (piece "Square4" Shared)
+        (piece "Square8" Shared)
+        (piece "Square16" Shared)
+        (piece "Square32" Shared)
+        (piece "Square64" Shared)
+        (piece "Square128" Shared)
+        (piece "Square256" Shared)
+        (piece "Square512" Shared)
+        (piece "Square1024" Shared)
+        (piece "Square2048" Shared) 
+        (map "Promotion" {
+            (pair (id "Square2" Shared) (id "Square4" Shared))
+            (pair (id "Square4" Shared) (id "Square8" Shared))
+            (pair (id "Square8" Shared) (id "Square16" Shared))
+            (pair (id "Square16" Shared) (id "Square32" Shared))
+            (pair (id "Square32" Shared) (id "Square64" Shared))
+            (pair (id "Square64" Shared) (id "Square128" Shared))
+            (pair (id "Square128" Shared) (id "Square256" Shared))
+            (pair (id "Square256" Shared) (id "Square512" Shared))
+            (pair (id "Square512" Shared) (id "Square1024" Shared))
+            (pair (id "Square1024" Shared) (id "Square2048" Shared))
+        })
+        (map "Score" {
+            (pair (id "Square2" Shared) 2)
+            (pair (id "Square4" Shared) 4)
+            (pair (id "Square8" Shared) 8)
+            (pair (id "Square16" Shared) 16)
+            (pair (id "Square32" Shared) 32)
+            (pair (id "Square64" Shared) 64)
+            (pair (id "Square128" Shared) 128)
+            (pair (id "Square256" Shared) 256)
+            (pair (id "Square512" Shared) 512)
+            (pair (id "Square1024" Shared) 1024)
+            (pair (id "Square2048" Shared) 2048)
+        })
+    })
+    (rules
+        (start (place Random {"Square2"} count:2))
+        (play 
+            (or {
+                (if ("CanSlideW")
+                    ("SlideW"
+                        ("ApplySlideW")
+                    )
+                )
+                (if ("CanSlideE")
+                    ("SlideE"
+                        ("ApplySlideE")
+                    )
+                )
+                (if ("CanSlideN")
+                    ("SlideN"
+                        ("ApplySlideN")
+                    )
+                )
+                (if ("CanSlideS")
+                    ("SlideS"
+                        ("ApplySlideS")
+                    )
+                )
+                }
+                (then
+                    (if (< (value Random (range 1 8)) 2)
+                        (add (piece "Square4") (to (sites Random (sites Empty) num:1)))
+                        (add (piece "Square2") (to (sites Random (sites Empty) num:1)))
+                    )		
+                )
+            )
+        )
+        (end {
+            (if (no Moves Next) (byScore))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    (info
+        {
+        (description "Competitive 2048 is a scoring multiplayer version of the 2048 puzzle.")
+        (rules "Competitive 2048 is played on a plain 4×4 grid, with numbered tiles that slide when a player moves them. Every turn, a new tile randomly appears in an empty spot on the board with a value of either 2 or 4. Tiles slide as far as possible in the chosen direction until they are stopped by either another tile or the edge of the grid. If two tiles of the same number collide while moving, they will merge into a tile with the total value of the two tiles that collided. The resulting tile cannot merge with another tile again in the same move. The player who merge two tiles add to its score the value of the new tile. The player with the highest score when no tile can be moved is the winner.")
+        (id "4272")
+        (version "1.3.14")
+        (classification "board/race/score")
+        (author "Eric Piette")
+        (credit "Eric Piette")
+        (date "2024")
+        }
+    )
+    
+    (graphics {
+        (board Colour Phase0 (colour 205 193 179))
+        (board Colour InnerEdges (colour 187 173 160))
+        (board Colour OuterEdges (colour 187 173 160))
+        (piece Colour Shared "Square2" fillColour:(colour 238 228 218))
+        (piece Colour Shared "Square4" fillColour:(colour 236 224 200))
+        (piece Colour Shared "Square8" fillColour:(colour 242 177 121))
+        (piece Colour Shared "Square16" fillColour:(colour 245 149 99))
+        (piece Colour Shared "Square32" fillColour:(colour 244 125 93))
+        (piece Colour Shared "Square64" fillColour:(colour 246 93 59))
+        (piece Colour Shared "Square128" fillColour:(colour 237 206 113))
+        (piece Colour Shared "Square256" fillColour:(colour 237 204 97))
+        (piece Colour Shared "Square512" fillColour:(colour 236 200 80))
+        (piece Colour Shared "Square1024" fillColour:(colour 255 178 103))
+        (piece Colour Shared "Square2048" fillColour:(colour 241 194 44))
+        (piece Foreground "Square2" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground "Square4" image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground "Square8" image:"8" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4)
+        (piece Foreground "Square16" image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:-0.6)
+        (piece Foreground "Square16" image:"6" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:0.4)
+        (piece Foreground "Square32" image:"3" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:-0.6)
+        (piece Foreground "Square32" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:0.4)
+        (piece Foreground "Square64" image:"6" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:-0.6)
+        (piece Foreground "Square64" image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.4 offsetX:0.4)
+        (piece Foreground "Square128" image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.7)
+        (piece Foreground "Square128" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.1)
+        (piece Foreground "Square128" image:"8" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:0.5)
+        (piece Foreground "Square256" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.7)
+        (piece Foreground "Square256" image:"5" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.1)
+        (piece Foreground "Square256" image:"6" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:0.5)
+        (piece Foreground "Square512" image:"5" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.7)
+        (piece Foreground "Square512" image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:-0.1)
+        (piece Foreground "Square512" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.3 offsetX:0.5)
+        (piece Foreground "Square1024" image:"1" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:-0.6)
+        (piece Foreground "Square1024" image:"0" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:-0.2)
+        (piece Foreground "Square1024" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:0.2)
+        (piece Foreground "Square1024" image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:0.6)
+        (piece Foreground "Square2048" image:"2" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:-0.6)
+        (piece Foreground "Square2048" image:"0" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:-0.2)
+        (piece Foreground "Square2048" image:"4" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:0.2)
+        (piece Foreground "Square2048" image:"8" fillColour:(colour Hidden) edgeColour:(colour Black) scale:0.2 offsetX:0.6)
+    })
+)

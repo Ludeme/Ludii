@@ -1,0 +1,51 @@
+(game "Wong" 
+    (players 2) 
+    (equipment { 
+        (board (square 9) use:Vertex) 
+        (piece "Marker" Each)
+    })
+    (rules 
+        phases:{
+        (phase "Setup"
+            (play (move Add (to (sites Empty))))
+            (nextPhase (<= 16 (count Sites in:(sites Occupied by:All))) "Placement")
+        )
+        (phase "Placement"
+            (play 
+                (move Add
+                    (to
+                        (sites Empty)
+                        if:(<= 2 (count Sites in:(sites Around (to) Own All)))
+                    )
+                )
+            )
+        )
+        }
+        (end
+            (if (no Moves Mover) (result Prev Win))
+        )
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Be the last to play by creating opportunities for future placements while blocking your opponent's options.")
+        (rules "The game is played on a 9x9 board. At the start of the game, each player places 8 pieces in turn on the game board. Once all 16 pieces are on the board, each player places a piece in turn, but the stone must have at least 2 friendly pieces adjacent to it (orthogonally and diagonally). The last player to place a piece wins.")
+        (id "4309")
+        (source "<a href=\\"http://www.di.fc.ul.pt/~jpn/gv/wong_game.htm\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/blocking")
+        (author "Gary Wong")
+        (credit "Achille Morenville")
+        (date "1999")
+        }
+    )
+    
+    (graphics {
+        (board Style Go)
+    })
+)
+

@@ -1,0 +1,45 @@
+(game "Complica"
+    (players 2)
+    (equipment {
+        (board (rectangle 1 4))
+        (piece "Disc" Each)
+    })
+    (rules
+        (play
+            (move Add
+                (to
+                    (sites Board)
+                )
+                stack:True
+                (then
+                    (if (= (size Stack at:(last To)) 8)
+                        (move Remove (last To) level:0)
+                    )                
+                )
+            )
+        )
+        (end {
+            (if (and (is Line 4 P1 byLevel:True) (not (is Line 4 P2 byLevel:True))) (result P1 Win))
+            (if (and (is Line 4 P2 byLevel:True) (not (is Line 4 P1 byLevel:True))) (result P2 Win))
+            (if (= 80 (count Moves)) (result All Draw))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "At first glance, this early Knizia title may seem like an easier version of Connect Four played on a 4x7 grid. However, in Complica, when a piece is placed, it does not remain there for the entire game.")
+        (rules "The game is played on a 7x4 board. On each turn, players must drop a stone of their color into the lowest possible empty cell of a column. If the column is full, the player's stone is placed on top and the bottom stone is removed. A player wins by creating a line of four stones of their own color, either diagonally or orthogonally. If both players have a 4-in-a-row, the game continues.")
+        (id "4273")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/7476/complica\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Reiner Knizia")
+        (credit "Achille Morenville")
+        (date "1991")
+        }
+    )
+)

@@ -97,7 +97,7 @@
 )
 
 (define "Promote"
-    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))))	
+    (move Promote (last To) (piece (mapEntry "Promoted" (what at:(last To)))) #1)	
 )
 
 (define "CanPromote"
@@ -330,8 +330,20 @@
     )
 )
 
+(define "DetectNonMoverInCheck"
+    (and 
+        (not ("IsInCheck" "King" Mover))
+        (or {
+            (and {(is Active P1) (not (is Mover P1)) ("IsInCheck" "King" P1) (not ("CanNotMove" P1))})
+            (and {(is Active P2) (not (is Mover P2)) ("IsInCheck" "King" P2) (not ("CanNotMove" P2))})
+            (and {(is Active P3) (not (is Mover P3)) ("IsInCheck" "King" P3) (not ("CanNotMove" P3))})
+            (and {(is Active P4) (not (is Mover P4)) ("IsInCheck" "King" P4) (not ("CanNotMove" P4))})
+        })
+    )
+)
+
 (define "RemoveKingIfCheckmate"
-    (if (and (is Active #1) (not (is Mover #1)))
+    (if (and {(is Active #1) (not (is Mover #1))})
         (if 
             (and 
                 ("IsInCheck" "King" #1)
@@ -361,6 +373,33 @@
     (add (piece (id #3 #2)) (to (mapEntry "Where" (id #3 #2))) count:(count Pieces in:(sites Occupied by:#1 container:"Hand" components:{#3})))
 )
 
+(define "MakeMove"
+    (if ("SameTurn")
+        (or
+            ("Promote")
+            (move Pass)
+        )
+        (do 
+            (or {
+                ("PlaceUnrestrictedPiece" Mover) 
+                ("PlacePawn" Mover)
+                ("PlaceLance" Mover)
+                ("PlaceKnight" Mover) 
+                (forEach Piece) 
+            })
+            ifAfterwards:(not ("IsInCheck" "King" Mover))
+        )
+        (then
+            (and {
+                ("RemoveKingIfCheckmate" P1)
+                ("RemoveKingIfCheckmate" P2)
+                ("RemoveKingIfCheckmate" P3)
+                ("RemoveKingIfCheckmate" P4)
+            })
+        )
+    )
+)
+
 //------------------------------------------------------------------------------
 
 (game "Yonin Seireigi" 
@@ -368,6 +407,9 @@
     
     (equipment { 
         (board (square 9))
+        
+        // King
+        (piece "King" Each ("StepMove"))
         
         // Pawn 
         (piece "Pawn" Each 
@@ -423,9 +465,6 @@
         // Rook
         (piece "Rook" Each ("SlideMove" Orthogonal "CanPromote"))
         
-        // King
-        (piece "King" Each ("StepMove"))
-        
         // Promoted Pawn
         (piece "Tokin" Each ("StepMove" (directions {Forward Backward Leftward Rightward FL FR})))
         
@@ -433,10 +472,10 @@
         (piece "FreeTiger" Each (or {("SlideMove" (directions {Leftward Rightward})) ("TwoStepLeap" (directions {Leftward Rightward}) (directions {FL FR})) ("StepMove" (directions {Forward Backward}))}))
         
         // Promoted Knight
-        (piece "HeavenlyHorse" Each (or ("StepMove" (directions {Forward Leftward Rightward FL FR})) ("TwoStepLeap" Backward (directions {FL FR}))))
+        (piece "HeavenlyHorse" Each (or {("StepMove" (directions {Forward BL BR FL FR})) ("TwoStepLeap" Backward (directions {FL FR})) ("TwoStepLeap" (directions {Forward FL FR}) Forward)}))
         
         // Promoted Silver General
-        (piece "RunningWolf" Each (or ("SlideMove" Forward) ("StepMove" (directions {FL FR Leftward Rightward Backward}))))
+        (piece "RunningWolf" Each (or ("SlideMove" (directions {Forward Backward})) ("StepMove" (directions {FL FR Leftward Rightward}))))
         
         // Promoted Gold General
         (piece "GreatElephant" Each (or ("SlideMove" (directions {FL FR})) ("StepMove" (directions {Forward Leftward Rightward BL BR}))))
@@ -447,6 +486,10 @@
         // Promoted Rook
         (piece "DragonKing" Each (or ("SlideMove" Orthogonal) ("StepMove" Diagonal)))
         
+        (regions "HandP1" P1 { 81..87 })
+        (regions "HandP2" P2 { 88..94 })
+        (regions "HandP3" P3 { 95..101 })
+        (regions "HandP4" P1 { 102..108 })
         (regions "LastRankP1" P1 (sites Top))
         (regions "LastRankP2" P2 (sites Right))
         (regions "LastRankP3" P3 (sites Bottom))
@@ -494,28 +537,52 @@
         })
         
         (play
-            (if ("SameTurn")
+            // If a player is in check and that player is not the player to move, force pass
+            (if 
+                ("SameTurn")
                 (or
-                    ("Promote")
+                    ("Promote"
+                        (then
+                            (and {
+                                ("RemoveKingIfCheckmate" P1)
+                                ("RemoveKingIfCheckmate" P2)
+                                ("RemoveKingIfCheckmate" P3)
+                                ("RemoveKingIfCheckmate" P4)
+                            })
+                        )
+                    )
+                    (move Pass
+                        (then
+                            (and {
+                                ("RemoveKingIfCheckmate" P1)
+                                ("RemoveKingIfCheckmate" P2)
+                                ("RemoveKingIfCheckmate" P3)
+                                ("RemoveKingIfCheckmate" P4)
+                            })
+                        )
+                    )
+                )
+                (if 
+                    ("DetectNonMoverInCheck")
                     (move Pass)
-                )
-                (do 
-                    (or {
-                        ("PlaceUnrestrictedPiece" Mover) 
-                        ("PlacePawn" Mover)
-                        ("PlaceLance" Mover)
-                        ("PlaceKnight" Mover) 
-                        (forEach Piece) 
-                    })
-                    ifAfterwards:(not ("IsInCheck" "King" Mover))
-                )
-                (then
-                    (and {
-                        ("RemoveKingIfCheckmate" P1)
-                        ("RemoveKingIfCheckmate" P2)
-                        ("RemoveKingIfCheckmate" P3)
-                        ("RemoveKingIfCheckmate" P4)
-                    })
+                    (do 
+                        (or {
+                            ("PlaceUnrestrictedPiece" Mover) 
+                            ("PlacePawn" Mover)
+                            ("PlaceLance" Mover)
+                            ("PlaceKnight" Mover) 
+                            (forEach Piece) 
+                        })
+                        ifAfterwards:(not ("IsInCheck" "King" Mover))
+                    )
+                    (then
+                        (and {
+                            ("RemoveKingIfCheckmate" P1)
+                            ("RemoveKingIfCheckmate" P2)
+                            ("RemoveKingIfCheckmate" P3)
+                            ("RemoveKingIfCheckmate" P4)
+                        })
+                    )
                 )
             )
         )
@@ -556,21 +623,23 @@
     
     (info
         {
-        (description "Yonin Seireigi (四人精霊棋 <i>yonin seireigi</i>, four person spirit's game) is a 4-player version of Seireigi, a variant of Shogi with has promotable Gold Generals, as well as more varied and animalistic promotions.
-        ")
+        (description "Yonin Seireigi (四人精霊棋 <i>yonin seireigi</i>, four person spirit's game) is a 4-player version of Seireigi, a variant of Shogi with has promotable Gold Generals, as well as more varied and animalistic promotions.")
         (rules "All rules are the same as in standard Shogi, except as follows.
-            ● Lances promote to Free Tiger, which slides sideways, steps vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
-            ● Knights promote to Heavenly Horse, which moves one square in any sideways or forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
-            ● Silver Generals promote to Venomous Wolf, which moves one square orthogonally or forward, or slides straight forward.
-            ● Gold Generals promote to Great Elephant, which moves one square in any direction except straight backward, or slides diagonally forward.
+            ● The initial setup and equipment are different (Game -> Restart (Ctrl-R) to see on board)
+            ● The board may be either a traditional uncheckered Shogi board, or a checkered board with a dark square at each player's left-hand side.
+            ● Lances promote to Free Tiger, which slides sideways, steps one square vertically, or jumps to any square that is two squares to either side in an adjacent rank (row).
+            ● Knights promote to Heavenly Horse, which steps one square in any diagonal or forward direction, jumps to the second square in any forward direction, or jumps to either square that is two squares behind in an adjacent file (column).
+            ● Silver Generals promote to Running Wolf, which steps one square sideways or diagonally forward, or slides vertically.
+            ● Gold Generals promote to Great Elephant, which steps one square diagonally backward or orthogonally sideways or forward, or slides diagonally forward.
             ● After deciding who goes first, play continues clockwise.
             ● Ranks (rows) and files (columns) are defined relative to the direction of the moving player's pieces.
-            ● Perpetual check is allowed.
+            ● If a King is placed in check, the checked player immediately takes the next turn in defense, and play continues from there. If two or three Kings are placed in check simultaneously, the first player in the clockwise direction to defend takes the next turn.
+            ● Checkmate is an immediate loss.
             ● Stalemate results in a loss of turn.
             ● Once a player has lost for any reason, their King is removed and the pieces in their hand are reappropriated to the mating player, but all their other pieces remain on the board as neutral obstacles. The mating player is the player making the move that results in mate; for losses not resulting from mate, this is the player who moved last. Pieces that are reappropriated to the mating player must be dropped in the original direction of the mating player. Neutral pieces cannot move until they are captured, but will still give check.
         ● In over-the-board play, the rules for impasse are as follows. The minimum number of points needed to not lose during an impasse is 21 for the Compact Setup and 41 for the Complete setup. Pieces are scored as in Shogi (5 per Rook/Bishop, 1 for all other pieces besides Kings). Players that score below the minimum lose unless all players score below the minimum, in which case the first to score above the minimum wins. If multiple players score above the minimum, the game ends in a draw for said players, and any players below the minimum lose.")
         (id "4095")
-        (version "1.3.13")
+        (version "1.3.14")
         (classification "board/war/replacement/checkmate/shogi")
         (author "A. M. DeWitt")
         (credit "A. M. DeWitt")
@@ -583,18 +652,17 @@
         (player Colour P2 (colour White))
         (player Colour P3 (colour White))
         (player Colour P4 (colour White))
+        (piece Families {"Defined" "Study"})
         (board Style Shogi)
-        (piece Style ExtendedShogi)
-        (piece Rotate P2 degrees:90)
+        (piece Rotate P2 degrees:270)
         (piece Rotate P3 degrees:180)
-        (piece Rotate P4 degrees:270)
+        (piece Rotate P4 degrees:90)
         (piece Colour "Tokin" strokeColour:(colour Red))
-        (piece Colour "FreeTiger" strokeColour:(colour Red))
-        (piece Colour "HeavenlyHorse" strokeColour:(colour Red))
-        (piece Colour "RunningWolf" strokeColour:(colour Red))
-        (piece Colour "GreatElephant" strokeColour:(colour Red))
-        (piece Colour "DragonHorse" strokeColour:(colour Red))
-        (piece Colour "DragonKing" strokeColour:(colour Red))
+        (piece Colour "Narigin" strokeColour:(colour Red))
+        (piece Colour "Ryuo" strokeColour:(colour Red))
+        (piece Colour "Ryuma" strokeColour:(colour Red))
+        (piece Colour "Narikei" strokeColour:(colour Red))
+        (piece Colour "Narikyo" strokeColour:(colour Red))
     })
     
 )

@@ -1,0 +1,61 @@
+(define "ConnectedEdges"
+    (or (is Connected Orthogonal Mover) (is Connected Diagonal Mover))
+)
+
+//-----------------------------------------------
+// Main routine
+(game "Weave"
+    (players 2)
+    (equipment {
+        (board (square <Board:size>) use:Vertex)
+        (piece "Ball" Each)
+        (hand Each)
+        (regions P1 {(sites Left) (sites Right)})
+        (regions P2 {(sites Top) (sites Bottom)})
+    })
+    (rules
+        (play (move Add (to (sites Empty))))
+        (end (if "ConnectedEdges" (result Mover Win)))
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(option "Board Size" <Board> args:{ <size> }
+    {
+    (item "4" <4> "The game is played on a 4x4 board.")
+    (item "6" <6> "The game is played on a 6x6 board.")
+    (item "8" <8> "The game is played on a 8x8 board.")
+    (item "10" <10> "The game is played on a 10x10 board.")*
+})
+
+//------------------------------------------------------------------------------
+
+(metadata
+    
+    (info
+        {
+        (description "This game is played on a 10x10 board.")
+        (rules "GROUP - A diagonal (orthogonal) group is a set of stones of the same color connected by diagonal (orthogonal) adjacency.
+            EDGES - The top and bottom rows are the edges of Black, and the left and right column are the edges of White.
+            TURN - On each turn, each player drops a friendly stone on an empty cell:
+        GOAL - Wins the player that connects his edges with an orthogonal or a diagonal group of friendly stones.")
+        (id "4224")
+        (source "<a href=\"http://www.di.fc.ul.pt/~jpn/gv/weave.htm\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />The world of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/connection")
+        (author "Walter Joris")
+        (credit "Clémentine Sacré")
+        (date "2002")
+        }
+    )
+    
+    (graphics {
+        (show Edges Diagonal (colour Hidden))
+        (board Colour OuterEdges (colour Black))
+        (board Colour InnerEdges (colour Black))
+        (board Colour OuterVertices (colour Hidden))
+        (board Colour InnerVertices (colour Hidden))
+        (show Symbol "square" (sites Corners) fillColour:(colour Black) edgeColour:(colour Black) scale:0.3)
+    })
+)

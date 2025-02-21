@@ -1,0 +1,175 @@
+(define "PlatformContainsLessThanTwo"
+    (and {
+        (< 
+            (count Pieces in:
+                (intersection 
+                    (union {(sites Direction from:(to) N distance:1) (sites Direction from:(to) W distance:1) (sites Direction from:(to) NW distance:1)})
+                    (sites Occupied by:Mover)
+                )
+            )
+            2
+        )
+        (< 
+            (count Pieces in:
+                (intersection 
+                    (union {(sites Direction from:(to) N distance:1) (sites Direction from:(to) E distance:1) (sites Direction from:(to) NE distance:1)})
+                    (sites Occupied by:Mover)
+                )
+            )
+            2
+        )
+        (< 
+            (count Pieces in:
+                (intersection 
+                    (union {(sites Direction from:(to) S distance:1) (sites Direction from:(to) W distance:1) (sites Direction from:(to) SW distance:1)})
+                    (sites Occupied by:Mover)
+                )
+            )
+            2
+        )
+        (< 
+            (count Pieces in:
+                (intersection 
+                    (union {(sites Direction from:(to) S distance:1) (sites Direction from:(to) E distance:1) (sites Direction from:(to) SE distance:1)})
+                    (sites Occupied by:Mover)
+                )
+            )
+            2
+        )
+    })
+)
+
+(define "PlatformContainsLessThanTwoNeutral"
+    (and {
+        (< 
+            (count Pieces in:
+                (intersection 
+                    (union {(sites Direction from:(to) N distance:1) (sites Direction from:(to) W distance:1) (sites Direction from:(to) NW distance:1)})
+                    (sites Occupied by:Neutral)
+                )
+            )
+            2
+        )
+        (< 
+            (count Pieces in:
+                (intersection 
+                    (union {(sites Direction from:(to) N distance:1) (sites Direction from:(to) E distance:1) (sites Direction from:(to) NE distance:1)})
+                    (sites Occupied by:Neutral)
+                )
+            )
+            2
+        )
+        (< 
+            (count Pieces in:
+                (intersection 
+                    (union {(sites Direction from:(to) S distance:1) (sites Direction from:(to) W distance:1) (sites Direction from:(to) SW distance:1)})
+                    (sites Occupied by:Neutral)
+                )
+            )
+            2
+        )
+        (< 
+            (count Pieces in:
+                (intersection 
+                    (union {(sites Direction from:(to) S distance:1) (sites Direction from:(to) E distance:1) (sites Direction from:(to) SE distance:1)})
+                    (sites Occupied by:Neutral)
+                )
+            )
+            2
+        )
+    })
+)
+
+//------------------------------------------------------------------------------
+
+(game "Spire" 
+    (players 2) 
+    (equipment { 
+        (board (square 4 pyramidal:True) use:Vertex) 
+        (piece "Ball" Each)
+        (piece "Ball" Neutral)
+        (hand Each)
+        (hand Shared)
+    }) 
+    
+    (rules 
+        (start {
+            (place "Ball" "Hand" count:16)
+            (place "Ball0" 32 count:16)
+        })
+        (play 
+            (or
+                (if
+                    (not (is Prev Mover))
+                    (or
+                        (move 
+                            (from (handSite Mover)) 
+                            (to 
+                                (sites Empty) 
+                                if:(and {(is Flat) "PlatformContainsLessThanTwo" (< (count SitesPlatformBelow who:Mover) 2)})
+                            )
+                        )
+                        (move 
+                            (from (handSite Shared))
+                            (to 
+                                (sites Empty) 
+                                if:(and {(is Flat) "PlatformContainsLessThanTwoNeutral" (< (count SitesPlatformBelow who:Neutral) 2)})
+                            )
+                            (then (moveAgain))
+                        )
+                    )
+                )
+                (if
+                    (is Prev Mover)
+                    (move 
+                        (from (handSite Mover)) 
+                        (to 
+                            (sites Empty) 
+                            if:(and {(is Flat) "PlatformContainsLessThanTwo" (< (count SitesPlatformBelow who:Mover) 2)})
+                        )
+                    )
+                )
+            )
+        )
+        
+        (end {
+            (if (was Pass) 
+                (result Next Win)
+            )
+            (if 
+                (= (count Pieces in:(sites Occupied by:All)) 30)
+                (result All Draw)
+            )
+        })
+        
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Spire is a game that can be played with the Series: Shibumi game system. It uses a complete set with a 4×4 board, white, black, and red balls.")
+        (rules "The board starts empty. Two players, White and Black, take turns placing a ball of their colour or a red ball either on an empty board hole or stacking on a 2×2 platform. If a red ball is placed then the player must play another ball of their own colour in the same turn. No single 2×2 square of ball locations may include more than 2 like-coloured balls. Playing on a platform is only possible if the colour to be played is not used twice in the base. Players must place a ball of their own colour during their turn. If there is no placement available (in the beginning of their turn or after a red ball was played) the current player loses the game immediately.")
+        (id "4298")
+        (source "<a href=\\"http://www.nestorgames.com/rulebooks/SHIBUMI_EN.pdf\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\">SHIBUMI Rulebook</a>")
+        (version "1.3.14")
+        (classification "board/space/connection")
+        (author "Dieter Stein")
+        (publisher "Computational Creativity Group, nestorgames")
+        (credit "Cédric Antoine")
+        (date "2011")
+        }
+    )
+    
+    (graphics {
+        (piece Scale "Ball" 1.0)
+        (board Style Shibumi)
+        (piece Colour Neutral fillColour:(colour Red))
+        (piece Colour P1 fillColour:(colour White))
+        (piece Colour P2 fillColour:(colour Black))
+    })
+    
+)

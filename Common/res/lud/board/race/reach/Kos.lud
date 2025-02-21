@@ -1,0 +1,142 @@
+(define "LevelBetweenGroundAndDestinationPlusTwo"
+    (<= 
+        (- 
+            (size Stack at:(to))
+            (topLevel at:(from)) 
+        )
+        2
+    ) 
+)
+
+(define "EmptyOrNeutralPiece" (= (who at:(to)) 0))
+
+//-------------------------------------------------------------------------
+
+(game "Kos" 
+    (players 2) 
+    (equipment { 
+        (board (square 7)) 
+        (hand Each)
+        // Map between level and each piece to build the building.
+        (map {(pair 0 "SquareLarge0") (pair 1 "TriangleLarge0") (pair 2 "OctagonLarge0") (pair 3 "SquareSmall0") (pair 4 "TriangleSmall0") (pair 5 "OctagonSmall0") (pair 6 "Marker0")})
+        (piece "Pawn3d" Each 
+            (move Step
+                (to 
+                    if:(and 
+                        ("LevelBetweenGroundAndDestinationPlusTwo") 
+                        ("EmptyOrNeutralPiece")
+                    )
+                )
+                (then (moveAgain))
+            )
+        )
+        (piece "SquareLarge" Neutral)
+        (piece "SquareSmall" Neutral)
+        (piece "OctagonSmall" Neutral)
+        (piece "OctagonLarge" Neutral)
+        (piece "TriangleSmall" Neutral)
+        (piece "TriangleLarge" Neutral)
+        (piece "Marker" Neutral)
+    }) 
+    (rules 
+        (start {
+            (place Stack "Pawn3d1" (handSite P1) count:3)
+            (place Stack "Pawn3d2" (handSite P2) count:3)
+        })
+        
+        phases:{
+        (phase "Placement"
+            (play
+                (move 
+                    (from (handSite Mover)) 
+                    (to (sites Empty)) 
+                    (then 
+                        (if 
+                            ("HandOccupied" Mover) 
+                            (moveAgain)
+                        )
+                    )
+                ) 
+            ) 
+            (nextPhase Mover ("HandEmpty" Mover) "Movement")
+        )
+        (phase "Movement" 
+            (play 
+                (if ("SameTurn")
+                    (move Select 
+                        (from
+                            (sites Around 
+                                (last To) 
+                                if:(and 
+                                    (< (size Stack at:(to)) 7) 
+                                    ("EmptyOrNeutralPiece")
+                                )
+                            ) 
+                        )
+                        (then 
+                            (add 
+                                (piece (mapEntry (size Stack at:(last To)))) 
+                                (to (last To)) 
+                                stack:True
+                            )
+                        )
+                    )
+                    (forEach Piece)
+                )
+            )
+        )
+        }
+        
+        (end {
+            (if 
+                (and 
+                    (= 6 (topLevel at:(last To)))
+                    ("IsPieceAt" "Pawn3d" Mover (last To) level:(topLevel at:(last To))) 
+                )
+                (result Mover Win) 
+            )
+            (if (no Moves P1) (result P1 Loss))
+            (if (no Moves P2) (result P2 Loss))
+        })
+    )
+)
+
+//-------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Kos is a variant of Santorini")
+        (rules "The game is played on a 7x7 grid where each turn players build a town by placing building pieces up to seven levels high. To win the game, players must move one of their three workers to the sixth level of the town.
+            
+            Beginning turns :
+            The first player places his three workers on the board, then the second does the same.
+            
+            Normal turns :
+            Each turn, the current player moves one of his three workers in an adjacent position (in horizontal, vertical or diagonal, i.e. king chess move) then he places a building tile adjacent to the moved worker (in a horizontal, vertical or diagonal adjacent position). The level of a position (i.e. a grid square) is the number of tiles.
+            Workers can move onto a position with zero, one, two, three, four, five or six tiles (but not with seven tiles) only if the level of the destination position is less than or equal to the level of departure destination plus two. There can be no more than 7 tiles per position.
+        The primary winning condition is to get one of his workers onto the sixth level (i.e. on a position with six tiles), though players may also win if their opponent is unable to make a move.")
+        (id "4281")
+        (version "1.3.14")
+        (classification "board/race/reach")
+        (author "Matthew Stephenson")
+        (credit "Matthew Stephenson")
+        (date "2024")
+        }
+    )
+    
+    (graphics 
+        {
+        (piece Scale "SquareLarge" 1.0)
+        (piece Scale "TriangleLarge" 0.9)
+        (piece Scale "SquareSmall" 0.7)
+        (piece Scale "OctagonLarge" 0.8)
+        (piece Scale "TriangleSmall" 0.6)
+        (piece Scale "OctagonSmall" 0.5)
+        (piece Scale "Marker" 0.4)
+        (piece Scale "Pawn3d" container:0 0.6)
+        (piece Colour "Marker" fillColour:(colour DarkBlue))
+        (stackType None)
+        }
+    )
+)

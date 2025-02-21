@@ -1,0 +1,266 @@
+//**** Defines used to model the castling Moves. ****
+(define "HasNeverMoved"
+    (= (state at:(mapEntry #1 (mover))) 1) 
+)
+
+(define "PieceHasMoved"
+    (set State at:#1 0) 
+)
+
+(define "RememberPieceHasMoved"
+    (then 
+        (if 
+            (= (state at:(last To)) 1) 
+            ("PieceHasMoved" (last To))
+        ) 
+    ) 
+)
+
+(define "KingNotCheckedAndToEmpty"
+    (and 
+        (is Empty (to)) 
+        (not ("IsInCheck" "King" Mover at:(to)))
+    ) 
+)
+
+(define "DecideToCastle"
+    (move Slide 
+        (from (mapEntry #1 (mover))) 
+        #2 
+        (between 
+            (exact #3) 
+            if:#4
+        ) 
+        (to 
+            if:True
+            (apply ("PieceHasMoved" (from)))
+        )
+        #5
+    )
+)
+
+(define "CastleRook"
+    (slide 
+        (from (mapEntry #1 (mover))) 
+        #2 
+        (between 
+            (exact #3) 
+            if:#4
+        ) 
+        (to 
+            if:True
+            (apply ("PieceHasMoved" (from)))
+        )
+    )
+)
+
+(define "SmallCastling"
+    ("DecideToCastle" "King" E 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookRight" W 2 True)))
+)
+
+(define "BigCastling"
+    ("DecideToCastle" "King" W 2 "KingNotCheckedAndToEmpty" (then ("CastleRook" "RookLeft" E 3 True)))
+)
+
+(define "Castling"
+    (if (and 
+            ("HasNeverMoved" "King")
+            (not ("IsInCheck" "King" Mover)) 
+        )
+        (or
+            (if (and 
+                    ("HasNeverMoved" "RookLeft")
+                    (can Move ("CastleRook" "RookLeft" E 3 (is Empty (to))))
+                )
+                "BigCastling"
+            )
+            (if (and 
+                    ("HasNeverMoved" "RookRight")
+                    (can Move ("CastleRook" "RookRight" W 2 (is Empty (to))))
+                )
+                "SmallCastling"
+            )
+        )
+    )
+)
+
+//**** Defines used to model the extra Pawn moves. ****
+(define "SetEnPassantLocation"
+    (then (set Var (last To)))
+)
+
+(define "InLocationEnPassant"
+    (is In (to) (sites Pending)) 
+)
+
+(define "LastPawnMoved"
+    (var)
+)
+
+(define "EnPassant"
+    (move
+        Step 
+        (directions {FR FL}) 
+        (to if:"InLocationEnPassant") 
+        (then (remove ("LastPawnMoved")))
+    )
+)
+
+(define "InitialPawnMove"
+    (forEach Value min:2 max:3
+        (move
+            Slide 
+            Forward 
+            (between (exact (value)) if:(is Empty (between))
+                (apply (set Pending (between)))
+            ) 
+            (to if:(is Empty (to))) 
+            "SetEnPassantLocation"
+        )	
+    )
+)
+
+(define "WizardWalk"
+    { {F F F R F} {F F F L F} }		
+)
+
+//------------------------------------------------------------------------------
+
+(game "Omega Chess" 
+    ("TwoPlayersNorthSouth") 
+    (equipment { 
+        (board 
+            (remove
+                (square 12)
+                cells:{1..10 133..142 12 23 24 35 36 47 48 59 60 71 72 83 84 95 96 107 108 119 120 131}
+            )
+        ) 
+        
+        ("ChessPawn" "Pawn"
+            (or 
+                "InitialPawnMove"
+                "EnPassant"
+            )
+            (then 
+                (and
+                    ("ReplayInMovingOn" (sites Mover "Promotion"))
+                    (set Counter)
+                )
+            )
+        )
+        ("ChessRook" "Rook" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessKing" "King" (then (set Counter)) ("RememberPieceHasMoved"))
+        ("ChessBishop" "Bishop" (then (set Counter)))
+        ("ChessKnight" "Knight" (then (set Counter)))
+        ("ChessQueen" "Queen" (then (set Counter)))
+        (piece "Wizard" Each
+            (or
+                ("LeapCapture" "WizardWalk")
+                (move
+                    Step 
+                    Diagonal
+                    (to 
+                        if:(not ("IsFriendAt" (to))) 
+                        (apply 
+                            (if ("IsEnemyAt" (to)) 
+                                (remove 
+                                    (to) 
+                                )
+                            )
+                        ) 
+                    ) 
+                )
+            )
+        )
+        (piece "StarOutline" Each
+            (or
+                (move Hop 
+                    (to 
+                        if:(not ("IsFriendAt" (to)))
+                        (apply 
+                            (remove 
+                                (to) 
+                            )
+                        ) 
+                    )
+                    (then (set Counter))
+                )
+                (move
+                    Step 
+                    Orthogonal
+                    (to 
+                        if:(not ("IsFriendAt" (to))) 
+                        (apply 
+                            (if ("IsEnemyAt" (to)) 
+                                (remove 
+                                    (to) 
+                                )
+                            )
+                        ) 
+                    ) 
+                )
+            )
+        )
+        
+        (map "King" {(pair 1 "E1") (pair 2 "E8")})
+        (map "RookLeft" {(pair 1 "C2") (pair 2 "C11")})
+        (map "RookRight" {(pair 1 "J2") (pair 2 "J11")})
+        (regions "Promotion" P1 (sites Top))
+        (regions "Promotion" P2 (sites Bottom))
+    }) 
+    (rules 
+        (start { 
+            (place "Pawn1" (sites Row 2))
+            (place "Pawn2" (sites Row 9))
+            (place "Rook1" {"C2" "J2"} state:1) (place "Knight1" {"D2" "I2"}) (place "Bishop1" {"E2" "H2"}) (place "Queen1" coord:"F2") (place "King1" coord:"G2" state:1) 
+            (place "Rook2" {"C11" "J11"} state:1) (place "Knight2" {"D11" "I11"}) (place "Bishop2" {"E11" "H11"}) (place "Queen2" coord:"G11") (place "King2" coord:"F11" state:1) 
+            (place "Wizard1" {"A1" "L1"}) (place "StarOutline1" {"B2" "K2"})
+            (place "Wizard2" {"A12" "L12"}) (place "StarOutline2" {"B11" "K11"})
+        })
+        
+        (play 
+            (if "SameTurn"
+                (move Promote (last To) (piece {"Queen" "Knight" "Bishop" "Rook"}) Mover)
+                (do 
+                    (or 
+                        (forEach Piece)
+                        ("Castling")
+                    )
+                    ifAfterwards:(not ("IsInCheck" "King" Mover))
+                )
+            )
+        )
+        
+        (end {
+            ("Checkmate" "King")
+            (if (or (no Moves Mover) (= (counter) 99)) (result Mover Draw)) 
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata 
+    
+    (info
+        {
+        (description "Omega Chess is a modern variant of Chess on a bigger board with new piece types.")
+        (rules "Omega Chess is played with the same rules as chess, except for the Pawns and the new pieces types: Wizard and Champion. The Champion, like the Knight, is classified as a leaper. It can move one square orthogonally, forward, backward or to either side. Or the Champion can jump two squares forward or backward or to either side, or jump two squares diagonally in all four directions. The Champion can jump over pieces and it can control up to twelve squares.The Champion cannot move one square diagonally. The Wizard is also classified as a leaper. It can move one square diagonally in all four directions. Or, like an exaggerated Knight move, the Wizard can jump three squares horizontally or vertically and then one square to either side. The Wizard is bound to the color of its starting square. The Wizard can jump over pieces to also control up to twelve squares. The Pawn can only move forward. From its initial position, a Pawn in Omega Chess can move one, two or three squares forward and after that, only one square at a time. A Pawn cannot move one square initially and then two squares afterward. When making an initial double or triple move a Pawn cannot jump over other pieces. While Pawns move directly forward, they can only capture an opposing piece by moving one square forward diagonally. The rest of the rules are the same as Chess.")
+        (id "4288")
+        (source "<a href=\"https://boardgamegeek.com/boardgame/12040/omega-chess\" target=\"_blank\" class=\"style1\" style=\"color: #0000EE\" />BGG</a>")
+        (version "1.3.14")
+        (classification "board/war/replacement/checkmate/chess")
+        (author "Michael Escobar, Daniel Macdonald")
+        (credit "Eric Piette")
+        (date "1992")
+        }
+    )
+    
+    (graphics {
+        (show Check "King")
+        (piece Scale "Pawn" 0.825)
+        (piece Families {"Defined" "Microsoft" "Pragmata" "Symbola"})
+        (board Style Chess)
+    })
+    
+)

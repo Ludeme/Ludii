@@ -30,4 +30,7 @@ public enum SitesIndexType
 
 	/** Sites in a specified layer. */
 	Layer,
+	
+	/** Sites which are supporting other pieces on sites top of them . */
+	Support,
 }

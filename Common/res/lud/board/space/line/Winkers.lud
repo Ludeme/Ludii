@@ -1,0 +1,61 @@
+(game "Winkers"
+    (players 2)
+    (equipment {
+        (board (hex Hexagon 3))
+        (hand Each size:2)
+        (piece "Marker" Each)
+        (piece "MarkerNeutral" Shared)
+    })
+    (rules
+        (start {(place "Marker" "Hand" count:10) (place "MarkerNeutral" (handSite 1 1) count:10) (place "MarkerNeutral" (handSite 2 1) count:10)})
+        (play 
+            (or
+                (move 
+                    (from (handSite Mover 1))
+                    (to (sites Empty))
+                )
+                (move 
+                    (from (handSite Mover 0))
+                    (to 
+                        (difference 
+                            (difference 
+                                (sites Occupied by:Shared) 
+                                (handSite 2 1)
+                            )
+                            (handSite 1 1)
+                        )
+                    )
+                )
+            )
+        )
+        (end {
+            (if (is Line 3 Mover) (result Mover Win))
+            (if ("HandEmpty" Mover) (result Mover Loss))
+        })
+    )
+)
+
+//------------------------------------------------------------------------------
+
+(metadata
+    (info
+        {
+        (description "Winkers is a challenging and strategic game that requires players to carefully place their colored stones on top of neutral stones on a hexagonal board, with the ultimate goal of achieving a line of three stones of their color to win.")
+        (rules "Winkers is a two-player game played on a hexagonal board with hexagonal tiles. Each player begins with 10 stones of their chosen color and an additional 10 neutral stones. On each turn, a player must either place a neutral stone on an empty hexagonal tile, place a stone of their color on top of any empty neutral stone, or pass their turn if they are unable to make a valid move. The objective of the game is to be the first player to achieve a row of three stones of their color, either horizontally, vertically, or diagonally on adjacent hexagonal tiles. If the first player uses all of their stones without achieving a row of three, they automatically lose the game.")
+        (id "4308")
+        (source "<a href=\\"https://www.di.fc.ul.pt/~jpn/gv/winkers.htm\\" target=\\"_blank\\" class=\\"style1\\" style=\\"color: #0000EE\\" />the World of Abstract Games</a>")
+        (version "1.3.14")
+        (classification "board/space/line")
+        (author "Great American Trading Company")
+        (credit "Achille Morenville")
+        (date "1998")
+        }
+    )
+    
+    (graphics {
+        (player Colour P1 (colour DarkRed))
+        (player Colour P2 (colour Black))
+        (player Colour Shared (colour White))
+        (piece Rename Shared "Marker")
+    })
+)
