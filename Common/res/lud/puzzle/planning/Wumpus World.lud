@@ -71,7 +71,7 @@
         )
         (play
             (or
-                (forEach piece)
+                (forEach Piece)
                 (move
                     (from (handSite P1))
                     (to (sites LineOfSight Farthest at:(where "Human" P1) Orthogonal))
