@@ -37,6 +37,7 @@ import agentPrediction.internal.AgentPredictionInternal;
 import agentPrediction.internal.models.LinearRegression;
 import app.DesktopApp;
 import app.PlayerApp;
+import app.boardMaker.StartBoardMaker;
 import app.display.dialogs.AboutDialog;
 import app.display.dialogs.DeveloperDialog;
 import app.display.dialogs.EvaluationDialog;
@@ -241,7 +242,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Board Maker"))
 		{
-			
+			StartBoardMaker.create();
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))
