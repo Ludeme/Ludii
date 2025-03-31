@@ -43,13 +43,53 @@ public class Displayer
 	}
 	
 	/**
-	 * Hides the welcome panel and switch to the main panel
+	 * Switches to the main view with the boardpanel, toolbar and (possibly) pawn list visible
 	 */
 	public void mainView() {
-		boardMakerPane.remove(welcomePanel);
+		if (welcomePanel.visible()) {
+			welcomePanel.visibility(false);
+			boardMakerPane.remove(welcomePanel);
+		}
+		if (previewPanel.visible()) {
+			previewPanel.visibility(false);
+			boardMakerPane.remove(previewPanel);
+		}
+		if (paramPanel.visible()) {
+			paramPanel.visibility(false);
+			boardMakerPane.remove(paramPanel);
+		}
 		
 		boardMakerPane.add(tabbedBar,BorderLayout.NORTH);
+		
 		boardMakerPane.add(boardPanel,BorderLayout.CENTER);
+		boardPanel.visibility(true);
+		
+		if (boardPanel.hasBoard()) {
+			boardMakerPane.add(pawnPanel,BorderLayout.WEST);
+			pawnPanel.visibility(true);
+		}
+		
+		boardMakerPane.revalidate();
+	}
+	
+	/**
+	 * Switches to the creation view with the previewpanel and parampanel visible
+	 */
+	public void creationView() {
+		if (boardPanel.visible()) {
+			boardPanel.visibility(false);
+			boardMakerPane.remove(boardPanel);
+		}
+		if (boardPanel.hasBoard() || pawnPanel.visible()) {
+			pawnPanel.visibility(false);
+			boardMakerPane.remove(pawnPanel);
+		}
+		
+		boardMakerPane.add(paramPanel,BorderLayout.WEST);
+		paramPanel.visibility(true);
+		
+		boardMakerPane.add(previewPanel,BorderLayout.CENTER);
+		previewPanel.visibility(true);
 		
 		boardMakerPane.revalidate();
 	}

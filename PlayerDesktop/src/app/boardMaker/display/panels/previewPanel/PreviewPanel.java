@@ -14,6 +14,8 @@ public class PreviewPanel extends JTabbedPane
 {
 	private Displayer displayer;
 	
+	private boolean visible;
+	
 	public PreviewPanel(Displayer displayer) {
 		this.displayer = displayer;
 		
@@ -21,5 +23,13 @@ public class PreviewPanel extends JTabbedPane
 		placeholder.add(new JLabel("Placeholder"));
 		
 		addTab("Preview", placeholder);
+	}
+	
+	public void visibility(boolean b) {
+		visible = b;
+	}
+	
+	public boolean visible() {
+		return visible;
 	}
 }

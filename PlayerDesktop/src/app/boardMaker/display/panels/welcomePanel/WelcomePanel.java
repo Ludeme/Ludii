@@ -14,6 +14,8 @@ public class WelcomePanel extends JPanel
 {
 	private Displayer displayer;
 	
+	private boolean visible;
+	
 	public WelcomePanel(Displayer displayer) {
 		this.displayer = displayer;
 		
@@ -37,5 +39,14 @@ public class WelcomePanel extends JPanel
 		add(Box.createVerticalGlue());
 		
 		setOpaque(true);
+	}
+	
+	public void visibility(boolean b) {
+		visible = b;
+	}
+	
+	
+	public boolean visible() {
+		return visible;
 	}
 }

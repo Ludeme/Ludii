@@ -14,6 +14,9 @@ public class BoardPanel extends JTabbedPane
 {
 	private Displayer displayer;
 	
+	private boolean visible;
+	private boolean hasBoard = false;
+	
 	public BoardPanel(Displayer displayer) {
 		this.displayer = displayer;
 		
@@ -21,5 +24,21 @@ public class BoardPanel extends JTabbedPane
 		placeholder.add(new JLabel("Placeholder"));
 		
 		addTab("Board",placeholder);
+	}
+	
+	public void visibility(boolean b) {
+		visible = b;
+	}
+	
+	public boolean visible() {
+		return visible;
+	}
+	
+	public void setHasBoard(boolean b) {
+		hasBoard = b;
+	}
+	
+	public boolean hasBoard() {
+		return hasBoard;
 	}
 }

@@ -15,6 +15,8 @@ public class PawnPanel extends JTabbedPane
 {
 	private Displayer displayer;
 	
+	private boolean visible;
+	
 	public PawnPanel(Displayer displayer) {
 		this.displayer = displayer;
 		
@@ -22,5 +24,13 @@ public class PawnPanel extends JTabbedPane
 		placeholder.add(new JLabel("Placeholder"));
 		
 		addTab("Pawns", placeholder);
+	}
+	
+	public void visibility(boolean b) {
+		visible = b;
+	}
+	
+	public boolean visible() {
+		return visible;
 	}
 }
