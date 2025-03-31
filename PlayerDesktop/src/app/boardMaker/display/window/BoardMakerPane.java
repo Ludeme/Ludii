@@ -20,8 +20,6 @@ public class BoardMakerPane extends JPanel
 	
 	private Displayer displayer;
 	
-	
-	
 	//-----------------------------------------------------------
 	
 	public BoardMakerPane(Displayer displayer) {

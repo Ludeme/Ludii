@@ -70,6 +70,7 @@ public class Displayer
 		}
 		
 		boardMakerPane.revalidate();
+		boardMakerPane.repaint();
 	}
 	
 	/**
@@ -92,6 +93,7 @@ public class Displayer
 		previewPanel.visibility(true);
 		
 		boardMakerPane.revalidate();
+		boardMakerPane.repaint();
 	}
 	
 	//----------------------------------------------------------
