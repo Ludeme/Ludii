@@ -18,10 +18,15 @@ import app.boardMaker.handlers.Displayer;
 public class BoardMakerTabbedBar extends JTabbedPane
 {
 	private Displayer displayer;
+	
 	private JToolBar toolbar;
+	
+	private final BoardButtonListener bl;
 	
 	public BoardMakerTabbedBar(Displayer displayer) {
 		this.displayer = displayer;
+		
+		bl = new BoardButtonListener(displayer);
 		
 		initToolbar();
 		makeGameToolbar();
@@ -54,17 +59,15 @@ public class BoardMakerTabbedBar extends JTabbedPane
 	 * Creates the board tab toolbar
 	 */
 	private void makeBoardToolbar() {
-		JButton button = new JButton("Create board placeholder");
-		button.addActionListener(new ActionListener()
-		{
-			
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				displayer.creationView();
-			}
-		});
-		toolbar.add(button);
+		JButton button;
+		
+		for (BoardTiling tiling : BoardTiling.values()) {
+			button = new JButton(tiling.name());
+			button.setToolTipText((String) displayer.getStrings().get(tiling.name()));
+			button.setActionCommand(tiling.name());
+			button.addActionListener(bl);
+			toolbar.add(button);
+		}
 	}
 	
 	/**

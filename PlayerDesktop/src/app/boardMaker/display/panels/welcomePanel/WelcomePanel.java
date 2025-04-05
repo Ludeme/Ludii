@@ -32,6 +32,7 @@ public class WelcomePanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				displayer.mainView();
+				displayer.setSizes();
 			}
 		});
 		add(button);

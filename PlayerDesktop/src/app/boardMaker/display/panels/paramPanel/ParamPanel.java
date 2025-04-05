@@ -1,12 +1,13 @@
 package app.boardMaker.display.panels.paramPanel;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
 
-import javax.swing.JButton;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ScrollPaneConstants;
 
 import app.boardMaker.handlers.Displayer;
 
@@ -14,32 +15,39 @@ import app.boardMaker.handlers.Displayer;
  * A class containing the parameters when creating boards
  */
 
-public class ParamPanel extends JTabbedPane
+public class ParamPanel extends JPanel
 {
 	private Displayer displayer;
 	
 	private boolean visible;
 	
+	private JTabbedPane tab;
+	private JScrollPane scroll;
+	private JPanel tiling;
+	
 	public ParamPanel(Displayer displayer) {
+		super();
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
 		this.displayer = displayer;
 		
-		JPanel placeholder = new JPanel();
-		placeholder.add(new JLabel("Placeholder"));
+		tiling = new JPanel();
+		tiling.add(new JLabel("Placeholder"));
 		
-		JButton button = new JButton("Confirm placeholder");
-		button.addActionListener(new ActionListener()
-		{
-			
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				displayer.getBoardPanel().setHasBoard(true);
-				displayer.mainView();		
-			}
-		});
-		placeholder.add(button);
+		scroll = new JScrollPane(tiling,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		addTab("Board parameters", placeholder);
+		tab = new JTabbedPane();
+		tab.addTab("Board parameters", scroll);
+		
+		add(tab);
+	}
+	
+	public void setPanel(JPanel p) {
+		tiling = p;
+		scroll.setViewportView(p);
+		
+		revalidate();
+		repaint();
 	}
 	
 	public void visibility(boolean b) {

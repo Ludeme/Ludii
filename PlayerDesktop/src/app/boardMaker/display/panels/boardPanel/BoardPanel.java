@@ -1,5 +1,7 @@
 package app.boardMaker.display.panels.boardPanel;
 
+import java.awt.Dimension;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -19,7 +21,7 @@ public class BoardPanel extends JTabbedPane
 	
 	public BoardPanel(Displayer displayer) {
 		this.displayer = displayer;
-		
+				
 		JPanel placeholder = new JPanel();
 		placeholder.add(new JLabel("Placeholder"));
 		

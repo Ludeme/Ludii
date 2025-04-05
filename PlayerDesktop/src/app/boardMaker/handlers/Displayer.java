@@ -1,6 +1,13 @@
 package app.boardMaker.handlers;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
@@ -34,7 +41,19 @@ public class Displayer
 	/** Welcome panel */
 	private WelcomePanel welcomePanel;
 	
+	/** JSON containing strings used for labels, buttons, ... that are not in any enums */
+	private JSONObject strings;
+	
 	public Displayer() {
+		try
+		{
+			strings = new JSONObject(Files.readString(Path.of("./src/app/boardMaker/res/strings.json")));
+		}
+		catch (JSONException | IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void createWindow() {
@@ -86,14 +105,39 @@ public class Displayer
 			boardMakerPane.remove(pawnPanel);
 		}
 		
-		boardMakerPane.add(paramPanel,BorderLayout.WEST);
-		paramPanel.visibility(true);
+		if (!paramPanel.visible()) {
+			boardMakerPane.add(paramPanel,BorderLayout.WEST);
+			paramPanel.visibility(true);
+		}
 		
-		boardMakerPane.add(previewPanel,BorderLayout.CENTER);
-		previewPanel.visibility(true);
+		if (!previewPanel.visible()) {
+			boardMakerPane.add(previewPanel,BorderLayout.CENTER);
+			previewPanel.visibility(true);
+		}
 		
 		boardMakerPane.revalidate();
 		boardMakerPane.repaint();
+	}
+	
+	/**
+	 * Sets the different sizes of the panels
+	 */
+	public void setSizes() {
+		Dimension size = new Dimension(boardMakerPane.getWidth() / 2, boardMakerPane.getHeight());
+		
+		boardPanel.setPreferredSize(size);
+		boardPanel.setMinimumSize(size);
+		
+		previewPanel.setPreferredSize(size);
+		previewPanel.setMinimumSize(size);
+		
+		size = new Dimension(boardMakerPane.getWidth() / 4, boardMakerPane.getHeight());
+		
+		paramPanel.setPreferredSize(size);
+		paramPanel.setMaximumSize(size);
+		
+		pawnPanel.setPreferredSize(size);
+		pawnPanel.setMaximumSize(size);
 	}
 	
 	//----------------------------------------------------------
@@ -128,6 +172,10 @@ public class Displayer
 	
 	public WelcomePanel getWelcomePanel() {
 		return welcomePanel;
+	}
+	
+	public JSONObject getStrings() {
+		return strings;
 	}
 	
 	//----------------------------------------------------------

@@ -1,5 +1,7 @@
 package app.boardMaker.display.panels.previewPanel;
 
+import java.awt.Dimension;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -18,7 +20,7 @@ public class PreviewPanel extends JTabbedPane
 	
 	public PreviewPanel(Displayer displayer) {
 		this.displayer = displayer;
-		
+				
 		JPanel placeholder = new JPanel();
 		placeholder.add(new JLabel("Placeholder"));
 		
