@@ -11,6 +11,7 @@ import app.boardMaker.display.panels.previewPanel.PreviewPanel;
 import app.boardMaker.display.panels.welcomePanel.WelcomePanel;
 import app.boardMaker.display.tabbedBar.BoardMakerTabbedBar;
 import app.boardMaker.handlers.Displayer;
+import app.boardMaker.handlers.Maker;
 
 /**
  * Main panel of the board maker
@@ -19,37 +20,19 @@ public class BoardMakerPane extends JPanel
 {
 	
 	private Displayer displayer;
+	private Maker maker;
 	
 	//-----------------------------------------------------------
 	
-	public BoardMakerPane(Displayer displayer) {
+	public BoardMakerPane(Maker maker) {
 		super(new BorderLayout());
 		
-		this.displayer = displayer;
+		this.displayer = maker.getDisplayer();
+		this.maker = maker;
 		
 		displayer.setBoardMakerPane(this);
 		
-		// Creation of all panels appearing on the main panel
-		BoardMakerTabbedBar tabbedBar = new BoardMakerTabbedBar(displayer);
-		displayer.setTabbedBar(tabbedBar);
-		
-		BoardPanel boardPanel = new BoardPanel(displayer);
-		displayer.setBoardPanel(boardPanel);
-		boardPanel.visibility(false);
-		
-		ParamPanel paramPanel = new ParamPanel(displayer);
-		displayer.setParamPanel(paramPanel);
-		paramPanel.visibility(false);
-		
-		PawnPanel pawnPanel = new PawnPanel(displayer);
-		displayer.setPawnPanel(pawnPanel);
-		pawnPanel.visibility(false);
-		
-		PreviewPanel previewPanel = new PreviewPanel(displayer);
-		displayer.setPreviewPanel(previewPanel);
-		previewPanel.visibility(false);
-		
-		WelcomePanel welcomePanel = new WelcomePanel(displayer);
+		WelcomePanel welcomePanel = new WelcomePanel(maker);
 		displayer.setWelcomePanel(welcomePanel);
 		welcomePanel.visibility(true);
 
@@ -57,5 +40,26 @@ public class BoardMakerPane extends JPanel
 		add(welcomePanel,BorderLayout.CENTER);
 		
 		setOpaque(true);
+	}
+	
+	public void createPanels() {
+		BoardMakerTabbedBar tabbedBar = new BoardMakerTabbedBar(maker);
+		displayer.setTabbedBar(tabbedBar);
+				
+		BoardPanel boardPanel = new BoardPanel(displayer);
+		displayer.setBoardPanel(boardPanel);
+		boardPanel.visibility(false);
+				
+		ParamPanel paramPanel = new ParamPanel(displayer);
+		displayer.setParamPanel(paramPanel);
+		paramPanel.visibility(false);
+				
+		PawnPanel pawnPanel = new PawnPanel(displayer);
+		displayer.setPawnPanel(pawnPanel);
+		pawnPanel.visibility(false);
+				
+		PreviewPanel previewPanel = new PreviewPanel(displayer);
+		displayer.setPreviewPanel(previewPanel);
+		previewPanel.visibility(false);
 	}
 }

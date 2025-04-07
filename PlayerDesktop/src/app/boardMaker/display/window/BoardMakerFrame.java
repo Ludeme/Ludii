@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import app.boardMaker.handlers.Displayer;
+import app.boardMaker.handlers.Maker;
 import app.boardMaker.menu.BoardMakerMenu;
 import app.display.dialogs.visual_editor.view.designPalettes.DesignPalette;
 import app.util.SettingsDesktop;
@@ -22,9 +23,11 @@ public class BoardMakerFrame extends JFrame
 	private final ImageIcon icon = DesignPalette.LUDII_ICON;
 	
 	private Displayer displayer;
+	private Maker maker;
 	
-	public BoardMakerFrame(Displayer displayer) {
-		this.displayer = displayer;
+	public BoardMakerFrame(Maker maker) {
+		this.displayer = maker.getDisplayer();
+		this.maker = maker;
 		
 		setTitle(title);
 		setIconImage(icon.getImage());
@@ -33,7 +36,7 @@ public class BoardMakerFrame extends JFrame
 		
 		BoardMakerMenu menu = new BoardMakerMenu();
 		setJMenuBar(menu);
-		setContentPane(new BoardMakerPane(displayer));
+		setContentPane(new BoardMakerPane(maker));
 		
 		pack();
 		setVisible(true);

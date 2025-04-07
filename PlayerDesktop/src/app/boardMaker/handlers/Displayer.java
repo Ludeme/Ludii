@@ -24,6 +24,8 @@ import app.boardMaker.display.window.BoardMakerPane;
 
 public class Displayer
 {
+	private Maker maker;
+	
 	/** Main frame */
 	private BoardMakerFrame frame;
 	/** Parent pane of the board maker */
@@ -44,9 +46,10 @@ public class Displayer
 	/** JSON containing strings used for labels, buttons, ... that are not in any enums */
 	private JSONObject strings;
 	
-	public Displayer() {
+	public Displayer(Maker maker) {
 		try
 		{
+			this.maker = maker;
 			strings = new JSONObject(Files.readString(Path.of("./src/app/boardMaker/res/strings.json")));
 		}
 		catch (JSONException | IOException e)
@@ -57,7 +60,7 @@ public class Displayer
 	}
 	
 	public void createWindow() {
-		frame = new BoardMakerFrame(this);
+		frame = new BoardMakerFrame(maker);
 		frame.requestFocus();
 	}
 	

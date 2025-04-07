@@ -1,8 +1,6 @@
 package app.boardMaker.display.panels.paramPanel.tilings;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -10,24 +8,26 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.LookAndFeel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.UIManager;
+import javax.swing.plaf.OptionPaneUI;
 
 import app.boardMaker.display.buttons.CancelButton;
 import app.boardMaker.display.buttons.CreateButton;
 import app.boardMaker.display.panels.polygonView.PolygonView;
 import app.boardMaker.handlers.Displayer;
 import game.functions.graph.generators.basis.square.DiagonalsType;
-import game.functions.graph.generators.basis.square.Square;
 import game.functions.graph.generators.basis.square.SquareShapeType;
 
 public class SquarePanel extends JPanel implements ItemListener
@@ -187,6 +187,12 @@ public class SquarePanel extends JPanel implements ItemListener
 		diagBoxCustom = new JComboBox<DiagonalsType>(DiagonalsType.values());
 		diagBoxCustom.setSelectedItem(DiagonalsType.Implied);
 		p.add(diagBoxCustom);
+		card.add(p);
+		
+		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		label = new JLabel((String)displayer.getStrings().get("htuPoly"));
+		label.setToolTipText((String)displayer.getStrings().get("polyExplain"));
+		p.add(label);
 		card.add(p);
 		
 		cards.add(card,"custom");
