@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,13 +27,22 @@ import javax.swing.plaf.OptionPaneUI;
 import app.boardMaker.display.buttons.CancelButton;
 import app.boardMaker.display.buttons.CreateButton;
 import app.boardMaker.display.panels.polygonView.PolygonView;
+import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
+import app.boardMaker.utils.Coordinates;
+import game.equipment.container.board.Board;
+import game.functions.dim.DimConstant;
+import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.square.DiagonalsType;
+import game.functions.graph.generators.basis.square.Square;
 import game.functions.graph.generators.basis.square.SquareShapeType;
+import game.util.graph.Poly;
 
-public class SquarePanel extends JPanel implements ItemListener
+public class SquarePanel extends OptionPanel implements ItemListener
 {
 	private Displayer displayer;
+	private PolygonView pv;
+	private PreviewListener pl;
 	
 	private JPanel cards;
 	
@@ -44,12 +54,15 @@ public class SquarePanel extends JPanel implements ItemListener
 	
 	private boolean pyramidal = false;
 	
+	private Board board;
+	
 	public SquarePanel(Displayer displayer) {
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
 		
 		this.displayer = displayer;
+		pl = new PreviewListener(this,displayer.getPreviewPanel());
 		
 		add(Box.createVerticalStrut(5));
 		
@@ -62,6 +75,7 @@ public class SquarePanel extends JPanel implements ItemListener
 		cBox.removeItem(SquareShapeType.NoShape);
 		cBox.setSelectedItem(SquareShapeType.Square);
 		cBox.addItemListener(this);
+		cBox.addActionListener(pl);
 		p.add(cBox);
 		add(p);
 		
@@ -81,7 +95,9 @@ public class SquarePanel extends JPanel implements ItemListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				displayer.mainView();		
+				createBoard();
+				displayer.getBoardPanel().setBoard(board);
+				displayer.mainView();	
 			}
 		}));
 		buttonPanel.add(new CancelButton(new ActionListener()
@@ -97,6 +113,9 @@ public class SquarePanel extends JPanel implements ItemListener
 		add(buttonPanel);
 		
 		add(Box.createVerticalGlue());
+		
+		createBoard();
+		displayer.getPreviewPanel().setBoard(board);
 	}
 	
 	public void makeDimCard() {
@@ -109,6 +128,7 @@ public class SquarePanel extends JPanel implements ItemListener
 		p.add(label);
 		
 		dimSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		dimSpinner.addChangeListener(pl);
 		p.add(dimSpinner);
 		card.add(p);
 		
@@ -117,6 +137,7 @@ public class SquarePanel extends JPanel implements ItemListener
 		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel choicePanel = new JPanel(new CardLayout());
 		choice = new JComboBox<String>(new String[] {"Diagonal type: ", "Pyramide stack: "});
+		choice.addActionListener(pl);
 		choice.addItemListener(new ItemListener()
 		{
 			
@@ -136,12 +157,14 @@ public class SquarePanel extends JPanel implements ItemListener
 		JPanel diagPanel = new JPanel();
 		diagBox = new JComboBox<DiagonalsType>(DiagonalsType.values());
 		diagBox.setSelectedItem(DiagonalsType.Implied);
+		diagBox.addActionListener(pl);
 		diagPanel.add(diagBox);
 		choicePanel.add(diagPanel,"diag");
 		
 		JPanel pyramPanel = new JPanel();
 		ButtonGroup group = new ButtonGroup();
 		JRadioButton button = new JRadioButton((String)displayer.getStrings().get("on"));
+		button.addActionListener(pl);
 		button.addActionListener(new ActionListener()
 		{
 			
@@ -155,6 +178,7 @@ public class SquarePanel extends JPanel implements ItemListener
 		pyramPanel.add(button);
 		button = new JRadioButton((String)displayer.getStrings().get("off"));
 		button.setSelected(true);
+		button.addActionListener(pl);
 		button.addActionListener(new ActionListener()
 		{
 			
@@ -186,6 +210,7 @@ public class SquarePanel extends JPanel implements ItemListener
 		p.add(label);
 		diagBoxCustom = new JComboBox<DiagonalsType>(DiagonalsType.values());
 		diagBoxCustom.setSelectedItem(DiagonalsType.Implied);
+		diagBoxCustom.addActionListener(pl);
 		p.add(diagBoxCustom);
 		card.add(p);
 		
@@ -197,6 +222,21 @@ public class SquarePanel extends JPanel implements ItemListener
 		
 		cards.add(card,"custom");
 	}
+	
+	@Override
+	public void createBoard() {
+		SquareShapeType shapeType = (SquareShapeType) cBox.getSelectedItem();
+		if (!shapeType.equals(SquareShapeType.Custom)) {
+			DimConstant dim = new DimConstant((int)dimSpinner.getValue());
+			DiagonalsType diagType = (DiagonalsType) diagBox.getSelectedItem();
+			GraphFunction graph = Square.construct(shapeType, dim, choice.getSelectedIndex() == 0 ? diagType : null, choice.getSelectedIndex() == 0 ? null : pyramidal);
+			board = new Board(graph, null, null, null, null, null, null);
+		} else {
+			Poly poly = pv.makePoly();
+			GraphFunction graph = Square.construct(poly, null, (DiagonalsType) diagBox.getSelectedItem());
+			board = new Board(graph, null, null, null, null, null, null);
+		}
+	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e)
@@ -205,13 +245,21 @@ public class SquarePanel extends JPanel implements ItemListener
 		if (((SquareShapeType)cBox.getSelectedItem()).equals(SquareShapeType.Custom)) {
 			cl.show(cards, "custom");
 			if (displayer.getPreviewPanel().getTabCount() == 1) {
-				displayer.getPreviewPanel().addTab("Polygon", new PolygonView(displayer));
+				pv = new PolygonView(displayer,this);
+				displayer.getPreviewPanel().addTab("Polygon", pv);
 			}
 		} else {
 			cl.show(cards,"dim");
 			if (displayer.getPreviewPanel().getTabCount() > 1) {
 				displayer.getPreviewPanel().removeTabAt(1);
+				pv = null;
 			}
 		}
+	}
+
+	@Override
+	public Board board()
+	{
+		return board;
 	}
 }

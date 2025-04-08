@@ -1,12 +1,18 @@
 package app.boardMaker.display.panels.boardPanel;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import app.boardMaker.handlers.Displayer;
+import app.boardMaker.handlers.Maker;
+import game.equipment.container.board.Board;
 
 /**
  * Class representing the panel where the board is displayed
@@ -15,17 +21,22 @@ import app.boardMaker.handlers.Displayer;
 public class BoardPanel extends JTabbedPane
 {
 	private Displayer displayer;
+	private Maker maker;
 	
 	private boolean visible;
-	private boolean hasBoard = false;
 	
-	public BoardPanel(Displayer displayer) {
-		this.displayer = displayer;
-				
-		JPanel placeholder = new JPanel();
-		placeholder.add(new JLabel("Placeholder"));
+	private List<BoardDisplay> displays;
+	
+	public BoardPanel(Maker maker) {
+		this.displayer = maker.getDisplayer();
+		this.maker = maker;
 		
-		addTab("Board",placeholder);
+		displayer.setBoardPanel(this);
+		
+		displays = new ArrayList<BoardDisplay>();
+		displays.add(new BoardDisplay(maker));
+		
+		addTab("Board",displays.getFirst());
 	}
 	
 	public void visibility(boolean b) {
@@ -36,11 +47,17 @@ public class BoardPanel extends JTabbedPane
 		return visible;
 	}
 	
-	public void setHasBoard(boolean b) {
-		hasBoard = b;
+	public boolean hasBoard() {
+		return displays.getFirst().hasBoard();
 	}
 	
-	public boolean hasBoard() {
-		return hasBoard;
+	public void setBoard(Board board) {
+		if (!displays.get(getSelectedIndex()).hasBoard()) {
+			displays.get(getSelectedIndex()).setBoard(board);
+		} else {
+			displays.add(new BoardDisplay(maker));
+			displays.getLast().setBoard(board);
+			addTab("board"+getTabCount(), displays.getLast());
+		}
 	}
 }

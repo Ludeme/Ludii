@@ -44,22 +44,18 @@ public class BoardMakerPane extends JPanel
 	
 	public void createPanels() {
 		BoardMakerTabbedBar tabbedBar = new BoardMakerTabbedBar(maker);
-		displayer.setTabbedBar(tabbedBar);
+		tabbedBar.visibility(false);
 				
-		BoardPanel boardPanel = new BoardPanel(displayer);
-		displayer.setBoardPanel(boardPanel);
+		BoardPanel boardPanel = new BoardPanel(maker);
 		boardPanel.visibility(false);
 				
 		ParamPanel paramPanel = new ParamPanel(displayer);
-		displayer.setParamPanel(paramPanel);
 		paramPanel.visibility(false);
 				
 		PawnPanel pawnPanel = new PawnPanel(displayer);
-		displayer.setPawnPanel(pawnPanel);
 		pawnPanel.visibility(false);
 				
-		PreviewPanel previewPanel = new PreviewPanel(displayer);
-		displayer.setPreviewPanel(previewPanel);
+		PreviewPanel previewPanel = new PreviewPanel(maker);
 		previewPanel.visibility(false);
 	}
 }

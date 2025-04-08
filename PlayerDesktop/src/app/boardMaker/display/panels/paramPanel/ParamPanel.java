@@ -31,6 +31,8 @@ public class ParamPanel extends JPanel
 		
 		this.displayer = displayer;
 		
+		displayer.setParamPanel(this);
+		
 		tiling = new JPanel();
 		tiling.add(new JLabel("Placeholder"));
 		

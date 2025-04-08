@@ -40,9 +40,13 @@ public class BoardMakerTabbedBar extends JTabbedPane
 	private final BoardButtonListener bl;
 	private GameTabListener gtl;
 	
+	private boolean visible;
+	
 	public BoardMakerTabbedBar(Maker maker) {
 		this.displayer = maker.getDisplayer();
 		this.maker = maker;
+		
+		displayer.setTabbedBar(this);
 		
 		bl = new BoardButtonListener(displayer);
 		gtl = new GameTabListener(maker);
@@ -148,5 +152,13 @@ public class BoardMakerTabbedBar extends JTabbedPane
 	
 	public void updateGameInfo() {
 		maker.setGameInfo(name.getText(), (Integer)players.getValue(), (ModeType)mode.getSelectedItem());
+	}
+	
+	public void visibility(boolean b) {
+		visible = b;
+	}
+	
+	public boolean visible() {
+		return visible;
 	}
 }

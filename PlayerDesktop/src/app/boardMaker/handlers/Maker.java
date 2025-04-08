@@ -1,9 +1,25 @@
 package app.boardMaker.handlers;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
 import javax.swing.SwingUtilities;
 
 import app.boardMaker.res.StyleType;
+import app.utils.SVGUtil;
+import bridge.Bridge;
+import game.Game;
+import game.equipment.Equipment;
+import game.equipment.Item;
+import game.equipment.container.board.Board;
+import game.mode.Mode;
+import game.players.Players;
 import game.types.play.ModeType;
+import other.context.Context;
+import other.trial.Trial;
+import util.PlaneType;
+import view.container.styles.BoardStyle;
+import view.container.styles.board.graph.GraphStyle;
 
 /**
  * General handler of the board maker app.
@@ -17,7 +33,7 @@ public class Maker
 	private int players;
 	private ModeType mode;
 	
-	private StyleType style = StyleType.BoardStyle;
+	private StyleType styleType = StyleType.BoardStyle;
 	
 	public Maker() {
 		displayer = new Displayer(this);
@@ -36,6 +52,45 @@ public class Maker
 				displayer.createWindow();
 			}
 		});
+	}
+	
+	//--------------------------------------------------------------------------------
+	
+	public void drawBoard(Graphics2D g2d, Board board, int width, int height) {
+		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {board}), null);
+		game.create();
+		game.setMetadata(null);
+		
+		Context context = new Context(game, new Trial(game));
+		Bridge bridge = new Bridge();
+		
+		String svg;
+		switch (styleType)
+		{
+		case BoardStyle:
+			BoardStyle style = new BoardStyle(bridge, board);
+			style.setPlacement(context, new Rectangle(0, 0, width, height));
+			style.render(PlaneType.BOARD, context);
+			
+			svg = style.containerSVGImage();
+			break;
+		case GraphStyle:
+			GraphStyle gstyle = new GraphStyle(bridge, board, context);
+			gstyle.setPlacement(context, new Rectangle(0, 0, width, height));
+			gstyle.render(PlaneType.BOARD, context);
+			
+			svg = gstyle.containerSVGImage();
+			break;
+		default:
+			svg = "";
+			break;
+		}
+		
+		if (svg == null || svg.equals("")) {
+			return;
+		}
+		
+		g2d.drawImage(SVGUtil.createSVGImage(svg, width, height), 0, 0, null);
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -91,6 +146,6 @@ public class Maker
 	 * @param style the style of the board
 	 */
 	public void setStyle(StyleType style) {
-		this.style = style;
+		this.styleType = style;
 	}
 }

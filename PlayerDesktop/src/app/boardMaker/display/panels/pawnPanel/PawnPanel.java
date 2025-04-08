@@ -22,6 +22,8 @@ public class PawnPanel extends JTabbedPane
 	public PawnPanel(Displayer displayer) {
 		this.displayer = displayer;
 		
+		displayer.setPawnPanel(this);
+		
 		JPanel placeholder = new JPanel();
 		placeholder.add(new JLabel("Placeholder"));
 		

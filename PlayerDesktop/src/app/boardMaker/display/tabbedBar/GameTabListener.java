@@ -40,12 +40,18 @@ public class GameTabListener implements ActionListener, ChangeListener
 			break;
 		case "Vertex":
 			maker.setStyle(StyleType.GraphStyle);
+			maker.getDisplayer().getBoardPanel().revalidate();
+			maker.getDisplayer().getBoardPanel().repaint();
 			break;
 		case "Edge":
 			maker.setStyle(StyleType.GraphStyle);
+			maker.getDisplayer().getBoardPanel().revalidate();
+			maker.getDisplayer().getBoardPanel().repaint();
 			break;
 		case "Cell":
 			maker.setStyle(StyleType.BoardStyle);
+			maker.getDisplayer().getBoardPanel().revalidate();
+			maker.getDisplayer().getBoardPanel().repaint();
 			break;
 		default:
 			break;

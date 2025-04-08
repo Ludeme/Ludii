@@ -9,15 +9,19 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import app.boardMaker.display.panels.paramPanel.tilings.OptionPanel;
+import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.utils.Camera;
 import app.boardMaker.utils.Coordinates;
+import game.util.graph.Poly;
 
 public class PolygonView extends JPanel
 {
 	private Displayer displayer;
 	private Camera camera;
 	private PolygonListener pl;
+	private OptionPanel op;
 	
 	private int incX = 50;
 	private int incY = 50;
@@ -27,8 +31,9 @@ public class PolygonView extends JPanel
 	private List<Coordinates> vertexes;
 	private Coordinates current;
 	
-	public PolygonView(Displayer displayer) {
+	public PolygonView(Displayer displayer, OptionPanel op) {
 		this.displayer = displayer;
+		this.op = op;
 		
 		camera = new Camera(this);
 		pl = new PolygonListener(this);
@@ -40,8 +45,23 @@ public class PolygonView extends JPanel
 		addMouseMotionListener(camera);
 	}
 	
+	public Poly makePoly() {
+		Float[][] pts = new Float[vertexes.size()][2];
+		
+		for (int i = 0; i < vertexes.size(); i++) {
+			pts[i][0] = (float) vertexes.get(i).getX();
+			pts[i][1] = (float) vertexes.get(i).getY();
+		}
+			
+		return new Poly(pts, null);
+	}
+	
 	public Camera getCamera() {
 		return camera;
+	}
+	
+	public List<Coordinates> getPoly() {
+		return vertexes;
 	}
 	
 	public int incX() {
@@ -60,6 +80,9 @@ public class PolygonView extends JPanel
 		if (!vertexes.contains(v)) {
 			vertexes.add(v);
 			current = v;
+			op.createBoard();
+			displayer.getPreviewPanel().setBoard(op.board());
+			displayer.getPreviewPanel().repaint();
 		}
 	}
 	
@@ -67,6 +90,9 @@ public class PolygonView extends JPanel
 		if (vertexes.contains(v)) {
 			vertexes.remove(v);
 			current = vertexes.getLast();
+			op.createBoard();
+			displayer.getPreviewPanel().setBoard(op.board());
+			displayer.getPreviewPanel().repaint();
 		}
 	}
 

@@ -6,7 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import app.boardMaker.display.panels.boardPanel.BoardDisplay;
 import app.boardMaker.handlers.Displayer;
+import app.boardMaker.handlers.Maker;
+import game.equipment.container.board.Board;
 
 /**
  * A class for the preview of the board during its creation
@@ -15,16 +18,20 @@ import app.boardMaker.handlers.Displayer;
 public class PreviewPanel extends JTabbedPane
 {
 	private Displayer displayer;
+	private Maker maker;
+	
+	private BoardDisplay display;
 	
 	private boolean visible;
 	
-	public PreviewPanel(Displayer displayer) {
-		this.displayer = displayer;
-				
-		JPanel placeholder = new JPanel();
-		placeholder.add(new JLabel("Placeholder"));
+	public PreviewPanel(Maker maker) {
+		this.displayer = maker.getDisplayer();
+		this.maker = maker;
 		
-		addTab("Preview", placeholder);
+		displayer.setPreviewPanel(this);
+		
+		display = new BoardDisplay(maker);
+		addTab("Preview", display);
 	}
 	
 	public void visibility(boolean b) {
@@ -33,5 +40,9 @@ public class PreviewPanel extends JTabbedPane
 	
 	public boolean visible() {
 		return visible;
+	}
+	
+	public void setBoard(Board board) {
+		display.setBoard(board);
 	}
 }
