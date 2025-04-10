@@ -45,4 +45,8 @@ public class PreviewPanel extends JTabbedPane
 	public void setBoard(Board board) {
 		display.setBoard(board);
 	}
+	
+	public void setSVG(String svg) {
+		display.setSVG(svg);
+	}
 }

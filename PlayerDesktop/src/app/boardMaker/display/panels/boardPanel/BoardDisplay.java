@@ -38,6 +38,7 @@ public class BoardDisplay extends JPanel
 		int boardSize = Math.min(getHeight(), (int)(getWidth() * boardRatio));
 		
 		if (board != null) {
+			// Need this to avoid a bug where redrawing the window makes the board smaller
 			if (hasChanged) {
 				System.out.println("changement");
 				maker.drawBoard(g2d,board,boardSize,boardSize);

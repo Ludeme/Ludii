@@ -90,6 +90,7 @@ public class Maker
 			return;
 		}
 		
+		displayer.getPreviewPanel().setSVG(svg);
 		displayer.getBoardPanel().setSVG(svg);
 		
 		g2d.drawImage(SVGUtil.createSVGImage(svg, width, height), 0, 0, null);
