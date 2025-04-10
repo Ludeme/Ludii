@@ -48,16 +48,14 @@ public class BoardPanel extends JTabbedPane
 	}
 	
 	public boolean hasBoard() {
-		return displays.getFirst().hasBoard();
+		return displays.get(getSelectedIndex()).hasBoard();
 	}
 	
 	public void setBoard(Board board) {
-		if (!displays.get(getSelectedIndex()).hasBoard()) {
-			displays.get(getSelectedIndex()).setBoard(board);
-		} else {
-			displays.add(new BoardDisplay(maker));
-			displays.getLast().setBoard(board);
-			addTab("board"+getTabCount(), displays.getLast());
-		}
+		displays.get(getSelectedIndex()).setBoard(board);
+	}
+	
+	public void setSVG(String svg) {
+		displays.get(getSelectedIndex()).setSVG(svg);
 	}
 }
