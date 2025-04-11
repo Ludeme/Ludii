@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import app.boardMaker.display.panels.paramPanel.tilings.BrickPanel;
+import app.boardMaker.display.panels.paramPanel.tilings.CelticPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SquarePanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TrianglePanel;
 import app.boardMaker.handlers.Displayer;
@@ -29,6 +30,8 @@ public class BoardButtonListener implements ActionListener
 			displayer.creationView();
 			break;
 		case "Celtic" :
+			displayer.getParamPanel().setPanel(new CelticPanel(displayer));
+			displayer.creationView();
 			break;
 		case "Concentric" :
 			break;
