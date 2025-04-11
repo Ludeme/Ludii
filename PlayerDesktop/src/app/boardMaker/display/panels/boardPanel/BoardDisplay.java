@@ -40,7 +40,6 @@ public class BoardDisplay extends JPanel
 		if (board != null) {
 			// Need this to avoid a bug where redrawing the window makes the board smaller
 			if (hasChanged) {
-				System.out.println("changement");
 				maker.drawBoard(g2d,board,boardSize,boardSize);
 				hasChanged = false;
 			} else {
