@@ -10,6 +10,7 @@ import app.boardMaker.display.panels.paramPanel.tilings.HexPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.QuadhexPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SpiralPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SquarePanel;
+import app.boardMaker.display.panels.paramPanel.tilings.TilingPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TrianglePanel;
 import app.boardMaker.handlers.Displayer;
 
@@ -58,6 +59,8 @@ public class BoardButtonListener implements ActionListener
 			displayer.creationView();
 			break;
 		case "Tiling" :
+			displayer.getParamPanel().setPanel(new TilingPanel(displayer));
+			displayer.creationView();
 			break;
 		case "Triangle":
 			displayer.getParamPanel().setPanel(new TrianglePanel(displayer));
