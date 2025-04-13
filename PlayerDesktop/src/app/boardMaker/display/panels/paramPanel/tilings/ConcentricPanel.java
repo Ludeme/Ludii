@@ -52,7 +52,7 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 	
 	private PreviewListener pl;
 	
-	private Board board;
+	private GraphFunction board;
 
 	public ConcentricPanel(Displayer displayer) {
 		super();
@@ -223,22 +223,19 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 				switch (selectedShapeParameter)
 				{
 				case 0: {
-					GraphFunction graph = Concentric.construct((ConcentricShapeType)shapes.getSelectedItem(), null, null, new DimConstant((int)ringSpinner.getValue()), 
+					board = Concentric.construct((ConcentricShapeType)shapes.getSelectedItem(), null, null, new DimConstant((int)ringSpinner.getValue()), 
 							((int)stepSpinner.getValue() == 0) ? null : new DimConstant((int) stepSpinner.getValue()), bf0, bf1, bf2, bf3);
-					board = new Board(graph, null, null, null, null, null, null);
 					break;
 				}
 				case 1: {
-					GraphFunction graph = Concentric.construct(null, new DimConstant((int)sideSpinner.getValue()), null, new DimConstant((int)ringSpinner.getValue()), 
+					board = Concentric.construct(null, new DimConstant((int)sideSpinner.getValue()), null, new DimConstant((int)ringSpinner.getValue()), 
 							((int)stepSpinner.getValue() == 0) ? null : new DimConstant((int) stepSpinner.getValue()), bf0, bf1, bf2, bf3);
-					board = new Board(graph, null, null, null, null, null, null);
 					break;
 				}
 				case 2: {
 					if (isCorrectFormat(dimensions.getText())) {
-						GraphFunction graph = Concentric.construct(null, null, parseDimensions(), new DimConstant((int)ringSpinner.getValue()), 
+						board = Concentric.construct(null, null, parseDimensions(), new DimConstant((int)ringSpinner.getValue()), 
 								((int)stepSpinner.getValue() == 0) ? null : new DimConstant((int) stepSpinner.getValue()), bf0, bf1, bf2, bf3);
-						board = new Board(graph, null, null, null, null, null, null);
 					} else {
 						// dialog to reformat
 						JOptionPane.showMessageDialog(this, "Dimensions does not respect the right format.\n"
@@ -276,7 +273,7 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 	}
 
 	@Override
-	public Board board()
+	public GraphFunction board()
 	{
 		return board;
 	}

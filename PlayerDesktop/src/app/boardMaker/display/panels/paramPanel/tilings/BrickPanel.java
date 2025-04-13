@@ -36,7 +36,7 @@ public class BrickPanel extends OptionPanel
 	
 	private boolean trim = false;
 	
-	private Board board;
+	private GraphFunction board;
 	
 	public BrickPanel(Displayer displayer) {
 		super();
@@ -148,12 +148,11 @@ public class BrickPanel extends OptionPanel
 		BrickShapeType shape = (BrickShapeType) shapeBox.getSelectedItem();
 		DimConstant dimA = new DimConstant((int)rowSpinner.getValue());
 		DimConstant dimB = new DimConstant((int)colSpinner.getValue());
-		GraphFunction graph = Brick.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB, trim);
-		board = new Board(graph, null, null, null, null, null, null);
+		GraphFunction board = Brick.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB, trim);
 	}
 
 	@Override
-	public Board board()
+	public GraphFunction board()
 	{
 		return board;
 	}

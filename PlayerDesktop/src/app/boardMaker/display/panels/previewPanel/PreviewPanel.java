@@ -10,6 +10,7 @@ import app.boardMaker.display.panels.boardPanel.BoardDisplay;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
 import game.equipment.container.board.Board;
+import game.functions.graph.GraphFunction;
 
 /**
  * A class for the preview of the board during its creation
@@ -34,6 +35,10 @@ public class PreviewPanel extends JTabbedPane
 		addTab("Preview", display);
 	}
 	
+	public void switchStyle() {
+		display.switchStyle();
+	}
+	
 	public void visibility(boolean b) {
 		visible = b;
 	}
@@ -42,7 +47,7 @@ public class PreviewPanel extends JTabbedPane
 		return visible;
 	}
 	
-	public void setBoard(Board board) {
+	public void setBoard(GraphFunction board) {
 		display.setBoard(board);
 	}
 	

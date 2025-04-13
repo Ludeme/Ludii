@@ -12,6 +12,7 @@ import game.Game;
 import game.equipment.Equipment;
 import game.equipment.Item;
 import game.equipment.container.board.Board;
+import game.functions.graph.GraphFunction;
 import game.mode.Mode;
 import game.players.Players;
 import game.types.play.ModeType;
@@ -56,7 +57,9 @@ public class Maker
 	
 	//--------------------------------------------------------------------------------
 	
-	public void drawBoard(Graphics2D g2d, Board board, int width, int height) {
+	public void drawBoard(Graphics2D g2d, GraphFunction graph, int width, int height) {
+		Board board = new Board(graph, null, null, null, null, null, null);
+		
 		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {board}), null);
 		game.create();
 		game.setMetadata(null);
@@ -89,7 +92,7 @@ public class Maker
 		if (svg == null || svg.equals("")) {
 			return;
 		}
-		
+				
 		displayer.getPreviewPanel().setSVG(svg);
 		displayer.getBoardPanel().setSVG(svg);
 		

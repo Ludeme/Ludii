@@ -27,6 +27,7 @@ import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.celtic.Celtic;
 import game.functions.graph.generators.basis.tri.TriShapeType;
 import game.util.graph.Poly;
+import view.container.styles.board.graph.GraphStyle;
 
 public class CelticPanel extends OptionPanel implements ItemListener
 {
@@ -40,7 +41,7 @@ public class CelticPanel extends OptionPanel implements ItemListener
 	private PolygonView pv;
 	private PreviewListener pl;
 	
-	private Board board;
+	private GraphFunction board;
 	
 	public CelticPanel(Displayer displayer) {
 		super();
@@ -158,14 +159,12 @@ public class CelticPanel extends OptionPanel implements ItemListener
 		if (((String)shapeBox.getSelectedItem()).equals("Rectangle")) {
 			DimConstant dimA = new DimConstant((int)rowSpinner.getValue());
 			DimConstant dimB = new DimConstant((int)colSpinner.getValue());
-			GraphFunction graph = new Celtic(dimA, (dimB.eval() == 0) ? null : dimB);
-			board = new Board(graph, null, null, null, null, null, null);
+			board = new Celtic(dimA, (dimB.eval() == 0) ? null : dimB);
 		} else if (((String)shapeBox.getSelectedItem()).equals("Custom")) {
 			// Need this check to avoid an error when creating the celtic graph
 			if (pv.getPoly().size() > 2) {
 				Poly poly = pv.makePoly();
-				GraphFunction graph = new Celtic(poly, null);
-				board = new Board(graph, null, null, null, null, null, null);
+				board = new Celtic(poly, null);
 			} else {
 				board = null;
 			}
@@ -173,7 +172,7 @@ public class CelticPanel extends OptionPanel implements ItemListener
 	}
 
 	@Override
-	public Board board()
+	public GraphFunction board()
 	{
 		return board;
 	}

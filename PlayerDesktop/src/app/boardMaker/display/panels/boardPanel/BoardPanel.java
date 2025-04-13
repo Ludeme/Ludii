@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
 import game.equipment.container.board.Board;
+import game.functions.graph.GraphFunction;
 
 /**
  * Class representing the panel where the board is displayed
@@ -39,6 +40,12 @@ public class BoardPanel extends JTabbedPane
 		addTab("Board",displays.getFirst());
 	}
 	
+	public void switchStyle() {
+		for (BoardDisplay display : displays) {
+			display.switchStyle();
+		}
+	}
+	
 	public void visibility(boolean b) {
 		visible = b;
 	}
@@ -51,7 +58,7 @@ public class BoardPanel extends JTabbedPane
 		return displays.get(getSelectedIndex()).hasBoard();
 	}
 	
-	public void setBoard(Board board) {
+	public void setBoard(GraphFunction board) {
 		displays.get(getSelectedIndex()).setBoard(board);
 	}
 	

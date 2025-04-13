@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import app.boardMaker.handlers.Maker;
 import app.utils.SVGUtil;
 import game.equipment.container.board.Board;
+import game.functions.graph.GraphFunction;
 
 public class BoardDisplay extends JPanel
 {
@@ -18,7 +19,7 @@ public class BoardDisplay extends JPanel
 	private boolean hasChanged = false;
 	private double boardRatio = 1.0;
 	
-	private Board board;
+	private GraphFunction board;
 	private String svg;
 	
 	public BoardDisplay(Maker maker) {
@@ -48,11 +49,15 @@ public class BoardDisplay extends JPanel
 		}
 	}
 	
+	public void switchStyle() {
+		hasChanged = true;
+	}
+	
 	public boolean hasBoard() {
 		return hasBoard;
 	}
 	
-	public void setBoard(Board board) {
+	public void setBoard(GraphFunction board) {
 		hasBoard = true;
 		hasChanged = true;
 		this.board = board;

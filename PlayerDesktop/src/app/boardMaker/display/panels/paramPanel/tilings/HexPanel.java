@@ -42,7 +42,7 @@ public class HexPanel extends OptionPanel implements ItemListener
 	private JSpinner primSpinner;
 	private JSpinner secSpinner;
 
-	private Board board;
+	private GraphFunction board;
 	
 	public HexPanel(Displayer displayer) {
 		super();
@@ -179,17 +179,15 @@ public class HexPanel extends OptionPanel implements ItemListener
 		if (!shape.equals(HexShapeType.Custom)) {
 			DimConstant dimA = new DimConstant((int)primSpinner.getValue());
 			DimConstant dimB = new DimConstant((int)secSpinner.getValue());
-			GraphFunction graph = Hex.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB);
-			board = new Board(graph, null, null, null, null, null, null);
+			board = Hex.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB);
 		} else {
 			Poly poly = pv.makePoly();
-			GraphFunction graph = Hex.construct(poly, null);
-			board = new Board(graph, null, null, null, null, null, null);
+			board = Hex.construct(poly, null);
 		}
 	}
 
 	@Override
-	public Board board()
+	public GraphFunction board()
 	{
 		return board;
 	}

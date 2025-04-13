@@ -54,7 +54,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 	
 	private boolean pyramidal = false;
 	
-	private Board board;
+	private GraphFunction board;
 	
 	public SquarePanel(Displayer displayer) {
 		super();
@@ -229,12 +229,10 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		if (!shapeType.equals(SquareShapeType.Custom)) {
 			DimConstant dim = new DimConstant((int)dimSpinner.getValue());
 			DiagonalsType diagType = (DiagonalsType) diagBox.getSelectedItem();
-			GraphFunction graph = Square.construct(shapeType, dim, choice.getSelectedIndex() == 0 ? diagType : null, choice.getSelectedIndex() == 0 ? null : pyramidal);
-			board = new Board(graph, null, null, null, null, null, null);
+			board = Square.construct(shapeType, dim, choice.getSelectedIndex() == 0 ? diagType : null, choice.getSelectedIndex() == 0 ? null : pyramidal);
 		} else {
 			Poly poly = pv.makePoly();
-			GraphFunction graph = Square.construct(poly, null, (DiagonalsType) diagBox.getSelectedItem());
-			board = new Board(graph, null, null, null, null, null, null);
+			board = Square.construct(poly, null, (DiagonalsType) diagBox.getSelectedItem());
 		}
 	}
 
@@ -258,7 +256,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 	}
 
 	@Override
-	public Board board()
+	public GraphFunction board()
 	{
 		return board;
 	}

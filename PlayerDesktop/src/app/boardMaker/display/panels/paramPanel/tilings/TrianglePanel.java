@@ -41,7 +41,7 @@ public class TrianglePanel extends OptionPanel implements ItemListener
 	private JSpinner primSpinner;
 	private JSpinner secSpinner;
 	
-	private Board board;
+	private GraphFunction board;
 	
 	public TrianglePanel(Displayer displayer)
 	{
@@ -162,17 +162,15 @@ public class TrianglePanel extends OptionPanel implements ItemListener
 		if (!shape.equals(TriShapeType.Custom)) {
 			DimConstant dimA = new DimConstant((int) primSpinner.getValue());
 			DimConstant dimB = new DimConstant((int) secSpinner.getValue());
-			GraphFunction graph = Tri.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB);
-			board = new Board(graph, null, null, null, null, null, null);
+			board = Tri.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB);
 		} else {
 			Poly poly = pv.makePoly();
-			GraphFunction graph = Tri.construct(poly, null);
-			board = new Board(graph, null, null, null, null, null, null);
+			board = Tri.construct(poly, null);
 		}
 	}
 
 	@Override
-	public Board board()
+	public GraphFunction board()
 	{
 		return board;
 	}
