@@ -12,6 +12,7 @@ import app.boardMaker.display.panels.paramPanel.tilings.SpiralPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SquarePanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TilingPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TrianglePanel;
+import app.boardMaker.display.panels.paramPanel.tilings.WedgePanel;
 import app.boardMaker.handlers.Displayer;
 
 public class BoardButtonListener implements ActionListener
@@ -67,6 +68,8 @@ public class BoardButtonListener implements ActionListener
 			displayer.creationView();
 			break;
 		case "Wedge" :
+			displayer.getParamPanel().setPanel(new WedgePanel(displayer));
+			displayer.creationView();
 			break;
 		default:
 			displayer.creationView();

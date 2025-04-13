@@ -1,0 +1,110 @@
+package app.boardMaker.display.panels.paramPanel.tilings;
+
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
+import app.boardMaker.display.buttons.CancelButton;
+import app.boardMaker.display.buttons.CreateButton;
+import app.boardMaker.display.panels.previewPanel.PreviewListener;
+import app.boardMaker.handlers.Displayer;
+import game.functions.dim.DimConstant;
+import game.functions.graph.GraphFunction;
+import game.functions.graph.generators.basis.brick.BrickShapeType;
+import game.functions.graph.generators.shape.Wedge;
+
+public class WedgePanel extends OptionPanel
+{
+	private Displayer displayer;
+	private PreviewListener pl;
+	
+	private JSpinner row;
+	private JSpinner col;
+		
+	private GraphFunction board;
+	
+	public WedgePanel(Displayer displayer) {
+		super();
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));	
+		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
+		
+		this.displayer = displayer;
+		pl = new PreviewListener(this, displayer.getPreviewPanel());
+		
+		add(Box.createVerticalStrut(5));
+		
+		JPanel panel;
+		JLabel label;
+		
+		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		label = new JLabel((String) displayer.getStrings().get("row"));
+		label.setToolTipText((String) displayer.getStrings().get("rowTT"));
+		panel.add(label);
+		row = new JSpinner(new SpinnerNumberModel(2, 1, Integer.MAX_VALUE, 1));
+		row.addChangeListener(pl);
+		panel.add(row);
+		add(panel);
+		
+		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		label = new JLabel((String) displayer.getStrings().get("col"));
+		label.setToolTipText((String) displayer.getStrings().get("colTT"));
+		panel.add(label);
+		col = new JSpinner(new SpinnerNumberModel(2, 1, Integer.MAX_VALUE, 1));
+		col.addChangeListener(pl);
+		panel.add(col);
+		add(panel);
+		
+		add(Box.createVerticalGlue());
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(new CreateButton(new ActionListener()
+		{
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				createBoard();
+				displayer.getBoardPanel().setBoard(board);
+				displayer.mainView();	
+			}
+		}));
+		buttonPanel.add(new CancelButton(new ActionListener()
+		{
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				displayer.mainView();
+			}
+		}));
+		
+		add(buttonPanel);
+		
+		add(Box.createVerticalStrut(5));
+		
+		createBoard();
+		displayer.getPreviewPanel().setBoard(board);
+	}
+
+	@Override
+	public void createBoard()
+	{
+		board = new Wedge(new DimConstant((int) row.getValue()), ((int)col.getValue() == 0) ? null : new DimConstant((int) col.getValue()));
+	}
+
+	@Override
+	public GraphFunction board()
+	{
+		return board;
+	}
+
+}
