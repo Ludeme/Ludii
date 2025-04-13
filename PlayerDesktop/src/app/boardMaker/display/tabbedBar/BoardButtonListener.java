@@ -3,6 +3,7 @@ package app.boardMaker.display.tabbedBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import app.boardMaker.display.panels.boardPanel.BoardDisplay;
 import app.boardMaker.display.panels.paramPanel.tilings.BrickPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.CelticPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.ConcentricPanel;
@@ -28,6 +29,7 @@ public class BoardButtonListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		String command = e.getActionCommand();
+		System.out.println(command);
 		
 		switch (command)
 		{
@@ -70,6 +72,18 @@ public class BoardButtonListener implements ActionListener
 		case "Wedge" :
 			displayer.getParamPanel().setPanel(new WedgePanel(displayer));
 			displayer.creationView();
+			break;
+		case "New" :
+			displayer.getBoardPanel().newTab();
+			break;
+		case "Remove" :
+			displayer.getBoardPanel().removeTab();
+			break;
+		case "Mancala" :
+			
+			break;
+		case "Surakarta" :
+			
 			break;
 		default:
 			displayer.creationView();

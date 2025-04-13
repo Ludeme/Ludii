@@ -35,6 +35,7 @@ public class Maker
 	private ModeType mode;
 	
 	private StyleType styleType = StyleType.BoardStyle;
+	private boolean largeStack = false;
 	
 	public Maker() {
 		displayer = new Displayer(this);
@@ -153,5 +154,13 @@ public class Maker
 	 */
 	public void setStyle(StyleType style) {
 		this.styleType = style;
+	}
+	
+	/**
+	 * Sets the large stack parameter of the board
+	 * @param b whether to allow large stacks or not
+	 */
+	public void setStack(boolean b) {
+		largeStack = b;
 	}
 }

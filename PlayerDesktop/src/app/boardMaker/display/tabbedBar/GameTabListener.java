@@ -3,6 +3,7 @@ package app.boardMaker.display.tabbedBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -70,6 +71,9 @@ public class GameTabListener implements ActionListener, ChangeListener
 			maker.getDisplayer().getBoardPanel().switchStyle();
 			maker.getDisplayer().getBoardPanel().revalidate();
 			maker.getDisplayer().getBoardPanel().repaint();
+			break;
+		case "Stack":
+			maker.setStack(((JRadioButton)e.getSource()).isSelected());
 			break;
 		default:
 			break;

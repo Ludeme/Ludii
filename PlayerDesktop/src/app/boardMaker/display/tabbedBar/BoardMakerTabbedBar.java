@@ -125,6 +125,19 @@ public class BoardMakerTabbedBar extends JTabbedPane
 			group.add(button);
 			toolbar.add(button);
 		}
+		
+		toolbar.addSeparator();
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		
+		toolbar.addSeparator();
+		
+		button = new JRadioButton("Large stacks");
+		button.setActionCommand("Stack");
+		button.setToolTipText("Allows the game to involve stacks higher than 32.");
+		button.setSelected(false);
+		button.addActionListener(gtl);
+		toolbar.add(button);
 	}
 	
 	/**
@@ -133,6 +146,24 @@ public class BoardMakerTabbedBar extends JTabbedPane
 	private void makeBoardToolbar() {
 		JButton button;
 		
+		button = new JButton("New Board");
+		button.setToolTipText("Adds a new board tab.");
+		button.setActionCommand("New");
+		button.addActionListener(bl);
+		toolbar.add(button);
+		
+		button = new JButton("Delete");
+		button.setToolTipText("Deletes the current board tab. (Min. 1)");
+		button.setActionCommand("Remove");
+		button.addActionListener(bl);
+		toolbar.add(button);
+		
+		toolbar.addSeparator();
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		
+		toolbar.addSeparator();
+		
 		for (BoardTiling tiling : BoardTiling.values()) {
 			button = new JButton(tiling.name());
 			button.setToolTipText((String) displayer.getStrings().get(tiling.name()));
@@ -140,6 +171,24 @@ public class BoardMakerTabbedBar extends JTabbedPane
 			button.addActionListener(bl);
 			toolbar.add(button);
 		}
+		
+		toolbar.addSeparator();
+		
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+		
+		toolbar.addSeparator();
+		
+		button = new JButton("Mancala");
+		button.setToolTipText("Creates a mancala board.");
+		button.setActionCommand("Mancala");
+		button.addActionListener(bl);
+		toolbar.add(button);
+		
+		button = new JButton("Surakarta");
+		button.setToolTipText("Creates a surakarta board. (Only for square, rectangle, hex and triangle board shapes)");
+		button.setActionCommand("Surakarta");
+		button.addActionListener(bl);
+		toolbar.add(button);
 	}
 	
 	/**

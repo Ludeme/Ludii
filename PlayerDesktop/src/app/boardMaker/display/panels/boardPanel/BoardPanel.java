@@ -40,6 +40,25 @@ public class BoardPanel extends JTabbedPane
 		addTab("Board",displays.getFirst());
 	}
 	
+	/**
+	 * Adds a new tab to display another board.
+	 */
+	public void newTab() {
+		displays.add(new BoardDisplay(maker));
+		addTab("Board"+getTabCount(), displays.getLast());
+	}
+	
+	/**
+	 * Removes the currently selected tab
+	 */
+	public void removeTab() {
+		if (getTabCount() > 1) {
+			int idx = getSelectedIndex();
+			remove(idx);
+			displays.remove(idx);
+		}
+	}
+	
 	public void switchStyle() {
 		for (BoardDisplay display : displays) {
 			display.switchStyle();
