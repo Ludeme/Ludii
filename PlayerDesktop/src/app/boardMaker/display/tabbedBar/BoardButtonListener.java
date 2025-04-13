@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import app.boardMaker.display.panels.paramPanel.tilings.BrickPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.CelticPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.ConcentricPanel;
+import app.boardMaker.display.panels.paramPanel.tilings.HexPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SquarePanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TrianglePanel;
 import app.boardMaker.handlers.Displayer;
@@ -39,6 +40,8 @@ public class BoardButtonListener implements ActionListener
 			displayer.creationView();
 			break;
 		case "Hex" :
+			displayer.getParamPanel().setPanel(new HexPanel(displayer));
+			displayer.creationView();
 			break;
 		case "Quadhex" :
 			break;
