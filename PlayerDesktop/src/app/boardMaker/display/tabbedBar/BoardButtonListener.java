@@ -10,6 +10,7 @@ import app.boardMaker.display.panels.paramPanel.tilings.ConcentricPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.HexPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.MancalaPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.QuadhexPanel;
+import app.boardMaker.display.panels.paramPanel.tilings.RectanglePanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SpiralPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SquarePanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TilingPanel;
@@ -60,6 +61,11 @@ public class BoardButtonListener implements ActionListener
 		case "Quadhex" :
 			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new QuadhexPanel(displayer));
+			displayer.creationView();
+			break;
+		case "Rectangle":
+			maker.setMancala(false);
+			displayer.getParamPanel().setPanel(new RectanglePanel(displayer));
 			displayer.creationView();
 			break;
 		case "Spiral" :

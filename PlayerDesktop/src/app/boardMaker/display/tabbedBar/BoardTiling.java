@@ -7,6 +7,7 @@ public enum BoardTiling
 	Concentric,
 	Hex,
 	Quadhex,
+	Rectangle,
 	Spiral,
 	Square,
 	Tiling,
