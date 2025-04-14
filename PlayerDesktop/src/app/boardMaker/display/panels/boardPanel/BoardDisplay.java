@@ -19,7 +19,8 @@ public class BoardDisplay extends JPanel
 	private boolean hasChanged = false;
 	private double boardRatio = 1.0;
 	
-	private GraphFunction board;
+	private GraphFunction graph;
+	private Board board;
 	private String svg;
 	
 	public BoardDisplay(Maker maker) {
@@ -38,10 +39,10 @@ public class BoardDisplay extends JPanel
 		
 		int boardSize = Math.min(getHeight(), (int)(getWidth() * boardRatio));
 		
-		if (board != null) {
+		if (graph != null || board != null) {
 			// Need this to avoid a bug where redrawing the window makes the board smaller
 			if (hasChanged) {
-				maker.drawBoard(g2d,board,boardSize,boardSize);
+				maker.drawBoard(g2d,graph,board,boardSize,boardSize);
 				hasChanged = false;
 			} else {
 				g2d.drawImage(SVGUtil.createSVGImage(svg, getWidth(), getHeight()), 0, 0, null);
@@ -57,7 +58,13 @@ public class BoardDisplay extends JPanel
 		return hasBoard;
 	}
 	
-	public void setBoard(GraphFunction board) {
+	public void setBoard(GraphFunction graph) {
+		hasBoard = true;
+		hasChanged = true;
+		this.graph = graph;
+	}
+	
+	public void setBoard(Board board) {
 		hasBoard = true;
 		hasChanged = true;
 		this.board = board;

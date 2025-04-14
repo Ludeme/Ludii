@@ -47,7 +47,11 @@ public class PreviewPanel extends JTabbedPane
 		return visible;
 	}
 	
-	public void setBoard(GraphFunction board) {
+	public void setBoard(GraphFunction graph) {
+		display.setBoard(graph);
+	}
+	
+	public void setBoard(Board board) {
 		display.setBoard(board);
 	}
 	

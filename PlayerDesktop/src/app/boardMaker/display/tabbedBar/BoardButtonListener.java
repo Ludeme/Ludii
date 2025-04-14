@@ -8,6 +8,7 @@ import app.boardMaker.display.panels.paramPanel.tilings.BrickPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.CelticPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.ConcentricPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.HexPanel;
+import app.boardMaker.display.panels.paramPanel.tilings.MancalaPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.QuadhexPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SpiralPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SquarePanel;
@@ -15,14 +16,17 @@ import app.boardMaker.display.panels.paramPanel.tilings.TilingPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TrianglePanel;
 import app.boardMaker.display.panels.paramPanel.tilings.WedgePanel;
 import app.boardMaker.handlers.Displayer;
+import app.boardMaker.handlers.Maker;
 
 public class BoardButtonListener implements ActionListener
 {
 
+	private Maker maker;
 	private Displayer displayer;
 	
-	public BoardButtonListener(Displayer displayer) {
-		this.displayer = displayer;
+	public BoardButtonListener(Maker maker) {
+		this.displayer = maker.getDisplayer();
+		this.maker = maker;
 	}
 	
 	@Override
@@ -34,42 +38,52 @@ public class BoardButtonListener implements ActionListener
 		switch (command)
 		{
 		case "Brick" :
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new BrickPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Celtic" :
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new CelticPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Concentric" :
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new ConcentricPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Hex" :
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new HexPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Quadhex" :
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new QuadhexPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Spiral" :
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new SpiralPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Square":
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new SquarePanel(displayer));
 			displayer.creationView();
 			break;
 		case "Tiling" :
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new TilingPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Triangle":
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new TrianglePanel(displayer));
 			displayer.creationView();
 			break;
 		case "Wedge" :
+			maker.setMancala(false);
 			displayer.getParamPanel().setPanel(new WedgePanel(displayer));
 			displayer.creationView();
 			break;
@@ -80,7 +94,9 @@ public class BoardButtonListener implements ActionListener
 			displayer.getBoardPanel().removeTab();
 			break;
 		case "Mancala" :
-			
+			maker.setMancala(true);
+			displayer.getParamPanel().setPanel(new MancalaPanel(maker));
+			displayer.creationView();
 			break;
 		case "Surakarta" :
 			

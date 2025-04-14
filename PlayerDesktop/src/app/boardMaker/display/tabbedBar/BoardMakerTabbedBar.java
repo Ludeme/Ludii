@@ -48,7 +48,7 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		
 		displayer.setTabbedBar(this);
 		
-		bl = new BoardButtonListener(displayer);
+		bl = new BoardButtonListener(maker);
 		gtl = new GameTabListener(maker);
 		
 		initToolbar();

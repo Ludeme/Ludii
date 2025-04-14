@@ -77,7 +77,11 @@ public class BoardPanel extends JTabbedPane
 		return displays.get(getSelectedIndex()).hasBoard();
 	}
 	
-	public void setBoard(GraphFunction board) {
+	public void setBoard(GraphFunction graph) {
+		displays.get(getSelectedIndex()).setBoard(graph);
+	}
+	
+	public void setBoard(Board board) {
 		displays.get(getSelectedIndex()).setBoard(board);
 	}
 	

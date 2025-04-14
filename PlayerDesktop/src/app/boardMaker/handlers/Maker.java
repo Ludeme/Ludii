@@ -20,6 +20,7 @@ import other.context.Context;
 import other.trial.Trial;
 import util.PlaneType;
 import view.container.styles.BoardStyle;
+import view.container.styles.board.MancalaStyle;
 import view.container.styles.board.graph.GraphStyle;
 
 /**
@@ -35,6 +36,8 @@ public class Maker
 	private ModeType mode;
 	
 	private StyleType styleType = StyleType.BoardStyle;
+	private boolean isMancala = false;
+	private boolean isSurakarta = false;
 	private boolean largeStack = false;
 	
 	public Maker() {
@@ -58,10 +61,18 @@ public class Maker
 	
 	//--------------------------------------------------------------------------------
 	
-	public void drawBoard(Graphics2D g2d, GraphFunction graph, int width, int height) {
-		Board board = new Board(graph, null, null, null, null, null, null);
+	public void drawBoard(Graphics2D g2d, GraphFunction graph, Board board,int width, int height) {
+		Board gameBoard;
+		if (isMancala) {
+			gameBoard = board;
+			styleType = StyleType.MancalaStyle;
+		} else if (isSurakarta) {
+			gameBoard = board;
+		} else {
+			gameBoard = new Board(graph, null, null, null, null, null, null);
+		}
 		
-		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {board}), null);
+		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {gameBoard}), null);
 		game.create();
 		game.setMetadata(null);
 		
@@ -72,18 +83,25 @@ public class Maker
 		switch (styleType)
 		{
 		case BoardStyle:
-			BoardStyle style = new BoardStyle(bridge, board);
+			BoardStyle style = new BoardStyle(bridge, gameBoard);
 			style.setPlacement(context, new Rectangle(0, 0, width, height));
 			style.render(PlaneType.BOARD, context);
 			
 			svg = style.containerSVGImage();
 			break;
 		case GraphStyle:
-			GraphStyle gstyle = new GraphStyle(bridge, board, context);
+			GraphStyle gstyle = new GraphStyle(bridge, gameBoard, context);
 			gstyle.setPlacement(context, new Rectangle(0, 0, width, height));
 			gstyle.render(PlaneType.BOARD, context);
 			
 			svg = gstyle.containerSVGImage();
+			break;
+		case MancalaStyle:
+			MancalaStyle mstyle = new MancalaStyle(bridge, gameBoard);
+			mstyle.setPlacement(context, new Rectangle(0, 0, width, height));
+			mstyle.render(PlaneType.BOARD, context);
+			
+			svg = mstyle.containerSVGImage();
 			break;
 		default:
 			svg = "";
@@ -134,6 +152,9 @@ public class Maker
 		return mode;
 	}
 	
+	public boolean largeStack() {
+		return largeStack;
+	}
 	//--------------------------------------------------------------------------------
 	
 	/**
@@ -162,5 +183,21 @@ public class Maker
 	 */
 	public void setStack(boolean b) {
 		largeStack = b;
+	}
+	
+	/**
+	 * Defines is the board is a mancala board
+	 * @param b
+	 */
+	public void setMancala(boolean b) {
+		isMancala = b;
+	}
+	
+	/**
+	 * Defines if the board is a surakarta board
+	 * @param b
+	 */
+	public void setSurakarta(boolean b) {
+		isSurakarta = b;
 	}
 }
