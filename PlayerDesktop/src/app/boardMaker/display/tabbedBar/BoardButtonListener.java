@@ -13,6 +13,8 @@ import app.boardMaker.display.panels.paramPanel.tilings.QuadhexPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.RectanglePanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SpiralPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.SquarePanel;
+import app.boardMaker.display.panels.paramPanel.tilings.SurakartaRPanel;
+import app.boardMaker.display.panels.paramPanel.tilings.SurakartaTPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TilingPanel;
 import app.boardMaker.display.panels.paramPanel.tilings.TrianglePanel;
 import app.boardMaker.display.panels.paramPanel.tilings.WedgePanel;
@@ -40,56 +42,67 @@ public class BoardButtonListener implements ActionListener
 		{
 		case "Brick" :
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new BrickPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Celtic" :
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new CelticPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Concentric" :
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new ConcentricPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Hex" :
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new HexPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Quadhex" :
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new QuadhexPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Rectangle":
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new RectanglePanel(displayer));
 			displayer.creationView();
 			break;
 		case "Spiral" :
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new SpiralPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Square":
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new SquarePanel(displayer));
 			displayer.creationView();
 			break;
 		case "Tiling" :
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new TilingPanel(displayer));
 			displayer.creationView();
 			break;
 		case "Triangle":
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new TrianglePanel(displayer));
 			displayer.creationView();
 			break;
 		case "Wedge" :
 			maker.setMancala(false);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new WedgePanel(displayer));
 			displayer.creationView();
 			break;
@@ -101,11 +114,21 @@ public class BoardButtonListener implements ActionListener
 			break;
 		case "Mancala" :
 			maker.setMancala(true);
+			maker.setSurakarta(false);
 			displayer.getParamPanel().setPanel(new MancalaPanel(maker));
 			displayer.creationView();
 			break;
-		case "Surakarta" :
-			
+		case "SurakartaR" :
+			maker.setMancala(false);
+			maker.setSurakarta(true);
+			displayer.getParamPanel().setPanel(new SurakartaRPanel(maker));
+			displayer.creationView();
+			break;
+		case "SurakartaT" :
+			maker.setMancala(false);
+			maker.setSurakarta(true);
+			displayer.getParamPanel().setPanel(new SurakartaTPanel(maker));
+			displayer.creationView();
 			break;
 		default:
 			displayer.creationView();

@@ -21,6 +21,7 @@ import other.trial.Trial;
 import util.PlaneType;
 import view.container.styles.BoardStyle;
 import view.container.styles.board.MancalaStyle;
+import view.container.styles.board.SurakartaStyle;
 import view.container.styles.board.graph.GraphStyle;
 
 /**
@@ -68,6 +69,7 @@ public class Maker
 			styleType = StyleType.MancalaStyle;
 		} else if (isSurakarta) {
 			gameBoard = board;
+			styleType = StyleType.SurakartaStyle;
 		} else {
 			gameBoard = new Board(graph, null, null, null, null, null, null);
 		}
@@ -103,6 +105,13 @@ public class Maker
 			
 			svg = mstyle.containerSVGImage();
 			break;
+		case SurakartaStyle:
+			SurakartaStyle sstyle = new SurakartaStyle(bridge, gameBoard);
+			sstyle.setPlacement(context, new Rectangle(0, 0, width, height));
+			sstyle.render(PlaneType.BOARD, context);
+			
+			svg = sstyle.containerSVGImage();
+			break;
 		default:
 			svg = "";
 			break;
@@ -111,7 +120,7 @@ public class Maker
 		if (svg == null || svg.equals("")) {
 			return;
 		}
-				
+						
 		displayer.getPreviewPanel().setSVG(svg);
 		displayer.getBoardPanel().setSVG(svg);
 		

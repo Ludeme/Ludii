@@ -184,9 +184,15 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		button.addActionListener(bl);
 		toolbar.add(button);
 		
-		button = new JButton("Surakarta");
-		button.setToolTipText("Creates a surakarta board. (Only for square, rectangle, hex and triangle board shapes)");
-		button.setActionCommand("Surakarta");
+		button = new JButton("Surakarta - Rectangle");
+		button.setToolTipText("Creates a surakarta board with a rectangular shape. Games are played on vertexes and edges.");
+		button.setActionCommand("SurakartaR");
+		button.addActionListener(bl);
+		toolbar.add(button);
+		
+		button = new JButton("Surakarta - Triangle");
+		button.setToolTipText("Creates a surakarta board with a triangular shape. Games are played on vertexes and edges");
+		button.setActionCommand("SurakartaT");
 		button.addActionListener(bl);
 		toolbar.add(button);
 	}
