@@ -148,7 +148,7 @@ public class BrickPanel extends OptionPanel
 		BrickShapeType shape = (BrickShapeType) shapeBox.getSelectedItem();
 		DimConstant dimA = new DimConstant((int)rowSpinner.getValue());
 		DimConstant dimB = new DimConstant((int)colSpinner.getValue());
-		GraphFunction board = Brick.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB, trim);
+		board = Brick.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB, trim);
 	}
 
 	@Override
