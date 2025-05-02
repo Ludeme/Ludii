@@ -36,7 +36,8 @@ public class Maker
 	private int players;
 	private ModeType mode;
 	
-	private StyleType styleType = StyleType.BoardStyle;
+	// Styletype selected in the game tab of the tabbed bar
+	private StyleType selectedStyle = StyleType.BoardStyle;
 	private boolean isMancala = false;
 	private boolean isSurakarta = false;
 	private boolean largeStack = false;
@@ -64,14 +65,16 @@ public class Maker
 	
 	public void drawBoard(Graphics2D g2d, GraphFunction graph, Board board,int width, int height) {
 		Board gameBoard;
+		StyleType gameStyle;
 		if (isMancala) {
 			gameBoard = board;
-			styleType = StyleType.MancalaStyle;
+			gameStyle = StyleType.MancalaStyle;
 		} else if (isSurakarta) {
 			gameBoard = board;
-			styleType = StyleType.SurakartaStyle;
+			gameStyle = StyleType.SurakartaStyle;
 		} else {
 			gameBoard = new Board(graph, null, null, null, null, null, null);
+			gameStyle = selectedStyle;
 		}
 		
 		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {gameBoard}), null);
@@ -82,7 +85,7 @@ public class Maker
 		Bridge bridge = new Bridge();
 		
 		String svg;
-		switch (styleType)
+		switch (gameStyle)
 		{
 		case BoardStyle:
 			BoardStyle style = new BoardStyle(bridge, gameBoard);
@@ -179,11 +182,11 @@ public class Maker
 	}
 	
 	/**
-	 * Sets the style of the board
+	 * Sets the selected style of the board
 	 * @param style the style of the board
 	 */
 	public void setStyle(StyleType style) {
-		this.styleType = style;
+		this.selectedStyle = style;
 	}
 	
 	/**
