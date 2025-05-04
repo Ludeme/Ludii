@@ -49,8 +49,8 @@ public class BrickPanel extends OptionPanel
 		add(Box.createVerticalStrut(5));
 		
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String) displayer.getStrings().get("paramShape"));
-		label.setToolTipText((String) displayer.getStrings().get("paramShapeTT"));
+		JLabel label = new JLabel("Board shape: ");
+		label.setToolTipText("This parameter will set the board shape.");
 		shapeBox = new JComboBox<>(BrickShapeType.values());
 		shapeBox.addActionListener(pl);
 		panel.add(label);
@@ -58,8 +58,8 @@ public class BrickPanel extends OptionPanel
 		add(panel);
 				
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String) displayer.getStrings().get("row"));
-		label.setToolTipText((String) displayer.getStrings().get("rowTT"));
+		label = new JLabel("Rows: ");
+		label.setToolTipText("Sets the number of rows on the board.");
 		panel.add(label);
 		rowSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 		rowSpinner.addChangeListener(pl);
@@ -67,8 +67,8 @@ public class BrickPanel extends OptionPanel
 		add(panel);
 		
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String) displayer.getStrings().get("col"));
-		label.setToolTipText((String) displayer.getStrings().get("colTT"));
+		label = new JLabel("Columns: ");
+		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		panel.add(label);
 		colSpinner = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
 		colSpinner.addChangeListener(pl);

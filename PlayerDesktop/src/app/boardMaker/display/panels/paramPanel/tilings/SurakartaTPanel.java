@@ -53,8 +53,8 @@ public class SurakartaTPanel extends SurakartaPanel
 		add(Box.createVerticalStrut(5));
 		
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String) displayer.getStrings().get("1dim"));
-		label.setToolTipText((String) displayer.getStrings().get("1dimTT"));
+		JLabel label = new JLabel("First dimension");
+		label.setToolTipText("Primary dimension of the board.");
 		panel.add(label);
 		primDim = new JSpinner(new SpinnerNumberModel(2, 2, Integer.MAX_VALUE, 1));
 		primDim.addChangeListener(pl);

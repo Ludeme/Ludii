@@ -75,7 +75,7 @@ public class BoardMakerTabbedBar extends JTabbedPane
 	 */
 	private void makeGameToolbar() {
 		JLabel label = new JLabel("Game name: ");
-		label.setToolTipText((String)displayer.getStrings().get("gamenameTT"));
+		label.setToolTipText("Sets the name of the game.");
 		toolbar.add(label);
 		toolbar.addSeparator();
 		name = new JTextField();
@@ -87,7 +87,7 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		toolbar.addSeparator();
 		
 		label = new JLabel("Players: ");
-		label.setToolTipText((String)displayer.getStrings().get("playersTT"));
+		label.setToolTipText("Sets the number of player of the game.");
 		toolbar.add(label);
 		toolbar.addSeparator();
 		players = new JSpinner(new SpinnerNumberModel(maker.getPlayers(), 1, Integer.MAX_VALUE, 1));
@@ -97,7 +97,10 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		toolbar.addSeparator();
 		
 		label = new JLabel("Mode: ");
-		label.setToolTipText((String)displayer.getStrings().get("modeTT"));
+		label.setToolTipText("<html>Sets the mode of the game."
+				+ "<br>Alternating: turn by turn."
+				+ "<br>Simultaneous: players move at the same time."
+				+ "<br>Simulation: simulation game.</html>");
 		toolbar.add(label);
 		toolbar.addSeparator();
 		mode = new JComboBox<ModeType>(ModeType.values());
@@ -118,10 +121,20 @@ public class BoardMakerTabbedBar extends JTabbedPane
 			button = new JRadioButton(type.name());
 			button.setActionCommand(type.name());
 			button.addActionListener(gtl);
-			button.setToolTipText((String)displayer.getStrings().get(type.name()));
-			if (type.name().equals("Cell")) {
+
+			switch (type)
+			{
+			case Cell:
 				button.setSelected(true);
+				break;
+			case Edge:
+				break;
+			case Vertex:
+				break;
+			default:
+				break;
 			}
+
 			group.add(button);
 			toolbar.add(button);
 		}
@@ -166,7 +179,44 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		
 		for (BoardTiling tiling : BoardTiling.values()) {
 			button = new JButton(tiling.name());
-			button.setToolTipText((String) displayer.getStrings().get(tiling.name()));
+			switch (tiling)
+			{
+			case Brick:
+				button.setToolTipText("Generates a board with a brick tiling.");
+				break;
+			case Celtic:
+				button.setToolTipText("Generates a board based on a celtic knotwork.");
+				break;
+			case Concentric:
+				button.setToolTipText("Generates a board based on a tiling of concentric shapes.");
+				break;
+			case Hex:
+				button.setToolTipText("Generates a board with an hexagonal tiling.");
+				break;
+			case Quadhex:
+				button.setToolTipText("Generates a board based on an hexagon tessellated by quadrilaterals.");
+				break;
+			case Rectangle:
+				button.setToolTipText("Generates a board with a square tiling and rectangular shape.");
+				break;
+			case Spiral:
+				button.setToolTipText("Generates a board based on a spiral tiling. (For games on vertexes or edges.)");
+				break;
+			case Square:
+				button.setToolTipText("Generates a board with a square tiling.");
+				break;
+			case Tiling:
+				button.setToolTipText("Generates a board based on a known tiling.");
+				break;
+			case Triangle:
+				button.setToolTipText("Generates a board with a triangular tiling.");
+				break;
+			case Wedge:
+				button.setToolTipText("Generates a triangular board, with one vertex at the top and a certain number at the bottom. (For games on vertexes or edges.)");
+				break;
+			default:
+				break;
+			}
 			button.setActionCommand(tiling.name());
 			button.addActionListener(bl);
 			toolbar.add(button);

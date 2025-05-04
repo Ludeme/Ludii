@@ -66,8 +66,8 @@ public class TilingPanel extends OptionPanel implements ItemListener
 		add(Box.createVerticalStrut(5));
 		
 		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String)displayer.getStrings().get("paramShape"));
-		label.setToolTipText((String) displayer.getStrings().get("paramShapeCustomTT"));
+		label = new JLabel("Board shape: ");
+		label.setToolTipText("This parameter will set the board shape, choosing the CUSTOM option will allow you to drow your own shape.");
 		p.add(label);
 		cBox = new JComboBox<String>(new String[] {"Defined", "Custom"});
 		cBox.addActionListener(pl);
@@ -122,8 +122,11 @@ public class TilingPanel extends OptionPanel implements ItemListener
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String)displayer.getStrings().get("htuPoly"));
-		label.setToolTipText((String)displayer.getStrings().get("polyExplain"));
+		JLabel label = new JLabel("How to make a polygon ?");
+		label.setToolTipText("<html>Polygons are made in the \"Polygon\" tab"
+				+ "<br>You can navigate the grid by pressing the middle button (the wheel) of the mouse and drag it."
+				+ "<br>Left click on a dot to add it to the polygon."
+				+ "<br>Right click on a dot to remove it from the polygon.</html>");
 		p.add(label);
 		card.add(p);
 		
@@ -136,8 +139,8 @@ public class TilingPanel extends OptionPanel implements ItemListener
 		card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
 		
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String) displayer.getStrings().get("1dim"));
-		label.setToolTipText((String) displayer.getStrings().get("1dimTT"));
+		JLabel label = new JLabel("First dimension");
+		label.setToolTipText("Primary dimension of the board.");
 		p.add(label);
 		
 		pSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
@@ -148,8 +151,8 @@ public class TilingPanel extends OptionPanel implements ItemListener
 		card.add(Box.createVerticalStrut(5));
 		
 		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String) displayer.getStrings().get("2dim"));
-		label.setToolTipText((String) displayer.getStrings().get("2dimTT"));
+		label = new JLabel("Second dimension");
+		label.setToolTipText("Secondary dimension of the board. Length of sides will alternate between primary and secondary dimensions.");
 		p.add(label);
 		
 		sSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));

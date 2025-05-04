@@ -46,8 +46,8 @@ public class WedgePanel extends OptionPanel
 		JLabel label;
 		
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String) displayer.getStrings().get("row"));
-		label.setToolTipText((String) displayer.getStrings().get("rowTT"));
+		label = new JLabel("Rows: ");
+		label.setToolTipText("Sets the number of rows on the board.");
 		panel.add(label);
 		row = new JSpinner(new SpinnerNumberModel(2, 1, Integer.MAX_VALUE, 1));
 		row.addChangeListener(pl);
@@ -55,8 +55,8 @@ public class WedgePanel extends OptionPanel
 		add(panel);
 		
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String) displayer.getStrings().get("col"));
-		label.setToolTipText((String) displayer.getStrings().get("colTT"));
+		label = new JLabel("Columns: ");
+		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		panel.add(label);
 		col = new JSpinner(new SpinnerNumberModel(2, 1, Integer.MAX_VALUE, 1));
 		col.addChangeListener(pl);

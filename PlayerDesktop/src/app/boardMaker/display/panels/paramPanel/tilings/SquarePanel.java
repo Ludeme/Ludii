@@ -67,8 +67,8 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		add(Box.createVerticalStrut(5));
 		
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String)displayer.getStrings().get("paramShape"));
-		label.setToolTipText((String) displayer.getStrings().get("paramShapeCustomTT"));
+		JLabel label = new JLabel("Board shape: ");
+		label.setToolTipText("This parameter will set the board shape, choosing the CUSTOM option will allow you to drow your own shape.");
 		p.add(label);
 		
 		cBox = new JComboBox<SquareShapeType>(SquareShapeType.values());
@@ -123,8 +123,8 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
 		
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String) displayer.getStrings().get("dimension"));
-		label.setToolTipText((String) displayer.getStrings().get("dimensionTT"));
+		JLabel label = new JLabel("Dimension: ");
+		label.setToolTipText("The number of sites par side.");
 		p.add(label);
 		
 		dimSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
@@ -163,7 +163,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		
 		JPanel pyramPanel = new JPanel();
 		ButtonGroup group = new ButtonGroup();
-		JRadioButton button = new JRadioButton((String)displayer.getStrings().get("on"));
+		JRadioButton button = new JRadioButton("Enabled");
 		button.addActionListener(pl);
 		button.addActionListener(new ActionListener()
 		{
@@ -176,7 +176,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		});
 		group.add(button);
 		pyramPanel.add(button);
-		button = new JRadioButton((String)displayer.getStrings().get("off"));
+		button = new JRadioButton("Disabled");
 		button.setSelected(true);
 		button.addActionListener(pl);
 		button.addActionListener(new ActionListener()
@@ -206,7 +206,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel label = new JLabel("Type of diagonals: ");
-		label.setToolTipText((String)displayer.getStrings().get("diagTypeTT"));
+		label.setToolTipText("How to handle diagonals between opposite corners.");
 		p.add(label);
 		diagBoxCustom = new JComboBox<DiagonalsType>(DiagonalsType.values());
 		diagBoxCustom.setSelectedItem(DiagonalsType.Implied);
@@ -215,8 +215,11 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		card.add(p);
 		
 		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String)displayer.getStrings().get("htuPoly"));
-		label.setToolTipText((String)displayer.getStrings().get("polyExplain"));
+		label = new JLabel("How to make a polygon ?");
+		label.setToolTipText("<html>Polygons are made in the \"Polygon\" tab"
+				+ "<br>You can navigate the grid by pressing the middle button (the wheel) of the mouse and drag it."
+				+ "<br>Left click on a dot to add it to the polygon."
+				+ "<br>Right click on a dot to remove it from the polygon.</html>");
 		p.add(label);
 		card.add(p);
 		

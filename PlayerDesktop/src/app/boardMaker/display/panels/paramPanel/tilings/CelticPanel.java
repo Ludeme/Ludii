@@ -54,8 +54,8 @@ public class CelticPanel extends OptionPanel implements ItemListener
 		add(Box.createVerticalStrut(5));
 		
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String)displayer.getStrings().get("paramShape"));
-		label.setToolTipText((String) displayer.getStrings().get("paramShapeCustomTT"));
+		JLabel label = new JLabel("Board shape: ");
+		label.setToolTipText("This parameter will set the board shape, choosing the CUSTOM option will allow you to drow your own shape.");
 		p.add(label);
 		
 		String[] shapeItems = new String[] {"Rectangle", "Custom"};
@@ -113,8 +113,11 @@ public class CelticPanel extends OptionPanel implements ItemListener
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String)displayer.getStrings().get("htuPoly"));
-		label.setToolTipText((String)displayer.getStrings().get("polyExplain"));
+		JLabel label = new JLabel("How to make a polygon ?");
+		label.setToolTipText("<html>Polygons are made in the \"Polygon\" tab"
+				+ "<br>You can navigate the grid by pressing the middle button (the wheel) of the mouse and drag it."
+				+ "<br>Left click on a dot to add it to the polygon."
+				+ "<br>Right click on a dot to remove it from the polygon.</html>");
 		p.add(label);
 		card.add(p);
 		
@@ -127,8 +130,8 @@ public class CelticPanel extends OptionPanel implements ItemListener
 		card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
 		
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String) displayer.getStrings().get("row"));
-		label.setToolTipText((String) displayer.getStrings().get("rowTT"));
+		JLabel label = new JLabel("Rows: ");
+		label.setToolTipText("Sets the number of rows on the board.");
 		p.add(label);
 		
 		rowSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
@@ -139,8 +142,8 @@ public class CelticPanel extends OptionPanel implements ItemListener
 		card.add(Box.createVerticalStrut(5));
 		
 		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String) displayer.getStrings().get("col"));
-		label.setToolTipText((String) displayer.getStrings().get("colTT"));
+		label = new JLabel("Columns: ");
+		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		p.add(label);
 		
 		colSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));

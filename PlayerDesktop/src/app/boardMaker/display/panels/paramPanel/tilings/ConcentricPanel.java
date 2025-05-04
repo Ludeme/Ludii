@@ -174,11 +174,32 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 	
 	private void createGroupButton(String label, int paramIdx) {
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel l = new JLabel((String) displayer.getStrings().get(label));
-		l.setToolTipText((String) displayer.getStrings().get(label+"TT"));
+		JLabel l;
+		switch (label)
+		{
+		case "mid":
+			l= new JLabel("Midpoints: ");
+			l.setToolTipText("Add vertices at edge midpoints.");
+			break;
+		case "midj":
+			l= new JLabel("Join midpoints: ");
+			l.setToolTipText("Join concentric midpoints.");
+			break;
+		case "cornerj":
+			l= new JLabel("Join corners: ");
+			l.setToolTipText("Join concentric corners.");
+			break;
+		case "stagger":
+			l= new JLabel("Stagger: ");
+			l.setToolTipText("Stagger cells in concentric circular rings.");
+			break;
+		default:
+			l = new JLabel();
+			break;
+		}
 		p.add(l);
 		ButtonGroup group = new ButtonGroup();
-		JRadioButton button = new JRadioButton((String) displayer.getStrings().get("on"));
+		JRadioButton button = new JRadioButton("Enabled");
 		button.setSelected(parameters[paramIdx]);
 		button.addActionListener(pl);
 		button.addActionListener(new ActionListener()
@@ -193,7 +214,7 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 		});
 		group.add(button);
 		p.add(button);
-		button = new JRadioButton((String) displayer.getStrings().get("off"));
+		button = new JRadioButton("Disabled");
 		button.setSelected(!parameters[paramIdx]);
 		button.addActionListener(pl);
 		button.addActionListener(new ActionListener()

@@ -2,12 +2,16 @@ package app.boardMaker.handlers;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import javax.mail.internet.NewsAddress;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
@@ -43,20 +47,8 @@ public class Displayer
 	/** Welcome panel */
 	private WelcomePanel welcomePanel;
 	
-	/** JSON containing strings used for labels, buttons, ... that are not in any enums */
-	private JSONObject strings;
-	
 	public Displayer(Maker maker) {
-		try
-		{
-			this.maker = maker;
-			strings = new JSONObject(Files.readString(Path.of("./src/app/boardMaker/res/strings.json")));
-		}
-		catch (JSONException | IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.maker = maker;
 	}
 	
 	public void createWindow() {
@@ -175,10 +167,6 @@ public class Displayer
 	
 	public WelcomePanel getWelcomePanel() {
 		return welcomePanel;
-	}
-	
-	public JSONObject getStrings() {
-		return strings;
 	}
 	
 	//----------------------------------------------------------

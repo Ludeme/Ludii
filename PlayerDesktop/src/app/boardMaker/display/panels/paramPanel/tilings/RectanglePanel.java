@@ -44,8 +44,8 @@ public class RectanglePanel extends OptionPanel
 		add(Box.createVerticalStrut(5));
 		
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel((String) displayer.getStrings().get("row"));
-		label.setToolTipText((String) displayer.getStrings().get("rowTT"));
+		JLabel label = new JLabel("Rows: ");
+		label.setToolTipText("Sets the number of rows on the board.");
 		panel.add(label);
 		rowSpinner = new JSpinner(new SpinnerNumberModel(3, 1, Integer.MAX_VALUE, 1));
 		rowSpinner.addChangeListener(pl);
@@ -55,8 +55,8 @@ public class RectanglePanel extends OptionPanel
 		add(Box.createVerticalStrut(5));
 		
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String) displayer.getStrings().get("col"));
-		label.setToolTipText((String) displayer.getStrings().get("colTT"));
+		label = new JLabel("Columns: ");
+		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		panel.add(label);
 		colSpinner = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
 		colSpinner.addChangeListener(pl);
@@ -67,7 +67,7 @@ public class RectanglePanel extends OptionPanel
 		
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		label = new JLabel("Type of diagonals: ");
-		label.setToolTipText((String)displayer.getStrings().get("diagTypeTT"));
+		label.setToolTipText("How to handle diagonals between opposite corners.");
 		panel.add(label);
 		diagBox = new JComboBox<DiagonalsType>(DiagonalsType.values());
 		diagBox.setSelectedItem(DiagonalsType.Implied);

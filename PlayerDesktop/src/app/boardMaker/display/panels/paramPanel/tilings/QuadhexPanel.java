@@ -49,8 +49,8 @@ public class QuadhexPanel extends OptionPanel
 		JPanel panel;
 		JLabel label;
 		
-		label = new JLabel((String)displayer.getStrings().get("layer"));
-		label.setToolTipText((String)displayer.getStrings().get("layerTT"));
+		label = new JLabel("Layers: ");
+		label.setToolTipText("Number of layers. The number of cells per side will be twice this number.");
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panel.add(label);
 		layerSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
@@ -59,11 +59,11 @@ public class QuadhexPanel extends OptionPanel
 		add(panel);
 		
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel((String)displayer.getStrings().get("split"));
-		label.setToolTipText((String)displayer.getStrings().get("splitTT"));
+		label = new JLabel("Split: ");
+		label.setToolTipText("Splits the board in 3 subsections.");
 		panel.add(label);
 		ButtonGroup group = new ButtonGroup();
-		JRadioButton buttonYes = new JRadioButton((String)displayer.getStrings().get("on"));
+		JRadioButton buttonYes = new JRadioButton("Enabled");
 		buttonYes.setEnabled(false);
 		buttonYes.addActionListener(pl);
 		buttonYes.addActionListener(new ActionListener()
@@ -78,7 +78,7 @@ public class QuadhexPanel extends OptionPanel
 		});
 		group.add(buttonYes);
 		panel.add(buttonYes);
-		JRadioButton buttonNo = new JRadioButton((String)displayer.getStrings().get("off"));
+		JRadioButton buttonNo = new JRadioButton("Disabled");
 		buttonNo.setSelected(true);
 		buttonNo.addActionListener(pl);
 		buttonNo.addActionListener(new ActionListener()
