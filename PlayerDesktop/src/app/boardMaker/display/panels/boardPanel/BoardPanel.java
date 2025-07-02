@@ -37,7 +37,7 @@ public class BoardPanel extends JTabbedPane
 		displays = new ArrayList<BoardDisplay>();
 		displays.add(new BoardDisplay(maker));
 		
-		addTab("Board",displays.getFirst());
+		addTab("Board",displays.get(0));
 	}
 	
 	/**
@@ -45,7 +45,7 @@ public class BoardPanel extends JTabbedPane
 	 */
 	public void newTab() {
 		displays.add(new BoardDisplay(maker));
-		addTab("Board"+getTabCount(), displays.getLast());
+		addTab("Board"+getTabCount(), displays.get(displays.size() - 1));
 	}
 	
 	/**
