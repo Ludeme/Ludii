@@ -4,9 +4,9 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
+import app.boardMaker.display.panels.library.LibraryPanel;
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
-import app.boardMaker.display.panels.pawnPanel.PawnPanel;
 import app.boardMaker.display.panels.previewPanel.PreviewPanel;
 import app.boardMaker.display.panels.welcomePanel.WelcomePanel;
 import app.boardMaker.display.tabbedBar.BoardMakerTabbedBar;
@@ -52,10 +52,10 @@ public class BoardMakerPane extends JPanel
 		ParamPanel paramPanel = new ParamPanel(displayer);
 		paramPanel.visibility(false);
 				
-		PawnPanel pawnPanel = new PawnPanel(displayer);
-		pawnPanel.visibility(false);
-				
 		PreviewPanel previewPanel = new PreviewPanel(maker);
 		previewPanel.visibility(false);
+
+		LibraryPanel boardlist = new LibraryPanel(maker);
+		boardlist.visibility(false);
 	}
 }

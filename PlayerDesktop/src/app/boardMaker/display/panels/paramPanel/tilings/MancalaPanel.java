@@ -41,6 +41,9 @@ public class MancalaPanel extends JPanel
 		
 		this.maker = maker;
 		this.displayer = maker.getDisplayer();
+		maker.setMancala(true);
+		maker.setSurakarta(false);
+
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));	

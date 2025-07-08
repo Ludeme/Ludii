@@ -19,6 +19,7 @@ import app.boardMaker.display.buttons.CancelButton;
 import app.boardMaker.display.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
+import app.boardMaker.handlers.Maker;
 import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.brick.BrickShapeType;
@@ -35,12 +36,16 @@ public class SpiralPanel extends OptionPanel
 	
 	private GraphFunction board;
 	
-	public SpiralPanel(Displayer displayer) {
+	public SpiralPanel(Maker maker) {
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));	
+		this.displayer = maker.getDisplayer();
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-		
-		this.displayer = displayer;
+
+		maker.setMancala(false);
+		maker.setSurakarta(false);
+
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
 		add(Box.createVerticalStrut(5));

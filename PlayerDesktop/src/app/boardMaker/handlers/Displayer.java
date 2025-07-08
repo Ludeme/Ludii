@@ -2,16 +2,8 @@ package app.boardMaker.handlers;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
-import javax.mail.internet.NewsAddress;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
+import app.boardMaker.display.panels.library.LibraryPanel;
 
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
@@ -46,6 +38,8 @@ public class Displayer
 	private PreviewPanel previewPanel;
 	/** Welcome panel */
 	private WelcomePanel welcomePanel;
+
+	private LibraryPanel boardlist;
 	
 	public Displayer(Maker maker) {
 		this.maker = maker;
@@ -57,7 +51,7 @@ public class Displayer
 	}
 	
 	/**
-	 * Switches to the main view with the boardpanel, toolbar and (possibly) pawn list visible
+	 * Switches to the main view
 	 */
 	public void mainView() {
 		if (welcomePanel.visible()) {
@@ -74,32 +68,32 @@ public class Displayer
 		}
 		
 		boardMakerPane.add(tabbedBar,BorderLayout.NORTH);
-		
-		boardMakerPane.add(boardPanel,BorderLayout.CENTER);
-		boardPanel.visibility(true);
-		
-		if (boardPanel.hasBoard()) {
-			boardMakerPane.add(pawnPanel,BorderLayout.WEST);
-			pawnPanel.visibility(true);
+
+		if (!boardPanel.visible()) {
+			boardMakerPane.add(boardPanel,BorderLayout.CENTER);
+			boardPanel.visibility(true);
 		}
-		
+		if (!boardlist.visible()) {
+			boardMakerPane.add(boardlist,BorderLayout.WEST);
+			boardlist.visibility(true);
+		}
+
 		boardMakerPane.revalidate();
 		boardMakerPane.repaint();
 	}
 	
 	/**
-	 * Switches to the creation view with the previewpanel and parampanel visible
+	 * Switches to the creation view
 	 */
 	public void creationView() {
 		if (boardPanel.visible()) {
 			boardPanel.visibility(false);
 			boardMakerPane.remove(boardPanel);
 		}
-		if (boardPanel.hasBoard() || pawnPanel.visible()) {
-			pawnPanel.visibility(false);
-			boardMakerPane.remove(pawnPanel);
+		if (boardlist.visible()) {
+			boardlist.visibility(false);
+			boardMakerPane.remove(boardlist);
 		}
-		
 		if (!paramPanel.visible()) {
 			boardMakerPane.add(paramPanel,BorderLayout.WEST);
 			paramPanel.visibility(true);
@@ -130,9 +124,9 @@ public class Displayer
 		
 		paramPanel.setPreferredSize(size);
 		paramPanel.setMaximumSize(size);
-		
-		pawnPanel.setPreferredSize(size);
-		pawnPanel.setMaximumSize(size);
+
+		boardlist.setPreferredSize(size);
+		boardlist.setMaximumSize(size);
 	}
 	
 	//----------------------------------------------------------
@@ -168,6 +162,10 @@ public class Displayer
 	public WelcomePanel getWelcomePanel() {
 		return welcomePanel;
 	}
+
+	public LibraryPanel getBoardList() {
+		return boardlist;
+	}
 	
 	//----------------------------------------------------------
 	public void setBoardMakerPane(BoardMakerPane bmp) {
@@ -196,5 +194,9 @@ public class Displayer
 	
 	public void setWelcomePanel(WelcomePanel wp) {
 		welcomePanel = wp;
+	}
+
+	public void setBoardList(LibraryPanel bl) {
+		boardlist = bl;
 	}
 }

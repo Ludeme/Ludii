@@ -198,7 +198,7 @@ public class Maker
 	}
 	
 	/**
-	 * Defines is the board is a mancala board
+	 * Defines if the board is a mancala board
 	 * @param b
 	 */
 	public void setMancala(boolean b) {

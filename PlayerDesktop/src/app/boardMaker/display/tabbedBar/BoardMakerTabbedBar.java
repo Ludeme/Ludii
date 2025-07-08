@@ -58,10 +58,6 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		initToolbar();
 		makeBoardToolbar();
 		addTab("Boards", toolbar);
-		
-		initToolbar();
-		makeFuncToolbar();
-		addTab("Functions", toolbar);
 	}
 	
 	private void initToolbar() {
@@ -170,89 +166,6 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		button.setActionCommand("Remove");
 		button.addActionListener(bl);
 		toolbar.add(button);
-		
-		toolbar.addSeparator();
-		
-		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-		
-		toolbar.addSeparator();
-		
-		for (BoardTiling tiling : BoardTiling.values()) {
-			button = new JButton(tiling.name());
-			switch (tiling)
-			{
-			case Brick:
-				button.setToolTipText("Generates a board with a brick tiling.");
-				break;
-			case Celtic:
-				button.setToolTipText("Generates a board based on a celtic knotwork.");
-				break;
-			case Concentric:
-				button.setToolTipText("Generates a board based on a tiling of concentric shapes.");
-				break;
-			case Hex:
-				button.setToolTipText("Generates a board with an hexagonal tiling.");
-				break;
-			case Quadhex:
-				button.setToolTipText("Generates a board based on an hexagon tessellated by quadrilaterals.");
-				break;
-			case Rectangle:
-				button.setToolTipText("Generates a board with a square tiling and rectangular shape.");
-				break;
-			case Spiral:
-				button.setToolTipText("Generates a board based on a spiral tiling. (For games on vertexes or edges.)");
-				break;
-			case Square:
-				button.setToolTipText("Generates a board with a square tiling.");
-				break;
-			case Tiling:
-				button.setToolTipText("Generates a board based on a known tiling.");
-				break;
-			case Triangle:
-				button.setToolTipText("Generates a board with a triangular tiling.");
-				break;
-			case Wedge:
-				button.setToolTipText("Generates a triangular board, with one vertex at the top and a certain number at the bottom. (For games on vertexes or edges.)");
-				break;
-			default:
-				break;
-			}
-			button.setActionCommand(tiling.name());
-			button.addActionListener(bl);
-			toolbar.add(button);
-		}
-		
-		toolbar.addSeparator();
-		
-		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
-		
-		toolbar.addSeparator();
-		
-		button = new JButton("Mancala");
-		button.setToolTipText("Creates a mancala board.");
-		button.setActionCommand("Mancala");
-		button.addActionListener(bl);
-		toolbar.add(button);
-		
-		button = new JButton("Surakarta - Rectangle");
-		button.setToolTipText("Creates a surakarta board with a rectangular shape. Games are played on vertexes and edges.");
-		button.setActionCommand("SurakartaR");
-		button.addActionListener(bl);
-		toolbar.add(button);
-		
-		button = new JButton("Surakarta - Triangle");
-		button.setToolTipText("Creates a surakarta board with a triangular shape. Games are played on vertexes and edges");
-		button.setActionCommand("SurakartaT");
-		button.addActionListener(bl);
-		toolbar.add(button);
-	}
-	
-	/**
-	 * Creates the function tab toolbar
-	 */
-	private void makeFuncToolbar() {
-		JLabel label = new JLabel("Functions placeholder");
-		toolbar.add(label);
 	}
 	
 	public void updateGameInfo() {

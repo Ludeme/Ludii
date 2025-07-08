@@ -37,7 +37,7 @@ public class BoardPanel extends JTabbedPane
 		displays = new ArrayList<BoardDisplay>();
 		displays.add(new BoardDisplay(maker));
 		
-		addTab("Board",displays.get(0));
+		addTab("View",displays.get(0));
 	}
 	
 	/**

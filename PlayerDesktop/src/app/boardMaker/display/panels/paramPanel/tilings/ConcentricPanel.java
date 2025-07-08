@@ -25,6 +25,7 @@ import app.boardMaker.display.buttons.CancelButton;
 import app.boardMaker.display.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
+import app.boardMaker.handlers.Maker;
 import game.equipment.container.board.Board;
 import game.functions.booleans.BooleanConstant;
 import game.functions.booleans.BooleanFunction;
@@ -54,12 +55,16 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 	
 	private GraphFunction board;
 
-	public ConcentricPanel(Displayer displayer) {
+	public ConcentricPanel(Maker maker) {
 		super();
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));	
+		this.displayer = maker.getDisplayer();
+
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-		
-		this.displayer = displayer;
+
+		maker.setMancala(false);
+		maker.setSurakarta(false);
+
 		pl = new PreviewListener(this,displayer.getPreviewPanel());
 		
 		add(Box.createVerticalStrut(5));

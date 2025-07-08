@@ -47,6 +47,9 @@ public class SurakartaRPanel extends SurakartaPanel
 		
 		this.maker = maker;
 		this.displayer = maker.getDisplayer();
+		maker.setMancala(false);
+		maker.setSurakarta(true);
+
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));	
