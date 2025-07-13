@@ -41,8 +41,6 @@ public class MancalaPanel extends JPanel
 		
 		this.maker = maker;
 		this.displayer = maker.getDisplayer();
-		maker.setMancala(true);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
@@ -104,7 +102,7 @@ public class MancalaPanel extends JPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));

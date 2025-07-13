@@ -9,6 +9,7 @@ import javax.swing.event.ChangeListener;
 
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.StyleType;
+import game.types.board.SiteType;
 
 public class GameTabListener implements ActionListener, ChangeListener
 {	
@@ -40,37 +41,25 @@ public class GameTabListener implements ActionListener, ChangeListener
 			tabbedBar.updateGameInfo();
 			break;
 		case "Vertex":
-			maker.setStyle(StyleType.GraphStyle);
-			
-			maker.getDisplayer().getPreviewPanel().switchStyle();
-			maker.getDisplayer().getPreviewPanel().revalidate();
-			maker.getDisplayer().getPreviewPanel().repaint();
-			
-			maker.getDisplayer().getBoardPanel().switchStyle();
-			maker.getDisplayer().getBoardPanel().revalidate();
-			maker.getDisplayer().getBoardPanel().repaint();
+			maker.setSiteType(SiteType.Vertex);
+
+			maker.getDisplayer().getCurrentDisplay().revalidate();
+			maker.getDisplayer().getCurrentDisplay().repaint();
+
 			break;
 		case "Edge":
-			maker.setStyle(StyleType.GraphStyle);
-			
-			maker.getDisplayer().getPreviewPanel().switchStyle();
-			maker.getDisplayer().getPreviewPanel().revalidate();
-			maker.getDisplayer().getPreviewPanel().repaint();
-			
-			maker.getDisplayer().getBoardPanel().switchStyle();
-			maker.getDisplayer().getBoardPanel().revalidate();
-			maker.getDisplayer().getBoardPanel().repaint();
+			maker.setSiteType(SiteType.Edge);
+
+			maker.getDisplayer().getCurrentDisplay().revalidate();
+			maker.getDisplayer().getCurrentDisplay().repaint();
+
 			break;
 		case "Cell":
-			maker.setStyle(StyleType.BoardStyle);
-			
-			maker.getDisplayer().getPreviewPanel().switchStyle();
-			maker.getDisplayer().getPreviewPanel().revalidate();
-			maker.getDisplayer().getPreviewPanel().repaint();
-			
-			maker.getDisplayer().getBoardPanel().switchStyle();
-			maker.getDisplayer().getBoardPanel().revalidate();
-			maker.getDisplayer().getBoardPanel().repaint();
+			maker.setSiteType(SiteType.Cell);
+
+			maker.getDisplayer().getCurrentDisplay().revalidate();
+			maker.getDisplayer().getCurrentDisplay().repaint();
+
 			break;
 		case "Stack":
 			maker.setStack(((JRadioButton)e.getSource()).isSelected());

@@ -14,6 +14,8 @@ import app.boardMaker.display.tabbedBar.BoardMakerTabbedBar;
 import app.boardMaker.display.window.BoardMakerFrame;
 import app.boardMaker.display.window.BoardMakerPane;
 
+import javax.swing.*;
+
 /**
  * Graphics handler of the desktop app
  */
@@ -165,6 +167,14 @@ public class Displayer
 
 	public LibraryPanel getBoardList() {
 		return boardlist;
+	}
+
+	public JTabbedPane getCurrentDisplay() {
+		if (previewPanel.visible()) {
+			return previewPanel;
+		} else {
+			return boardPanel;
+		}
 	}
 	
 	//----------------------------------------------------------

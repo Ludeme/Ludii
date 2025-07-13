@@ -45,8 +45,6 @@ public class SurakartaTPanel extends SurakartaPanel
 		
 		this.maker = maker;
 		this.displayer = maker.getDisplayer();
-		maker.setMancala(false);
-		maker.setSurakarta(true);
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
@@ -96,7 +94,7 @@ public class SurakartaTPanel extends SurakartaPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));

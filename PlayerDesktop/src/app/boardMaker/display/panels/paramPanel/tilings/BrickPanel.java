@@ -28,6 +28,7 @@ import game.functions.graph.generators.basis.brick.BrickShapeType;
 
 public class BrickPanel extends OptionPanel
 {
+	private Maker maker;
 	private Displayer displayer;
 	private PreviewListener pl;
 	
@@ -37,17 +38,15 @@ public class BrickPanel extends OptionPanel
 	
 	private boolean trim = false;
 	
-	private GraphFunction board;
+	private Board board;
 	
 	public BrickPanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
@@ -125,8 +124,8 @@ public class BrickPanel extends OptionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
-				displayer.mainView();	
+				maker.addBoard();
+				displayer.mainView();
 			}
 		}));
 		buttonPanel.add(new CancelButton(new ActionListener()
@@ -153,11 +152,12 @@ public class BrickPanel extends OptionPanel
 		BrickShapeType shape = (BrickShapeType) shapeBox.getSelectedItem();
 		DimConstant dimA = new DimConstant((int)rowSpinner.getValue());
 		DimConstant dimB = new DimConstant((int)colSpinner.getValue());
-		board = Brick.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB, trim);
+		GraphFunction graph = Brick.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB, trim);
+		board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}

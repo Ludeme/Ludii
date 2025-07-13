@@ -46,6 +46,7 @@ public class PreviewListener implements ActionListener, ChangeListener
 			sp.createBoard();
 			pp.setBoard(sp.board());
 		}
+		pp.revalidate();
 		pp.repaint();
 	}
 
@@ -62,6 +63,7 @@ public class PreviewListener implements ActionListener, ChangeListener
 			sp.createBoard();
 			pp.setBoard(sp.board());
 		}
+		pp.revalidate();
 		pp.repaint();
 	}
 

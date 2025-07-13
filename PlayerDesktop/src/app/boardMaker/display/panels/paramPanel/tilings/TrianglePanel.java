@@ -25,13 +25,13 @@ import app.boardMaker.handlers.Maker;
 import game.equipment.container.board.Board;
 import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
-import game.functions.graph.generators.basis.square.SquareShapeType;
 import game.functions.graph.generators.basis.tri.Tri;
 import game.functions.graph.generators.basis.tri.TriShapeType;
 import game.util.graph.Poly;
 
 public class TrianglePanel extends OptionPanel implements ItemListener
 {
+	private Maker maker;
 	private Displayer displayer;
 	private PolygonView pv;
 	private PreviewListener pl;
@@ -42,18 +42,16 @@ public class TrianglePanel extends OptionPanel implements ItemListener
 	private JSpinner primSpinner;
 	private JSpinner secSpinner;
 	
-	private GraphFunction board;
+	private Board board;
 	
 	public TrianglePanel(Maker maker)
 	{
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this,displayer.getPreviewPanel());
 		
@@ -89,7 +87,7 @@ public class TrianglePanel extends OptionPanel implements ItemListener
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));
@@ -170,15 +168,17 @@ public class TrianglePanel extends OptionPanel implements ItemListener
 		if (!shape.equals(TriShapeType.Custom)) {
 			DimConstant dimA = new DimConstant((int) primSpinner.getValue());
 			DimConstant dimB = new DimConstant((int) secSpinner.getValue());
-			board = Tri.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB);
+			GraphFunction graph = Tri.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB);
+			board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 		} else {
 			Poly poly = pv.makePoly();
-			board = Tri.construct(poly, null);
+			GraphFunction graph = Tri.construct(poly, null);
+			board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 		}
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}

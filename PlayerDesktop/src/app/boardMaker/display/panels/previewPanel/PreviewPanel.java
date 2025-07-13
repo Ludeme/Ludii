@@ -1,17 +1,34 @@
 package app.boardMaker.display.panels.previewPanel;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import app.boardMaker.display.panels.boardPanel.BoardDisplay;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
+import app.boardMaker.utils.BoardData;
 import app.utils.SVGUtil;
+import bridge.Bridge;
+import game.Game;
+import game.equipment.Equipment;
+import game.equipment.Item;
 import game.equipment.container.board.Board;
+import game.equipment.container.board.custom.MancalaBoard;
+import game.equipment.container.board.custom.SurakartaBoard;
 import game.functions.graph.GraphFunction;
+import game.mode.Mode;
+import game.players.Players;
+import game.types.board.SiteType;
+import other.context.Context;
+import other.trial.Trial;
+import util.PlaneType;
+import view.container.ContainerStyle;
+import view.container.styles.BoardStyle;
+import view.container.styles.board.MancalaStyle;
+import view.container.styles.board.SurakartaStyle;
+import view.container.styles.board.graph.GraphStyle;
 
 /**
  * A class for the preview of the board during its creation
@@ -26,20 +43,17 @@ public class PreviewPanel extends JTabbedPane
     private boolean hasChanged;
 	private double boardRatio = 1.0;
 
-	private GraphFunction graph;
-	private Board board;
-	private String svg;
+	private BoardData data;
 	
 	public PreviewPanel(Maker maker) {
 		this.displayer = maker.getDisplayer();
 		this.maker = maker;
 
-		addTab("Preview", new PreviewDrawSpace());
+		data = new BoardData(maker);
+
 		displayer.setPreviewPanel(this);
-	}
-	
-	public void switchStyle() {
-		hasChanged = true;
+
+		addTab("Preview", new PreviewDrawSpace());
 	}
 	
 	public void visibility(boolean b) {
@@ -50,18 +64,63 @@ public class PreviewPanel extends JTabbedPane
 		return visible;
 	}
 	
-	public void setBoard(GraphFunction graph) {
-        hasChanged = true;
-		this.graph = graph;
-	}
-	
 	public void setBoard(Board board) {
         hasChanged = true;
-		this.board = board;
+		data.setBoard(board);
 	}
-	
-	public void setSVG(String svg) {
-		this.svg = svg;
+
+	public BoardData getBoardData() {
+		return data;
+	}
+
+	public Board getBoard() {
+		return data.getBoard();
+	}
+
+	public String getSVG() {
+		return data.getSVG();
+	}
+
+	private void drawPreview(Graphics2D g2d, int width, int height) {
+		Board board = data.getBoard();
+
+		Game game = new Game(maker.getName(), new Players(maker.getPlayers()), new Mode(maker.getMode()), new Equipment(new Item[] {board}), null);
+		game.create();
+
+		game.setMetadata(null);
+
+		Context context = new Context(game, new Trial(game));
+		Bridge bridge = maker.getBridge();
+
+		ContainerStyle gameStyle;
+
+		if (board instanceof MancalaBoard) {
+			gameStyle = new MancalaStyle(bridge,board);
+			gameStyle.setPlacement(context,new Rectangle(0,0,width,height));
+			gameStyle.render(PlaneType.BOARD,context);
+
+			data.setOtherSVG(gameStyle.containerSVGImage());
+		} else if (board instanceof SurakartaBoard) {
+			gameStyle = new SurakartaStyle(bridge,board);
+			gameStyle.setPlacement(context,new Rectangle(0,0,width,height));
+			gameStyle.render(PlaneType.BOARD,context);
+
+			data.setOtherSVG(gameStyle.containerSVGImage());
+		} else {
+			gameStyle = new BoardStyle(bridge,board);
+			gameStyle.setPlacement(context,new Rectangle(0,0,width,height));
+			gameStyle.render(PlaneType.BOARD,context);
+			data.setCellSVG(gameStyle.containerSVGImage());
+
+			gameStyle = new GraphStyle(bridge,board,context);
+			gameStyle.setPlacement(context,new Rectangle(0,0,width,height));
+			gameStyle.render(PlaneType.BOARD,context);
+			data.setGraphSVG(gameStyle.containerSVGImage());
+		}
+
+		BufferedImage image = SVGUtil.createSVGImage(data.getSVG(), width, height);
+		g2d.drawImage(image, 0,
+				0, null);
 	}
 
 	class PreviewDrawSpace extends JPanel {
@@ -79,13 +138,15 @@ public class PreviewPanel extends JTabbedPane
 
 			int boardSize = Math.min(getHeight(), (int)(getWidth() * boardRatio));
 
-			if (graph != null || board != null) {
+			if (data.getBoard() != null) {
 				// Need this to avoid a bug where redrawing the window makes the board smaller
 				if (hasChanged) {
-					maker.drawBoard(g2d,graph,board,boardSize,boardSize);
+					drawPreview(g2d,boardSize,boardSize);
 					hasChanged = false;
 				} else {
-					g2d.drawImage(SVGUtil.createSVGImage(svg, getWidth(), getHeight()), 0, 0, null);
+					BufferedImage image = SVGUtil.createSVGImage(data.getSVG(), getWidth(), getHeight());
+					g2d.drawImage(image, 0,
+							0, null);
 				}
 			}
 		}

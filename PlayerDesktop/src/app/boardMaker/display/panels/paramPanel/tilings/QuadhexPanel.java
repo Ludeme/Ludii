@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -29,23 +28,22 @@ import game.functions.graph.generators.basis.quadhex.Quadhex;
 
 public class QuadhexPanel extends OptionPanel
 {
+	private Maker maker;
 	private Displayer displayer;
 	private PreviewListener pl;
 	
 	private JSpinner layerSpinner;
 	private boolean thirds = false;
 	
-	private GraphFunction board;
+	private Board board;
 	
 	public QuadhexPanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
@@ -129,7 +127,7 @@ public class QuadhexPanel extends OptionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));
@@ -155,11 +153,12 @@ public class QuadhexPanel extends OptionPanel
 	public void createBoard()
 	{
 		DimConstant dimA = new DimConstant((int)layerSpinner.getValue());
-		board = new Quadhex(dimA, thirds);
+		GraphFunction graph = new Quadhex(dimA, thirds);
+		board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}

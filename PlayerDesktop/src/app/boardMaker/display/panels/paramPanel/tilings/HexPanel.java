@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,11 +27,11 @@ import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.hex.Hex;
 import game.functions.graph.generators.basis.hex.HexShapeType;
-import game.functions.graph.generators.basis.tri.TriShapeType;
 import game.util.graph.Poly;
 
 public class HexPanel extends OptionPanel implements ItemListener
 {
+	private Maker maker;
 	private Displayer displayer;
 	private PolygonView pv;
 	private PreviewListener pl;
@@ -43,17 +42,15 @@ public class HexPanel extends OptionPanel implements ItemListener
 	private JSpinner primSpinner;
 	private JSpinner secSpinner;
 
-	private GraphFunction board;
+	private Board board;
 	
 	public HexPanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this,displayer.getPreviewPanel());
 		
@@ -88,7 +85,7 @@ public class HexPanel extends OptionPanel implements ItemListener
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));
@@ -187,15 +184,17 @@ public class HexPanel extends OptionPanel implements ItemListener
 		if (!shape.equals(HexShapeType.Custom)) {
 			DimConstant dimA = new DimConstant((int)primSpinner.getValue());
 			DimConstant dimB = new DimConstant((int)secSpinner.getValue());
-			board = Hex.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB);
+			GraphFunction graph = Hex.construct(shape, dimA, (dimB.eval() == 0) ? null : dimB);
+			board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 		} else {
 			Poly poly = pv.makePoly();
-			board = Hex.construct(poly, null);
+			GraphFunction graph = Hex.construct(poly, null);
+			board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 		}
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}

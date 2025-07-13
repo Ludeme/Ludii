@@ -7,22 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
-import javax.swing.LookAndFeel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.UIManager;
-import javax.swing.plaf.OptionPaneUI;
 
 import app.boardMaker.display.buttons.CancelButton;
 import app.boardMaker.display.buttons.CreateButton;
@@ -30,7 +24,6 @@ import app.boardMaker.display.panels.polygonView.PolygonView;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
-import app.boardMaker.utils.Coordinates;
 import game.equipment.container.board.Board;
 import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
@@ -41,6 +34,7 @@ import game.util.graph.Poly;
 
 public class SquarePanel extends OptionPanel implements ItemListener
 {
+	private Maker maker;
 	private Displayer displayer;
 	private PolygonView pv;
 	private PreviewListener pl;
@@ -55,17 +49,15 @@ public class SquarePanel extends OptionPanel implements ItemListener
 	
 	private boolean pyramidal = false;
 	
-	private GraphFunction board;
+	private Board board;
 	
 	public SquarePanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this,displayer.getPreviewPanel());
 		
@@ -101,7 +93,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));
@@ -237,10 +229,12 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		if (!shapeType.equals(SquareShapeType.Custom)) {
 			DimConstant dim = new DimConstant((int)dimSpinner.getValue());
 			DiagonalsType diagType = (DiagonalsType) diagBox.getSelectedItem();
-			board = Square.construct(shapeType, dim, choice.getSelectedIndex() == 0 ? diagType : null, choice.getSelectedIndex() == 0 ? null : pyramidal);
+			GraphFunction graph = Square.construct(shapeType, dim, choice.getSelectedIndex() == 0 ? diagType : null, choice.getSelectedIndex() == 0 ? null : pyramidal);
+			board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 		} else {
 			Poly poly = pv.makePoly();
-			board = Square.construct(poly, null, (DiagonalsType) diagBox.getSelectedItem());
+			GraphFunction graph = Square.construct(poly, null, (DiagonalsType) diagBox.getSelectedItem());
+			board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 		}
 	}
 
@@ -264,7 +258,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}

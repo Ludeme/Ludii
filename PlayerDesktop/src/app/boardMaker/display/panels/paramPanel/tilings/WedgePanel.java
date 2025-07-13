@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -18,20 +17,21 @@ import app.boardMaker.display.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
+import game.equipment.container.board.Board;
 import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
-import game.functions.graph.generators.basis.brick.BrickShapeType;
 import game.functions.graph.generators.shape.Wedge;
 
 public class WedgePanel extends OptionPanel
 {
+	private Maker maker;
 	private Displayer displayer;
 	private PreviewListener pl;
 	
 	private JSpinner row;
 	private JSpinner col;
 		
-	private GraphFunction board;
+	private Board board;
 	
 	public WedgePanel(Maker maker) {
 		super();
@@ -39,9 +39,6 @@ public class WedgePanel extends OptionPanel
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
@@ -78,7 +75,7 @@ public class WedgePanel extends OptionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));
@@ -103,11 +100,12 @@ public class WedgePanel extends OptionPanel
 	@Override
 	public void createBoard()
 	{
-		board = new Wedge(new DimConstant((int) row.getValue()), ((int)col.getValue() == 0) ? null : new DimConstant((int) col.getValue()));
+		GraphFunction graph = new Wedge(new DimConstant((int) row.getValue()), ((int)col.getValue() == 0) ? null : new DimConstant((int) col.getValue()));
+		board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}

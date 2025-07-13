@@ -2,23 +2,30 @@ package app.boardMaker.handlers;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import javax.swing.SwingUtilities;
 
 import app.boardMaker.res.StyleType;
+import app.boardMaker.utils.BoardData;
 import app.utils.SVGUtil;
 import bridge.Bridge;
 import game.Game;
 import game.equipment.Equipment;
 import game.equipment.Item;
 import game.equipment.container.board.Board;
+import game.equipment.container.board.custom.MancalaBoard;
+import game.equipment.container.board.custom.SurakartaBoard;
 import game.functions.graph.GraphFunction;
 import game.mode.Mode;
 import game.players.Players;
+import game.types.board.SiteType;
 import game.types.play.ModeType;
 import other.context.Context;
 import other.trial.Trial;
 import util.PlaneType;
+import view.container.ContainerStyle;
+import view.container.aspects.designs.board.graph.GraphDesign;
 import view.container.styles.BoardStyle;
 import view.container.styles.board.MancalaStyle;
 import view.container.styles.board.SurakartaStyle;
@@ -31,19 +38,19 @@ import view.container.styles.board.graph.GraphStyle;
 public class Maker
 {
 	private Displayer displayer;
-	
+	private Bridge bridge;
+
 	private String gamename;
 	private int players;
 	private ModeType mode;
-	
-	// Styletype selected in the game tab of the tabbed bar
-	private StyleType selectedStyle = StyleType.BoardStyle;
-	private boolean isMancala = false;
-	private boolean isSurakarta = false;
+	private SiteType siteType = SiteType.Cell;
 	private boolean largeStack = false;
+
+	private BoardData boardData;
 	
 	public Maker() {
 		displayer = new Displayer(this);
+		bridge = new Bridge();
 	}
 	
 	/**
@@ -60,84 +67,29 @@ public class Maker
 			}
 		});
 	}
-	
+
 	//--------------------------------------------------------------------------------
-	
-	public void drawBoard(Graphics2D g2d, GraphFunction graph, Board board,int width, int height) {
-		Board gameBoard;
-		StyleType gameStyle;
-		if (isMancala) {
-			gameBoard = board;
-			gameStyle = StyleType.MancalaStyle;
-		} else if (isSurakarta) {
-			gameBoard = board;
-			gameStyle = StyleType.SurakartaStyle;
-		} else {
-			gameBoard = new Board(graph, null, null, null, null, null, null);
-			gameStyle = selectedStyle;
-		}
-		
-		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {gameBoard}), null);
-		game.create();
-		game.setMetadata(null);
-		
-		Context context = new Context(game, new Trial(game));
-		Bridge bridge = new Bridge();
-		
-		String svg;
-		switch (gameStyle)
-		{
-		case BoardStyle:
-			BoardStyle style = new BoardStyle(bridge, gameBoard);
-			style.setPlacement(context, new Rectangle(0, 0, width, height));
-			style.render(PlaneType.BOARD, context);
-			
-			svg = style.containerSVGImage();
-			break;
-		case GraphStyle:
-			GraphStyle gstyle = new GraphStyle(bridge, gameBoard, context);
-			gstyle.setPlacement(context, new Rectangle(0, 0, width, height));
-			gstyle.render(PlaneType.BOARD, context);
-			
-			svg = gstyle.containerSVGImage();
-			break;
-		case MancalaStyle:
-			MancalaStyle mstyle = new MancalaStyle(bridge, gameBoard);
-			mstyle.setPlacement(context, new Rectangle(0, 0, width, height));
-			mstyle.render(PlaneType.BOARD, context);
-			
-			svg = mstyle.containerSVGImage();
-			break;
-		case SurakartaStyle:
-			SurakartaStyle sstyle = new SurakartaStyle(bridge, gameBoard);
-			sstyle.setPlacement(context, new Rectangle(0, 0, width, height));
-			sstyle.render(PlaneType.BOARD, context);
-			
-			svg = sstyle.containerSVGImage();
-			break;
-		default:
-			svg = "";
-			break;
-		}
-		
-		if (svg == null || svg.equals("")) {
-			return;
-		}
-						
-		displayer.getPreviewPanel().setSVG(svg);
-		displayer.getBoardPanel().setSVG(svg);
-		
-		g2d.drawImage(SVGUtil.createSVGImage(svg, width, height), 0, 0, null);
+
+	public void addBoard() {
+		boardData = displayer.getPreviewPanel().getBoardData();
 	}
-	
+
 	//--------------------------------------------------------------------------------
-	
+
 	/**
 	 * Gets the Displayer
 	 * @return the displayer
 	 */
 	public Displayer getDisplayer() {
 		return displayer;
+	}
+
+	public BoardData getBoardData() {
+		return boardData;
+	}
+
+	public Bridge getBridge() {
+		return bridge;
 	}
 	
 	/**
@@ -163,6 +115,10 @@ public class Maker
 	public ModeType getMode() {
 		return mode;
 	}
+
+	public SiteType getSiteType() {
+		return siteType;
+	}
 	
 	public boolean largeStack() {
 		return largeStack;
@@ -183,10 +139,10 @@ public class Maker
 	
 	/**
 	 * Sets the selected style of the board
-	 * @param style the style of the board
+	 * @param type the style of the board
 	 */
-	public void setStyle(StyleType style) {
-		this.selectedStyle = style;
+	public void setSiteType(SiteType type) {
+		this.siteType = type;
 	}
 	
 	/**
@@ -195,21 +151,5 @@ public class Maker
 	 */
 	public void setStack(boolean b) {
 		largeStack = b;
-	}
-	
-	/**
-	 * Defines if the board is a mancala board
-	 * @param b
-	 */
-	public void setMancala(boolean b) {
-		isMancala = b;
-	}
-	
-	/**
-	 * Defines if the board is a surakarta board
-	 * @param b
-	 */
-	public void setSurakarta(boolean b) {
-		isSurakarta = b;
 	}
 }

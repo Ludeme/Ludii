@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -20,13 +19,14 @@ import app.boardMaker.display.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
+import game.equipment.container.board.Board;
 import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
-import game.functions.graph.generators.basis.brick.BrickShapeType;
 import game.functions.graph.generators.shape.Spiral;
 
 public class SpiralPanel extends OptionPanel
 {
+	private Maker maker;
 	private Displayer displayer;
 	private PreviewListener pl;
 	
@@ -34,17 +34,15 @@ public class SpiralPanel extends OptionPanel
 	private JSpinner sites;
 	private boolean clock = true;
 	
-	private GraphFunction board;
+	private Board board;
 	
 	public SpiralPanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
@@ -117,7 +115,7 @@ public class SpiralPanel extends OptionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));
@@ -142,11 +140,12 @@ public class SpiralPanel extends OptionPanel
 	@Override
 	public void createBoard()
 	{
-		board = new Spiral(new DimConstant((int) turns.getValue()), new DimConstant((int) sites.getValue()), clock);
+		GraphFunction graph = new Spiral(new DimConstant((int) turns.getValue()), new DimConstant((int) sites.getValue()), clock);
+		board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}

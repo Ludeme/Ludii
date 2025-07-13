@@ -26,12 +26,11 @@ import game.equipment.container.board.Board;
 import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.celtic.Celtic;
-import game.functions.graph.generators.basis.tri.TriShapeType;
 import game.util.graph.Poly;
-import view.container.styles.board.graph.GraphStyle;
 
 public class CelticPanel extends OptionPanel implements ItemListener
 {
+	private Maker maker;
 	private Displayer displayer;
 	
 	private JPanel cards;
@@ -42,17 +41,15 @@ public class CelticPanel extends OptionPanel implements ItemListener
 	private PolygonView pv;
 	private PreviewListener pl;
 	
-	private GraphFunction board;
+	private Board board;
 	
 	public CelticPanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
@@ -88,7 +85,7 @@ public class CelticPanel extends OptionPanel implements ItemListener
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
+				maker.addBoard();
 				displayer.mainView();	
 			}
 		}));
@@ -167,12 +164,14 @@ public class CelticPanel extends OptionPanel implements ItemListener
 		if (((String)shapeBox.getSelectedItem()).equals("Rectangle")) {
 			DimConstant dimA = new DimConstant((int)rowSpinner.getValue());
 			DimConstant dimB = new DimConstant((int)colSpinner.getValue());
-			board = new Celtic(dimA, (dimB.eval() == 0) ? null : dimB);
+			GraphFunction graph = new Celtic(dimA, (dimB.eval() == 0) ? null : dimB);
+			board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 		} else if (((String)shapeBox.getSelectedItem()).equals("Custom")) {
 			// Need this check to avoid an error when creating the celtic graph
 			if (pv.getPoly().size() > 2) {
 				Poly poly = pv.makePoly();
-				board = new Celtic(poly, null);
+				GraphFunction graph = new Celtic(poly, null);
+				board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 			} else {
 				board = null;
 			}
@@ -180,7 +179,7 @@ public class CelticPanel extends OptionPanel implements ItemListener
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}

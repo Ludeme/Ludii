@@ -37,6 +37,7 @@ import game.functions.graph.generators.shape.concentric.ConcentricShapeType;
 
 public class ConcentricPanel extends OptionPanel implements  ItemListener
 {
+	private Maker maker;
 	private Displayer displayer;
 	
 	private JPanel cards;
@@ -53,17 +54,15 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 	
 	private PreviewListener pl;
 	
-	private GraphFunction board;
+	private Board board;
 
 	public ConcentricPanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
-
-		maker.setMancala(false);
-		maker.setSurakarta(false);
 
 		pl = new PreviewListener(this,displayer.getPreviewPanel());
 		
@@ -155,8 +154,8 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				displayer.getBoardPanel().setBoard(board);
-				displayer.mainView();	
+				maker.addBoard();
+				displayer.mainView();
 			}
 		}));
 		buttonPanel.add(new CancelButton(new ActionListener()
@@ -249,19 +248,22 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 				switch (selectedShapeParameter)
 				{
 				case 0: {
-					board = Concentric.construct((ConcentricShapeType)shapes.getSelectedItem(), null, null, new DimConstant((int)ringSpinner.getValue()), 
+					GraphFunction graph = Concentric.construct((ConcentricShapeType)shapes.getSelectedItem(), null, null, new DimConstant((int)ringSpinner.getValue()),
 							((int)stepSpinner.getValue() == 0) ? null : new DimConstant((int) stepSpinner.getValue()), bf0, bf1, bf2, bf3);
+					board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 					break;
 				}
 				case 1: {
-					board = Concentric.construct(null, new DimConstant((int)sideSpinner.getValue()), null, new DimConstant((int)ringSpinner.getValue()), 
+					GraphFunction graph = Concentric.construct(null, new DimConstant((int)sideSpinner.getValue()), null, new DimConstant((int)ringSpinner.getValue()),
 							((int)stepSpinner.getValue() == 0) ? null : new DimConstant((int) stepSpinner.getValue()), bf0, bf1, bf2, bf3);
+					board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 					break;
 				}
 				case 2: {
 					if (isCorrectFormat(dimensions.getText())) {
-						board = Concentric.construct(null, null, parseDimensions(), new DimConstant((int)ringSpinner.getValue()), 
+						GraphFunction graph = Concentric.construct(null, null, parseDimensions(), new DimConstant((int)ringSpinner.getValue()),
 								((int)stepSpinner.getValue() == 0) ? null : new DimConstant((int) stepSpinner.getValue()), bf0, bf1, bf2, bf3);
+						board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 					} else {
 						// dialog to reformat
 						JOptionPane.showMessageDialog(this, "Dimensions does not respect the right format.\n"
@@ -299,7 +301,7 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 	}
 
 	@Override
-	public GraphFunction board()
+	public Board board()
 	{
 		return board;
 	}
