@@ -9,7 +9,6 @@ import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
 import app.boardMaker.display.panels.pawnPanel.PawnPanel;
 import app.boardMaker.display.panels.previewPanel.PreviewPanel;
-import app.boardMaker.display.panels.welcomePanel.WelcomePanel;
 import app.boardMaker.display.tabbedBar.BoardMakerTabbedBar;
 import app.boardMaker.display.window.BoardMakerFrame;
 import app.boardMaker.display.window.BoardMakerPane;
@@ -38,8 +37,6 @@ public class Displayer
 	private PawnPanel pawnPanel;
 	/** Panel containing the board preview */
 	private PreviewPanel previewPanel;
-	/** Welcome panel */
-	private WelcomePanel welcomePanel;
 
 	private LibraryPanel boardlist;
 	
@@ -50,16 +47,13 @@ public class Displayer
 	public void createWindow() {
 		frame = new BoardMakerFrame(maker);
 		frame.requestFocus();
+		setSizes();
 	}
 	
 	/**
 	 * Switches to the main view
 	 */
 	public void mainView() {
-		if (welcomePanel.visible()) {
-			welcomePanel.visibility(false);
-			boardMakerPane.remove(welcomePanel);
-		}
 		if (previewPanel.visible()) {
 			previewPanel.visibility(false);
 			boardMakerPane.remove(previewPanel);
@@ -105,7 +99,7 @@ public class Displayer
 			boardMakerPane.add(previewPanel,BorderLayout.CENTER);
 			previewPanel.visibility(true);
 		}
-		
+
 		boardMakerPane.revalidate();
 		boardMakerPane.repaint();
 	}
@@ -115,7 +109,7 @@ public class Displayer
 	 */
 	public void setSizes() {
 		Dimension size = new Dimension(boardMakerPane.getWidth() / 2, boardMakerPane.getHeight());
-		
+		System.out.println(size);
 		boardPanel.setPreferredSize(size);
 		boardPanel.setMinimumSize(size);
 		
@@ -123,7 +117,7 @@ public class Displayer
 		previewPanel.setMinimumSize(size);
 		
 		size = new Dimension(boardMakerPane.getWidth() / 4, boardMakerPane.getHeight());
-		
+		System.out.println(size);
 		paramPanel.setPreferredSize(size);
 		paramPanel.setMaximumSize(size);
 
@@ -159,10 +153,6 @@ public class Displayer
 	
 	public PreviewPanel getPreviewPanel() {
 		return previewPanel;
-	}
-	
-	public WelcomePanel getWelcomePanel() {
-		return welcomePanel;
 	}
 
 	public LibraryPanel getBoardList() {
@@ -200,10 +190,6 @@ public class Displayer
 	
 	public void setPreviewPanel(PreviewPanel pp) {
 		previewPanel = pp;
-	}
-	
-	public void setWelcomePanel(WelcomePanel wp) {
-		welcomePanel = wp;
 	}
 
 	public void setBoardList(LibraryPanel bl) {

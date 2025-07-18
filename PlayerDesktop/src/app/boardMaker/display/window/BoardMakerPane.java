@@ -8,7 +8,6 @@ import app.boardMaker.display.panels.library.LibraryPanel;
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
 import app.boardMaker.display.panels.previewPanel.PreviewPanel;
-import app.boardMaker.display.panels.welcomePanel.WelcomePanel;
 import app.boardMaker.display.tabbedBar.BoardMakerTabbedBar;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
@@ -29,15 +28,12 @@ public class BoardMakerPane extends JPanel
 		
 		this.displayer = maker.getDisplayer();
 		this.maker = maker;
-		
-		displayer.setBoardMakerPane(this);
-		
-		WelcomePanel welcomePanel = new WelcomePanel(maker);
-		displayer.setWelcomePanel(welcomePanel);
-		welcomePanel.visibility(true);
 
-		
-		add(welcomePanel,BorderLayout.CENTER);
+		displayer.setBoardMakerPane(this);
+
+		createPanels();
+
+		displayer.mainView();
 		
 		setOpaque(true);
 	}
@@ -55,7 +51,7 @@ public class BoardMakerPane extends JPanel
 		PreviewPanel previewPanel = new PreviewPanel(maker);
 		previewPanel.visibility(false);
 
-		LibraryPanel boardlist = new LibraryPanel(maker);
-		boardlist.visibility(false);
+		LibraryPanel library = new LibraryPanel(maker);
+		library.visibility(false);
 	}
 }

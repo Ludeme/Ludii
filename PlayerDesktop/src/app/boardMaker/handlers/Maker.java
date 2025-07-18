@@ -40,9 +40,9 @@ public class Maker
 	private Displayer displayer;
 	private Bridge bridge;
 
-	private String gamename;
-	private int players;
-	private ModeType mode;
+	private String gamename = "";
+	private int players = 2;
+	private ModeType mode = ModeType.Alternating;
 	private SiteType siteType = SiteType.Cell;
 	private boolean largeStack = false;
 
