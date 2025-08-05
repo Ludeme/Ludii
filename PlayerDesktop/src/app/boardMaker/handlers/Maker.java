@@ -71,7 +71,7 @@ public class Maker
 	//--------------------------------------------------------------------------------
 
 	public void addBoard() {
-		boardData = displayer.getPreviewPanel().getBoardData();
+		boardData = displayer.getPreviewPanel().getBoardData().copy();
 	}
 
 	//--------------------------------------------------------------------------------

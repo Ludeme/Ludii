@@ -21,6 +21,17 @@ public class BoardData {
         this.maker = maker;
     }
 
+    public BoardData copy() {
+        BoardData copy = new BoardData(maker);
+
+        copy.setBoard(board);
+        copy.setCellSVG(cellSVG);
+        copy.setGraphSVG(graphSVG);
+        copy.setOtherSVG(otherSVG);
+
+        return copy;
+    }
+
     public void setBoard(Board board) {
         this.board = board;
     }
