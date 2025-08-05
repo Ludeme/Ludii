@@ -3,7 +3,7 @@ package app.boardMaker.handlers;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import app.boardMaker.display.panels.library.LibraryPanel;
+import app.boardMaker.display.panels.westPanel.WestPanel;
 
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
@@ -38,7 +38,7 @@ public class Displayer
 	/** Panel containing the board preview */
 	private PreviewPanel previewPanel;
 
-	private LibraryPanel boardlist;
+	private WestPanel westPanel;
 	
 	public Displayer(Maker maker) {
 		this.maker = maker;
@@ -69,9 +69,9 @@ public class Displayer
 			boardMakerPane.add(boardPanel,BorderLayout.CENTER);
 			boardPanel.visibility(true);
 		}
-		if (!boardlist.visible()) {
-			boardMakerPane.add(boardlist,BorderLayout.WEST);
-			boardlist.visibility(true);
+		if (!westPanel.visible()) {
+			boardMakerPane.add(westPanel,BorderLayout.WEST);
+			westPanel.visibility(true);
 		}
 
 		boardMakerPane.revalidate();
@@ -86,9 +86,9 @@ public class Displayer
 			boardPanel.visibility(false);
 			boardMakerPane.remove(boardPanel);
 		}
-		if (boardlist.visible()) {
-			boardlist.visibility(false);
-			boardMakerPane.remove(boardlist);
+		if (westPanel.visible()) {
+			westPanel.visibility(false);
+			boardMakerPane.remove(westPanel);
 		}
 		if (!paramPanel.visible()) {
 			boardMakerPane.add(paramPanel,BorderLayout.WEST);
@@ -121,8 +121,8 @@ public class Displayer
 		paramPanel.setPreferredSize(size);
 		paramPanel.setMaximumSize(size);
 
-		boardlist.setPreferredSize(size);
-		boardlist.setMaximumSize(size);
+		westPanel.setPreferredSize(size);
+		westPanel.setMaximumSize(size);
 	}
 	
 	//----------------------------------------------------------
@@ -155,8 +155,8 @@ public class Displayer
 		return previewPanel;
 	}
 
-	public LibraryPanel getBoardList() {
-		return boardlist;
+	public WestPanel getBoardList() {
+		return westPanel;
 	}
 
 	public JTabbedPane getCurrentDisplay() {
@@ -192,7 +192,7 @@ public class Displayer
 		previewPanel = pp;
 	}
 
-	public void setBoardList(LibraryPanel bl) {
-		boardlist = bl;
+	public void setWestPanel(WestPanel bl) {
+		westPanel = bl;
 	}
 }

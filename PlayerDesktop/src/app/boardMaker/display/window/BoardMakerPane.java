@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import app.boardMaker.display.panels.library.LibraryPanel;
+import app.boardMaker.display.panels.westPanel.WestPanel;
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
 import app.boardMaker.display.panels.previewPanel.PreviewPanel;
@@ -51,7 +51,7 @@ public class BoardMakerPane extends JPanel
 		PreviewPanel previewPanel = new PreviewPanel(maker);
 		previewPanel.visibility(false);
 
-		LibraryPanel library = new LibraryPanel(maker);
-		library.visibility(false);
+		WestPanel westPanel = new WestPanel(maker);
+		westPanel.visibility(false);
 	}
 }

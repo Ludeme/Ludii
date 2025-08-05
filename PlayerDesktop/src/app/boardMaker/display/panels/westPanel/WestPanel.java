@@ -1,20 +1,23 @@
-package app.boardMaker.display.panels.library;
+package app.boardMaker.display.panels.westPanel;
 
+import app.boardMaker.display.panels.westPanel.library.Library;
 import app.boardMaker.handlers.Maker;
 
 import javax.swing.*;
 
-public class LibraryPanel extends JTabbedPane {
+public class WestPanel extends JTabbedPane {
     private Maker maker;
     private boolean visible;
 
-    public LibraryPanel(Maker maker) {
+    public WestPanel(Maker maker) {
         this.maker = maker;
 
+        maker.getDisplayer().setWestPanel(this);
+        
         Library library = new Library(maker);
-        maker.getDisplayer().setBoardList(this);
 
         addTab("Library", library);
+        addTab("Boards", new JPanel());
     }
 
     public void visibility(boolean b) {

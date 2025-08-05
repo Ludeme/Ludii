@@ -1,4 +1,4 @@
-package app.boardMaker.display.panels.library;
+package app.boardMaker.display.panels.westPanel.library;
 
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
