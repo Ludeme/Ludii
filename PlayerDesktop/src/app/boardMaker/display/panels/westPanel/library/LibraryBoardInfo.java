@@ -1,10 +1,10 @@
 package app.boardMaker.display.panels.westPanel.library;
 
-public class BoardInfo {
+public class LibraryBoardInfo {
     private String name;
     private String classname;
 
-    public BoardInfo(String name, String classname) {
+    public LibraryBoardInfo(String name, String classname) {
         this.name = name;
         this.classname = classname;
     }

@@ -3,12 +3,10 @@ package app.boardMaker.display.panels.boardPanel;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.utils.BoardData;
 import app.boardMaker.utils.Camera;
-import app.boardMaker.utils.Coordinates;
 import app.utils.SVGUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class BoardDrawSpace extends JPanel {
     private Maker maker;
@@ -36,9 +34,9 @@ public class BoardDrawSpace extends JPanel {
         g2d.setBackground(Color.white);
         g2d.clearRect(0, 0, getWidth(), getHeight());
 
-        BoardData data = maker.getBoardData();
-        if (data != null) {
-            g2d.drawImage(SVGUtil.createSVGImage(data.getSVG(), getWidth(),getHeight()),camera.offX(), -camera.offY(), null);
+        BoardData currentBoard = maker.getCurrentBoard();
+        if (currentBoard != null) {
+            g2d.drawImage(SVGUtil.createSVGImage(currentBoard.getSVG(), getWidth(),getHeight()),camera.offX(), -camera.offY(), null);
         }
     }
 }

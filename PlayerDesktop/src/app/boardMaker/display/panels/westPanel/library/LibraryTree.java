@@ -2,12 +2,12 @@ package app.boardMaker.display.panels.westPanel.library;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class BoardTree extends DefaultMutableTreeNode {
+public class LibraryTree extends DefaultMutableTreeNode {
     /**
      * Creates a tree containing available boards
      * @param rootname the name of the root
      */
-    public BoardTree(String rootname) {
+    public LibraryTree(String rootname) {
         super(rootname);
 
         createNodes();
@@ -33,63 +33,63 @@ public class BoardTree extends DefaultMutableTreeNode {
     }
 
     private void createBasicNodes(DefaultMutableTreeNode cat) {
-        BoardInfo info = new BoardInfo("Brick","BrickPanel");
+        LibraryBoardInfo info = new LibraryBoardInfo("Brick","BrickPanel");
         DefaultMutableTreeNode board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Celtic","CelticPanel");
+        info = new LibraryBoardInfo("Celtic","CelticPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Concentric","ConcentricPanel");
+        info = new LibraryBoardInfo("Concentric","ConcentricPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Hexagonal","HexPanel");
+        info = new LibraryBoardInfo("Hexagonal","HexPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Quadhex","QuadhexPanel");
+        info = new LibraryBoardInfo("Quadhex","QuadhexPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Rectangle","RectanglePanel");
+        info = new LibraryBoardInfo("Rectangle","RectanglePanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Spiral","SpiralPanel");
+        info = new LibraryBoardInfo("Spiral","SpiralPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Square","SquarePanel");
+        info = new LibraryBoardInfo("Square","SquarePanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Tiling","TilingPanel");
+        info = new LibraryBoardInfo("Tiling","TilingPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Triangle","TrianglePanel");
+        info = new LibraryBoardInfo("Triangle","TrianglePanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Wedge","WedgePanel");
+        info = new LibraryBoardInfo("Wedge","WedgePanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
     }
 
     private void createMancalaNodes(DefaultMutableTreeNode cat) {
-        BoardInfo info = new BoardInfo("Mancala","MancalaPanel");
+        LibraryBoardInfo info = new LibraryBoardInfo("Mancala","MancalaPanel");
         DefaultMutableTreeNode board = new DefaultMutableTreeNode(info);
         cat.add(board);
     }
 
     private void createSurakartaNodes(DefaultMutableTreeNode cat) {
-        BoardInfo info = new BoardInfo("Surakarta - Rectangle","SurakartaRPanel");
+        LibraryBoardInfo info = new LibraryBoardInfo("Surakarta - Rectangle","SurakartaRPanel");
         DefaultMutableTreeNode board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
-        info = new BoardInfo("Surakarta - Triangle","SurakartaTPanel");
+        info = new LibraryBoardInfo("Surakarta - Triangle","SurakartaTPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
     }

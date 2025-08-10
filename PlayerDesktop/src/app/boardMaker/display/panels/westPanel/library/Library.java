@@ -21,7 +21,7 @@ public class Library extends JPanel {
         this.displayer = maker.getDisplayer();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Library");
-        root.add(new BoardTree("Tilings"));
+        root.add(new LibraryTree("Tilings"));
         library = new JTree(root);
         LibraryML ml = new LibraryML(maker,library);
 

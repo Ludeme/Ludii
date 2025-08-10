@@ -25,8 +25,7 @@ public class LibraryML extends MouseAdapter {
         if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (node.isLeaf()) {
-                System.out.println(node.getUserObject() instanceof BoardInfo);
-                String classname = ((BoardInfo) node.getUserObject()).getClassname();
+                String classname = ((LibraryBoardInfo) node.getUserObject()).getClassname();
                 try {
                     String path = "app.boardMaker.display.panels.paramPanel.tilings.";
                     JPanel panel = (JPanel) Class.forName(path + classname).getConstructor(Maker.class).newInstance(maker);
