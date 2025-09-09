@@ -3,7 +3,7 @@ package app.boardMaker.display.panels.polygonView;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import app.boardMaker.utils.Coordinates;
+import app.boardMaker.utils.Vertex;
 
 public class PolygonListener extends MouseAdapter
 {
@@ -22,15 +22,15 @@ public class PolygonListener extends MouseAdapter
 		// Coordinates on base grid, without offset
 		int correctedX = x - (view.getCamera().offX() % view.incX());
 		int correctedY = y - (view.getCamera().offY() % view.incY());
-		
+		// Click is on a vertex of the grid
 		if ((correctedX % view.incX() < view.dotSize()) && (correctedY % view.incY() > view.incY() - view.dotSize())) {
 			int vx = correctedX / view.incX() - view.getCamera().offX() / view.incX();
 			int vy = correctedY / view.incY() - view.getCamera().offY() / view.incY();
 			
 			if (e.getButton() == 1) {
-				view.addVertex(new Coordinates(vx, vy));
+				view.addVertex(new Vertex(vx, vy));
 			} else if (e.getButton() == 3) {
-				view.removeVertex(new Coordinates(vx, vy));
+				view.removeVertex(new Vertex(vx, vy));
 			} 
 		} 
 		

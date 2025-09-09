@@ -94,6 +94,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 			{
 				createBoard();
 				maker.addBoard();
+				displayer.getPreviewPanel().removeTabAt(1);
 				displayer.mainView();	
 			}
 		}));
@@ -103,6 +104,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				displayer.getPreviewPanel().removeTabAt(1);
 				displayer.mainView();
 			}
 		}));

@@ -41,6 +41,10 @@ public class LibraryTree extends DefaultMutableTreeNode {
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
+        info = new LibraryBoardInfo("Custom","CustomGraphPanel");
+        board = new DefaultMutableTreeNode(info);
+        cat.add(board);
+
         info = new LibraryBoardInfo("Concentric","ConcentricPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);

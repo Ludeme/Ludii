@@ -35,6 +35,7 @@ public class WedgePanel extends OptionPanel
 	
 	public WedgePanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -60,7 +61,7 @@ public class WedgePanel extends OptionPanel
 		label = new JLabel("Columns: ");
 		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		panel.add(label);
-		col = new JSpinner(new SpinnerNumberModel(2, 1, Integer.MAX_VALUE, 1));
+		col = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 		col.addChangeListener(pl);
 		panel.add(col);
 		add(panel);

@@ -10,10 +10,9 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import app.boardMaker.display.panels.paramPanel.tilings.OptionPanel;
-import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.utils.Camera;
-import app.boardMaker.utils.Coordinates;
+import app.boardMaker.utils.Vertex;
 import game.util.graph.Poly;
 
 public class PolygonView extends JPanel
@@ -28,8 +27,8 @@ public class PolygonView extends JPanel
 	
 	private int dotSize = 10;
 	
-	private List<Coordinates> vertexes;
-	private Coordinates current;
+	private List<Vertex> vertexes;
+	private Vertex current;
 	
 	public PolygonView(Displayer displayer, OptionPanel op) {
 		this.displayer = displayer;
@@ -38,7 +37,7 @@ public class PolygonView extends JPanel
 		camera = new Camera(this);
 		pl = new PolygonListener(this);
 		
-		vertexes = new ArrayList<Coordinates>();
+		vertexes = new ArrayList<Vertex>();
 		
 		addMouseListener(camera);
 		addMouseListener(pl);
@@ -60,7 +59,7 @@ public class PolygonView extends JPanel
 		return camera;
 	}
 	
-	public List<Coordinates> getPoly() {
+	public List<Vertex> getPoly() {
 		return vertexes;
 	}
 	
@@ -76,7 +75,7 @@ public class PolygonView extends JPanel
 		return dotSize;
 	}
 	
-	public void addVertex(Coordinates v) {
+	public void addVertex(Vertex v) {
 		if (!vertexes.contains(v)) {
 			vertexes.add(v);
 			current = v;
@@ -86,7 +85,7 @@ public class PolygonView extends JPanel
 		}
 	}
 	
-	public void removeVertex(Coordinates v) {
+	public void removeVertex(Vertex v) {
 		if (vertexes.contains(v)) {
 			vertexes.remove(v);
 			current = vertexes.get(vertexes.size() - 1);
@@ -116,25 +115,25 @@ public class PolygonView extends JPanel
 				for (int i = 0; i < vertexes.size(); i++) {
 					g2d.setColor(Color.black);
 					
-					int x1 = vertexes.get(i).getX() * incX + camera.offX();
-					int y1 = getHeight() - (vertexes.get(i).getY() + 1) * incY - camera.offY();
-					int x2 = vertexes.get((i + 1) % vertexes.size()).getX() * incX + camera.offX();
-					int y2 = getHeight() - (vertexes.get((i + 1) % vertexes.size()).getY() + 1) * incY - camera.offY();
+					int x1 = (int) (vertexes.get(i).getX() * incX + camera.offX());
+					int y1 = (int) (getHeight() - (vertexes.get(i).getY() + 1) * incY - camera.offY());
+					int x2 = (int) (vertexes.get((i + 1) % vertexes.size()).getX() * incX + camera.offX());
+					int y2 = (int) (getHeight() - (vertexes.get((i + 1) % vertexes.size()).getY() + 1) * incY - camera.offY());
 					
 					g2d.setStroke(new BasicStroke(5));
 					g2d.drawLine(x1 + dotSize / 2, y1 + dotSize / 2, x2 + dotSize / 2, y2 + dotSize / 2);
 				}
 			}
 			
-			for (Coordinates p : vertexes) {
+			for (Vertex p : vertexes) {
 				if (p.equals(current)) {
 					g2d.setColor(Color.red);
 				} else {
 					g2d.setColor(Color.blue);
 				}
 				
-				int x = p.getX() * incX + camera.offX();
-				int y = getHeight() - (p.getY() + 1) * incY - camera.offY();
+				int x = (int) (p.getX() * incX + camera.offX());
+				int y = (int) (getHeight() - (p.getY() + 1) * incY - camera.offY());
 				
 				g2d.fillOval(x, y, dotSize, dotSize);
 			}

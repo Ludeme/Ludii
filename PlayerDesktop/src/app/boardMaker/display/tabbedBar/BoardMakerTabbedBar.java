@@ -54,10 +54,6 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		initToolbar();
 		makeGameToolbar();
 		addTab("Game", toolbar);
-		
-		initToolbar();
-		makeBoardToolbar();
-		addTab("Boards", toolbar);
 	}
 	
 	private void initToolbar() {
@@ -146,25 +142,6 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		button.setToolTipText("Allows the game to involve stacks higher than 32.");
 		button.setSelected(false);
 		button.addActionListener(gtl);
-		toolbar.add(button);
-	}
-	
-	/**
-	 * Creates the board tab toolbar
-	 */
-	private void makeBoardToolbar() {
-		JButton button;
-		
-		button = new JButton("New Board");
-		button.setToolTipText("Adds a new board tab.");
-		button.setActionCommand("New");
-		button.addActionListener(bl);
-		toolbar.add(button);
-		
-		button = new JButton("Delete");
-		button.setToolTipText("Deletes the current board tab. (Min. 1)");
-		button.setActionCommand("Remove");
-		button.addActionListener(bl);
 		toolbar.add(button);
 	}
 	

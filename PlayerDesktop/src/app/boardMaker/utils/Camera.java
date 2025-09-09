@@ -5,6 +5,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
+/**
+ * Class acting as a camera for a panel using classic coordinates (not Java)
+ */
 public class Camera extends MouseAdapter
 {
 	private JPanel view;
@@ -44,7 +47,7 @@ public class Camera extends MouseAdapter
 		if (pressed) {
 			offX += (e.getX() - lastX);
 			offY += (view.getHeight() - e.getY() - lastY);
-			
+
 			lastX = e.getX();
 			lastY = view.getHeight() - e.getY();
 			

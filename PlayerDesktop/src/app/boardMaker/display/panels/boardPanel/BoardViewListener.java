@@ -1,7 +1,6 @@
 package app.boardMaker.display.panels.boardPanel;
 
 import app.boardMaker.handlers.Maker;
-import app.boardMaker.utils.Coordinates;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
