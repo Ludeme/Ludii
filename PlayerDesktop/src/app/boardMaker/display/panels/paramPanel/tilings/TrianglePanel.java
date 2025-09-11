@@ -88,7 +88,9 @@ public class TrianglePanel extends OptionPanel implements ItemListener
 			{
 				createBoard();
 				maker.addBoard();
-				displayer.getPreviewPanel().removeTabAt(1);
+				if (displayer.getPreviewPanel().getTabCount() > 1) {
+					displayer.getPreviewPanel().removeTabAt(1);
+				}
 				displayer.mainView();	
 			}
 		}));
@@ -98,7 +100,9 @@ public class TrianglePanel extends OptionPanel implements ItemListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				displayer.getPreviewPanel().removeTabAt(1);
+				if (displayer.getPreviewPanel().getTabCount() > 1) {
+					displayer.getPreviewPanel().removeTabAt(1);
+				}
 				displayer.mainView();
 			}
 		}));

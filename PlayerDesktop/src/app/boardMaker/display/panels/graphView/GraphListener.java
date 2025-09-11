@@ -91,7 +91,7 @@ public class GraphListener extends MouseAdapter {
 
         for (Vertex v : view.getVertexes()) {
             int centerX = (int) (v.getX() * view.inc() + view.getCamera().offX());
-            int centerY = (int) (v.getY() * view.inc() - view.getCamera().offY());
+            int centerY = (int) (v.getY() * view.inc() + view.getCamera().offY());
 
             double distance = Math.sqrt((mouseX - centerX) * (mouseX - centerX) +
                     (mouseY - centerY) * (mouseY - centerY));
