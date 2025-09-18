@@ -54,25 +54,19 @@ public class Displayer
 	 * Switches to the main view
 	 */
 	public void mainView() {
-		if (previewPanel.visible()) {
-			previewPanel.visibility(false);
-			boardMakerPane.remove(previewPanel);
-		}
-		if (paramPanel.visible()) {
-			paramPanel.visibility(false);
-			boardMakerPane.remove(paramPanel);
-		}
-		
+		boardMakerPane.invalidate();
+		boardMakerPane.removeAll();
+
+		previewPanel.visibility(false);
+		paramPanel.visibility(false);
+
 		boardMakerPane.add(tabbedBar,BorderLayout.NORTH);
 
-		if (!boardPanel.visible()) {
-			boardMakerPane.add(boardPanel,BorderLayout.CENTER);
-			boardPanel.visibility(true);
-		}
-		if (!westPanel.visible()) {
-			boardMakerPane.add(westPanel,BorderLayout.WEST);
-			westPanel.visibility(true);
-		}
+		boardPanel.visibility(true);
+		boardMakerPane.add(boardPanel,BorderLayout.CENTER);
+
+		westPanel.visibility(true);
+		boardMakerPane.add(westPanel,BorderLayout.WEST);
 
 		boardMakerPane.revalidate();
 		boardMakerPane.repaint();
@@ -82,23 +76,41 @@ public class Displayer
 	 * Switches to the creation view
 	 */
 	public void creationView() {
-		if (boardPanel.visible()) {
-			boardPanel.visibility(false);
-			boardMakerPane.remove(boardPanel);
-		}
-		if (westPanel.visible()) {
-			westPanel.visibility(false);
-			boardMakerPane.remove(westPanel);
-		}
-		if (!paramPanel.visible()) {
-			boardMakerPane.add(paramPanel,BorderLayout.WEST);
-			paramPanel.visibility(true);
-		}
-		
-		if (!previewPanel.visible()) {
-			boardMakerPane.add(previewPanel,BorderLayout.CENTER);
-			previewPanel.visibility(true);
-		}
+		boardMakerPane.invalidate();
+		boardMakerPane.removeAll();
+
+		boardMakerPane.add(tabbedBar,BorderLayout.NORTH);
+
+		boardPanel.visibility(false);
+		westPanel.visibility(false);
+
+		paramPanel.visibility(true);
+		boardMakerPane.add(paramPanel,BorderLayout.WEST);
+
+		previewPanel.visibility(true);
+		boardMakerPane.add(previewPanel,BorderLayout.CENTER);
+
+		boardMakerPane.revalidate();
+		boardMakerPane.repaint();
+	}
+
+	/**
+	 * Switches to the creation view for polygonal board shape
+	 */
+	public void creationViewPoly() {
+		boardMakerPane.invalidate();
+		boardMakerPane.removeAll();
+
+		boardMakerPane.add(tabbedBar,BorderLayout.NORTH);
+
+		boardPanel.visibility(false);
+		westPanel.visibility(false);
+
+		paramPanel.visibility(true);
+		boardMakerPane.add(paramPanel,BorderLayout.WEST);
+
+		previewPanel.visibility(true);
+		boardMakerPane.add(previewPanel,BorderLayout.EAST);
 
 		boardMakerPane.revalidate();
 		boardMakerPane.repaint();
@@ -109,7 +121,7 @@ public class Displayer
 	 */
 	public void setSizes() {
 		Dimension size = new Dimension(boardMakerPane.getWidth() / 2, boardMakerPane.getHeight());
-		System.out.println(size);
+
 		boardPanel.setPreferredSize(size);
 		boardPanel.setMinimumSize(size);
 		
@@ -117,7 +129,7 @@ public class Displayer
 		previewPanel.setMinimumSize(size);
 		
 		size = new Dimension(boardMakerPane.getWidth() / 4, boardMakerPane.getHeight());
-		System.out.println(size);
+
 		paramPanel.setPreferredSize(size);
 		paramPanel.setMaximumSize(size);
 

@@ -36,8 +36,7 @@ public class BoardMakerTabbedBar extends JTabbedPane
 	private JSpinner players;
 	private JTextField name;
 	private JComboBox<ModeType> mode;
-	
-	private final BoardButtonListener bl;
+
 	private GameTabListener gtl;
 	
 	private boolean visible;
@@ -47,8 +46,7 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		this.maker = maker;
 		
 		displayer.setTabbedBar(this);
-		
-		bl = new BoardButtonListener(maker);
+
 		gtl = new GameTabListener(maker);
 		
 		initToolbar();

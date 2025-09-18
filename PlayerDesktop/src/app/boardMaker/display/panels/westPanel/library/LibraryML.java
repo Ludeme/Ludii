@@ -27,10 +27,14 @@ public class LibraryML extends MouseAdapter {
             if (node.isLeaf()) {
                 String classname = ((LibraryBoardInfo) node.getUserObject()).getClassname();
                 try {
+                    if (classname.equals("CustomShapePanel") || classname.equals("CustomGraphPanel")) {
+                        displayer.creationViewPoly();
+                    } else {
+                        displayer.creationView();
+                    }
                     String path = "app.boardMaker.display.panels.paramPanel.tilings.";
                     JPanel panel = (JPanel) Class.forName(path + classname).getConstructor(Maker.class).newInstance(maker);
                     displayer.getParamPanel().setPanel(panel);
-                    displayer.creationView();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

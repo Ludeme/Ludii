@@ -34,6 +34,11 @@ public class BoardData {
 
     public void setBoard(Board board) {
         this.board = board;
+        if (board == null) {
+            cellSVG = null;
+            graphSVG = null;
+            otherSVG = null;
+        }
     }
 
     public void setCellSVG(String cellSVG) {

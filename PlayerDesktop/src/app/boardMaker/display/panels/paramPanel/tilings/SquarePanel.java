@@ -1,22 +1,12 @@
 package app.boardMaker.display.panels.paramPanel.tilings;
 
-import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 
 import app.boardMaker.display.buttons.CancelButton;
 import app.boardMaker.display.buttons.CreateButton;
@@ -40,6 +30,7 @@ public class SquarePanel extends OptionPanel implements ItemListener
 	private PreviewListener pl;
 	
 	private JPanel cards;
+	private JTabbedPane pvContainer;
 	
 	private JComboBox<SquareShapeType> cBox;
 	private JSpinner dimSpinner;
@@ -250,16 +241,23 @@ public class SquarePanel extends OptionPanel implements ItemListener
 		CardLayout cl = (CardLayout) cards.getLayout();
 		if (((SquareShapeType)cBox.getSelectedItem()).equals(SquareShapeType.Custom)) {
 			cl.show(cards, "custom");
-			if (displayer.getPreviewPanel().getTabCount() == 1) {
+			/*if (displayer.getPreviewPanel().getTabCount() == 1) {
 				pv = new PolygonView(displayer,this);
 				displayer.getPreviewPanel().addTab("Polygon", pv);
-			}
+			}*/
+			pvContainer = new JTabbedPane();
+			pvContainer.setPreferredSize(new Dimension(displayer.getBoardPanel().getPreferredSize()));
+			pv = new PolygonView(displayer,this);
+			pvContainer.addTab("Polygon",pv);
+			displayer.creationViewPoly();
+			displayer.getBoardMakerPane().add(pvContainer, BorderLayout.CENTER);
 		} else {
 			cl.show(cards,"dim");
-			if (displayer.getPreviewPanel().getTabCount() > 1) {
+			/*if (displayer.getPreviewPanel().getTabCount() > 1) {
 				displayer.getPreviewPanel().removeTabAt(1);
 				pv = null;
-			}
+			}*/
+			displayer.creationView();
 		}
 	}
 

@@ -1,6 +1,7 @@
 package app.boardMaker.display.panels.boardPanel;
 
 import app.boardMaker.handlers.Maker;
+import app.boardMaker.menu.popup.boardpopup.BoardPopupMenu;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,11 +16,11 @@ public class BoardViewListener extends MouseAdapter {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse clicked at: " + view.getMousePosition());
-
-        view.revalidate();
-        view.repaint();
+    public void mouseReleased(MouseEvent e) {
+        if (e.isPopupTrigger() && maker.getCurrentBoard() != null) {
+            BoardPopupMenu popup = new BoardPopupMenu(maker);
+            popup.create();
+            popup.show(e.getComponent(),e.getX(),e.getY());
+        }
     }
-
 }

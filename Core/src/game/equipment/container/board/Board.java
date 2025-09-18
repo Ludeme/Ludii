@@ -170,6 +170,11 @@ public class Board extends Container
 		return graph;
 	}
 
+	/**
+	 * @return The graph function of the board
+	 */
+	public GraphFunction graphFunction() {return graphFunction;}
+
 	//-------------------------------------------------------------------------
 
 	/**
