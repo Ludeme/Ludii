@@ -88,7 +88,11 @@ public class PolygonView extends JPanel
 	public void removeVertex(Vertex v) {
 		if (vertexes.contains(v)) {
 			vertexes.remove(v);
-			current = vertexes.get(vertexes.size() - 1);
+			if (vertexes.isEmpty()) {
+				current = null;
+			} else {
+				current = vertexes.get(vertexes.size() - 1);
+			}
 			op.createBoard();
 			displayer.getPreviewPanel().setBoard(op.board());
 			displayer.getPreviewPanel().repaint();

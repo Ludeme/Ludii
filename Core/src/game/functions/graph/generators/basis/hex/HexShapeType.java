@@ -51,8 +51,6 @@ public enum HexShapeType
 		
 	/** Diamond shape extended vertically. */
 	Prism,
-	
-	/** Custom shape */
-	Custom,
+
 	;
 }

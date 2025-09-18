@@ -29,17 +29,12 @@ import game.functions.graph.generators.basis.tiling.Tiling;
 import game.functions.graph.generators.basis.tiling.TilingType;
 import game.util.graph.Poly;
 
-public class TilingPanel extends OptionPanel implements ItemListener
-{
+public class TilingPanel extends OptionPanel {
 	private Maker maker;
 	private Displayer displayer;
-	private PolygonView pv;
 	private PreviewListener pl;
-	
-	private JPanel cards;
-	
+
 	private JComboBox<TilingType> tBox;
-	private JComboBox<String> cBox;
 	private JSpinner pSpinner;
 	private JSpinner sSpinner;
 	
@@ -47,6 +42,7 @@ public class TilingPanel extends OptionPanel implements ItemListener
 	
 	public TilingPanel(Maker maker) {
 		super();
+		this.maker = maker;
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -66,23 +62,28 @@ public class TilingPanel extends OptionPanel implements ItemListener
 		add(p);
 		
 		add(Box.createVerticalStrut(5));
-		
+
 		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel("Board shape: ");
-		label.setToolTipText("This parameter will set the board shape, choosing the CUSTOM option will allow you to drow your own shape.");
+		label = new JLabel("First dimension");
+		label.setToolTipText("Primary dimension of the board.");
 		p.add(label);
-		cBox = new JComboBox<String>(new String[] {"Defined", "Custom"});
-		cBox.addActionListener(pl);
-		cBox.addItemListener(this);
-		p.add(cBox);
+
+		pSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		pSpinner.addChangeListener(pl);
+		p.add(pSpinner);
 		add(p);
-		
+
 		add(Box.createVerticalStrut(5));
-		
-		cards = new JPanel(new CardLayout());
-		makeDimCard();
-		makePolyCard();
-		add(cards);
+
+		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		label = new JLabel("Second dimension");
+		label.setToolTipText("Secondary dimension of the board. Length of sides will alternate between primary and secondary dimensions.");
+		p.add(label);
+
+		sSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		sSpinner.addChangeListener(pl);
+		p.add(sSpinner);
+		add(p);
 		
 		add(Box.createVerticalStrut(5));
 		
@@ -95,9 +96,6 @@ public class TilingPanel extends OptionPanel implements ItemListener
 			{
 				createBoard();
 				maker.addBoard();
-				if (displayer.getPreviewPanel().getTabCount() > 1) {
-					displayer.getPreviewPanel().removeTabAt(1);
-				}
 				displayer.mainView();	
 			}
 		}));
@@ -107,9 +105,6 @@ public class TilingPanel extends OptionPanel implements ItemListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (displayer.getPreviewPanel().getTabCount() > 1) {
-					displayer.getPreviewPanel().removeTabAt(1);
-				}
 				displayer.mainView();
 			}
 		}));
@@ -122,94 +117,14 @@ public class TilingPanel extends OptionPanel implements ItemListener
 		displayer.getPreviewPanel().setBoard(board);
 	}
 
-	private void makePolyCard()
-	{
-		JPanel card = new JPanel();
-		card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-		
-		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel("How to make a polygon ?");
-		label.setToolTipText("<html>Polygons are made in the \"Polygon\" tab"
-				+ "<br>You can navigate the grid by pressing the middle button (the wheel) of the mouse and drag it."
-				+ "<br>Left click on a dot to add it to the polygon."
-				+ "<br>Right click on a dot to remove it from the polygon.</html>");
-		p.add(label);
-		card.add(p);
-		
-		cards.add(card,"custom");
-	}
-
-	private void makeDimCard()
-	{
-		JPanel card = new JPanel();
-		card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-		
-		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel("First dimension");
-		label.setToolTipText("Primary dimension of the board.");
-		p.add(label);
-		
-		pSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
-		pSpinner.addChangeListener(pl);
-		p.add(pSpinner);
-		card.add(p);
-		
-		card.add(Box.createVerticalStrut(5));
-		
-		p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		label = new JLabel("Second dimension");
-		label.setToolTipText("Secondary dimension of the board. Length of sides will alternate between primary and secondary dimensions.");
-		p.add(label);
-		
-		sSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-		sSpinner.addChangeListener(pl);
-		p.add(sSpinner);
-		card.add(p);
-		
-		card.add(Box.createVerticalGlue());
-		
-		cards.add(card,"dim");
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-		CardLayout cl = (CardLayout) cards.getLayout();
-		if (((String)cBox.getSelectedItem()).equals("Custom")) {
-			cl.show(cards, "custom");
-			if (displayer.getPreviewPanel().getTabCount() == 1) {
-				pv = new PolygonView(displayer,this);
-				displayer.getPreviewPanel().addTab("Polygon", pv);
-			}
-		} else {
-			cl.show(cards,"dim");
-			if (displayer.getPreviewPanel().getTabCount() > 1) {
-				displayer.getPreviewPanel().removeTabAt(1);
-				pv = null;
-			}
-		}
-	}
-
 	@Override
 	public void createBoard()
 	{
 		TilingType type = (TilingType) tBox.getSelectedItem();
-		if (((String)cBox.getSelectedItem()).equals("Defined")) {
-			DimConstant dimA = new DimConstant((int)pSpinner.getValue());
-			DimConstant dimB = new DimConstant((int)sSpinner.getValue());
-			GraphFunction graph = Tiling.construct(type, dimA, (dimB.eval() == 0) ? null : dimB);
-			board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
-		} else {
-			if (pv.getPoly().size() > 2) {
-				Poly poly = pv.makePoly();
-				GraphFunction graph = Tiling.construct(type, poly, null);
-				board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
-			} else {
-				board = null;
-			}
-		}
+		DimConstant dimA = new DimConstant((int)pSpinner.getValue());
+		DimConstant dimB = new DimConstant((int)sSpinner.getValue());
+		GraphFunction graph = Tiling.construct(type, dimA, (dimB.eval() == 0) ? null : dimB);
+		board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
 	}
 
 	@Override
