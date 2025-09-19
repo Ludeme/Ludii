@@ -34,13 +34,13 @@ public class CustomGraphPanel extends OptionPanel {
         this.maker = maker;
         this.displayer = maker.getDisplayer();
 
-        if (displayer.getPreviewPanel().getTabCount() == 1) {
-            gv = new GraphView(maker,this);
-            gl = new GraphListener(gv);
-            gv.setListener(gl);
+        gv = new GraphView(maker,this);
+        gl = new GraphListener(gv);
+        gv.setListener(gl);
+        JTabbedPane gvContainer = new JTabbedPane();
+        gvContainer.addTab("Custom Graph",gv);
+        displayer.getBoardMakerPane().add(gvContainer,BorderLayout.CENTER);
 
-            displayer.getPreviewPanel().addTab("Custom Graph",gv);
-        }
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
