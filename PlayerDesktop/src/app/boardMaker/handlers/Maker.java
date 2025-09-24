@@ -6,9 +6,30 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import app.boardMaker.display.panels.westPanel.boardList.BoardList;
 import app.boardMaker.display.panels.westPanel.boardList.BoardListTreeNode;
 import app.boardMaker.utils.BoardData;
+import app.utils.SVGUtil;
 import bridge.Bridge;
+import game.Game;
+import game.equipment.Equipment;
+import game.equipment.Item;
+import game.equipment.container.board.Board;
+import game.equipment.container.board.custom.MancalaBoard;
+import game.equipment.container.board.custom.SurakartaBoard;
+import game.functions.graph.GraphFunction;
+import game.mode.Mode;
+import game.players.Players;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
+import other.context.Context;
+import other.trial.Trial;
+import util.PlaneType;
+import view.container.ContainerStyle;
+import view.container.styles.BoardStyle;
+import view.container.styles.board.MancalaStyle;
+import view.container.styles.board.SurakartaStyle;
+import view.container.styles.board.graph.GraphStyle;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * General handler of the board maker app.
@@ -24,6 +45,7 @@ public class Maker
 	private ModeType mode = ModeType.Alternating;
 	private SiteType siteType = SiteType.Cell;
 	private boolean largeStack = false;
+	private double boardratio = 1.0;
 
 	private BoardData currentBoard;
 
@@ -51,6 +73,9 @@ public class Maker
 
 	//--------------------------------------------------------------------------------
 
+	/**
+	 * Adds a newly created board
+	 */
 	public void addBoard() {
 		currentBoard = displayer.getPreviewPanel().getBoardData().copy();
 
@@ -59,10 +84,59 @@ public class Maker
 		boardList.reload();
 	}
 
+	/**
+	 * Switch which board is displayed
+	 * @param data the data about the board to display
+	 */
 	public void switchBoard(BoardData data) {
 		currentBoard = data;
 		displayer.getBoardPanel().revalidate();
 		displayer.getBoardPanel().repaint();
+	}
+
+	/**
+	 * Draws the necessary image for the given board
+	 * @param data the data about the board to draw
+	 */
+	public void drawBoard(BoardData data) {
+		Board board = data.getBoard();
+
+		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {board}), null);
+		game.create();
+
+		game.setMetadata(null);
+
+		Context context = new Context(game, new Trial(game));
+		Bridge bridge = getBridge();
+
+		ContainerStyle gameStyle;
+
+		int boardsize = Math.min(displayer.getCurrentDisplay().getHeight(),
+				(int) (displayer.getCurrentDisplay().getWidth() * boardratio));
+
+		if (board instanceof MancalaBoard) {
+			gameStyle = new MancalaStyle(bridge,board);
+			gameStyle.setPlacement(context,new Rectangle(0,0,boardsize,boardsize));
+			gameStyle.render(PlaneType.BOARD,context);
+
+			data.setOtherSVG(gameStyle.containerSVGImage());
+		} else if (board instanceof SurakartaBoard) {
+			gameStyle = new SurakartaStyle(bridge,board);
+			gameStyle.setPlacement(context,new Rectangle(0,0,boardsize,boardsize));
+			gameStyle.render(PlaneType.BOARD,context);
+
+			data.setOtherSVG(gameStyle.containerSVGImage());
+		} else {
+			gameStyle = new BoardStyle(bridge,board);
+			gameStyle.setPlacement(context,new Rectangle(0,0,boardsize,boardsize));
+			gameStyle.render(PlaneType.BOARD,context);
+			data.setCellSVG(gameStyle.containerSVGImage());
+
+			gameStyle = new GraphStyle(bridge,board,context);
+			gameStyle.setPlacement(context,new Rectangle(0,0,boardsize,boardsize));
+			gameStyle.render(PlaneType.BOARD,context);
+			data.setGraphSVG(gameStyle.containerSVGImage());
+		}
 	}
 
 	//--------------------------------------------------------------------------------
