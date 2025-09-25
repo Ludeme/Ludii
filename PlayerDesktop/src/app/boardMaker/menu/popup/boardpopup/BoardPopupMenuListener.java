@@ -7,6 +7,7 @@ import game.equipment.container.board.Track;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.Complete;
 import game.functions.graph.operators.Dual;
+import game.functions.graph.operators.MakeFaces;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,9 +37,19 @@ public class BoardPopupMenuListener implements ActionListener {
                 apply_complete(true);
                 break;
 
+            case "make_faces" :
+                apply_make_faces();
+                break;
+
             default :
                 break;
         }
+    }
+
+    private void apply_make_faces() {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction = new MakeFaces(oldBoard.graphFunction());
+        change_function(newFunction, oldBoard);
     }
 
     private void apply_dual() {

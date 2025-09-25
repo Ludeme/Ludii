@@ -34,5 +34,10 @@ public class BoardPopupMenu extends JPopupMenu {
         item.setActionCommand("dual");
         item.addActionListener(listener);
         add(item);
+
+        item = new JMenuItem("Make Faces");
+        item.setActionCommand("make_faces");
+        item.addActionListener(listener);
+        add(item);
     }
 }
