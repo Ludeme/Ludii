@@ -16,8 +16,22 @@ public class BoardPopupMenu extends JPopupMenu {
     }
 
     public void create() {
-        JMenuItem item = new JMenuItem("Dual");
-        item.setActionCommand("Dual");
+        JMenuItem item;
+        JMenu submenu;
+
+        submenu = new JMenu("Complete");
+        JMenuItem submenuItem = new JMenuItem("Full");
+        submenuItem.setActionCommand("complete_full");
+        submenuItem.addActionListener(listener);
+        submenu.add(submenuItem);
+        submenuItem = new JMenuItem("Individual");
+        submenuItem.setActionCommand("complete_indiv");
+        submenuItem.addActionListener(listener);
+        submenu.add(submenuItem);
+        add(submenu);
+
+        item = new JMenuItem("Dual");
+        item.setActionCommand("dual");
         item.addActionListener(listener);
         add(item);
     }
