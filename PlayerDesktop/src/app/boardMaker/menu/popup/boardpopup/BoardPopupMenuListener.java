@@ -8,6 +8,7 @@ import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.Complete;
 import game.functions.graph.operators.Dual;
 import game.functions.graph.operators.MakeFaces;
+import game.functions.graph.operators.SplitCrossings;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,9 +42,19 @@ public class BoardPopupMenuListener implements ActionListener {
                 apply_make_faces();
                 break;
 
+            case "split_cross" :
+                apply_split_cross();
+                break;
+
             default :
                 break;
         }
+    }
+
+    private void apply_split_cross() {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction = new SplitCrossings(oldBoard.graphFunction());
+        change_function(newFunction, oldBoard);
     }
 
     private void apply_make_faces() {

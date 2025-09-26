@@ -39,5 +39,10 @@ public class BoardPopupMenu extends JPopupMenu {
         item.setActionCommand("make_faces");
         item.addActionListener(listener);
         add(item);
+
+        item = new JMenuItem("Split crossings");
+        item.setActionCommand("split_cross");
+        item.addActionListener(listener);
+        add(item);
     }
 }
