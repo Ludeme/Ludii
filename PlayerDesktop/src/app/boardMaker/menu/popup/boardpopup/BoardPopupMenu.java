@@ -44,5 +44,10 @@ public class BoardPopupMenu extends JPopupMenu {
         item.setActionCommand("split_cross");
         item.addActionListener(listener);
         add(item);
+
+        item = new JMenuItem("Trim");
+        item.setActionCommand("trim");
+        item.addActionListener(listener);
+        add(item);
     }
 }

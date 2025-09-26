@@ -5,10 +5,7 @@ import app.boardMaker.handlers.Maker;
 import game.equipment.container.board.Board;
 import game.equipment.container.board.Track;
 import game.functions.graph.GraphFunction;
-import game.functions.graph.operators.Complete;
-import game.functions.graph.operators.Dual;
-import game.functions.graph.operators.MakeFaces;
-import game.functions.graph.operators.SplitCrossings;
+import game.functions.graph.operators.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,9 +43,19 @@ public class BoardPopupMenuListener implements ActionListener {
                 apply_split_cross();
                 break;
 
+            case "trim" :
+                apply_trim();
+                break;
+
             default :
                 break;
         }
+    }
+
+    private void apply_trim() {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction = new Trim(oldBoard.graphFunction());
+        change_function(newFunction, oldBoard);
     }
 
     private void apply_split_cross() {
