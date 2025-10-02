@@ -1,12 +1,9 @@
 package app.boardMaker.display.panels.paramPanel.tilings;
 
-import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -16,9 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import app.boardMaker.display.buttons.CancelButton;
-import app.boardMaker.display.buttons.CreateButton;
-import app.boardMaker.display.panels.polygonView.PolygonView;
+import app.boardMaker.display.components.buttons.CancelButton;
+import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
@@ -27,7 +23,6 @@ import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.hex.Hex;
 import game.functions.graph.generators.basis.hex.HexShapeType;
-import game.util.graph.Poly;
 
 public class HexPanel extends OptionPanel {
 	private Maker maker;
@@ -97,7 +92,7 @@ public class HexPanel extends OptionPanel {
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				maker.addBoard();
+				maker.addBoard(displayer.getPreviewPanel().getBoardData());
 				displayer.mainView();	
 			}
 		}));

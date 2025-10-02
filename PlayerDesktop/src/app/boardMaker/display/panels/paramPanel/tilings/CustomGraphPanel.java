@@ -1,7 +1,7 @@
 package app.boardMaker.display.panels.paramPanel.tilings;
 
-import app.boardMaker.display.buttons.CancelButton;
-import app.boardMaker.display.buttons.CreateButton;
+import app.boardMaker.display.components.buttons.CancelButton;
+import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.graphView.GraphBuildingModes;
 import app.boardMaker.display.panels.graphView.GraphListener;
 import app.boardMaker.display.panels.graphView.GraphView;
@@ -105,7 +105,7 @@ public class CustomGraphPanel extends OptionPanel {
             public void actionPerformed(ActionEvent e)
             {
                 createBoard();
-                maker.addBoard();
+                maker.addBoard(displayer.getPreviewPanel().getBoardData());
                 if (displayer.getPreviewPanel().getTabCount() > 1) {
                     displayer.getPreviewPanel().removeTabAt(1);
                 }

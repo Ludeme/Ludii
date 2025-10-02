@@ -1,4 +1,4 @@
-package app.boardMaker.display.buttons;
+package app.boardMaker.display.components.buttons;
 
 import java.awt.event.ActionListener;
 

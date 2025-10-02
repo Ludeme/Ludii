@@ -1,5 +1,6 @@
 package app.boardMaker.menu.popup.boardpopup;
 
+import app.boardMaker.display.components.sliders.RotationSlider;
 import app.boardMaker.handlers.Maker;
 
 import javax.swing.*;
@@ -35,8 +36,18 @@ public class BoardPopupMenu extends JPopupMenu {
         item.addActionListener(listener);
         add(item);
 
+        item = new JMenuItem("Intersect");
+        item.setActionCommand("intersect");
+        item.addActionListener(listener);
+        add(item);
+
         item = new JMenuItem("Make Faces");
         item.setActionCommand("make_faces");
+        item.addActionListener(listener);
+        add(item);
+
+        item = new JMenuItem("Merge");
+        item.setActionCommand("merge");
         item.addActionListener(listener);
         add(item);
 
@@ -47,6 +58,11 @@ public class BoardPopupMenu extends JPopupMenu {
 
         item = new JMenuItem("Trim");
         item.setActionCommand("trim");
+        item.addActionListener(listener);
+        add(item);
+
+        item = new JMenuItem("Union");
+        item.setActionCommand("union");
         item.addActionListener(listener);
         add(item);
     }

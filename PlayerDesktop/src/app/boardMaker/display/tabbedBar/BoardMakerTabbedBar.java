@@ -104,6 +104,10 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
 		
 		toolbar.addSeparator();
+
+		label = new JLabel("Sites: ");
+		label.setToolTipText("Selects the sites to use during the game");
+		toolbar.add(label);
 		
 		JRadioButton button;
 		ButtonGroup group = new ButtonGroup();
@@ -112,17 +116,8 @@ public class BoardMakerTabbedBar extends JTabbedPane
 			button.setActionCommand(type.name());
 			button.addActionListener(gtl);
 
-			switch (type)
-			{
-			case Cell:
+			if (type == SiteType.Cell) {
 				button.setSelected(true);
-				break;
-			case Edge:
-				break;
-			case Vertex:
-				break;
-			default:
-				break;
 			}
 
 			group.add(button);

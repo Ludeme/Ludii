@@ -8,9 +8,8 @@ import java.awt.event.ItemListener;
 
 import javax.swing.*;
 
-import app.boardMaker.display.buttons.CancelButton;
-import app.boardMaker.display.buttons.CreateButton;
-import app.boardMaker.display.panels.polygonView.PolygonView;
+import app.boardMaker.display.components.buttons.CancelButton;
+import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
@@ -20,7 +19,6 @@ import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.square.DiagonalsType;
 import game.functions.graph.generators.basis.square.Square;
 import game.functions.graph.generators.basis.square.SquareShapeType;
-import game.util.graph.Poly;
 
 public class SquarePanel extends OptionPanel {
 	private Maker maker;
@@ -145,7 +143,7 @@ public class SquarePanel extends OptionPanel {
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				maker.addBoard();
+				maker.addBoard(displayer.getPreviewPanel().getBoardData());
 				displayer.mainView();	
 			}
 		}));

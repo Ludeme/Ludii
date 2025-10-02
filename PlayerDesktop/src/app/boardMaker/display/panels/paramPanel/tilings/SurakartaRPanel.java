@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import app.boardMaker.display.buttons.CancelButton;
-import app.boardMaker.display.buttons.CreateButton;
+import app.boardMaker.display.components.buttons.CancelButton;
+import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
@@ -24,8 +24,6 @@ import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.square.DiagonalsType;
 import game.functions.graph.generators.basis.square.RectangleOnSquare;
-import game.functions.graph.generators.basis.tri.Tri;
-import game.functions.graph.generators.basis.tri.TriShapeType;
 import main.Constants;
 
 public class SurakartaRPanel extends SurakartaPanel
@@ -119,7 +117,7 @@ public class SurakartaRPanel extends SurakartaPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				maker.addBoard();
+				maker.addBoard(displayer.getPreviewPanel().getBoardData());
 				displayer.mainView();	
 			}
 		}));

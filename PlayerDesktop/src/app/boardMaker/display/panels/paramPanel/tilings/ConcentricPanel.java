@@ -21,8 +21,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
-import app.boardMaker.display.buttons.CancelButton;
-import app.boardMaker.display.buttons.CreateButton;
+import app.boardMaker.display.components.buttons.CancelButton;
+import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
@@ -154,7 +154,7 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 			public void actionPerformed(ActionEvent e)
 			{
 				createBoard();
-				maker.addBoard();
+				maker.addBoard(displayer.getPreviewPanel().getBoardData());
 				displayer.mainView();
 			}
 		}));

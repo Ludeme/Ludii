@@ -96,7 +96,7 @@ public class PreviewPanel extends JTabbedPane
 			if (data.getBoard() != null) {
 				// Need this to avoid a bug where redrawing the window makes the board smaller
 				if (hasChanged) {
-					maker.drawBoard(data);
+					maker.drawBoard(data,this);
 					hasChanged = false;
 				}
 				BufferedImage image = SVGUtil.createSVGImage(data.getSVG(), getWidth(), getHeight());

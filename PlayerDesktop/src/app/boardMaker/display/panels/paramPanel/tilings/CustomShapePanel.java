@@ -1,7 +1,7 @@
 package app.boardMaker.display.panels.paramPanel.tilings;
 
-import app.boardMaker.display.buttons.CancelButton;
-import app.boardMaker.display.buttons.CreateButton;
+import app.boardMaker.display.components.buttons.CancelButton;
+import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.polygonView.PolygonView;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
 import app.boardMaker.handlers.Displayer;
@@ -83,7 +83,7 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 createBoard();
-                maker.addBoard();
+                maker.addBoard(displayer.getPreviewPanel().getBoardData());
                 displayer.mainView();
             }
         }));

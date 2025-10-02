@@ -76,11 +76,10 @@ public class Maker
 	/**
 	 * Adds a newly created board
 	 */
-	public void addBoard() {
-		currentBoard = displayer.getPreviewPanel().getBoardData().copy();
+	public void addBoard(BoardData board) {
+		currentBoard = board.copy();
 
-		DefaultMutableTreeNode root = boardList.root();
-		root.add(new BoardListTreeNode("board"+root.getChildCount(), currentBoard));
+		boardList.addBoard("board"+boardList.root().getChildCount());
 		boardList.reload();
 	}
 
@@ -98,7 +97,7 @@ public class Maker
 	 * Draws the necessary image for the given board
 	 * @param data the data about the board to draw
 	 */
-	public void drawBoard(BoardData data) {
+	public void drawBoard(BoardData data, Container view) {
 		Board board = data.getBoard();
 
 		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {board}), null);
@@ -111,8 +110,8 @@ public class Maker
 
 		ContainerStyle gameStyle;
 
-		int boardsize = Math.min(displayer.getCurrentDisplay().getHeight(),
-				(int) (displayer.getCurrentDisplay().getWidth() * boardratio));
+		int boardsize = Math.min(view.getHeight(),
+				(int) (view.getWidth() * boardratio));
 
 		if (board instanceof MancalaBoard) {
 			gameStyle = new MancalaStyle(bridge,board);

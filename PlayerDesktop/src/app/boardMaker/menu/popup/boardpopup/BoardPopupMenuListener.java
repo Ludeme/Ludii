@@ -1,12 +1,15 @@
 package app.boardMaker.menu.popup.boardpopup;
 
+import app.boardMaker.display.dialogs.MergeDialog;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
+import app.boardMaker.res.Transformations;
 import game.equipment.container.board.Board;
 import game.equipment.container.board.Track;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.*;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -45,6 +48,33 @@ public class BoardPopupMenuListener implements ActionListener {
 
             case "trim" :
                 apply_trim();
+                break;
+
+            case "merge" :
+                if (maker.getBoardList().length() < 2) {
+                    JOptionPane.showMessageDialog(displayer.getFrame(),"You need at least 2 boards to be able " +
+                            "to use Merge.");
+                } else {
+                    MergeDialog dialog = new MergeDialog(maker, Transformations.Merge);
+                }
+                break;
+
+            case "union" :
+                if (maker.getBoardList().length() < 2) {
+                    JOptionPane.showMessageDialog(displayer.getFrame(),"You need at least 2 boards to be able " +
+                            "to use Union.");
+                } else {
+                    MergeDialog dialog = new MergeDialog(maker, Transformations.Union);
+                }
+                break;
+
+            case "intersect" :
+                if (maker.getBoardList().length() < 2) {
+                    JOptionPane.showMessageDialog(displayer.getFrame(),"You need at least 2 boards to be able " +
+                            "to use Intersect.");
+                } else {
+                    MergeDialog dialog = new MergeDialog(maker, Transformations.Intersect);
+                }
                 break;
 
             default :
@@ -88,7 +118,7 @@ public class BoardPopupMenuListener implements ActionListener {
                     maker.getSiteType(),maker.largeStack());
         }
         maker.getCurrentBoard().setBoard(newBoard);
-        maker.drawBoard(maker.getCurrentBoard());
+        maker.drawBoard(maker.getCurrentBoard(),displayer.getBoardPanel());
         displayer.getBoardPanel().repaint();
     }
 
