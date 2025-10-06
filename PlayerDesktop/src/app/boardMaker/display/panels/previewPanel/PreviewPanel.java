@@ -90,7 +90,7 @@ public class PreviewPanel extends JTabbedPane
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 
 			if (data.getBoard() != null) {
-				maker.drawBoard(data,this);
+				maker.drawBoard(data,this,null);
 
 				BufferedImage image = SVGUtil.createSVGImage(data.getSVG(), getWidth(), getHeight());
 				g2d.drawImage(image, 0, 0, null);

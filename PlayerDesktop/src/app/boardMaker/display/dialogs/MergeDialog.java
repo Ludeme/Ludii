@@ -121,7 +121,7 @@ public class MergeDialog extends JDialog {
             default :
                 break;
         }
-        maker.drawBoard(result,center);
+        maker.drawBoard(result,center,null);
     }
 
     private class BoardPlacementPanel extends JPanel implements ActionListener, ChangeListener {

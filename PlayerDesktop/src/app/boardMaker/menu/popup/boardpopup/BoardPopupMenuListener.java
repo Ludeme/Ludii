@@ -110,7 +110,6 @@ public class BoardPopupMenuListener implements ActionListener {
     private void update_board(GraphFunction function, Board old) {
         Board newBoard = BoardUtils.change_function(function,old,maker);
         maker.getCurrentBoard().setBoard(newBoard);
-        maker.drawBoard(maker.getCurrentBoard(),displayer.getBoardPanel());
         displayer.getBoardPanel().repaint();
     }
 

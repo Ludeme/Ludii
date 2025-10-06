@@ -5,6 +5,7 @@ import javax.swing.*;
 import app.boardMaker.display.panels.westPanel.boardList.BoardList;
 import app.boardMaker.utils.BoardData;
 import app.boardMaker.utils.BoardUtils;
+import app.boardMaker.utils.Camera;
 import bridge.Bridge;
 import game.Game;
 import game.equipment.Equipment;
@@ -26,6 +27,7 @@ import view.container.styles.board.SurakartaStyle;
 import view.container.styles.board.graph.GraphStyle;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 /**
  * General handler of the board maker app.
@@ -41,7 +43,9 @@ public class Maker
 	private ModeType mode = ModeType.Alternating;
 	private SiteType siteType = SiteType.Cell;
 	private boolean largeStack = false;
+
 	private double boardratio = 1.0;
+	private double boardScale;
 
 	private BoardData currentBoard;
 
@@ -93,7 +97,7 @@ public class Maker
 	 * Draws the necessary image for the given board
 	 * @param data the data about the board to draw
 	 */
-	public void drawBoard(BoardData data, Container view) {
+	public void drawBoard(BoardData data, Container view, Camera camera) {
 		Board board = BoardUtils.copyBoard(data.getBoard(),this);
 
 		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {board}), null);
@@ -137,7 +141,20 @@ public class Maker
 			}
 		}
 
-		data.setPlacement(placement);
+		boardScale = gameStyle.containerScale();
+		Point2D center = new Point2D.Double(0.5,0.5);
+		Point origin = new Point(0,0);
+		if (camera != null) {
+			origin.x = camera.offX();
+			origin.y = -camera.offY();
+		}
+
+		Rectangle realPlacement = new Rectangle((int) (origin.getX() + placement.getWidth() * (1.0 - boardScale) * center.getX()),
+						(int) (origin.getY() + placement.getHeight() * (1.0 - boardScale) * center.getY()),
+						(int) (placement.getWidth() * boardScale),
+						(int) (placement.getHeight() * boardScale));
+
+		data.setPlacement(realPlacement);
 	}
 
 	//--------------------------------------------------------------------------------
