@@ -6,14 +6,14 @@ import game.equipment.container.board.custom.MancalaBoard;
 import game.equipment.container.board.custom.SurakartaBoard;
 import game.types.board.SiteType;
 
-import java.awt.image.BufferedImage;
+import java.awt.*;
 
 public class BoardData {
-    private String cellSVG;
-    private String graphSVG;
+    private String boardSVG;
     private String otherSVG;
 
     private Board board;
+    private Rectangle placement;
 
     private Maker maker;
 
@@ -25,9 +25,9 @@ public class BoardData {
         BoardData copy = new BoardData(maker);
 
         copy.setBoard(board);
-        copy.setCellSVG(cellSVG);
-        copy.setGraphSVG(graphSVG);
+        copy.setBoardSVG(boardSVG);
         copy.setOtherSVG(otherSVG);
+        copy.setPlacement(placement);
 
         return copy;
     }
@@ -35,19 +35,15 @@ public class BoardData {
     public void setBoard(Board board) {
         this.board = board;
         if (board == null) {
-            cellSVG = null;
-            graphSVG = null;
+            boardSVG = null;
             otherSVG = null;
         }
     }
 
-    public void setCellSVG(String cellSVG) {
-        this.cellSVG = cellSVG;
+    public void setBoardSVG(String boardSVG) {
+        this.boardSVG = boardSVG;
     }
 
-    public void setGraphSVG(String graphSVG) {
-        this.graphSVG = graphSVG;
-    }
 
     public void setOtherSVG(String otherSVG) {
         this.otherSVG = otherSVG;
@@ -63,23 +59,15 @@ public class BoardData {
         } else if (board instanceof SurakartaBoard) {
             return otherSVG;
         } else {
-            if (maker.getSiteType() == SiteType.Cell) {
-                return cellSVG;
-            } else {
-                return graphSVG;
-            }
+            return boardSVG;
         }
     }
 
-    public String getCellSVG() {
-        return cellSVG;
+    public void setPlacement(Rectangle placement) {
+        this.placement = placement;
     }
 
-    public String getGraphSVG() {
-        return graphSVG;
-    }
-
-    public String getOtherSVG() {
-        return otherSVG;
+    public Rectangle getPlacement() {
+        return placement;
     }
 }

@@ -76,10 +76,6 @@ public class PreviewPanel extends JTabbedPane
 		return data.getBoard();
 	}
 
-	public String getSVG() {
-		return data.getSVG();
-	}
-
 	class PreviewDrawSpace extends JPanel {
 		public PreviewDrawSpace() {
 			super(new BorderLayout());
@@ -94,11 +90,8 @@ public class PreviewPanel extends JTabbedPane
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 
 			if (data.getBoard() != null) {
-				// Need this to avoid a bug where redrawing the window makes the board smaller
-				if (hasChanged) {
-					maker.drawBoard(data,this);
-					hasChanged = false;
-				}
+				maker.drawBoard(data,this);
+
 				BufferedImage image = SVGUtil.createSVGImage(data.getSVG(), getWidth(), getHeight());
 				g2d.drawImage(image, 0, 0, null);
 

@@ -7,6 +7,7 @@ import app.utils.SVGUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class BoardDrawSpace extends JPanel {
     private Maker maker;
@@ -36,7 +37,9 @@ public class BoardDrawSpace extends JPanel {
 
         BoardData currentBoard = maker.getCurrentBoard();
         if (currentBoard != null) {
-            g2d.drawImage(SVGUtil.createSVGImage(currentBoard.getSVG(), getWidth(),getHeight()),camera.offX(), -camera.offY(), null);
+            maker.drawBoard(currentBoard,this);
+            BufferedImage image = SVGUtil.createSVGImage(currentBoard.getSVG(), getWidth(),getHeight());
+            g2d.drawImage(image,camera.offX(), -camera.offY(), null);
         }
     }
 }
