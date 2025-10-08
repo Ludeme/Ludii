@@ -19,7 +19,7 @@ public class BoardDrawSpace extends JPanel {
 
         this.maker = maker;
         this.camera = new Camera(this);
-        bvl = new BoardViewListener(maker,this);
+        bvl = new BoardViewListener(maker,this, camera);
 
         addMouseListener(camera);
         addMouseMotionListener(camera);
@@ -37,8 +37,9 @@ public class BoardDrawSpace extends JPanel {
 
         BoardData currentBoard = maker.getCurrentBoard();
         if (currentBoard != null) {
-            maker.drawBoard(currentBoard,this);
+            maker.drawBoard(currentBoard,this,camera);
             BufferedImage image = SVGUtil.createSVGImage(currentBoard.getSVG(), getWidth(),getHeight());
+            bvl.setImage(image);
             g2d.drawImage(image,camera.offX(), -camera.offY(), null);
         }
     }

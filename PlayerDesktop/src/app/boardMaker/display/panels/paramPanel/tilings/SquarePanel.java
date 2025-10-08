@@ -53,6 +53,7 @@ public class SquarePanel extends OptionPanel {
 		
 		cBox = new JComboBox<SquareShapeType>(SquareShapeType.values());
 		cBox.removeItem(SquareShapeType.NoShape);
+		cBox.removeItem(SquareShapeType.Rectangle);
 		cBox.setSelectedItem(SquareShapeType.Square);
 		cBox.addActionListener(pl);
 		p.add(cBox);

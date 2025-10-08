@@ -4,6 +4,10 @@ import app.boardMaker.handlers.Maker;
 import game.equipment.container.board.Board;
 import game.equipment.container.board.Track;
 import game.functions.graph.GraphFunction;
+import game.util.graph.Graph;
+import main.collections.Pair;
+
+import java.awt.geom.Point2D;
 
 public class BoardUtils {
     public static Board copyBoard(Board old, Maker maker) {
@@ -34,5 +38,31 @@ public class BoardUtils {
         }
 
         return newBoard;
+    }
+
+    public static BoardRange computeRange(Graph graph) {
+        double minX = Double.POSITIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        double maxX = Double.NEGATIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
+
+        for (int i = 0; i < graph.vertices().size(); i++) {
+            final Point2D centroid = graph.vertices().get(i).pt2D();
+
+            final double cx = centroid.getX();
+            final double cy = centroid.getY();
+
+            if (cx < minX)
+                minX = cx;
+            if (cy < minY)
+                minY = cy;
+
+            if (cx > maxX)
+                maxX = cx;
+            if (cy > maxY)
+                maxY = cy;
+        }
+
+        return new BoardRange(minX,maxX,minY,maxY);
     }
 }

@@ -17,6 +17,7 @@ import game.mode.Mode;
 import game.players.Players;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
+import main.collections.Pair;
 import other.context.Context;
 import other.trial.Trial;
 import util.PlaneType;
@@ -99,6 +100,7 @@ public class Maker
 	 */
 	public void drawBoard(BoardData data, Container view, Camera camera) {
 		Board board = BoardUtils.copyBoard(data.getBoard(),this);
+		data.setBoard(board);
 
 		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {board}), null);
 		game.create();
@@ -153,7 +155,6 @@ public class Maker
 						(int) (origin.getY() + placement.getHeight() * (1.0 - boardScale) * center.getY()),
 						(int) (placement.getWidth() * boardScale),
 						(int) (placement.getHeight() * boardScale));
-
 		data.setPlacement(realPlacement);
 	}
 
