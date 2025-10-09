@@ -56,6 +56,11 @@ public class BoardPopupMenu extends JPopupMenu {
         item.addActionListener(listener);
         add(item);
 
+        item = new JMenuItem("Subdivide cell");
+        item.setActionCommand("subdivide");
+        item.addActionListener(listener);
+        add(item);
+
         item = new JMenuItem("Trim");
         item.setActionCommand("trim");
         item.addActionListener(listener);

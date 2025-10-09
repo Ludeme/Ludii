@@ -14,6 +14,7 @@ public class BoardData {
 
     private Board board;
     private Rectangle placement;
+    private BoardRange range;
 
     private Maker maker;
 
@@ -37,6 +38,7 @@ public class BoardData {
         if (board == null) {
             boardSVG = null;
             otherSVG = null;
+            return;
         }
     }
 

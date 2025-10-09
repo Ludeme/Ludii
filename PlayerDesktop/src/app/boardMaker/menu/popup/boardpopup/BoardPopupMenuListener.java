@@ -7,6 +7,7 @@ import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.BoardUtils;
 import game.equipment.container.board.Board;
 import game.equipment.container.board.Track;
+import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.*;
 
@@ -52,29 +53,23 @@ public class BoardPopupMenuListener implements ActionListener {
                 break;
 
             case "merge" :
-                if (maker.getBoardList().length() < 2) {
-                    JOptionPane.showMessageDialog(displayer.getFrame(),"You need at least 2 boards to be able " +
-                            "to use Merge.");
-                } else {
-                    MergeDialog dialog = new MergeDialog(maker, Transformations.Merge);
-                }
+                new MergeDialog(maker, Transformations.Merge);
                 break;
 
             case "union" :
-                if (maker.getBoardList().length() < 2) {
-                    JOptionPane.showMessageDialog(displayer.getFrame(),"You need at least 2 boards to be able " +
-                            "to use Union.");
-                } else {
-                    MergeDialog dialog = new MergeDialog(maker, Transformations.Union);
-                }
+                new MergeDialog(maker, Transformations.Union);
                 break;
 
             case "intersect" :
-                if (maker.getBoardList().length() < 2) {
-                    JOptionPane.showMessageDialog(displayer.getFrame(),"You need at least 2 boards to be able " +
-                            "to use Intersect.");
-                } else {
-                    MergeDialog dialog = new MergeDialog(maker, Transformations.Intersect);
+                new MergeDialog(maker, Transformations.Intersect);
+                break;
+
+            case "subdivide" :
+                JSpinner spinner = new JSpinner(new SpinnerNumberModel(3,3,Integer.MAX_VALUE,1));
+                int option = JOptionPane.showOptionDialog(null,spinner,"Minimum sides to subdivide",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
+                if (option == JOptionPane.OK_OPTION) {
+                    int nFaces = (Integer) spinner.getValue();
+                    apply_subdivide(nFaces);
                 }
                 break;
 
@@ -117,5 +112,11 @@ public class BoardPopupMenuListener implements ActionListener {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction = new Complete(oldBoard.graphFunction(),b);
         update_board(newFunction, oldBoard);
+    }
+
+    private void apply_subdivide(int nfaces) {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction = new Subdivide(oldBoard.graphFunction(),new DimConstant(nfaces));
+        update_board(newFunction,oldBoard);
     }
 }

@@ -32,17 +32,29 @@ public class BoardViewListener extends MouseAdapter {
             return;
         }
         Point pt = new Point(e.getX(),e.getY());
-        System.out.println(pt);
-        System.out.println(CoordinatesUtil.boardPosn(pt,maker.getCurrentBoard().getPlacement(), maker.getCurrentBoard().getBoard().graph()));
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.isPopupTrigger() && maker.getCurrentBoard() != null) {
+        if (maker.getCurrentBoard() == null) {
+            return;
+        }
+
+        Point click = new Point(e.getX(),e.getY());
+        if (e.isPopupTrigger() && clickOnBoard(click,maker.getCurrentBoard().getPlacement())) {
             BoardPopupMenu popup = new BoardPopupMenu(maker);
             popup.create();
             popup.show(e.getComponent(),e.getX(),e.getY());
         }
+    }
+
+    private boolean clickOnBoard(Point click, Rectangle placement) {
+        if (click.getX() > placement.getX() && click.getX() < placement.getMaxX()) {
+            if (click.getY() > placement.getY() && click.getY() < placement.getMaxY()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setImage(BufferedImage image) {
