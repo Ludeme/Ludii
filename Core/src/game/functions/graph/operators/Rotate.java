@@ -117,5 +117,13 @@ public final class Rotate extends BaseGraphFunction
 	{
 		return "rotated " + ((BaseLudeme) graphFn).toEnglish(game);
 	}
+
+	public float angle(Context context) {
+		return degreesFn.eval(context);
+	}
+
+	public GraphFunction graphFunction() {
+		return graphFn;
+	}
 	
 }

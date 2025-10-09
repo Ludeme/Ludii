@@ -108,6 +108,7 @@ public class Maker
 		game.setMetadata(null);
 
 		Context context = new Context(game, new Trial(game));
+		data.setContext(context);
 		Bridge bridge = getBridge();
 
 		ContainerStyle gameStyle;

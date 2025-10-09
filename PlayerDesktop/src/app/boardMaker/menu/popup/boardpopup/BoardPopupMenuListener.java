@@ -6,8 +6,8 @@ import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.BoardUtils;
 import game.equipment.container.board.Board;
-import game.equipment.container.board.Track;
 import game.functions.dim.DimConstant;
+import game.functions.floats.FloatConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.*;
 
@@ -65,17 +65,38 @@ public class BoardPopupMenuListener implements ActionListener {
                 break;
 
             case "subdivide" :
-                JSpinner spinner = new JSpinner(new SpinnerNumberModel(3,3,Integer.MAX_VALUE,1));
-                int option = JOptionPane.showOptionDialog(null,spinner,"Minimum sides to subdivide",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
-                if (option == JOptionPane.OK_OPTION) {
-                    int nFaces = (Integer) spinner.getValue();
+                JSpinner divSpinner = new JSpinner(new SpinnerNumberModel(3,3,Integer.MAX_VALUE,1));
+                int divOption = JOptionPane.showOptionDialog(null, divSpinner,"Minimum sides to subdivide",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
+                if (divOption == JOptionPane.OK_OPTION) {
+                    int nFaces = (Integer) divSpinner.getValue();
                     apply_subdivide(nFaces);
                 }
                 break;
 
+            case "rotate" :
+                int baseAngle = maker.getCurrentBoard().getBoard().graphFunction() instanceof Rotate ?
+                        (int) ((Rotate) maker.getCurrentBoard().getBoard().graphFunction()).angle(maker.getCurrentBoard().getContext()) : 0;
+                JSpinner rotSpinner = new JSpinner(new SpinnerNumberModel(baseAngle,0,360,1));
+                int rotOption = JOptionPane.showOptionDialog(null, rotSpinner,"Angle to rotate",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
+                if (rotOption == JOptionPane.OK_OPTION) {
+                    int angle = (Integer) rotSpinner.getValue();
+                    apply_rotation(angle);
+                }
+
             default :
                 break;
         }
+    }
+
+    private void apply_rotation(int angle) {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction;
+        if (oldBoard.graphFunction() instanceof Rotate) {
+            newFunction = new Rotate(new FloatConstant(angle),((Rotate)(oldBoard.graphFunction())).graphFunction());
+        } else {
+            newFunction = new Rotate(new FloatConstant(angle),oldBoard.graphFunction());
+        }
+        update_board(newFunction, oldBoard);
     }
 
     private void apply_trim() {

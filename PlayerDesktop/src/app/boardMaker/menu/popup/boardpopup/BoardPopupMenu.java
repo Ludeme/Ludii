@@ -4,6 +4,8 @@ import app.boardMaker.display.components.sliders.RotationSlider;
 import app.boardMaker.handlers.Maker;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuListener;
 
 public class BoardPopupMenu extends JPopupMenu {
@@ -48,6 +50,11 @@ public class BoardPopupMenu extends JPopupMenu {
 
         item = new JMenuItem("Merge");
         item.setActionCommand("merge");
+        item.addActionListener(listener);
+        add(item);
+
+        item = new JMenuItem("Rotate");
+        item.setActionCommand("rotate");
         item.addActionListener(listener);
         add(item);
 

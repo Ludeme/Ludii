@@ -5,6 +5,7 @@ import game.equipment.container.board.Board;
 import game.equipment.container.board.custom.MancalaBoard;
 import game.equipment.container.board.custom.SurakartaBoard;
 import game.types.board.SiteType;
+import other.context.Context;
 
 import java.awt.*;
 
@@ -13,6 +14,7 @@ public class BoardData {
     private String otherSVG;
 
     private Board board;
+    private Context context;
     private Rectangle placement;
     private BoardRange range;
 
@@ -29,6 +31,7 @@ public class BoardData {
         copy.setBoardSVG(boardSVG);
         copy.setOtherSVG(otherSVG);
         copy.setPlacement(placement);
+        copy.setContext(context);
 
         return copy;
     }
@@ -45,7 +48,6 @@ public class BoardData {
     public void setBoardSVG(String boardSVG) {
         this.boardSVG = boardSVG;
     }
-
 
     public void setOtherSVG(String otherSVG) {
         this.otherSVG = otherSVG;
@@ -71,5 +73,13 @@ public class BoardData {
 
     public Rectangle getPlacement() {
         return placement;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
     }
 }
