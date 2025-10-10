@@ -66,7 +66,7 @@ public class BoardPopupMenuListener implements ActionListener {
 
             case "subdivide" :
                 JSpinner divSpinner = new JSpinner(new SpinnerNumberModel(3,3,Integer.MAX_VALUE,1));
-                int divOption = JOptionPane.showOptionDialog(null, divSpinner,"Minimum sides to subdivide",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
+                int divOption = JOptionPane.showOptionDialog(null, divSpinner,"Minimum sides to subdivide",JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null,null,null);
                 if (divOption == JOptionPane.OK_OPTION) {
                     int nFaces = (Integer) divSpinner.getValue();
                     apply_subdivide(nFaces);
@@ -77,15 +77,68 @@ public class BoardPopupMenuListener implements ActionListener {
                 int baseAngle = maker.getCurrentBoard().getBoard().graphFunction() instanceof Rotate ?
                         (int) ((Rotate) maker.getCurrentBoard().getBoard().graphFunction()).angle(maker.getCurrentBoard().getContext()) : 0;
                 JSpinner rotSpinner = new JSpinner(new SpinnerNumberModel(baseAngle,0,360,1));
-                int rotOption = JOptionPane.showOptionDialog(null, rotSpinner,"Angle to rotate",JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
+                int rotOption = JOptionPane.showOptionDialog(null, rotSpinner,"Angle to rotate",JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null,null,null);
                 if (rotOption == JOptionPane.OK_OPTION) {
                     int angle = (Integer) rotSpinner.getValue();
                     apply_rotation(angle);
                 }
 
+            case "scale" :
+                float scaleX = maker.getCurrentBoard().getBoard().graphFunction() instanceof Scale ?
+                        ((Scale) maker.getCurrentBoard().getBoard().graphFunction()).scaleX(maker.getCurrentBoard().getContext()) : 1;
+                float scaleY =  maker.getCurrentBoard().getBoard().graphFunction() instanceof Scale ?
+                        ((Scale) maker.getCurrentBoard().getBoard().graphFunction()).scaleY(maker.getCurrentBoard().getContext()) : 1;
+                JPanel panel = new JPanel();
+                panel.add(new JLabel("X: "));
+                JSpinner xSpinner = new JSpinner(new SpinnerNumberModel(scaleX,0.0,100.0,0.1));
+                panel.add(xSpinner);
+                panel.add(new JLabel("Y: "));
+                JSpinner ySpinner = new JSpinner(new SpinnerNumberModel(scaleY,0.0,100.0,0.1));
+                panel.add(ySpinner);
+                int scaleOption = JOptionPane.showOptionDialog(null, panel,"Value to skew",JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null,null,null);
+                if (scaleOption == JOptionPane.OK_OPTION) {
+                    double valX = (Double) xSpinner.getValue();
+                    double valY = (Double) ySpinner.getValue();
+                    apply_scale(valX,valY);
+                }
+                break;
+
+            case "skew" :
+                double baseSkew = maker.getCurrentBoard().getBoard().graphFunction() instanceof Skew ?
+                        ((Skew) maker.getCurrentBoard().getBoard().graphFunction()).amount() : 0;
+                JSpinner skewSpinner = new JSpinner(new SpinnerNumberModel(baseSkew,-5.0,5.0,0.1));
+                int skewOption = JOptionPane.showOptionDialog(null, skewSpinner,"Value to skew",JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null,null,null);
+                if (skewOption == JOptionPane.OK_OPTION) {
+                    double value = (double) skewSpinner.getValue();
+                    apply_skew((float) value);
+                }
+                break;
+
             default :
                 break;
         }
+    }
+
+    private void apply_scale(double valX, double valY) {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction;
+        if (oldBoard.graphFunction() instanceof Scale) {
+            newFunction = new Scale(new FloatConstant((float) valX),new FloatConstant((float) valY),new FloatConstant(1.0f),((Scale)(oldBoard.graphFunction())).graphFunction());
+        } else {
+            newFunction = new Scale(new FloatConstant((float) valX),new FloatConstant((float) valY),new FloatConstant(1.0f),oldBoard.graphFunction());
+        }
+        update_board(newFunction, oldBoard);
+    }
+
+    private void apply_skew(float value) {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction;
+        if (oldBoard.graphFunction() instanceof Skew) {
+            newFunction = new Skew(value,((Skew)(oldBoard.graphFunction())).graphFunction());
+        } else {
+            newFunction = new Skew(value,oldBoard.graphFunction());
+        }
+        update_board(newFunction, oldBoard);
     }
 
     private void apply_rotation(int angle) {

@@ -131,10 +131,6 @@ public class MergeDialog extends JDialog {
         JComboBox<String> boardCB;
         JSpinner shiftX;
         JSpinner shiftY;
-        RotationSlider rotation;
-        JSpinner scaleX;
-        JSpinner scaleY;
-        JSpinner skewVal;
 
         BoardPlacementPanel() {
             super(new BorderLayout());
@@ -172,51 +168,6 @@ public class MergeDialog extends JDialog {
             panel.setBorder(BorderFactory.createTitledBorder("Translation"));
             p.add(panel);
 
-            p.add(Box.createVerticalStrut(5));
-            p.add(new JSeparator(SwingConstants.HORIZONTAL));
-            p.add(Box.createVerticalStrut(5));
-
-            panel = new JPanel();
-            label = new JLabel("Angle: ");
-            panel.add(label);
-            rotation = new RotationSlider();
-            rotation.addChangeListener(this);
-            panel.add(rotation);
-            panel.setBorder(BorderFactory.createTitledBorder("Rotation"));
-            p.add(panel);
-
-            p.add(Box.createVerticalStrut(5));
-            p.add(new JSeparator(SwingConstants.HORIZONTAL));
-            p.add(Box.createVerticalStrut(5));
-
-            panel = new JPanel();
-            label = new JLabel("X: ");
-            panel.add(label);
-            scaleX = new JSpinner(new SpinnerNumberModel(1.0,0.0,100.0,0.1));
-            scaleX.addChangeListener(this);
-            panel.add(scaleX);
-
-            label = new JLabel("Y: ");
-            panel.add(label);
-            scaleY = new JSpinner(new SpinnerNumberModel(1.0,0.0,100.0,0.1));
-            scaleY.addChangeListener(this);
-            panel.add(scaleY);
-            panel.setBorder(BorderFactory.createTitledBorder("Scale"));
-            p.add(panel);
-
-            p.add(Box.createVerticalStrut(5));
-            p.add(new JSeparator(SwingConstants.HORIZONTAL));
-            p.add(Box.createVerticalStrut(5));
-
-            panel = new JPanel();
-            label = new JLabel("Value: ");
-            panel.add(label);
-            skewVal = new JSpinner(new SpinnerNumberModel(0.0,-100.0,100.0,0.1));
-            skewVal.addChangeListener(this);
-            panel.add(skewVal);
-            panel.setBorder(BorderFactory.createTitledBorder("Skew"));
-            p.add(panel);
-
             add(p, BorderLayout.PAGE_START);
             setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         }
@@ -250,16 +201,7 @@ public class MergeDialog extends JDialog {
                 function = new Shift(new FloatConstant(((Double) shiftX.getValue()).floatValue()),
                         new FloatConstant(((Double) shiftY.getValue()).floatValue()),null,function);
             }
-            if (rotation.getValue() != 0) {
-                function = new Rotate(new FloatConstant((float) rotation.getValue()), function);
-            }
-            if ((Double) scaleX.getValue() != 0.0 || (Double) scaleY.getValue() != 0.0) {
-                function = new Scale(new FloatConstant(((Double) scaleX.getValue()).floatValue()),
-                        new FloatConstant(((Double) scaleY.getValue()).floatValue()),new FloatConstant(1.0F),function);
-            }
-            if ((Double) skewVal.getValue() != 0.0) {
-                function = new Skew(((Double) skewVal.getValue()).floatValue(),function);
-            }
+
             return function;
         }
     }
@@ -267,7 +209,7 @@ public class MergeDialog extends JDialog {
     private class ResultPanel extends JPanel {
         ResultPanel() {
             setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-            setPreferredSize(new Dimension(400,0));
+            setPreferredSize(new Dimension(500,500));
         }
 
         @Override

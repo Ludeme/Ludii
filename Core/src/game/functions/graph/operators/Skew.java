@@ -104,4 +104,12 @@ public final class Skew extends BaseGraphFunction
 		concepts.or(graphFn.concepts(game));
 		return concepts;
 	}
+
+	public double amount() {
+		return amount;
+	}
+
+	public GraphFunction graphFunction() {
+		return graphFn;
+	}
 }
