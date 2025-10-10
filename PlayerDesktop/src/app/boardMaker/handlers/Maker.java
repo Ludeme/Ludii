@@ -101,6 +101,7 @@ public class Maker
 	public void drawBoard(BoardData data, Container view, Camera camera) {
 		Board board = BoardUtils.copyBoard(data.getBoard(),this);
 		data.setBoard(board);
+		System.out.println(board.graphFunction());
 
 		Game game = new Game(gamename, new Players(players), new Mode(mode), new Equipment(new Item[] {board}), null);
 		game.create();

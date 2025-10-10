@@ -8,6 +8,7 @@ import other.topology.Vertex;
 import util.LocationUtil;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
@@ -16,14 +17,10 @@ import java.awt.image.BufferedImage;
 public class BoardViewListener extends MouseAdapter {
     private Maker maker;
     private BoardDrawSpace view;
-    private Camera camera;
 
-    private BufferedImage image;
-
-    public BoardViewListener(Maker maker, BoardDrawSpace view, Camera camera) {
+    public BoardViewListener(Maker maker, BoardDrawSpace view) {
         this.maker = maker;
         this.view = view;
-        this.camera = camera;
     }
 
     @Override
@@ -31,12 +28,20 @@ public class BoardViewListener extends MouseAdapter {
         if (maker.getCurrentBoard() == null) {
             return;
         }
-        Point pt = new Point(e.getX(),e.getY());
+
+        Point click = new Point(e.getX(),e.getY());
+        if (view.createPoly()) {
+            if (e.getButton() == 1) {
+                view.addVertex(click);
+            } else if (e.getButton() == 3) {
+                view.removeVertex(click);
+            }
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (maker.getCurrentBoard() == null) {
+        if (maker.getCurrentBoard() == null || view.createPoly()) {
             return;
         }
 
@@ -57,7 +62,8 @@ public class BoardViewListener extends MouseAdapter {
         return false;
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        view.requestFocusInWindow();
     }
 }

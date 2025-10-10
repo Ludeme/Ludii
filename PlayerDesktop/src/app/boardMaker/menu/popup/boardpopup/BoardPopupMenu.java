@@ -22,6 +22,11 @@ public class BoardPopupMenu extends JPopupMenu {
         JMenuItem item;
         JMenu submenu;
 
+        item = new JMenuItem("Clip");
+        item.setActionCommand("clip");
+        item.addActionListener(listener);
+        add(item);
+
         submenu = new JMenu("Complete");
         JMenuItem submenuItem = new JMenuItem("Full");
         submenuItem.setActionCommand("complete_full");
@@ -38,8 +43,18 @@ public class BoardPopupMenu extends JPopupMenu {
         item.addActionListener(listener);
         add(item);
 
+        item = new JMenuItem("Hole");
+        item.setActionCommand("hole");
+        item.addActionListener(listener);
+        add(item);
+
         item = new JMenuItem("Intersect");
         item.setActionCommand("intersect");
+        item.addActionListener(listener);
+        add(item);
+
+        item = new JMenuItem("Keep");
+        item.setActionCommand("keep");
         item.addActionListener(listener);
         add(item);
 

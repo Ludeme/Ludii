@@ -114,6 +114,26 @@ public class BoardPopupMenuListener implements ActionListener {
                 }
                 break;
 
+            case "clip" :
+                displayer.getBoardPanel().setCreatePoly(true);
+                displayer.getBoardPanel().setTransformation(Transformations.Clip);
+                displayer.getBoardPanel().newPolygon();
+                displayer.getBoardPanel().repaint();
+                break;
+
+            case "hole" :
+                displayer.getBoardPanel().setCreatePoly(true);
+                displayer.getBoardPanel().setTransformation(Transformations.Hole);
+                displayer.getBoardPanel().newPolygon();
+                displayer.getBoardPanel().repaint();
+                break;
+
+            case "keep" :
+                displayer.getBoardPanel().setCreatePoly(true);
+                displayer.getBoardPanel().setTransformation(Transformations.Keep);
+                displayer.getBoardPanel().newPolygon();
+                displayer.getBoardPanel().repaint();
+                break;
             default :
                 break;
         }
