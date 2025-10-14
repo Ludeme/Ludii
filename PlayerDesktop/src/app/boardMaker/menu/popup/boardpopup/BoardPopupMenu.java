@@ -68,6 +68,21 @@ public class BoardPopupMenu extends JPopupMenu {
         item.addActionListener(listener);
         add(item);
 
+        submenu = new JMenu("Remove");
+        submenuItem = new JMenuItem("Vertex");
+        submenuItem.setActionCommand("remove_v");
+        submenuItem.addActionListener(listener);
+        submenu.add(submenuItem);
+        submenuItem = new JMenuItem("Edge");
+        submenuItem.setActionCommand("remove_e");
+        submenuItem.addActionListener(listener);
+        submenu.add(submenuItem);
+        submenuItem = new JMenuItem("Cell");
+        submenuItem.setActionCommand("remove_c");
+        submenuItem.addActionListener(listener);
+        submenu.add(submenuItem);
+        add(submenu);
+
         item = new JMenuItem("Rotate");
         item.setActionCommand("rotate");
         item.addActionListener(listener);

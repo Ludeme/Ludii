@@ -4,10 +4,14 @@ import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.BoardData;
 import app.boardMaker.utils.Camera;
+import app.boardMaker.utils.CoordinatesUtil;
 import app.utils.SVGUtil;
+import game.types.board.SiteType;
+import other.topology.TopologyElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +24,12 @@ public class BoardDrawSpace extends JPanel {
 
     private boolean createPoly = false;
     private Transformations transformation;
-
     private List<Point> vertices;
     private Point current;
+
+    private boolean remove = false;
+    private SiteType removeType;
+    private List<Integer> removedIndices;
 
     private int dotSize = 10;
 
@@ -39,6 +46,10 @@ public class BoardDrawSpace extends JPanel {
 
         addMouseListener(bvl);
         addKeyListener(bvkl);
+    }
+
+    public Camera camera() {
+        return camera;
     }
 
     @Override
@@ -82,6 +93,20 @@ public class BoardDrawSpace extends JPanel {
                     }
                     g2d.fillOval(pt.x - dotSize/2 + camera.offX(), pt.y - dotSize/2 - camera.offY(), dotSize,dotSize);
                 }
+            } else if (remove) {
+                String text = "Press Enter to confirm.\nPress Esc. to cancel.";
+                drawText(g2d,text,0,getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
+
+                List<? extends TopologyElement> elements = currentBoard.getBoard().topology().getGraphElements(removeType);
+                for (int i = 0; i < elements.size(); i++) {
+                    if (removedIndices.contains(i)) {
+                        g2d.setColor(Color.red);
+                    } else {
+                        g2d.setColor(Color.gray);
+                    }
+                    Point pt = CoordinatesUtil.screenPosn(elements.get(i).centroid(),currentBoard.getPlacement());
+                    g2d.fillOval(pt.x - dotSize/2,pt.y - dotSize/2,dotSize,dotSize);
+                }
             }
         }
     }
@@ -115,7 +140,7 @@ public class BoardDrawSpace extends JPanel {
 
     public void addVertex(Point click) {
         for (Point pt : vertices) {
-            if (pt.equals(click) || (Math.sqrt(Math.pow(pt.x - click.x,2) + Math.pow(pt.y - click.y,2))) < dotSize / 2) {
+            if (pt.equals(click) || (Math.sqrt(Math.pow(pt.x - click.x,2) + Math.pow(pt.y - click.y,2))) < (double) dotSize / 2) {
                 return;
             }
         }
@@ -126,10 +151,12 @@ public class BoardDrawSpace extends JPanel {
 
     public void removeVertex(Point click) {
         for (Point pt : vertices) {
-            if (pt.equals(click) || (Math.sqrt(Math.pow(pt.x - click.x,2) + Math.pow(pt.y - click.y,2))) < dotSize / 2) {
+            if (pt.equals(click) || (Math.sqrt(Math.pow(pt.x - click.x,2) + Math.pow(pt.y - click.y,2))) < (double) dotSize / 2) {
                 vertices.remove(pt);
-                if (pt.equals(current)) {
+                if (pt.equals(current) && !vertices.isEmpty()) {
                     current = vertices.getLast();
+                } else {
+                    current = null;
                 }
                 repaint();
                 return;
@@ -146,5 +173,65 @@ public class BoardDrawSpace extends JPanel {
 
     public List<Point> poly() {
         return vertices;
+    }
+
+    public void setRemove(boolean b) {
+        remove = b;
+    }
+
+    public void setRemoveType(SiteType siteType) {
+        removeType = siteType;
+    }
+
+    public void clearRemoving() {
+        removedIndices = new ArrayList<>();
+        if (remove) {
+            remove = false;
+            removeType = null;
+        }
+    }
+
+    public boolean isRemoving() {
+        return remove;
+    }
+
+    public void addIndex(Point click) {
+        List<? extends TopologyElement> elements = maker.getCurrentBoard().getBoard().topology().getGraphElements(removeType);
+
+        for (int i = 0; i < elements.size(); i++) {
+            Point2D cent = elements.get(i).centroid();
+            Point pt = CoordinatesUtil.screenPosn(cent,maker.getCurrentBoard().getPlacement());
+            if ((Math.sqrt(Math.pow(pt.getX() - click.x,2) + Math.pow(pt.getY() - click.y,2))) < (double) dotSize / 2) {
+                if (!removedIndices.contains(i)) {
+                    removedIndices.add(i);
+                    repaint();
+                }
+                return;
+            }
+        }
+    }
+
+    public void removeIndex(Point click) {
+        List<? extends TopologyElement> elements = maker.getCurrentBoard().getBoard().topology().getGraphElements(removeType);
+
+        for (int i = 0; i < elements.size(); i++) {
+            Point2D cent = elements.get(i).centroid();
+            Point pt = CoordinatesUtil.screenPosn(cent,maker.getCurrentBoard().getPlacement());
+            if ((Math.sqrt(Math.pow(pt.getX() - click.x,2) + Math.pow(pt.getY() - click.y,2))) < (double) dotSize / 2) {
+                if (removedIndices.contains(i)) {
+                    removedIndices.remove((Integer) i);
+                    repaint();
+                }
+                return;
+            }
+        }
+    }
+
+    public List<Integer> indices() {
+        return removedIndices;
+    }
+
+    public SiteType removedType() {
+        return removeType;
     }
 }

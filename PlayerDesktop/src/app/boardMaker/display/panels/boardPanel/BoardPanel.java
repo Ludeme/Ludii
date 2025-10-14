@@ -1,20 +1,11 @@
 package app.boardMaker.display.panels.boardPanel;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
-import app.utils.SVGUtil;
-import game.equipment.container.board.Board;
-import game.functions.graph.GraphFunction;
+import game.types.board.SiteType;
 
 /**
  * Class representing the panel where the board is displayed
@@ -57,5 +48,17 @@ public class BoardPanel extends JTabbedPane
 
 	public void newPolygon() {
 		view.newPolygon();
+	}
+
+	public void setRemove(boolean b) {
+		view.setRemove(b);
+	}
+
+	public void setRemoveType(SiteType siteType) {
+		view.setRemoveType(siteType);
+	}
+
+	public void clearRemovedIndices() {
+		view.clearRemoving();
 	}
 }

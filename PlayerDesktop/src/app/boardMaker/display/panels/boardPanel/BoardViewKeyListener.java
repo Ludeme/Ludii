@@ -5,11 +5,16 @@ import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.BoardUtils;
 import app.boardMaker.utils.CoordinatesUtil;
 import game.equipment.container.board.Board;
+import game.functions.dim.DimConstant;
+import game.functions.dim.DimFunction;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.Clip;
 import game.functions.graph.operators.Hole;
 import game.functions.graph.operators.Keep;
+import game.functions.graph.operators.Remove;
+import game.types.board.SiteType;
 import game.util.graph.Poly;
+import other.topology.Edge;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -31,13 +36,49 @@ public class BoardViewKeyListener extends KeyAdapter {
         int key = e.getKeyCode();
 
         if (key == KeyEvent.VK_ENTER) {
-            apply_transformation(view.transformation(),view.poly());
-            view.clearPoly();
+            if (view.createPoly()) {
+                apply_transformation(view.transformation(),view.poly());
+                view.clearPoly();
+            } else if (view.isRemoving()) {
+                apply_remove(view.indices());
+                view.clearRemoving();
+            }
             view.repaint();
         } else if (key == KeyEvent.VK_ESCAPE) {
-            view.clearPoly();
+            if (view.createPoly()) {
+                view.clearPoly();
+            } else if (view.isRemoving()) {
+                view.clearRemoving();
+            }
             view.repaint();
         }
+    }
+
+    private void apply_remove(List<Integer> indices) {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction;
+        if (view.removedType() == SiteType.Cell) {
+            DimFunction[] cells = new DimFunction[indices.size()];
+            for (int i = 0; i < indices.size(); i++) {
+                cells[i] = new DimConstant(indices.get(i));
+            }
+            newFunction = new Remove(oldBoard.graphFunction(),null,cells,null,null,null,null,true);
+        } else if (view.removedType() == SiteType.Vertex) {
+            DimFunction[] vertices = new DimFunction[indices.size()];
+            for (int i = 0; i < indices.size(); i++) {
+                vertices[i] = new DimConstant(indices.get(i));
+            }
+            newFunction = new Remove(oldBoard.graphFunction(),null,null,null,null,null,vertices,true);
+        } else {
+            DimFunction[][] edges = new DimFunction[indices.size()][2];
+            List<Edge> edgeList = maker.getCurrentBoard().getBoard().topology().edges();
+            for (int i = 0; i < indices.size(); i++) {
+                Edge edge = edgeList.get(indices.get(i));
+                edges[i] = new DimFunction[]{new DimConstant(edge.vA().index()),new DimConstant(edge.vB().index())};
+            }
+            newFunction = new Remove(oldBoard.graphFunction(),null,null,null,edges,null,null,true);
+        }
+        update_board(newFunction,oldBoard);
     }
 
     private void apply_transformation(Transformations transformation, List<Point> vertices) {
@@ -61,13 +102,11 @@ public class BoardViewKeyListener extends KeyAdapter {
 
     private Poly makePolygon(List<Point> vertices) {
         Float[][] pts = new Float[vertices.size()][2];
-
         for (int i = 0; i < vertices.size(); i++) {
-            Point2D pt = CoordinatesUtil.boardPosn(vertices.get(i),maker.getCurrentBoard().getPlacement(),maker.getCurrentBoard().getBoard().graph());
+            Point2D pt = CoordinatesUtil.boardPosn(vertices.get(i),maker.getCurrentBoard().getPlacement(),maker.getCurrentBoard().getBoard().graph(),view.camera());
 
             pts[i][0] = (float) pt.getX();
             pts[i][1] = (float) pt.getY();
-            System.out.println(pts[i][0]+" "+pts[i][1]);
         }
         return new Poly(pts, null);
     }

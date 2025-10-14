@@ -29,19 +29,26 @@ public class BoardViewListener extends MouseAdapter {
             return;
         }
 
-        Point click = new Point(e.getX(),e.getY());
+        Point click = new Point(e.getX() - view.camera().offX(),e.getY() + view.camera().offY());
+
         if (view.createPoly()) {
             if (e.getButton() == 1) {
                 view.addVertex(click);
             } else if (e.getButton() == 3) {
                 view.removeVertex(click);
             }
+        } else if (view.isRemoving()) {
+            if (e.getButton() == 1) {
+                view.addIndex(click);
+            } else if (e.getButton() == 3) {
+                view.removeIndex(click);
+            }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (maker.getCurrentBoard() == null || view.createPoly()) {
+        if (maker.getCurrentBoard() == null || view.createPoly() || view.isRemoving()) {
             return;
         }
 

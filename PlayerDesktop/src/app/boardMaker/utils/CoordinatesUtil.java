@@ -16,10 +16,11 @@ public class CoordinatesUtil {
         return screenPos;
     }
 
-    public static Point2D boardPosn(Point screenPos, Rectangle placement, Graph graph) {
+    public static Point2D boardPosn(Point screenPos, Rectangle placement, Graph graph, Camera camera) {
         Point2D centeredPos = new Point2D.Double();
-        centeredPos.setLocation((screenPos.getX() - placement.x) / placement.getWidth(),
-                (placement.y + placement.getHeight() - screenPos.getY()) / placement.getHeight());
+        
+        centeredPos.setLocation((screenPos.getX() + camera.offX() - placement.x) / placement.getWidth(),
+                (placement.y + placement.getHeight() - screenPos.getY() - camera.offY()) / placement.getHeight());
 
         BoardRange scale = BoardUtils.computeRange(graph);
         double maxX_n = normalize(scale.getMaxX(), scale.getMin(), scale.getMax());

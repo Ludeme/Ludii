@@ -10,6 +10,7 @@ import game.functions.dim.DimConstant;
 import game.functions.floats.FloatConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.*;
+import game.types.board.SiteType;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -132,6 +133,25 @@ public class BoardPopupMenuListener implements ActionListener {
                 displayer.getBoardPanel().setCreatePoly(true);
                 displayer.getBoardPanel().setTransformation(Transformations.Keep);
                 displayer.getBoardPanel().newPolygon();
+                displayer.getBoardPanel().repaint();
+                break;
+
+            case "remove_v" :
+                displayer.getBoardPanel().clearRemovedIndices();
+                displayer.getBoardPanel().setRemove(true);
+                displayer.getBoardPanel().setRemoveType(SiteType.Vertex);
+                displayer.getBoardPanel().repaint();
+                break;
+            case "remove_e" :
+                displayer.getBoardPanel().clearRemovedIndices();
+                displayer.getBoardPanel().setRemove(true);
+                displayer.getBoardPanel().setRemoveType(SiteType.Edge);
+                displayer.getBoardPanel().repaint();
+                break;
+            case "remove_c" :
+                displayer.getBoardPanel().clearRemovedIndices();
+                displayer.getBoardPanel().setRemove(true);
+                displayer.getBoardPanel().setRemoveType(SiteType.Cell);
                 displayer.getBoardPanel().repaint();
                 break;
             default :
