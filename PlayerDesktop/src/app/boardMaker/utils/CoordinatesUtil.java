@@ -7,6 +7,12 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class CoordinatesUtil {
+    /**
+     * Compute the position on the screen of a normalised and centered point on the board
+     * @param boardPos the position on the board plane
+     * @param placement the placement of the board
+     * @return the position on the screen
+     */
     public static Point screenPosn(Point2D boardPos, Rectangle placement) {
         Point screenPos = new Point();
 
@@ -20,7 +26,7 @@ public class CoordinatesUtil {
         Point2D centeredPos = new Point2D.Double();
         
         centeredPos.setLocation((screenPos.getX() + camera.offX() - placement.x) / placement.getWidth(),
-                (placement.y + placement.getHeight() - screenPos.getY() - camera.offY()) / placement.getHeight());
+                (placement.y + placement.getHeight() - screenPos.getY() + camera.offY()) / placement.getHeight());
 
         BoardRange scale = BoardUtils.computeRange(graph);
         double maxX_n = normalize(scale.getMaxX(), scale.getMin(), scale.getMax());
@@ -41,5 +47,18 @@ public class CoordinatesUtil {
 
     public static double normalize(double x, double min, double max) {
         return (x - min)/(max - min);
+    }
+
+    public static Point2D normalizeThenCenter(Point2D pos, BoardRange scale) {
+        Point2D.Double normalized = new Point2D.Double(normalize(pos.getX(), scale.getMin(), scale.getMax())
+                ,normalize(pos.getY(), scale.getMin(), scale.getMax()));
+
+        double maxX_n = normalize(scale.getMaxX(), scale.getMin(), scale.getMax());
+        double maxY_n = normalize(scale.getMaxY(), scale.getMin(), scale.getMax());
+        double minX_n = normalize(scale.getMinX(), scale.getMin(), scale.getMax());
+        double minY_n = normalize(scale.getMinY(), scale.getMin(), scale.getMax());
+
+        return new Point2D.Double(normalized.x - ((maxX_n + minX_n) / 2.0 - 0.5)
+                ,normalized.y - ((maxY_n + minY_n) / 2.0 - 0.5));
     }
 }

@@ -7,19 +7,20 @@ import app.boardMaker.utils.CoordinatesUtil;
 import game.equipment.container.board.Board;
 import game.functions.dim.DimConstant;
 import game.functions.dim.DimFunction;
+import game.functions.floats.FloatConstant;
+import game.functions.floats.FloatFunction;
 import game.functions.graph.GraphFunction;
-import game.functions.graph.operators.Clip;
-import game.functions.graph.operators.Hole;
-import game.functions.graph.operators.Keep;
-import game.functions.graph.operators.Remove;
+import game.functions.graph.operators.*;
 import game.types.board.SiteType;
 import game.util.graph.Poly;
+import game.util.graph.Vertex;
 import other.topology.Edge;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BoardViewKeyListener extends KeyAdapter {
@@ -42,6 +43,9 @@ public class BoardViewKeyListener extends KeyAdapter {
             } else if (view.isRemoving()) {
                 apply_remove(view.indices());
                 view.clearRemoving();
+            } else if (view.isAdding()) {
+                apply_add();
+                view.clearAdd();
             }
             view.repaint();
         } else if (key == KeyEvent.VK_ESCAPE) {
@@ -49,9 +53,72 @@ public class BoardViewKeyListener extends KeyAdapter {
                 view.clearPoly();
             } else if (view.isRemoving()) {
                 view.clearRemoving();
+            } else if (view.isAdding()) {
+                view.clearAdd();
             }
             view.repaint();
         }
+    }
+
+    private void apply_add() {
+        Board oldBoard = maker.getCurrentBoard().getBoard();
+        GraphFunction newFunction;
+        if (view.addedType == SiteType.Vertex) {
+            FloatFunction[][] vertices = new FloatFunction[view.addedVertices.size()][2];
+            for (int i = 0; i < view.addedVertices.size(); i++) {
+                Point2D pt = view.addedVertices.get(i);
+                vertices[i] = new FloatConstant[] {new FloatConstant((float)pt.getX())
+                        ,new FloatConstant((float)pt.getY())};
+            }
+            newFunction = new Add(oldBoard.graphFunction(),vertices,null,null,null,null,null,false);
+        } else if (view.addedType == SiteType.Edge) {
+            List<Vertex> vertices = oldBoard.graph().vertices();
+            List<FloatFunction[][]> coordEdges = new ArrayList<>();
+            for (Integer[] edge : view.addedEdges) {
+                int vA = edge[0], vB = edge[1];
+                Point2D pt1;
+                if (vA >= vertices.size()) {
+                    vA = vA - vertices.size();
+                    pt1 = view.addedVertices.get(vA);
+                } else {
+                    pt1 = vertices.get(vA).pt2D();
+                }
+                Point2D pt2;
+                if (vB >= vertices.size()) {
+                    vB = vB - vertices.size();
+                    pt2 = view.addedVertices.get(vB);
+                } else {
+                    pt2 = vertices.get(vB).pt2D();
+                }
+                coordEdges.add(new FloatFunction[][]{{new FloatConstant((float)pt1.getX()), new FloatConstant((float)pt1.getY())}
+                            , {new FloatConstant((float)pt2.getX()), new FloatConstant((float)pt2.getY())}});
+
+            }
+            newFunction = new Add(oldBoard.graphFunction(),null,coordEdges.toArray(new FloatFunction[0][][]),
+                    null,null,null,null,false);
+        } else {
+            List<Vertex> vertices = oldBoard.graph().vertices();
+            List<FloatFunction[][]> coordCells = new ArrayList<>();
+            for (List<Integer> cell : view.addedCells) {
+                FloatFunction[][] coords = new FloatFunction[cell.size()][2];
+                for (int i = 0; i < cell.size(); i++) {
+                    int id = cell.get(i);
+                    if (id < vertices.size()) {
+                        Point2D pt = vertices.get(id).pt2D();
+                        coords[i] = new FloatFunction[]{new FloatConstant((float) pt.getX()),
+                                new FloatConstant((float) pt.getY())};
+                    } else {
+                        Point2D pt = view.addedVertices.get(id - vertices.size());
+                        coords[i] = new FloatFunction[]{new FloatConstant((float) pt.getX()),
+                                new FloatConstant((float) pt.getY())};
+                    }
+                }
+                coordCells.add(coords);
+            }
+            newFunction = new Add(oldBoard.graphFunction(),null,null,null,
+                    null,coordCells.toArray(new FloatFunction[0][][]),null,false);
+        }
+        update_board(newFunction,oldBoard);
     }
 
     private void apply_remove(List<Integer> indices) {

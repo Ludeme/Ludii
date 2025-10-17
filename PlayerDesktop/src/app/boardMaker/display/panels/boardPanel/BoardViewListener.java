@@ -2,17 +2,13 @@ package app.boardMaker.display.panels.boardPanel;
 
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.menu.popup.boardpopup.BoardPopupMenu;
-import app.boardMaker.utils.Camera;
 import app.boardMaker.utils.CoordinatesUtil;
-import other.topology.Vertex;
-import util.LocationUtil;
+import game.types.board.SiteType;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 
 public class BoardViewListener extends MouseAdapter {
     private Maker maker;
@@ -33,9 +29,9 @@ public class BoardViewListener extends MouseAdapter {
 
         if (view.createPoly()) {
             if (e.getButton() == 1) {
-                view.addVertex(click);
+                view.addPolygonVertex(click);
             } else if (e.getButton() == 3) {
-                view.removeVertex(click);
+                view.removePolygonVertex(click);
             }
         } else if (view.isRemoving()) {
             if (e.getButton() == 1) {
@@ -43,12 +39,18 @@ public class BoardViewListener extends MouseAdapter {
             } else if (e.getButton() == 3) {
                 view.removeIndex(click);
             }
+        } else if (view.isAdding()) {
+            if (e.getButton() == 1) {
+                view.addVertex(click);
+            } else if (e.getButton() == 3) {
+                view.removeVertex(click);
+            }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (maker.getCurrentBoard() == null || view.createPoly() || view.isRemoving()) {
+        if (maker.getCurrentBoard() == null || view.createPoly() || view.isRemoving() || view.isAdding()) {
             return;
         }
 

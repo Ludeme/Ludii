@@ -61,4 +61,17 @@ public class BoardPanel extends JTabbedPane
 	public void clearRemovedIndices() {
 		view.clearRemoving();
 	}
+
+    public void setAdding(boolean b) {
+		view.setAdding(b);
+    }
+
+	public void setAddType(SiteType siteType) {
+		view.setAddType(siteType);
+	}
+
+	public void clearAdd() {
+		view.clearAdd();
+	}
+
 }

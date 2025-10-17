@@ -154,6 +154,25 @@ public class BoardPopupMenuListener implements ActionListener {
                 displayer.getBoardPanel().setRemoveType(SiteType.Cell);
                 displayer.getBoardPanel().repaint();
                 break;
+
+            case "add_v" :
+                displayer.getBoardPanel().clearAdd();
+                displayer.getBoardPanel().setAdding(true);
+                displayer.getBoardPanel().setAddType(SiteType.Vertex);
+                displayer.getBoardPanel().repaint();
+                break;
+            case "add_e" :
+                displayer.getBoardPanel().clearAdd();
+                displayer.getBoardPanel().setAdding(true);
+                displayer.getBoardPanel().setAddType(SiteType.Edge);
+                displayer.getBoardPanel().repaint();
+                break;
+            case "add_c" :
+                displayer.getBoardPanel().clearAdd();
+                displayer.getBoardPanel().setAdding(true);
+                displayer.getBoardPanel().setAddType(SiteType.Cell);
+                displayer.getBoardPanel().repaint();
+                break;
             default :
                 break;
         }

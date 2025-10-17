@@ -21,6 +21,22 @@ public class BoardPopupMenu extends JPopupMenu {
     public void create() {
         JMenuItem item;
         JMenu submenu;
+        JMenuItem submenuItem;
+
+        submenu = new JMenu("Add");
+        submenuItem = new JMenuItem("Vertex");
+        submenuItem.setActionCommand("add_v");
+        submenuItem.addActionListener(listener);
+        submenu.add(submenuItem);
+        submenuItem = new JMenuItem("Edge");
+        submenuItem.setActionCommand("add_e");
+        submenuItem.addActionListener(listener);
+        submenu.add(submenuItem);
+        submenuItem = new JMenuItem("Cell");
+        submenuItem.setActionCommand("add_c");
+        submenuItem.addActionListener(listener);
+        submenu.add(submenuItem);
+        add(submenu);
 
         item = new JMenuItem("Clip");
         item.setActionCommand("clip");
@@ -28,7 +44,7 @@ public class BoardPopupMenu extends JPopupMenu {
         add(item);
 
         submenu = new JMenu("Complete");
-        JMenuItem submenuItem = new JMenuItem("Full");
+        submenuItem = new JMenuItem("Full");
         submenuItem.setActionCommand("complete_full");
         submenuItem.addActionListener(listener);
         submenu.add(submenuItem);
