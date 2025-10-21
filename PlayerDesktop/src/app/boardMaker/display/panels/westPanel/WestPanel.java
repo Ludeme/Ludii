@@ -1,6 +1,6 @@
 package app.boardMaker.display.panels.westPanel;
 
-import app.boardMaker.display.panels.westPanel.boardList.BoardList;
+import app.boardMaker.display.panels.westPanel.itemList.ItemList;
 import app.boardMaker.display.panels.westPanel.library.Library;
 import app.boardMaker.handlers.Maker;
 
@@ -16,10 +16,10 @@ public class WestPanel extends JTabbedPane {
         maker.getDisplayer().setWestPanel(this);
 
         Library library = new Library(maker);
-        BoardList boardList = new BoardList(maker);
+        ItemList itemList = new ItemList(maker);
 
         addTab("Library", library);
-        addTab("Boards", boardList);
+        addTab("Items", itemList);
     }
 
     public void visibility(boolean b) {

@@ -1,6 +1,7 @@
 package app.boardMaker.display.window;
 
 import java.awt.Dimension;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -20,7 +21,7 @@ public class BoardMakerFrame extends JFrame
 	private final String title = "Ludii Board Maker";
 	
 	/** Ludii icon */
-	private final ImageIcon icon = DesignPalette.LUDII_ICON;
+	private final ImageIcon icon = new ImageIcon(Objects.requireNonNull(DesignPalette.class.getResource("/ludii-logo-64x64.png")));
 	
 	private Displayer displayer;
 	private Maker maker;

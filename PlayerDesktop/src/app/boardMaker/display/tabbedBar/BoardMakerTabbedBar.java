@@ -89,11 +89,11 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		label = new JLabel("Mode: ");
 		label.setToolTipText("<html>Sets the mode of the game."
 				+ "<br>Alternating: turn by turn."
-				+ "<br>Simultaneous: players move at the same time."
-				+ "<br>Simulation: simulation game.</html>");
+				+ "<br>Simultaneous: players move at the same time.</html>");
 		toolbar.add(label);
 		toolbar.addSeparator();
 		mode = new JComboBox<ModeType>(ModeType.values());
+		mode.removeItem(ModeType.Simulation);
 		mode.setActionCommand("Mode");
 		mode.setSelectedItem(maker.getMode());
 		mode.addActionListener(gtl);

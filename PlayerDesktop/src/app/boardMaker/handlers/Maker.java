@@ -2,7 +2,7 @@ package app.boardMaker.handlers;
 
 import javax.swing.*;
 
-import app.boardMaker.display.panels.westPanel.boardList.BoardList;
+import app.boardMaker.display.panels.westPanel.itemList.ItemList;
 import app.boardMaker.utils.BoardData;
 import app.boardMaker.utils.BoardUtils;
 import app.boardMaker.utils.Camera;
@@ -17,7 +17,6 @@ import game.mode.Mode;
 import game.players.Players;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
-import main.collections.Pair;
 import other.context.Context;
 import other.trial.Trial;
 import util.PlaneType;
@@ -50,7 +49,7 @@ public class Maker
 
 	private BoardData currentBoard;
 
-	private BoardList boardList;
+	private ItemList itemList;
 	
 	public Maker() {
 		displayer = new Displayer(this);
@@ -80,8 +79,8 @@ public class Maker
 	public void addBoard(BoardData board) {
 		currentBoard = board.copy();
 
-		boardList.addBoard("board"+boardList.root().getChildCount());
-		boardList.reload();
+		itemList.addBoard("board"+ itemList.boardRoot().getChildCount(), currentBoard);
+		itemList.reload(itemList.boardRoot());
 	}
 
 	/**
@@ -209,8 +208,8 @@ public class Maker
 		return largeStack;
 	}
 
-	public BoardList getBoardList() {
-		return boardList;
+	public ItemList getItemList() {
+		return itemList;
 	}
 	//--------------------------------------------------------------------------------
 	
@@ -242,7 +241,7 @@ public class Maker
 		largeStack = b;
 	}
 
-	public void setBoardList(BoardList bl) {
-		boardList = bl;
+	public void setBoardList(ItemList bl) {
+		itemList = bl;
 	}
 }

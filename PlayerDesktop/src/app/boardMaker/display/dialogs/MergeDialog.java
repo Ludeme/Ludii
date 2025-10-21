@@ -2,7 +2,6 @@ package app.boardMaker.display.dialogs;
 
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
-import app.boardMaker.display.components.sliders.RotationSlider;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.BoardData;
@@ -11,7 +10,6 @@ import game.equipment.container.board.Board;
 import game.functions.floats.FloatConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.*;
-import game.rules.play.moves.nonDecision.effect.Select;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -22,7 +20,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MergeDialog extends JDialog {
     private Maker maker;
@@ -143,7 +140,7 @@ public class MergeDialog extends JDialog {
             JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             JLabel label = new JLabel("Board: ");
             panel.add(label);
-            boardCB = new JComboBox<>(maker.getBoardList().boards().keySet().toArray(new String[0]));
+            boardCB = new JComboBox<>(maker.getItemList().boards().keySet().toArray(new String[0]));
             boardCB.setSelectedIndex(-1);
             boardCB.addActionListener(this);
             panel.add(boardCB);
@@ -177,7 +174,7 @@ public class MergeDialog extends JDialog {
             if (board == null) {
                 board = new BoardData(maker);
             }
-            baseFunction = maker.getBoardList().get((String) boardCB.getSelectedItem()).getBoard().graphFunction();
+            baseFunction = maker.getItemList().get((String) boardCB.getSelectedItem()).getBoard().graphFunction();
             board.setBoard(new Board(apply_placement(),null,null,null,null,
                     maker.getSiteType(),maker.largeStack()));
             computeBoard();
