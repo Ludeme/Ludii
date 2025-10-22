@@ -31,9 +31,9 @@ public class BoardMakerPane extends JPanel
 
 		displayer.setBoardMakerPane(this);
 
-		createPanels();
+		//createPanels();
 
-		displayer.mainView();
+		displayer.welcomeView();
 		
 		setOpaque(true);
 	}

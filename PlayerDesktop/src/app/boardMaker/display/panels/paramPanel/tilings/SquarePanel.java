@@ -19,6 +19,7 @@ import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.square.DiagonalsType;
 import game.functions.graph.generators.basis.square.Square;
 import game.functions.graph.generators.basis.square.SquareShapeType;
+import game.types.board.SiteType;
 
 public class SquarePanel extends OptionPanel {
 	private Maker maker;
@@ -66,7 +67,8 @@ public class SquarePanel extends OptionPanel {
 		label.setToolTipText("The number of sites par side.");
 		p.add(label);
 
-		dimSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		dimSpinner = maker.getSiteType() == SiteType.Cell ? new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1))
+						: new JSpinner(new SpinnerNumberModel(2, 2, Integer.MAX_VALUE, 1));
 		dimSpinner.addChangeListener(pl);
 		p.add(dimSpinner);
 		add(p);

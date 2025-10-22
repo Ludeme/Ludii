@@ -42,6 +42,7 @@ public class Maker
 	private int players = 2;
 	private ModeType mode = ModeType.Alternating;
 	private SiteType siteType = SiteType.Cell;
+	private SiteType shownSite = SiteType.Cell;
 	private boolean largeStack = false;
 
 	private double boardratio = 1.0;
@@ -130,7 +131,7 @@ public class Maker
 
 			data.setOtherSVG(gameStyle.containerSVGImage());
 		} else {
-			if (siteType == SiteType.Cell) {
+			if (shownSite == SiteType.Cell) {
 				gameStyle = new BoardStyle(bridge,board);
 				gameStyle.setPlacement(context,placement);
 				gameStyle.render(PlaneType.BOARD,context);
@@ -211,6 +212,10 @@ public class Maker
 	public ItemList getItemList() {
 		return itemList;
 	}
+
+	public SiteType shownSite() {
+		return shownSite;
+	}
 	//--------------------------------------------------------------------------------
 	
 	/**
@@ -219,10 +224,12 @@ public class Maker
 	 * @param players the number of player
 	 * @param mode the mode of the game
 	 */
-	public void setGameInfo(String name, Integer players, ModeType mode) {
+	public void setGameInfo(String name, Integer players, ModeType mode, SiteType site) {
 		this.gamename = name;
 		this.players = players;
 		this.mode = mode;
+		this.siteType = site;
+		this.shownSite = site;
 	}
 	
 	/**
@@ -243,5 +250,9 @@ public class Maker
 
 	public void setBoardList(ItemList bl) {
 		itemList = bl;
+	}
+
+	public void showSite(SiteType site) {
+		this.shownSite = site;
 	}
 }

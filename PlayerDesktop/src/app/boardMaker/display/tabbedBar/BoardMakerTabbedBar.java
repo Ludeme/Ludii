@@ -21,6 +21,7 @@ import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
+import game.types.play.RoleType;
 
 /**
  * Class representing the main tabbed bar of the board maker
@@ -64,65 +65,47 @@ public class BoardMakerTabbedBar extends JTabbedPane
 	 * Creates the game tab toolbar
 	 */
 	private void makeGameToolbar() {
-		JLabel label = new JLabel("Game name: ");
-		label.setToolTipText("Sets the name of the game.");
+		JLabel label = new JLabel("Name: " + maker.getName());
 		toolbar.add(label);
-		toolbar.addSeparator();
-		name = new JTextField();
-		name.setActionCommand("Name");
-		name.setText(maker.getName());
-		name.addActionListener(gtl);
-		toolbar.add(name);
 		
 		toolbar.addSeparator();
 		
-		label = new JLabel("Players: ");
-		label.setToolTipText("Sets the number of player of the game.");
+		label = new JLabel("Players: " + maker.getPlayers());
 		toolbar.add(label);
-		toolbar.addSeparator();
-		players = new JSpinner(new SpinnerNumberModel(maker.getPlayers(), 1, Integer.MAX_VALUE, 1));
-		players.addChangeListener(gtl);
-		toolbar.add(players);
-		
+
 		toolbar.addSeparator();
 		
-		label = new JLabel("Mode: ");
-		label.setToolTipText("<html>Sets the mode of the game."
-				+ "<br>Alternating: turn by turn."
-				+ "<br>Simultaneous: players move at the same time.</html>");
+		label = new JLabel("Mode: " + maker.getMode());
 		toolbar.add(label);
-		toolbar.addSeparator();
-		mode = new JComboBox<ModeType>(ModeType.values());
-		mode.removeItem(ModeType.Simulation);
-		mode.setActionCommand("Mode");
-		mode.setSelectedItem(maker.getMode());
-		mode.addActionListener(gtl);
-		toolbar.add(mode);
 		
+		toolbar.addSeparator();
+
+		label = new JLabel("Site: " + maker.getSiteType());
+		toolbar.add(label);
+
 		toolbar.addSeparator();
 		
 		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
 		
 		toolbar.addSeparator();
 
-		label = new JLabel("Sites: ");
-		label.setToolTipText("Selects the sites to use during the game");
+		label = new JLabel("Show: ");
 		toolbar.add(label);
 		
 		JRadioButton button;
 		ButtonGroup group = new ButtonGroup();
-		for (SiteType type : SiteType.values()) {
-			button = new JRadioButton(type.name());
-			button.setActionCommand(type.name());
-			button.addActionListener(gtl);
-
-			if (type == SiteType.Cell) {
-				button.setSelected(true);
-			}
-
-			group.add(button);
-			toolbar.add(button);
-		}
+		button = new JRadioButton("Cells");
+		button.setActionCommand("Cells");
+		button.setSelected(maker.getSiteType() == SiteType.Cell);
+		button.addActionListener(gtl);
+		group.add(button);
+		toolbar.add(button);
+		button = new JRadioButton("Graph");
+		button.setActionCommand("Graph");
+		button.setSelected(maker.getSiteType() != SiteType.Cell);
+		button.addActionListener(gtl);
+		group.add(button);
+		toolbar.add(button);
 		
 		toolbar.addSeparator();
 		
@@ -136,10 +119,6 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		button.setSelected(false);
 		button.addActionListener(gtl);
 		toolbar.add(button);
-	}
-	
-	public void updateGameInfo() {
-		maker.setGameInfo(name.getText(), (Integer)players.getValue(), (ModeType)mode.getSelectedItem());
 	}
 	
 	public void visibility(boolean b) {

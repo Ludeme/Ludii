@@ -11,7 +11,7 @@ import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.StyleType;
 import game.types.board.SiteType;
 
-public class GameTabListener implements ActionListener, ChangeListener
+public class GameTabListener implements ActionListener
 {	
 	private BoardMakerTabbedBar tabbedBar;
 	private Maker maker;
@@ -20,13 +20,6 @@ public class GameTabListener implements ActionListener, ChangeListener
 		this.tabbedBar = maker.getDisplayer().getTabbedBar();
 		this.maker = maker;
 	}
-	
-	@Override
-	public void stateChanged(ChangeEvent e)
-	{
-		// TODO Auto-generated method stub
-		tabbedBar.updateGameInfo();
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -34,28 +27,16 @@ public class GameTabListener implements ActionListener, ChangeListener
 		// TODO Auto-generated method stub
 		switch (e.getActionCommand())
 		{
-		case "Name":
-			tabbedBar.updateGameInfo();
-			break;
-		case "Mode":
-			tabbedBar.updateGameInfo();
-			break;
-		case "Vertex":
-			maker.setSiteType(SiteType.Vertex);
+		case "Graph":
+			maker.showSite(SiteType.Vertex);
 
 			maker.getDisplayer().getCurrentDisplay().revalidate();
 			maker.getDisplayer().getCurrentDisplay().repaint();
 
 			break;
-		case "Edge":
-			maker.setSiteType(SiteType.Edge);
 
-			maker.getDisplayer().getCurrentDisplay().revalidate();
-			maker.getDisplayer().getCurrentDisplay().repaint();
-
-			break;
-		case "Cell":
-			maker.setSiteType(SiteType.Cell);
+		case "Cells":
+			maker.showSite(SiteType.Cell);
 
 			maker.getDisplayer().getCurrentDisplay().revalidate();
 			maker.getDisplayer().getCurrentDisplay().repaint();

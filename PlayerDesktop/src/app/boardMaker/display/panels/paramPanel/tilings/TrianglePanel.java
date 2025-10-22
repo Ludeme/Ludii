@@ -23,6 +23,7 @@ import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.tri.Tri;
 import game.functions.graph.generators.basis.tri.TriShapeType;
+import game.types.board.SiteType;
 
 public class TrianglePanel extends OptionPanel {
 	private Maker maker;
@@ -68,7 +69,8 @@ public class TrianglePanel extends OptionPanel {
 		label.setToolTipText("Primary dimension of the board.");
 		p.add(label);
 
-		primSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		primSpinner = maker.getSiteType() == SiteType.Cell ? new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1))
+				: new JSpinner(new SpinnerNumberModel(2, 2, Integer.MAX_VALUE, 1));
 		primSpinner.addChangeListener(pl);
 		p.add(primSpinner);
 		add(p);

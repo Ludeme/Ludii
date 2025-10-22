@@ -2,7 +2,10 @@ package app.boardMaker.handlers;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.westPanel.WestPanel;
 
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
@@ -12,6 +15,10 @@ import app.boardMaker.display.panels.previewPanel.PreviewPanel;
 import app.boardMaker.display.tabbedBar.BoardMakerTabbedBar;
 import app.boardMaker.display.window.BoardMakerFrame;
 import app.boardMaker.display.window.BoardMakerPane;
+import game.players.Player;
+import game.types.board.SiteType;
+import game.types.play.ModeType;
+import game.types.play.RoleType;
 
 import javax.swing.*;
 
@@ -47,7 +54,7 @@ public class Displayer
 	public void createWindow() {
 		frame = new BoardMakerFrame(maker);
 		frame.requestFocus();
-		setSizes();
+		//setSizes();
 	}
 	
 	/**
@@ -115,6 +122,16 @@ public class Displayer
 		boardMakerPane.revalidate();
 		boardMakerPane.repaint();
 	}
+
+	public void welcomeView() {
+		boardMakerPane.invalidate();
+		boardMakerPane.removeAll();
+
+		boardMakerPane.add(new WelcomePanel(),BorderLayout.CENTER);
+
+		boardMakerPane.revalidate();
+		boardMakerPane.repaint();
+	}
 	
 	/**
 	 * Sets the different sizes of the panels
@@ -159,16 +176,8 @@ public class Displayer
 		return paramPanel;
 	}
 	
-	public PawnPanel getPawnPanel() {
-		return pawnPanel;
-	}
-	
 	public PreviewPanel getPreviewPanel() {
 		return previewPanel;
-	}
-
-	public WestPanel getBoardList() {
-		return westPanel;
 	}
 
 	public JTabbedPane getCurrentDisplay() {
@@ -206,5 +215,84 @@ public class Displayer
 
 	public void setWestPanel(WestPanel bl) {
 		westPanel = bl;
+	}
+
+	private class WelcomePanel extends JPanel {
+		public WelcomePanel() {
+			super(new BorderLayout());
+
+			JPanel panel = new JPanel();
+			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+			panel.add(Box.createVerticalGlue());
+
+			JPanel p = new JPanel();
+			JLabel label = new JLabel("Game name: ");
+			p.add(label);
+			JTextField textfield = new JTextField("New Game",10);
+			p.add(textfield);
+			panel.add(p);
+
+			panel.add(Box.createVerticalStrut(5));
+
+			p = new JPanel();
+			label = new JLabel("Players: ");
+			p.add(label);
+			JSpinner players = new JSpinner(new SpinnerNumberModel(2, 0, 16, 1));
+			p.add(players);
+			panel.add(p);
+
+			panel.add(Box.createVerticalStrut(5));
+
+			p = new JPanel();
+			label = new JLabel("Game mode: ");
+			p.add(label);
+			JComboBox<ModeType> mode = new JComboBox<>(ModeType.values());
+			mode.removeItem(ModeType.Simulation);
+			p.add(mode);
+			panel.add(p);
+
+			panel.add(Box.createVerticalStrut(5));
+
+			p = new JPanel();
+			label = new JLabel("Site: ");
+			p.add(label);
+			JComboBox<SiteType> site = new JComboBox<>(SiteType.values());
+			site.setSelectedItem(SiteType.Cell);
+			p.add(site);
+			panel.add(p);
+
+			panel.add(Box.createVerticalStrut(5));
+
+			JPanel buttonPanel = new JPanel();
+			JButton button = new CreateButton(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					maker.setGameInfo(textfield.getText(),(Integer) players.getValue(),
+							(ModeType) mode.getSelectedItem(), (SiteType) site.getSelectedItem());
+					boardMakerPane.createPanels();
+					setSizes();
+					mainView();
+				}
+			});
+			buttonPanel.add(button);
+			button = new JButton("Load");
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//TODO load save file
+					System.out.println("load a save file");
+					maker.setGameInfo(textfield.getText(),(Integer) players.getValue(),
+							(ModeType) mode.getSelectedItem(), (SiteType) site.getSelectedItem());
+					boardMakerPane.createPanels();
+					setSizes();
+					mainView();
+				}
+			});
+			buttonPanel.add(button);
+			panel.add(buttonPanel);
+
+			add(panel,BorderLayout.PAGE_START);
+		}
 	}
 }
