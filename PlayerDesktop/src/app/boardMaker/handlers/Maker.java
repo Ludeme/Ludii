@@ -131,7 +131,7 @@ public class Maker
 
 			data.setOtherSVG(gameStyle.containerSVGImage());
 		} else {
-			if (shownSite == SiteType.Cell) {
+			if ((!setup() && shownSite == SiteType.Cell) || (setup() && siteType == SiteType.Cell)) {
 				gameStyle = new BoardStyle(bridge,board);
 				gameStyle.setPlacement(context,placement);
 				gameStyle.render(PlaneType.BOARD,context);
@@ -254,5 +254,9 @@ public class Maker
 
 	public void showSite(SiteType site) {
 		this.shownSite = site;
+	}
+
+	public boolean setup() {
+		return displayer.getBoardPanel().setup();
 	}
 }

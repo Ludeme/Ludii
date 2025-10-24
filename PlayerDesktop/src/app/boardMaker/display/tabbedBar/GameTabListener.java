@@ -25,28 +25,41 @@ public class GameTabListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		// TODO Auto-generated method stub
-		switch (e.getActionCommand())
-		{
-		case "Graph":
-			maker.showSite(SiteType.Vertex);
+		switch (e.getActionCommand()) {
+			case "Graph" :
+				maker.showSite(SiteType.Vertex);
 
-			maker.getDisplayer().getCurrentDisplay().revalidate();
-			maker.getDisplayer().getCurrentDisplay().repaint();
+				maker.getDisplayer().getCurrentDisplay().revalidate();
+				maker.getDisplayer().getCurrentDisplay().repaint();
+				break;
 
-			break;
+			case "Cells" :
+				maker.showSite(SiteType.Cell);
 
-		case "Cells":
-			maker.showSite(SiteType.Cell);
+				maker.getDisplayer().getCurrentDisplay().revalidate();
+				maker.getDisplayer().getCurrentDisplay().repaint();
+				break;
 
-			maker.getDisplayer().getCurrentDisplay().revalidate();
-			maker.getDisplayer().getCurrentDisplay().repaint();
+			case "Stack" :
+				maker.setStack(((JRadioButton)e.getSource()).isSelected());
+				break;
 
-			break;
-		case "Stack":
-			maker.setStack(((JRadioButton)e.getSource()).isSelected());
-			break;
-		default:
-			break;
+			case "Board" :
+				maker.getDisplayer().getBoardPanel().showBoard();
+
+				maker.getDisplayer().getCurrentDisplay().revalidate();
+				maker.getDisplayer().getCurrentDisplay().repaint();
+				break;
+
+			case "Setup" :
+				maker.getDisplayer().getBoardPanel().showSetup();
+
+				maker.getDisplayer().getCurrentDisplay().revalidate();
+				maker.getDisplayer().getCurrentDisplay().repaint();
+				break;
+
+			default:
+				break;
 		}
 	}
 

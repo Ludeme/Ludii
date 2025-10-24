@@ -119,6 +119,28 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		button.setSelected(false);
 		button.addActionListener(gtl);
 		toolbar.add(button);
+
+		toolbar.addSeparator();
+
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+
+		toolbar.addSeparator();
+
+		label = new JLabel("Create: ");
+		toolbar.add(label);
+
+		group = new ButtonGroup();
+		button = new JRadioButton("Board");
+		button.setActionCommand("Board");
+		button.setSelected(true);
+		button.addActionListener(gtl);
+		group.add(button);
+		toolbar.add(button);
+		button = new JRadioButton("Setup");
+		button.setActionCommand("Setup");
+		button.addActionListener(gtl);
+		group.add(button);
+		toolbar.add(button);
 	}
 	
 	public void visibility(boolean b) {

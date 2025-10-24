@@ -2,6 +2,7 @@ package app.boardMaker.display.panels.boardPanel;
 
 import javax.swing.JTabbedPane;
 
+import app.boardMaker.display.panels.pieceView.PieceView;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
@@ -17,8 +18,10 @@ public class BoardPanel extends JTabbedPane
 	private Maker maker;
 
 	private boolean visible;
+	private boolean setup = false;
 
-	private BoardDrawSpace view;
+	private BoardDrawSpace boardView;
+	private PieceView pieceView;
 
 	public BoardPanel(Maker maker) {
 		this.displayer = maker.getDisplayer();
@@ -26,8 +29,10 @@ public class BoardPanel extends JTabbedPane
 
 		displayer.setBoardPanel(this);
 
-		view = new BoardDrawSpace(maker);
-		addTab("View",view);
+		boardView = new BoardDrawSpace(maker);
+		pieceView = new PieceView(maker);
+
+		addTab("View", boardView);
 	}
 	
 	public void visibility(boolean b) {
@@ -39,39 +44,58 @@ public class BoardPanel extends JTabbedPane
 	}
 
 	public void setCreatePoly(boolean b) {
-		view.setCreatePoly(b);
+		boardView.setCreatePoly(b);
 	}
 
 	public void setTransformation(Transformations transformations) {
-		view.setTransformation(transformations);
+		boardView.setTransformation(transformations);
 	}
 
 	public void newPolygon() {
-		view.newPolygon();
+		boardView.newPolygon();
 	}
 
 	public void setRemove(boolean b) {
-		view.setRemove(b);
+		boardView.setRemove(b);
 	}
 
 	public void setRemoveType(SiteType siteType) {
-		view.setRemoveType(siteType);
+		boardView.setRemoveType(siteType);
 	}
 
 	public void clearRemovedIndices() {
-		view.clearRemoving();
+		boardView.clearRemoving();
 	}
 
     public void setAdding(boolean b) {
-		view.setAdding(b);
+		boardView.setAdding(b);
     }
 
 	public void setAddType(SiteType siteType) {
-		view.setAddType(siteType);
+		boardView.setAddType(siteType);
 	}
 
 	public void clearAdd() {
-		view.clearAdd();
+		boardView.clearAdd();
 	}
 
+	public void showBoard() {
+		setComponentAt(indexOfTab("View"),boardView);
+		setup = false;
+
+		revalidate();
+		repaint();
+	}
+
+	public void showSetup() {
+		setComponentAt(indexOfTab("View"),pieceView);
+		setup = true;
+
+		revalidate();
+		repaint();
+	}
+
+	public boolean setup() {
+		return setup;
+	}
 }

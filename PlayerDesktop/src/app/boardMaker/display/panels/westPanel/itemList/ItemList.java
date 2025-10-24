@@ -69,7 +69,9 @@ public class ItemList extends JPanel {
 
     public void addBoard(String name, BoardData board) {
         if (selectedBoardNode == null) {
-            boardRoot.insert(new ItemListBoardNode(name, maker.getCurrentBoard()),boardRoot.getChildCount() - 1);
+            ItemListBoardNode node = new ItemListBoardNode(name, maker.getCurrentBoard());
+            boardRoot.insert(node,boardRoot.getChildCount() - 1);
+            selectedBoardNode = node;
         } else {
             if (selectedBoardNode.data() == null) {
                 selectedBoardNode.setName(name);

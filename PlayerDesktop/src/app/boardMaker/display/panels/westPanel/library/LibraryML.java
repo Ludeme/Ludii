@@ -22,7 +22,7 @@ public class LibraryML extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+        if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1 && !maker.setup()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (node.isLeaf()) {
                 String classname = ((LibraryBoardInfo) node.getUserObject()).getClassname();
