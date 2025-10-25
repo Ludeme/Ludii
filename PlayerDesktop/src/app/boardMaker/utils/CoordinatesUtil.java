@@ -24,6 +24,10 @@ public class CoordinatesUtil {
 
     public static Point2D boardPosn(Point screenPos, Rectangle placement, Graph graph, Camera camera) {
         Point2D centeredPos = new Point2D.Double();
+
+        if (camera == null) {
+            camera = new Camera(null);
+        }
         
         centeredPos.setLocation((screenPos.getX() + camera.offX() - placement.x) / placement.getWidth(),
                 (placement.y + placement.getHeight() - screenPos.getY() + camera.offY()) / placement.getHeight());

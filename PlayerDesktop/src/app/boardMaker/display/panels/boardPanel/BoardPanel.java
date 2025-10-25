@@ -98,4 +98,8 @@ public class BoardPanel extends JTabbedPane
 	public boolean setup() {
 		return setup;
 	}
+
+    public int dotSize() {
+		return boardView.dotSize;
+    }
 }

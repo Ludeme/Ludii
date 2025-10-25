@@ -259,4 +259,8 @@ public class Maker
 	public boolean setup() {
 		return displayer.getBoardPanel().setup();
 	}
+
+	public double boardScale() {
+		return boardScale;
+	}
 }

@@ -6,6 +6,7 @@ import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListPawnNode;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.ItemType;
 import app.boardMaker.utils.BoardData;
+import game.equipment.component.Piece;
 import game.types.play.RoleType;
 import game.util.directions.CompassDirection;
 
@@ -14,7 +15,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ItemList extends JPanel {
     private Maker maker;
@@ -28,6 +31,8 @@ public class ItemList extends JPanel {
     private DefaultMutableTreeNode pawnRoot;
 
     private HashMap<String, BoardData> boards;
+    private List<Piece> pieces;
+
     protected ItemListBoardNode selectedBoardNode;
 
 
@@ -36,6 +41,7 @@ public class ItemList extends JPanel {
 
         this.maker = maker;
         boards = new HashMap<>();
+        pieces = new ArrayList<>();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Items");
         createChildren(root);
@@ -114,6 +120,11 @@ public class ItemList extends JPanel {
     public void addPawn(String name, RoleType owner, CompassDirection direction) {
         ItemListPawnNode pawn = new ItemListPawnNode(name,owner,direction);
         pawnRoot.insert(pawn, pawnRoot.getChildCount() - 1);
+        pieces.add(new Piece(name,owner,direction,null,null,null,null,null));
         ((DefaultTreeModel)boardListTree.getModel()).reload(pawnRoot);
+    }
+
+    public List<Piece> pieces() {
+        return pieces;
     }
 }

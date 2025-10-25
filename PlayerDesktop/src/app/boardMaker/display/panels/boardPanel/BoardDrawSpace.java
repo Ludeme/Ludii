@@ -39,7 +39,7 @@ public class BoardDrawSpace extends JPanel {
     private List<Integer> curCell;
     protected List<List<Integer>> addedCells;
 
-    private int dotSize = 10;
+    protected int dotSize = 10;
 
 
     public BoardDrawSpace(Maker maker) {
@@ -77,7 +77,7 @@ public class BoardDrawSpace extends JPanel {
 
             if (createPoly) {
                 String text = "Press Enter to confirm.\nPress Esc. to cancel.";
-                drawText(g2d,text,0,getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
+                DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
 
                 if (vertices.size() >= 2) {
                     g2d.setColor(Color.black);
@@ -104,7 +104,7 @@ public class BoardDrawSpace extends JPanel {
                 }
             } else if (remove) {
                 String text = "Press Enter to confirm.\nPress Esc. to cancel.";
-                drawText(g2d,text,0,getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
+                DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
 
                 List<? extends TopologyElement> elements = currentBoard.getBoard().topology().getGraphElements(removeType);
                 for (int i = 0; i < elements.size(); i++) {
@@ -121,7 +121,7 @@ public class BoardDrawSpace extends JPanel {
                 if (addedType == SiteType.Cell) {
                     text = "Click on the first vertex of a cell to close it.\n" + text;
                 }
-                drawText(g2d,text,0,getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
+                DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
 
                 List<Vertex> elements = currentBoard.getBoard().topology().vertices();
                 BoardRange scale = BoardUtils.computeRange(currentBoard.getBoard().graph());
@@ -198,13 +198,6 @@ public class BoardDrawSpace extends JPanel {
                     g2d.fillOval(pt.x - dotSize/2,pt.y - dotSize/2,dotSize,dotSize);
                 }
             }
-        }
-    }
-
-    private void drawText(Graphics2D g2d, String text, int x, int y) {
-        FontMetrics metrics = g2d.getFontMetrics();
-        for (String line : text.split("\n")) {
-            g2d.drawString(line,x + (getWidth() - metrics.stringWidth(line))/2,y += g2d.getFontMetrics().getHeight());
         }
     }
 
