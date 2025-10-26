@@ -126,7 +126,7 @@ public class BoardMakerTabbedBar extends JTabbedPane
 
 		toolbar.addSeparator();
 
-		label = new JLabel("Create: ");
+		label = new JLabel("View: ");
 		toolbar.add(label);
 
 		group = new ButtonGroup();

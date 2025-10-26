@@ -3,6 +3,7 @@ package app.boardMaker.menu.popup.piecepopup;
 import app.boardMaker.display.panels.pieceView.PieceView;
 import app.boardMaker.handlers.Maker;
 import game.equipment.component.Piece;
+import game.types.play.RoleType;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,8 +26,9 @@ public class PiecePopupMenu extends JPopupMenu {
         JMenuItem submenuItem;
 
         submenu = new JMenu("Add piece");
-        for (Piece piece : maker.getItemList().pieces()) {
-            submenuItem = new JMenuItem(piece.name());
+        for (String pieceName : maker.getItemList().pieces().keySet()) {
+            submenuItem = new JMenuItem(pieceName);
+            submenuItem.setActionCommand(pieceName);
             submenuItem.addActionListener(listener);
             submenu.add(submenuItem);
         }
@@ -53,7 +55,7 @@ public class PiecePopupMenu extends JPopupMenu {
                     break;
 
                 default :
-                    view.setAdding();
+                    view.setAdding(action);
                     view.repaint();
                     break;
             }

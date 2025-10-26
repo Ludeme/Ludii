@@ -18,10 +18,13 @@ public class BoardData {
     private Rectangle placement;
     private BoardRange range;
 
+    private PieceInfo pieceInfo;
+
     private Maker maker;
 
     public BoardData(Maker maker) {
         this.maker = maker;
+        pieceInfo = new PieceInfo();
     }
 
     public BoardData copy() {
@@ -32,8 +35,17 @@ public class BoardData {
         copy.setOtherSVG(otherSVG);
         copy.setPlacement(placement);
         copy.setContext(context);
+        copy.setPieceInfo(pieceInfo);
 
         return copy;
+    }
+
+    public void setPieceInfo(PieceInfo pieceInfo) {
+        this.pieceInfo = pieceInfo;
+    }
+
+    public PieceInfo pieceInfo() {
+        return pieceInfo;
     }
 
     public void setBoard(Board board) {
@@ -41,7 +53,6 @@ public class BoardData {
         if (board == null) {
             boardSVG = null;
             otherSVG = null;
-            return;
         }
     }
 

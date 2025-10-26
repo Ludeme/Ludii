@@ -47,6 +47,7 @@ public class Maker
 
 	private double boardratio = 1.0;
 	private double boardScale;
+	private int cellRadius;
 
 	private BoardData currentBoard;
 
@@ -143,7 +144,7 @@ public class Maker
 				data.setBoardSVG(gameStyle.containerSVGImage());
 			}
 		}
-
+		cellRadius = gameStyle.cellRadiusPixels();
 		boardScale = gameStyle.containerScale();
 		Point2D center = new Point2D.Double(0.5,0.5);
 		Point origin = new Point(0,0);
@@ -215,6 +216,10 @@ public class Maker
 
 	public SiteType shownSite() {
 		return shownSite;
+	}
+
+	public int cellradius() {
+		return cellRadius;
 	}
 	//--------------------------------------------------------------------------------
 	

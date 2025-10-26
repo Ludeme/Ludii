@@ -7,18 +7,16 @@ import game.util.directions.CompassDirection;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class ItemListPawnNode extends DefaultMutableTreeNode {
-    private Piece piece;
+    private String pieceName;
+    private RoleType owner;
 
-    public ItemListPawnNode(String name, RoleType owner, CompassDirection direction) {
-        piece = new Piece(name,owner,direction,null,null,null,null,null);
-    }
-
-    public Piece piece() {
-        return piece;
+    public ItemListPawnNode(String name, RoleType owner) {
+        pieceName = name;
+        this.owner = owner;
     }
 
     @Override
     public String toString() {
-        return piece.name();
+        return pieceName;
     }
 }

@@ -31,7 +31,7 @@ public class ItemList extends JPanel {
     private DefaultMutableTreeNode pawnRoot;
 
     private HashMap<String, BoardData> boards;
-    private List<Piece> pieces;
+    private HashMap<String, Piece> pieces;
 
     protected ItemListBoardNode selectedBoardNode;
 
@@ -41,7 +41,7 @@ public class ItemList extends JPanel {
 
         this.maker = maker;
         boards = new HashMap<>();
-        pieces = new ArrayList<>();
+        pieces = new HashMap<>();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Items");
         createChildren(root);
@@ -117,14 +117,26 @@ public class ItemList extends JPanel {
         return boardListTree;
     }
 
-    public void addPawn(String name, RoleType owner, CompassDirection direction) {
-        ItemListPawnNode pawn = new ItemListPawnNode(name,owner,direction);
+    public void addPawn(String name, RoleType owner) {
+        ItemListPawnNode pawn = new ItemListPawnNode(name,owner);
         pawnRoot.insert(pawn, pawnRoot.getChildCount() - 1);
-        pieces.add(new Piece(name,owner,direction,null,null,null,null,null));
+        addToPieces(name,owner);
         ((DefaultTreeModel)boardListTree.getModel()).reload(pawnRoot);
     }
 
-    public List<Piece> pieces() {
+    private void addToPieces(String name, RoleType owner) {
+        if (owner == RoleType.Each) {
+            for (int i = 1; i <= maker.getPlayers(); i++) {
+                pieces.put(name + i,new Piece(name + i,owner,null,null,null,null,null,null));
+            }
+        } else if (owner == RoleType.Shared) {
+            pieces.put(name,new Piece(name,owner,null,null,null,null,null,null));
+        } else {
+            pieces.put(name + owner.ordinal(),new Piece(name + owner.ordinal(),owner,null,null,null,null,null,null));
+        }
+    }
+
+    public HashMap<String, Piece> pieces() {
         return pieces;
     }
 }

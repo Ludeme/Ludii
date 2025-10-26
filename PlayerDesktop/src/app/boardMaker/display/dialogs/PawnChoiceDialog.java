@@ -20,7 +20,6 @@ public class PawnChoiceDialog extends JDialog {
 
     private JTextField nameField;
     private JComboBox<RoleType> ownerBox;
-    private JComboBox<CompassDirection> directionBox;
 
     public PawnChoiceDialog(ItemList itemList, Maker maker) {
         this.itemList = itemList;
@@ -64,23 +63,13 @@ public class PawnChoiceDialog extends JDialog {
         p.add(ownerBox);
         mainPanel.add(p);
 
-        mainPanel.add(Box.createVerticalStrut(5));
-
-        p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        label = new JLabel("Direction: ");
-        p.add(label);
-        directionBox = new JComboBox<>(CompassDirection.values());
-        directionBox.setSelectedItem(null);
-        p.add(directionBox);
-        mainPanel.add(p);
-
         mainPanel.add(Box.createVerticalGlue());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(new CreateButton(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemList.addPawn(nameField.getText(), (RoleType) ownerBox.getSelectedItem(), (CompassDirection) directionBox.getSelectedItem());
+                itemList.addPawn(nameField.getText(), (RoleType) ownerBox.getSelectedItem());
                 dispose();
             }
         }));
