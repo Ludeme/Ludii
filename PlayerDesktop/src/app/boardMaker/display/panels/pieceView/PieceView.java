@@ -11,8 +11,10 @@ import game.equipment.component.Piece;
 import graphics.ImageUtil;
 import graphics.svg.SVGtoImage;
 import main.GameNames;
+import main.StringRoutines;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 import other.topology.TopologyElement;
+import util.SettingsColour;
 import view.component.ComponentStyle;
 import view.component.custom.PieceStyle;
 
@@ -119,7 +121,16 @@ public class PieceView extends JPanel {
         int size = maker.cellradius();
         SVGGraphics2D g2d = new SVGGraphics2D(size, size);
         String path = ImageUtil.getImageFullPath(piece.getNameWithoutNumber());
-        SVGtoImage.loadFromFilePath(g2d,path,new Rectangle(0,0,size,size),Color.black,Color.white,0);
+
+        Color edgeColor = Color.black;
+        Color fillColor;
+        String trailingNumber = StringRoutines.getTrailingNumbers(piece.name());
+        if (trailingNumber.isEmpty() || Integer.parseInt(trailingNumber) == 0) {
+            fillColor = SettingsColour.ORIGINAL_PLAYER_COLOURS[0];
+        } else {
+            fillColor = SettingsColour.ORIGINAL_PLAYER_COLOURS[Integer.parseInt(trailingNumber)];
+        }
+        SVGtoImage.loadFromFilePath(g2d,path,new Rectangle(0,0,size,size),edgeColor,fillColor,0);
         return SVGUtil.createSVGImage(g2d.getSVGElement(),size,size);
     }
 
