@@ -76,7 +76,6 @@ public class PieceView extends JPanel {
         HashMap<Integer,Piece> pieces = currentBoard.pieceInfo().piecesPlaced();
 
         if (!pieces.isEmpty()) {
-            System.out.println("Drawing pieces");
             drawPieces(g2d,pieces,elements);
         }
 

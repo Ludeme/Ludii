@@ -4,15 +4,22 @@ import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.westPanel.itemList.ItemList;
 import app.boardMaker.handlers.Maker;
+import app.utils.SVGUtil;
 import game.types.play.RoleType;
 import game.util.directions.CompassDirection;
 import game.util.directions.DirectionUniqueName;
+import graphics.ImageUtil;
 import graphics.svg.SVGLoader;
+import graphics.svg.SVGtoImage;
+import org.jfree.graphics2d.svg.SVGGraphics2D;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,6 +30,7 @@ public class PawnChoiceDialog extends JDialog {
     private Maker maker;
 
     private JComboBox<RoleType> ownerBox;
+    private String selectedPawn = "Dot";
 
     public PawnChoiceDialog(ItemList itemList, Maker maker) {
         this.itemList = itemList;
@@ -76,7 +84,7 @@ public class PawnChoiceDialog extends JDialog {
         buttonPanel.add(new CreateButton(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemList.addPawn("nameField.getText()", (RoleType) ownerBox.getSelectedItem());
+                itemList.addPawn(selectedPawn, (RoleType) ownerBox.getSelectedItem());
                 dispose();
             }
         }));
@@ -143,14 +151,61 @@ public class PawnChoiceDialog extends JDialog {
                 }
             }
 
+            PawnListCellRenderer renderer = new PawnListCellRenderer();
+
             for (String folder : folders) {
+                if (folder.equals("toolButtons")) {
+                    continue;
+                }
+                if (files.get(folder).isEmpty()) {
+                    continue;
+                }
                 JList list = new JList(files.get(folder).toArray(new String[0]));
                 list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
                 list.setVisibleRowCount(-1);
+                list.setCellRenderer(renderer);
+                list.addListSelectionListener(new ListSelectionListener() {
+                    @Override
+                    public void valueChanged(ListSelectionEvent e) {
+                        selectedPawn = ((JList)e.getSource()).getSelectedValue().toString();
+                    }
+                });
 
                 addTab(folder,new JScrollPane(list));
             }
+        }
+    }
+
+    private class PawnListCellRenderer extends JLabel implements ListCellRenderer{
+        PawnListCellRenderer() {
+            setOpaque(true);
+            setHorizontalAlignment(CENTER);
+            setVerticalAlignment(CENTER);
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            if (isSelected) {
+                setBackground(list.getSelectionBackground());
+                setForeground(list.getSelectionForeground());
+            } else {
+                setBackground(list.getBackground());
+                setForeground(list.getForeground());
+            }
+
+            String filename = ImageUtil.getImageFullPath((String) value);
+            int size = list.getWidth() / 10;
+            SVGGraphics2D g2d = new SVGGraphics2D(size, size);
+            SVGtoImage.loadFromFilePath(g2d,filename,new Rectangle(0,0,size,size),Color.black,Color.white,0);
+            BufferedImage image = SVGUtil.createSVGImage(g2d.getSVGElement(),size,size);
+            if (image != null) {
+                ImageIcon icon = new ImageIcon(SVGUtil.createSVGImage(g2d.getSVGElement(),size,size));
+                setIcon(icon);
+            }
+
+            setText((String) value);
+            return this;
         }
     }
 }
