@@ -81,7 +81,7 @@ public class Maker
 	public void addBoard(BoardData board) {
 		currentBoard = board.copy();
 
-		itemList.addBoard("board"+ itemList.boardRoot().getChildCount(), currentBoard);
+		itemList.addBoard(currentBoard);
 		itemList.reload(itemList.boardRoot());
 	}
 

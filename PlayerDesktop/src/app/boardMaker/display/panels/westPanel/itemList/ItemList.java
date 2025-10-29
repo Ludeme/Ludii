@@ -7,6 +7,7 @@ import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.ItemType;
 import app.boardMaker.utils.BoardData;
 import game.equipment.component.Piece;
+import game.functions.graph.operators.Merge;
 import game.types.play.RoleType;
 import game.util.directions.CompassDirection;
 
@@ -73,23 +74,29 @@ public class ItemList extends JPanel {
         return boards;
     }
 
-    public void addBoard(String name, BoardData board) {
+    public void addBoard(BoardData board) {
         if (selectedBoardNode == null) {
-            ItemListBoardNode node = new ItemListBoardNode(name, maker.getCurrentBoard());
+            String input = JOptionPane.showInputDialog(maker.getDisplayer().getFrame(),"Choose a name for the board: ","Name selection",JOptionPane.PLAIN_MESSAGE);
+            ItemListBoardNode node = new ItemListBoardNode(input, board);
             boardRoot.insert(node,boardRoot.getChildCount() - 1);
             selectedBoardNode = node;
+            boards.put(input,board);
         } else {
             if (selectedBoardNode.data() == null) {
-                selectedBoardNode.setName(name);
+                String input = JOptionPane.showInputDialog(maker.getDisplayer().getFrame(),"Choose a name for the board: ","Name selection",JOptionPane.PLAIN_MESSAGE);
+                selectedBoardNode.setName(input);
                 selectedBoardNode.setData(board);
+                boards.put(input,board);
             } else {
-                String oldname = selectedBoardNode.name();
-                selectedBoardNode.setName(name);
+                if (board.getBoard().graphFunction() instanceof Merge) {
+                    selectedBoardNode = null;
+                    addBoard(board);
+                }
                 selectedBoardNode.setData(board);
-                boards.remove(oldname);
+                String name = selectedBoardNode.name();
+                boards.replace(name,board);
             }
         }
-        boards.put(name,board);
     }
 
     public BoardData get(String key) {
