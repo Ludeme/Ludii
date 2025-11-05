@@ -12,6 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.CelticInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -60,7 +63,7 @@ public class CelticPanel extends OptionPanel {
 		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		p.add(label);
 
-		colSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		colSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 		colSpinner.addChangeListener(pl);
 		p.add(colSpinner);
 		add(p);
@@ -76,6 +79,7 @@ public class CelticPanel extends OptionPanel {
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();
 			}
 		}));
@@ -110,5 +114,11 @@ public class CelticPanel extends OptionPanel {
 	public Board board()
 	{
 		return board;
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		CelticInfo info = new CelticInfo((int)rowSpinner.getValue(), (int)colSpinner.getValue());
+		return new BoardInfo(maker,info);
 	}
 }

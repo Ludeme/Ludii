@@ -12,6 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.WedgeInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -61,7 +64,7 @@ public class WedgePanel extends OptionPanel
 		label = new JLabel("Columns: ");
 		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		panel.add(label);
-		col = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		col = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 		col.addChangeListener(pl);
 		panel.add(col);
 		add(panel);
@@ -77,6 +80,7 @@ public class WedgePanel extends OptionPanel
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -109,6 +113,12 @@ public class WedgePanel extends OptionPanel
 	public Board board()
 	{
 		return board;
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		WedgeInfo info = new WedgeInfo((int)row.getValue(),(int)col.getValue());
+		return new BoardInfo(maker,info);
 	}
 
 }

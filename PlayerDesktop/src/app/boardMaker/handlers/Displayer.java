@@ -289,7 +289,7 @@ public class Displayer
 					mainView();
 				}
 			});
-			buttonPanel.add(button);
+			//buttonPanel.add(button);
 			panel.add(buttonPanel);
 
 			add(panel,BorderLayout.PAGE_START);

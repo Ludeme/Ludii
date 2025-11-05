@@ -56,7 +56,8 @@ public class GraphListener extends MouseAdapter {
                     if (view.hoveredVertex() == null) {
                         // Add new vertex (TBD)
                     } else {
-                        Edge edge = new Edge(view.edgeStart(),view.hoveredVertex());
+                        Edge edge = new Edge(view.edgeStart(),view.getVertexes().indexOf(view.edgeStart()),
+                                view.hoveredVertex(),view.getVertexes().indexOf(view.hoveredVertex()));
                         view.addEdge(edge);
                         view.setEdgeStart(null);
                     }

@@ -1,27 +1,21 @@
 package app.boardMaker.display.tabbedBar;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JSeparator;
-import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
+import app.utils.SVGUtil;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
 import game.types.play.RoleType;
+import graphics.ImageUtil;
+import graphics.svg.SVGtoImage;
+import org.jfree.graphics2d.svg.SVGGraphics2D;
 
 /**
  * Class representing the main tabbed bar of the board maker
@@ -33,10 +27,6 @@ public class BoardMakerTabbedBar extends JTabbedPane
 	private Maker maker;
 	
 	private JToolBar toolbar;
-	
-	private JSpinner players;
-	private JTextField name;
-	private JComboBox<ModeType> mode;
 
 	private GameTabListener gtl;
 	
@@ -141,6 +131,30 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		button.addActionListener(gtl);
 		group.add(button);
 		toolbar.add(button);
+
+		toolbar.addSeparator();
+
+		toolbar.add(new JSeparator(SwingConstants.VERTICAL));
+
+		toolbar.addSeparator();
+
+		JButton playButton = new JButton("Write and play");
+		int size = 20;
+		SVGGraphics2D g2d = new SVGGraphics2D(size, size);
+		String filename = ImageUtil.getImageFullPath("button-play");
+		SVGtoImage.loadFromFilePath(g2d,filename,new Rectangle(0,0,size,size),Color.black,Color.black,0);
+		BufferedImage image = SVGUtil.createSVGImage(g2d.getSVGElement(),size,size);
+		if (image != null) {
+			ImageIcon icon = new ImageIcon(image);
+			playButton.setIcon(icon);
+		}
+		playButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				maker.writeAndPlay();
+			}
+		});
+		toolbar.add(playButton);
 	}
 	
 	public void visibility(boolean b) {

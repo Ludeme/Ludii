@@ -8,6 +8,9 @@ import java.awt.event.ItemListener;
 
 import javax.swing.*;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.SquareInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -147,6 +150,7 @@ public class SquarePanel extends OptionPanel {
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -181,5 +185,12 @@ public class SquarePanel extends OptionPanel {
 	public Board board()
 	{
 		return board;
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		SquareInfo info = new SquareInfo((SquareShapeType)cBox.getSelectedItem(),(int)dimSpinner.getValue(),
+				(DiagonalsType)diagBox.getSelectedItem(),pyramidal);
+		return new BoardInfo(maker,info);
 	}
 }

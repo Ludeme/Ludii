@@ -1,25 +1,35 @@
 package app.boardMaker.utils;
 
+import app.boardMaker.dataStruct.board.BoardRange;
 import app.boardMaker.handlers.Maker;
 import game.equipment.container.board.Board;
 import game.equipment.container.board.Track;
+import game.equipment.container.board.custom.MancalaBoard;
+import game.equipment.container.board.custom.SurakartaBoard;
 import game.functions.graph.GraphFunction;
 import game.util.graph.Graph;
-import main.collections.Pair;
 
 import java.awt.geom.Point2D;
 
 public class BoardUtils {
     public static Board copyBoard(Board old, Maker maker) {
         Board newBoard;
-        if (old.tracks().isEmpty()) {
-            newBoard = new Board(old.graphFunction(), null,
-                    null,null,null,
-                    maker.getSiteType(),maker.largeStack());
+        if (old instanceof MancalaBoard) {
+            MancalaBoard o = (MancalaBoard) old;
+            newBoard = new MancalaBoard(o.numRows(),o.numColumns(),o.storeType(),o.numStore(),maker.largeStack(),null,null);
+        } else if (old instanceof SurakartaBoard) {
+            SurakartaBoard s = (SurakartaBoard) old;
+            newBoard = new SurakartaBoard(s.graphFunction(),s.getNumLoops(),s.getStartAtRow(),maker.largeStack());
         } else {
-            newBoard = new Board(old.graphFunction(), old.tracks().getFirst(),
-                    old.tracks().toArray(new Track[0]),null,null,
-                    maker.getSiteType(),maker.largeStack());
+            if (old.tracks().isEmpty()) {
+                newBoard = new Board(old.graphFunction(), null,
+                        null,null,null,
+                        maker.getSiteType(),maker.largeStack());
+            } else {
+                newBoard = new Board(old.graphFunction(), old.tracks().getFirst(),
+                        old.tracks().toArray(new Track[0]),null,null,
+                        maker.getSiteType(),maker.largeStack());
+            }
         }
 
         return newBoard;

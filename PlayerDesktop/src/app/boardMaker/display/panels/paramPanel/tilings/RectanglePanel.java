@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.RectangleInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -91,6 +94,7 @@ public class RectanglePanel extends OptionPanel
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -123,6 +127,13 @@ public class RectanglePanel extends OptionPanel
 	public Board board()
 	{
 		return board;
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		RectangleInfo info = new RectangleInfo((int)rowSpinner.getValue(), (int)colSpinner.getValue(),
+				(DiagonalsType)diagBox.getSelectedItem());
+		return new BoardInfo(maker,info);
 	}
 
 }

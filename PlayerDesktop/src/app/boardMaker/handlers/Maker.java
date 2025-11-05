@@ -2,10 +2,12 @@ package app.boardMaker.handlers;
 
 import javax.swing.*;
 
+import app.DesktopApp;
 import app.boardMaker.display.panels.westPanel.itemList.ItemList;
-import app.boardMaker.utils.BoardData;
+import app.boardMaker.dataStruct.board.BoardData;
 import app.boardMaker.utils.BoardUtils;
 import app.boardMaker.utils.Camera;
+import app.loading.GameLoading;
 import bridge.Bridge;
 import game.Game;
 import game.equipment.Equipment;
@@ -37,8 +39,10 @@ public class Maker
 {
 	private Displayer displayer;
 	private Bridge bridge;
+	private DesktopApp mainApp;
 
 	private String gamename = "";
+	private String filename;
 	private int players = 2;
 	private ModeType mode = ModeType.Alternating;
 	private SiteType siteType = SiteType.Cell;
@@ -53,9 +57,10 @@ public class Maker
 
 	private ItemList itemList;
 	
-	public Maker() {
+	public Maker(DesktopApp app) {
 		displayer = new Displayer(this);
 		bridge = new Bridge();
+		this.mainApp = app;
 	}
 	
 	/**
@@ -231,6 +236,7 @@ public class Maker
 	 */
 	public void setGameInfo(String name, Integer players, ModeType mode, SiteType site) {
 		this.gamename = name;
+		filename = gamename + ".lud";
 		this.players = players;
 		this.mode = mode;
 		this.siteType = site;
@@ -267,5 +273,19 @@ public class Maker
 
 	public double boardScale() {
 		return boardScale;
+	}
+
+	public void writeAndPlay() {
+		writeDescription();
+		playGame();
+	}
+
+	private void playGame() {
+		GameLoading.loadGameFromFilePath(mainApp,filename);
+		displayer.getFrame().dispose();
+	}
+
+	private void writeDescription() {
+		Writer.write(filename,this);
 	}
 }

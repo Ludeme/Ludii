@@ -4,7 +4,7 @@ import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
-import app.boardMaker.utils.BoardData;
+import app.boardMaker.dataStruct.board.BoardData;
 import app.utils.SVGUtil;
 import game.equipment.container.board.Board;
 import game.functions.floats.FloatConstant;

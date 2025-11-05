@@ -1,6 +1,6 @@
 package app.boardMaker.display.panels.westPanel.itemList.nodes;
 
-import app.boardMaker.utils.BoardData;
+import app.boardMaker.dataStruct.board.BoardData;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 

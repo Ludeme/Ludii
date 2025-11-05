@@ -1,5 +1,6 @@
 package app.boardMaker.display.panels.paramPanel.tilings;
 
+import app.boardMaker.dataStruct.board.ContainerInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.polygonView.PolygonView;
@@ -84,6 +85,7 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
             public void actionPerformed(ActionEvent e) {
                 createBoard();
                 maker.addBoard(displayer.getPreviewPanel().getBoardData());
+                maker.getCurrentBoard().setContainerInfo(createInfo());
                 displayer.mainView();
             }
         }));
@@ -169,6 +171,11 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
     @Override
     public Board board() {
         return board;
+    }
+
+    @Override
+    public ContainerInfo createInfo() {
+        return null;
     }
 
     @Override

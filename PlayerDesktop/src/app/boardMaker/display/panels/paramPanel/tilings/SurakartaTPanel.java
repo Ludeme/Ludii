@@ -12,6 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.SurakartaInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.TriangleInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -65,7 +68,7 @@ public class SurakartaTPanel extends SurakartaPanel
 		label = new JLabel("Loops: ");
 		label.setToolTipText("Number of loops. If 0, then add a loop for every 2 cells on the side ((FirstDim - 1) / 2).");
 		panel.add(label);
-		loop = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		loop = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 		loop.addChangeListener(pl);
 		panel.add(loop);
 		add(panel);
@@ -92,6 +95,7 @@ public class SurakartaTPanel extends SurakartaPanel
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -123,5 +127,11 @@ public class SurakartaTPanel extends SurakartaPanel
 		GraphFunction graph = Tri.construct(TriShapeType.Triangle, new DimConstant((Integer)primDim.getValue()), null);
 		int nloop = ((Integer)loop.getValue() == 0) ? Constants.UNDEFINED : (Integer)loop.getValue();
 		board = new SurakartaBoard(graph, nloop, (Integer)start.getValue(), maker.largeStack());
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		TriangleInfo info = new TriangleInfo(TriShapeType.Triangle,(int)primDim.getValue(),(int)primDim.getValue());
+		return new SurakartaInfo(maker,info,(int)loop.getValue(),(int)start.getValue());
 	}
 }

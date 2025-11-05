@@ -16,6 +16,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.QuadhexInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -128,6 +131,7 @@ public class QuadhexPanel extends OptionPanel
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -161,6 +165,12 @@ public class QuadhexPanel extends OptionPanel
 	public Board board()
 	{
 		return board;
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		QuadhexInfo info = new QuadhexInfo((int)layerSpinner.getValue(),thirds);
+		return new BoardInfo(maker,info);
 	}
 
 }

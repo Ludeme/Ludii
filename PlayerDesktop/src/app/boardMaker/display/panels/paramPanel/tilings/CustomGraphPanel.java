@@ -1,5 +1,8 @@
 package app.boardMaker.display.panels.paramPanel.tilings;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.CustomInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.graphView.GraphBuildingModes;
@@ -109,6 +112,7 @@ public class CustomGraphPanel extends OptionPanel {
                 if (displayer.getPreviewPanel().getTabCount() > 1) {
                     displayer.getPreviewPanel().removeTabAt(1);
                 }
+                maker.getCurrentBoard().setContainerInfo(createInfo());
                 displayer.mainView();
             }
         }));
@@ -156,5 +160,11 @@ public class CustomGraphPanel extends OptionPanel {
     @Override
     public Board board() {
         return board;
+    }
+
+    @Override
+    public ContainerInfo createInfo() {
+        CustomInfo info = new CustomInfo(gv.getVertexes(),gv.getEdges());
+        return new BoardInfo(maker,info);
     }
 }

@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.HexInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -77,7 +80,7 @@ public class HexPanel extends OptionPanel {
 		label.setToolTipText("Secondary dimension of the board. Length of sides will alternate between primary and secondary dimensions.");
 		p.add(label);
 
-		secSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		secSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 		secSpinner.addChangeListener(pl);
 		p.add(secSpinner);
 		add(p);
@@ -93,6 +96,7 @@ public class HexPanel extends OptionPanel {
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -128,5 +132,12 @@ public class HexPanel extends OptionPanel {
 	public Board board()
 	{
 		return board;
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		HexInfo info = new HexInfo((HexShapeType)shapeBox.getSelectedItem(), (int)primSpinner.getValue(),
+				(int)secSpinner.getValue());
+		return new BoardInfo(maker,info);
 	}
 }

@@ -1,5 +1,7 @@
 package app.boardMaker.display.panels.boardPanel;
 
+import app.boardMaker.dataStruct.board.BoardData;
+import app.boardMaker.dataStruct.board.BoardRange;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.*;
@@ -13,7 +15,6 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class BoardDrawSpace extends JPanel {

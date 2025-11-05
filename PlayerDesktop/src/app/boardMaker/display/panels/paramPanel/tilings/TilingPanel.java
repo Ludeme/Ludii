@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.SemiregularInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -75,7 +78,7 @@ public class TilingPanel extends OptionPanel {
 		label.setToolTipText("Secondary dimension of the board. Length of sides will alternate between primary and secondary dimensions.");
 		p.add(label);
 
-		sSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		sSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 		sSpinner.addChangeListener(pl);
 		p.add(sSpinner);
 		add(p);
@@ -91,6 +94,7 @@ public class TilingPanel extends OptionPanel {
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -126,6 +130,12 @@ public class TilingPanel extends OptionPanel {
 	public Board board()
 	{
 		return board;
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		SemiregularInfo info = new SemiregularInfo((TilingType)tBox.getSelectedItem(),(int)pSpinner.getValue(),(int)sSpinner.getValue());
+		return new BoardInfo(maker,info);
 	}
 
 }

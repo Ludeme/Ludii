@@ -129,8 +129,8 @@ public class PawnChoiceDialog extends JDialog {
             String currentFolder = null;
             List<String> filesInFolder = new ArrayList<>();
             for (String svg : allSVG) {
-                String[] subs = svg.strip().split("/");
-                String folder = subs[2];
+                String[] subs = svg.substring(1).split("/");
+                String folder = subs[1];
                 if (!folder.equals(currentFolder)) {
                     if (currentFolder == null) {
                         currentFolder = folder;
@@ -160,7 +160,7 @@ public class PawnChoiceDialog extends JDialog {
                 if (files.get(folder).isEmpty()) {
                     continue;
                 }
-                JList list = new JList(files.get(folder).toArray(new String[0]));
+                JList<String> list = new JList<>(files.get(folder).toArray(new String[0]));
                 list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
                 list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
                 list.setVisibleRowCount(-1);

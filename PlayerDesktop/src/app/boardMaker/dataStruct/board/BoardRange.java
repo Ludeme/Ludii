@@ -1,4 +1,4 @@
-package app.boardMaker.utils;
+package app.boardMaker.dataStruct.board;
 
 public class BoardRange {
     private double minX;

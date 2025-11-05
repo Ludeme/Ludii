@@ -1,7 +1,7 @@
 package app.boardMaker.utils;
 
+import app.boardMaker.dataStruct.board.BoardRange;
 import game.util.graph.Graph;
-import main.collections.Pair;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

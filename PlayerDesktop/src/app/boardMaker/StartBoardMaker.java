@@ -1,5 +1,6 @@
 package app.boardMaker;
 
+import app.DesktopApp;
 import app.boardMaker.handlers.Maker;
 
 /**
@@ -10,8 +11,8 @@ public class StartBoardMaker
 {
 	private static Maker maker = null;
 	
-	public static void create() {
-		maker = new Maker();
+	public static void create(DesktopApp app) {
+		maker = new Maker(app);
 		maker.createBoardMaker();
 	}
 }

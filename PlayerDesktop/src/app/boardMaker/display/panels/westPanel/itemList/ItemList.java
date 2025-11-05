@@ -5,20 +5,17 @@ import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListBoardNode;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListPawnNode;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.ItemType;
-import app.boardMaker.utils.BoardData;
+import app.boardMaker.dataStruct.board.BoardData;
 import game.equipment.component.Piece;
 import game.functions.graph.operators.Merge;
 import game.types.play.RoleType;
-import game.util.directions.CompassDirection;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ItemList extends JPanel {
     private Maker maker;

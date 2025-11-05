@@ -15,6 +15,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.BrickInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -56,6 +59,7 @@ public class BrickPanel extends OptionPanel
 		JLabel label = new JLabel("Board shape: ");
 		label.setToolTipText("This parameter will set the board shape.");
 		shapeBox = new JComboBox<>(BrickShapeType.values());
+		shapeBox.removeItem(BrickShapeType.Square);
 		shapeBox.addActionListener(pl);
 		panel.add(label);
 		panel.add(shapeBox);
@@ -74,7 +78,7 @@ public class BrickPanel extends OptionPanel
 		label = new JLabel("Columns: ");
 		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		panel.add(label);
-		colSpinner = new JSpinner(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
+		colSpinner = new JSpinner(new SpinnerNumberModel(1,1,Integer.MAX_VALUE,1));
 		colSpinner.addChangeListener(pl);
 		panel.add(colSpinner);
 		add(panel);
@@ -125,6 +129,7 @@ public class BrickPanel extends OptionPanel
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();
 			}
 		}));
@@ -162,4 +167,10 @@ public class BrickPanel extends OptionPanel
 		return board;
 	}
 
+	@Override
+	public ContainerInfo createInfo() {
+		BrickInfo info = new BrickInfo((BrickShapeType) shapeBox.getSelectedItem(),(int) rowSpinner.getValue(),
+				(int) colSpinner.getValue(),trim);
+		return new BoardInfo(maker,info);
+	}
 }

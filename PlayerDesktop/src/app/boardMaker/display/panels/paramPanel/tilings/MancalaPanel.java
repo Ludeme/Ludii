@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.MancalaInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -102,6 +104,7 @@ public class MancalaPanel extends JPanel
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -122,7 +125,12 @@ public class MancalaPanel extends JPanel
 		createBoard();
 		displayer.getPreviewPanel().setBoard(board);
 	}
-	
+
+	private ContainerInfo createInfo() {
+		return new MancalaInfo(maker,(int)rowSpinner.getValue(),(int)colSpinner.getValue(),
+				(StoreType)sBox.getSelectedItem(),(int)storeSpinner.getValue());
+	}
+
 	public Board board() {
 		return board;
 	}

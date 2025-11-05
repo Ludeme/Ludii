@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.SurakartaInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.RectangleInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -91,7 +94,7 @@ public class SurakartaRPanel extends SurakartaPanel
 		label = new JLabel("Loops: ");
 		label.setToolTipText("Number of loops. If 0, then the number of loops is : (minDim - 1) / 2.");
 		panel.add(label);
-		loop = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		loop = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
 		loop.addChangeListener(pl);
 		panel.add(loop);
 		add(panel);
@@ -118,6 +121,7 @@ public class SurakartaRPanel extends SurakartaPanel
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -149,5 +153,12 @@ public class SurakartaRPanel extends SurakartaPanel
 		GraphFunction graph = new RectangleOnSquare(new DimConstant((Integer)rowSpinner.getValue()), new DimConstant((Integer)colSpinner.getValue()), (DiagonalsType)diagBox.getSelectedItem(), null);
 		int nloop = ((Integer)loop.getValue() == 0) ? Constants.UNDEFINED : (Integer)loop.getValue();
 		board = new SurakartaBoard(graph, nloop, (Integer)start.getValue(), maker.largeStack());
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		RectangleInfo info = new RectangleInfo((int)rowSpinner.getValue(), (int)colSpinner.getValue(),
+				(DiagonalsType)diagBox.getSelectedItem());
+		return new SurakartaInfo(maker,info,(int)loop.getValue(),(int)start.getValue());
 	}
 }

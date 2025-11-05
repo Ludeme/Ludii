@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.TriangleInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -82,7 +85,8 @@ public class TrianglePanel extends OptionPanel {
 		label.setToolTipText("Secondary dimension of the board. Length of sides will alternate between primary and secondary dimensions.");
 		p.add(label);
 
-		secSpinner = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+		secSpinner = maker.getSiteType() == SiteType.Cell ? new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1))
+				: new JSpinner(new SpinnerNumberModel(2, 2, Integer.MAX_VALUE, 1));
 		secSpinner.addChangeListener(pl);
 		p.add(secSpinner);
 		add(p);
@@ -98,6 +102,7 @@ public class TrianglePanel extends OptionPanel {
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();
 			}
 		}));
@@ -133,5 +138,11 @@ public class TrianglePanel extends OptionPanel {
 	public Board board()
 	{
 		return board;
+	}
+
+	@Override
+	public ContainerInfo createInfo() {
+		TriangleInfo info = new TriangleInfo((TriShapeType)triBox.getSelectedItem(),(int)primSpinner.getValue(),(int)secSpinner.getValue());
+		return new BoardInfo(maker,info);
 	}
 }

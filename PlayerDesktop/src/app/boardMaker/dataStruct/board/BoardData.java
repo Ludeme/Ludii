@@ -1,10 +1,10 @@
-package app.boardMaker.utils;
+package app.boardMaker.dataStruct.board;
 
+import app.boardMaker.dataStruct.piece.PieceInfo;
 import app.boardMaker.handlers.Maker;
 import game.equipment.container.board.Board;
 import game.equipment.container.board.custom.MancalaBoard;
 import game.equipment.container.board.custom.SurakartaBoard;
-import game.types.board.SiteType;
 import other.context.Context;
 
 import java.awt.*;
@@ -19,6 +19,7 @@ public class BoardData {
     private BoardRange range;
 
     private PieceInfo pieceInfo;
+    private ContainerInfo containerInfo;
 
     private Maker maker;
 
@@ -36,6 +37,7 @@ public class BoardData {
         copy.setPlacement(placement);
         copy.setContext(context);
         copy.setPieceInfo(pieceInfo);
+        copy.setContainerInfo(containerInfo);
 
         return copy;
     }
@@ -92,5 +94,13 @@ public class BoardData {
 
     public Context getContext() {
         return context;
+    }
+
+    public void setContainerInfo(ContainerInfo info) {
+        this.containerInfo = info;
+    }
+
+    public ContainerInfo getContainerInfo() {
+        return containerInfo;
     }
 }

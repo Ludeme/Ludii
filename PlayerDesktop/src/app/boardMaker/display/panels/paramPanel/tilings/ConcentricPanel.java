@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -21,6 +22,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.ConcentricInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.previewPanel.PreviewListener;
@@ -155,6 +159,7 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 			{
 				createBoard();
 				maker.addBoard(displayer.getPreviewPanel().getBoardData());
+				maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();
 			}
 		}));
@@ -290,6 +295,16 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 		return d.toArray(array);
 	}
 
+	private List<Integer> parseDimension() {
+		ArrayList<Integer> d = new ArrayList<>();
+		for (char n : dimensions.getText().toCharArray()) {
+			if (Character.isDigit(n)) {
+				d.add(Integer.parseInt(String.valueOf(n)));
+			}
+		}
+		return d;
+	}
+
 	private boolean isCorrectFormat(String text)
 	{
 		for (char n : dimensions.getText().toCharArray()) {
@@ -314,4 +329,29 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 		selectedShapeParameter = cb.getSelectedIndex();
 	}
 
+	@Override
+	public ContainerInfo createInfo() {
+		ConcentricInfo info;
+		switch (selectedShapeParameter) {
+			case 0 :
+				info = new ConcentricInfo((ConcentricShapeType)shapes.getSelectedItem(),-1,null,(int)ringSpinner.getValue(),
+						(int)stepSpinner.getValue(),parameters[0],parameters[1],parameters[2],parameters[3]);
+				break;
+
+			case 1 :
+				info = new ConcentricInfo(null,(int) sideSpinner.getValue(),null,(int)ringSpinner.getValue(),
+						(int)stepSpinner.getValue(),parameters[0],parameters[1],parameters[2],parameters[3]);
+				break;
+
+			case 2 :
+				info = new ConcentricInfo(null,-1,parseDimension(),(int)ringSpinner.getValue(),
+						(int)stepSpinner.getValue(),parameters[0],parameters[1],parameters[2],parameters[3]);
+				break;
+
+			default :
+				info = null;
+				break;
+		}
+		return new BoardInfo(maker,info);
+	}
 }

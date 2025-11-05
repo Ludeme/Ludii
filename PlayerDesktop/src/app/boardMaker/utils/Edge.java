@@ -4,9 +4,14 @@ public class Edge {
     private Vertex start;
     private Vertex end;
 
-    public Edge(Vertex start, Vertex end) {
+    private int startIdx;
+    private int endIdx;
+
+    public Edge(Vertex start,int startIdx, Vertex end, int endIdx) {
         this.start = start;
         this.end = end;
+        this.startIdx = startIdx;
+        this.endIdx = endIdx;
     }
 
     public Vertex start() {
@@ -15,6 +20,14 @@ public class Edge {
 
     public Vertex end() {
         return end;
+    }
+
+    public int getStartIdx() {
+        return startIdx;
+    }
+
+    public int getEndIdx() {
+        return endIdx;
     }
 
     @Override
@@ -30,6 +43,6 @@ public class Edge {
 
     @Override
     public String toString() {
-        return start + " " + end;
+        return String.format("{%d %d}",startIdx,endIdx);
     }
 }

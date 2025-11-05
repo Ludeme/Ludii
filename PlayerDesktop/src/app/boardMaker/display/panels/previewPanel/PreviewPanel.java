@@ -8,27 +8,9 @@ import javax.swing.JTabbedPane;
 
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
-import app.boardMaker.utils.BoardData;
+import app.boardMaker.dataStruct.board.BoardData;
 import app.utils.SVGUtil;
-import bridge.Bridge;
-import game.Game;
-import game.equipment.Equipment;
-import game.equipment.Item;
 import game.equipment.container.board.Board;
-import game.equipment.container.board.custom.MancalaBoard;
-import game.equipment.container.board.custom.SurakartaBoard;
-import game.functions.graph.GraphFunction;
-import game.mode.Mode;
-import game.players.Players;
-import game.types.board.SiteType;
-import other.context.Context;
-import other.trial.Trial;
-import util.PlaneType;
-import view.container.ContainerStyle;
-import view.container.styles.BoardStyle;
-import view.container.styles.board.MancalaStyle;
-import view.container.styles.board.SurakartaStyle;
-import view.container.styles.board.graph.GraphStyle;
 
 /**
  * A class for the preview of the board during its creation

@@ -242,7 +242,7 @@ public class MainMenuFunctions extends JMenuBar
 		}
 		else if (source.getText().equals("Board Maker"))
 		{
-			StartBoardMaker.create();
+			StartBoardMaker.create(app);
 		}
 		// IMPORTANT These next four menu functions are just for us, not the user
 		else if (source.getText().equals("Export Thumbnails"))

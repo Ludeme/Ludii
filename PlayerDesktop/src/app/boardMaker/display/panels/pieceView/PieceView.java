@@ -2,21 +2,18 @@ package app.boardMaker.display.panels.pieceView;
 
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.menu.popup.piecepopup.PiecePopupMenu;
-import app.boardMaker.utils.BoardData;
+import app.boardMaker.dataStruct.board.BoardData;
 import app.boardMaker.utils.CoordinatesUtil;
 import app.boardMaker.utils.DrawingUtils;
-import app.boardMaker.utils.PieceInfo;
+import app.boardMaker.dataStruct.piece.PieceInfo;
 import app.utils.SVGUtil;
 import game.equipment.component.Piece;
 import graphics.ImageUtil;
 import graphics.svg.SVGtoImage;
-import main.GameNames;
 import main.StringRoutines;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 import other.topology.TopologyElement;
 import util.SettingsColour;
-import view.component.ComponentStyle;
-import view.component.custom.PieceStyle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +70,7 @@ public class PieceView extends JPanel {
                 (int) (size * boardScale), (int) (size * boardScale));
 
         List<? extends TopologyElement> elements = currentBoard.getBoard().topology().getGraphElements(maker.getSiteType());
-        HashMap<Integer,Piece> pieces = currentBoard.pieceInfo().piecesPlaced();
+        HashMap<Integer,Piece> pieces = currentBoard.pieceInfo().piecesPlacedbySite();
 
         if (!pieces.isEmpty()) {
             drawPieces(g2d,pieces,elements);
@@ -88,8 +85,8 @@ public class PieceView extends JPanel {
         DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
 
         for (int i = 0; i < elements.size(); i++) {
-            if ((currentBoard.pieceInfo().piecesPlaced().containsKey((Integer) i) && adding)
-                    || (removing && !currentBoard.pieceInfo().piecesPlaced().containsKey((Integer) i))) {
+            if ((currentBoard.pieceInfo().piecesPlacedbySite().containsKey((Integer) i) && adding)
+                    || (removing && !currentBoard.pieceInfo().piecesPlacedbySite().containsKey((Integer) i))) {
                 continue;
             }
             if (sitesSelected.contains(i)) {
