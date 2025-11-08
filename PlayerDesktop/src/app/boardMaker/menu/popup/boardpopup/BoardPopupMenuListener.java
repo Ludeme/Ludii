@@ -1,5 +1,8 @@
 package app.boardMaker.menu.popup.boardpopup;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
+import app.boardMaker.dataStruct.board.graphFunction.operators.*;
 import app.boardMaker.display.dialogs.MergeDialog;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
@@ -83,6 +86,7 @@ public class BoardPopupMenuListener implements ActionListener {
                     int angle = (Integer) rotSpinner.getValue();
                     apply_rotation(angle);
                 }
+                break;
 
             case "scale" :
                 float scaleX = maker.getCurrentBoard().getBoard().graphFunction() instanceof Scale ?
@@ -96,7 +100,7 @@ public class BoardPopupMenuListener implements ActionListener {
                 panel.add(new JLabel("Y: "));
                 JSpinner ySpinner = new JSpinner(new SpinnerNumberModel(scaleY,0.0,100.0,0.1));
                 panel.add(ySpinner);
-                int scaleOption = JOptionPane.showOptionDialog(null, panel,"Value to skew",JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null,null,null);
+                int scaleOption = JOptionPane.showOptionDialog(null, panel,"Value to scale",JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null,null,null);
                 if (scaleOption == JOptionPane.OK_OPTION) {
                     double valX = (Double) xSpinner.getValue();
                     double valY = (Double) ySpinner.getValue();
@@ -181,58 +185,89 @@ public class BoardPopupMenuListener implements ActionListener {
     private void apply_scale(double valX, double valY) {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction;
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo;
         if (oldBoard.graphFunction() instanceof Scale) {
             newFunction = new Scale(new FloatConstant((float) valX),new FloatConstant((float) valY),new FloatConstant(1.0f),((Scale)(oldBoard.graphFunction())).graphFunction());
+            newInfo = new ScaleInfo((float) valX, (float) valY,((ScaleInfo)boardInfo.getGraphInfo()).getGraphFunction());
         } else {
             newFunction = new Scale(new FloatConstant((float) valX),new FloatConstant((float) valY),new FloatConstant(1.0f),oldBoard.graphFunction());
+            newInfo = new ScaleInfo((float) valX, (float) valY,boardInfo.getGraphInfo());
         }
         update_board(newFunction, oldBoard);
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_skew(float value) {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction;
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo;
         if (oldBoard.graphFunction() instanceof Skew) {
             newFunction = new Skew(value,((Skew)(oldBoard.graphFunction())).graphFunction());
+            newInfo = new SkewInfo(value,((SkewInfo)boardInfo.getGraphInfo()).getGraphFunction());
         } else {
             newFunction = new Skew(value,oldBoard.graphFunction());
+            newInfo = new SkewInfo(value,boardInfo.getGraphInfo());
         }
         update_board(newFunction, oldBoard);
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_rotation(int angle) {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction;
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo;
         if (oldBoard.graphFunction() instanceof Rotate) {
             newFunction = new Rotate(new FloatConstant(angle),((Rotate)(oldBoard.graphFunction())).graphFunction());
+            newInfo = new RotateInfo(angle,((RotateInfo)boardInfo.getGraphInfo()).getGraphFunction());
         } else {
             newFunction = new Rotate(new FloatConstant(angle),oldBoard.graphFunction());
+            newInfo = new RotateInfo(angle,boardInfo.getGraphInfo());
         }
         update_board(newFunction, oldBoard);
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_trim() {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction = new Trim(oldBoard.graphFunction());
         update_board(newFunction, oldBoard);
+
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo = new TrimInfo(boardInfo.getGraphInfo());
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_split_cross() {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction = new SplitCrossings(oldBoard.graphFunction());
         update_board(newFunction, oldBoard);
+
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo = new SplitCrossInfo(boardInfo.getGraphInfo());
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_make_faces() {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction = new MakeFaces(oldBoard.graphFunction());
         update_board(newFunction, oldBoard);
+
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo = new MakeFaceInfo(boardInfo.getGraphInfo());
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_dual() {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction = new Dual(oldBoard.graphFunction());
         update_board(newFunction, oldBoard);
+
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo = new DualInfo(boardInfo.getGraphInfo());
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void update_board(GraphFunction function, Board old) {
@@ -245,11 +280,19 @@ public class BoardPopupMenuListener implements ActionListener {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction = new Complete(oldBoard.graphFunction(),b);
         update_board(newFunction, oldBoard);
+
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo = new CompleteInfo(boardInfo.getGraphInfo(),b);
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_subdivide(int nfaces) {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction = new Subdivide(oldBoard.graphFunction(),new DimConstant(nfaces));
         update_board(newFunction,oldBoard);
+
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo = new SubdivideInfo(boardInfo.getGraphInfo(),nfaces);
+        boardInfo.setGraphInfo(newInfo);
     }
 }

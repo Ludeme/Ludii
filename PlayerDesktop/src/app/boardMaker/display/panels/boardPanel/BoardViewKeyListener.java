@@ -1,5 +1,8 @@
 package app.boardMaker.display.panels.boardPanel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
+import app.boardMaker.dataStruct.board.graphFunction.operators.RemoveInfo;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.BoardUtils;
@@ -124,6 +127,7 @@ public class BoardViewKeyListener extends KeyAdapter {
     private void apply_remove(List<Integer> indices) {
         Board oldBoard = maker.getCurrentBoard().getBoard();
         GraphFunction newFunction;
+        List<Edge> edgeList = maker.getCurrentBoard().getBoard().topology().edges();
         if (view.removedType() == SiteType.Cell) {
             DimFunction[] cells = new DimFunction[indices.size()];
             for (int i = 0; i < indices.size(); i++) {
@@ -138,7 +142,6 @@ public class BoardViewKeyListener extends KeyAdapter {
             newFunction = new Remove(oldBoard.graphFunction(),null,null,null,null,null,vertices,true);
         } else {
             DimFunction[][] edges = new DimFunction[indices.size()][2];
-            List<Edge> edgeList = maker.getCurrentBoard().getBoard().topology().edges();
             for (int i = 0; i < indices.size(); i++) {
                 Edge edge = edgeList.get(indices.get(i));
                 edges[i] = new DimFunction[]{new DimConstant(edge.vA().index()),new DimConstant(edge.vB().index())};
@@ -146,6 +149,10 @@ public class BoardViewKeyListener extends KeyAdapter {
             newFunction = new Remove(oldBoard.graphFunction(),null,null,null,edges,null,null,true);
         }
         update_board(newFunction,oldBoard);
+
+        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
+        GraphInfo newInfo = new RemoveInfo(view.removedType(),boardInfo.getGraphInfo(),indices,edgeList);
+        boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_transformation(Transformations transformation, List<Point> vertices) {

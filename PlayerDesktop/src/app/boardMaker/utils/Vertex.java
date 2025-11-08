@@ -1,5 +1,7 @@
 package app.boardMaker.utils;
 
+import java.util.Locale;
+
 public class Vertex
 {
 	private double x;
@@ -43,7 +45,7 @@ public class Vertex
 	
 	@Override
 	public String toString() {
-		return String.format("{%.3f %.3f}",x,y);
+		return String.format(Locale.ENGLISH,"{%.2f %.2f}",x,y);
 	}
 
 }

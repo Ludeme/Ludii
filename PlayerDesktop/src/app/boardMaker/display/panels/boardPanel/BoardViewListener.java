@@ -3,6 +3,8 @@ package app.boardMaker.display.panels.boardPanel;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.menu.popup.boardpopup.BoardPopupMenu;
 import app.boardMaker.utils.CoordinatesUtil;
+import game.equipment.container.board.custom.MancalaBoard;
+import game.equipment.container.board.custom.SurakartaBoard;
 import game.types.board.SiteType;
 
 import java.awt.*;
@@ -55,7 +57,8 @@ public class BoardViewListener extends MouseAdapter {
         }
 
         Point click = new Point(e.getX(),e.getY());
-        if (e.isPopupTrigger() && clickOnBoard(click,maker.getCurrentBoard().getPlacement())) {
+        if (e.isPopupTrigger() && clickOnBoard(click,maker.getCurrentBoard().getPlacement())
+                && !(maker.getCurrentBoard().getBoard() instanceof MancalaBoard || maker.getCurrentBoard().getBoard() instanceof SurakartaBoard)) {
             BoardPopupMenu popup = new BoardPopupMenu(maker);
             popup.create();
             popup.show(e.getComponent(),e.getX(),e.getY());

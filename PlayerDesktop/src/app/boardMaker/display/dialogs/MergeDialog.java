@@ -1,5 +1,11 @@
 package app.boardMaker.display.dialogs;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
+import app.boardMaker.dataStruct.board.graphFunction.operators.IntersectInfo;
+import app.boardMaker.dataStruct.board.graphFunction.operators.MergeInfo;
+import app.boardMaker.dataStruct.board.graphFunction.operators.ShiftInfo;
+import app.boardMaker.dataStruct.board.graphFunction.operators.UnionInfo;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.handlers.Maker;
@@ -71,6 +77,39 @@ public class MergeDialog extends JDialog {
         panel.add(new CreateButton(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GraphInfo info;
+                double lx = (Double) left.shiftX.getValue(), ly = (Double) left.shiftY.getValue();
+                double rx = (Double) right.shiftX.getValue(), ry = (Double) right.shiftY.getValue();
+                GraphInfo leftInfo;
+                if (lx == 0 && ly == 0) {
+                    leftInfo = left.graphInfo;
+                } else {
+                    leftInfo = new ShiftInfo((float) lx, (float) ly,left.graphInfo);
+                }
+                GraphInfo rightInfo;
+                if (rx == 0 && ry == 0) {
+                    rightInfo = right.graphInfo;
+                } else {
+                    rightInfo = new ShiftInfo((float) rx, (float) ry,right.graphInfo);
+                }
+                switch (transformation) {
+                    case Merge :
+                        info = new MergeInfo(leftInfo,rightInfo);
+                        break;
+
+                    case Union:
+                        info = new UnionInfo(leftInfo,rightInfo);
+                        break;
+
+                    case Intersect :
+                        info = new IntersectInfo(leftInfo,rightInfo);
+                        break;
+
+                    default :
+                        info = null;
+                        break;
+                }
+                result.setContainerInfo(new BoardInfo(maker,info));
                 maker.addBoard(result);
                 maker.getDisplayer().getCurrentDisplay().repaint();
                 dispose();
@@ -124,6 +163,7 @@ public class MergeDialog extends JDialog {
     private class BoardPlacementPanel extends JPanel implements ActionListener, ChangeListener {
         BoardData board = null;
         GraphFunction baseFunction;
+        GraphInfo graphInfo;
 
         JComboBox<String> boardCB;
         JSpinner shiftX;
@@ -153,7 +193,7 @@ public class MergeDialog extends JDialog {
             panel = new JPanel();
             label = new JLabel("X: ");
             panel.add(label);
-            shiftX = new JSpinner(new SpinnerNumberModel(0.0,-100.0,100.0,0.1));
+            shiftX = new JSpinner(new SpinnerNumberModel(0.0,-50.0,50.0,0.1));
             shiftX.addChangeListener(this);
             panel.add(shiftX);
 
@@ -175,6 +215,7 @@ public class MergeDialog extends JDialog {
                 board = new BoardData(maker);
             }
             baseFunction = maker.getItemList().get((String) boardCB.getSelectedItem()).getBoard().graphFunction();
+            graphInfo = ((BoardInfo)maker.getItemList().get((String) boardCB.getSelectedItem()).getContainerInfo()).getGraphInfo();
             board.setBoard(new Board(apply_placement(),null,null,null,null,
                     maker.getSiteType(),maker.largeStack()));
             computeBoard();

@@ -1,6 +1,7 @@
 package app.boardMaker.handlers;
 
 import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.piece.PieceInfo;
 import game.equipment.container.board.Board;
 import game.equipment.container.board.custom.MancalaBoard;
 import game.equipment.container.board.custom.SurakartaBoard;
@@ -40,21 +41,11 @@ public class Writer {
 
         description.append("(equipment {\n");
         createBoardDescription(description,maker.getCurrentBoard().getContainerInfo());
+        createPieceDescription(description,maker.getCurrentBoard().pieceInfo());
         description.append("})\n");
 
         description.append("(rules \n");
-        if (!maker.getCurrentBoard().pieceInfo().piecesPlacedbyName().isEmpty()) {
-            description.append("(start {\n");
-            HashMap<String,List<Integer>> piecesPlaced = maker.getCurrentBoard().pieceInfo().piecesPlacedbyName();
-            for (String piece : piecesPlaced.keySet()) {
-                description.append("(place \"" + piece + "\" {");
-                for (Integer site : piecesPlaced.get(piece)) {
-                    description.append(" " + site + " ");
-                }
-                description.append("})\n");
-            }
-            description.append("})\n");
-        }
+        createPieceSetupDescription(description,maker.getCurrentBoard().pieceInfo());
         description.append("(play (forEach Piece))\n");
         description.append("(end (if (no Moves Next) (result Mover win)))\n");
         description.append(")\n");
@@ -64,6 +55,13 @@ public class Writer {
 
     private static void createBoardDescription(StringBuilder description, ContainerInfo info) {
         description.append(info.description());
-        description.append("\n");
+    }
+
+    private static void createPieceSetupDescription(StringBuilder description, PieceInfo info) {
+        description.append(info.setupDescription());
+    }
+
+    private static void createPieceDescription(StringBuilder description, PieceInfo info) {
+        description.append(info.pieceDescription());
     }
 }
