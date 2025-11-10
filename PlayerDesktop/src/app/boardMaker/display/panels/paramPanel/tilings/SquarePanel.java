@@ -148,9 +148,8 @@ public class SquarePanel extends OptionPanel {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				createBoard();
-				maker.addBoard(displayer.getPreviewPanel().getBoardData());
-				maker.getCurrentBoard().setContainerInfo(createInfo());
+				maker.addBoard(createInfo());
+				//maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -167,9 +166,8 @@ public class SquarePanel extends OptionPanel {
 		add(buttonPanel);
 		
 		add(Box.createVerticalGlue());
-		
-		createBoard();
-		displayer.getPreviewPanel().setBoard(board);
+
+		displayer.getPreviewPanel().setBoard(createInfo());
 	}
 	
 	@Override
@@ -189,8 +187,14 @@ public class SquarePanel extends OptionPanel {
 
 	@Override
 	public ContainerInfo createInfo() {
-		SquareInfo info = new SquareInfo((SquareShapeType)cBox.getSelectedItem(),(int)dimSpinner.getValue(),
-				(DiagonalsType)diagBox.getSelectedItem(),pyramidal);
+		SquareInfo info;
+		if (choice.getSelectedItem().equals("Diagonal type: ")) {
+			info = new SquareInfo((SquareShapeType)cBox.getSelectedItem(),(int)dimSpinner.getValue(),
+					(DiagonalsType)diagBox.getSelectedItem(),null);
+		} else {
+			info = new SquareInfo((SquareShapeType)cBox.getSelectedItem(),(int)dimSpinner.getValue(),
+					null,pyramidal);
+		}
 		return new BoardInfo(maker,info);
 	}
 }

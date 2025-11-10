@@ -67,7 +67,7 @@ public class SpiralPanel extends OptionPanel
 		label = new JLabel("Sites: ");
 		label.setToolTipText("Total number of sites.");
 		panel.add(label);
-		sites = new JSpinner(new SpinnerNumberModel(3, 3, Integer.MAX_VALUE, 1));
+		sites = new JSpinner(new SpinnerNumberModel(4, 4, Integer.MAX_VALUE, 10));
 		sites.addChangeListener(pl);
 		panel.add(sites);
 		add(panel);
@@ -117,9 +117,8 @@ public class SpiralPanel extends OptionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				createBoard();
-				maker.addBoard(displayer.getPreviewPanel().getBoardData());
-				maker.getCurrentBoard().setContainerInfo(createInfo());
+				maker.addBoard(createInfo());
+				//maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -136,9 +135,8 @@ public class SpiralPanel extends OptionPanel
 		add(buttonPanel);
 		
 		add(Box.createVerticalStrut(5));
-		
-		createBoard();
-		displayer.getPreviewPanel().setBoard(board);
+
+		displayer.getPreviewPanel().setBoard(createInfo());
 	}
 
 	@Override

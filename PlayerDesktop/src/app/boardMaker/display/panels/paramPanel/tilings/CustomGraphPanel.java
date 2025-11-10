@@ -107,12 +107,8 @@ public class CustomGraphPanel extends OptionPanel {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                createBoard();
-                maker.addBoard(displayer.getPreviewPanel().getBoardData());
-                if (displayer.getPreviewPanel().getTabCount() > 1) {
-                    displayer.getPreviewPanel().removeTabAt(1);
-                }
-                maker.getCurrentBoard().setContainerInfo(createInfo());
+                maker.addBoard(createInfo());
+                //maker.getCurrentBoard().setContainerInfo(createInfo());
                 displayer.mainView();
             }
         }));
@@ -133,8 +129,7 @@ public class CustomGraphPanel extends OptionPanel {
 
         add(Box.createVerticalStrut(5));
 
-        createBoard();
-        displayer.getPreviewPanel().setBoard(board);
+        displayer.getPreviewPanel().setBoard(createInfo());
     }
 
     @Override

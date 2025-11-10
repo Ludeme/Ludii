@@ -129,9 +129,8 @@ public class QuadhexPanel extends OptionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				createBoard();
-				maker.addBoard(displayer.getPreviewPanel().getBoardData());
-				maker.getCurrentBoard().setContainerInfo(createInfo());
+				maker.addBoard(createInfo());
+				//maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -148,9 +147,8 @@ public class QuadhexPanel extends OptionPanel
 		add(buttonPanel);
 		
 		add(Box.createVerticalStrut(5));
-		
-		createBoard();
-		displayer.getPreviewPanel().setBoard(board);
+
+		displayer.getPreviewPanel().setBoard(createInfo());
 	}
 
 	@Override

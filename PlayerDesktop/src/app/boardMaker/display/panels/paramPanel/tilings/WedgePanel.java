@@ -55,7 +55,7 @@ public class WedgePanel extends OptionPanel
 		label = new JLabel("Rows: ");
 		label.setToolTipText("Sets the number of rows on the board.");
 		panel.add(label);
-		row = new JSpinner(new SpinnerNumberModel(2, 1, Integer.MAX_VALUE, 1));
+		row = new JSpinner(new SpinnerNumberModel(2, 2, Integer.MAX_VALUE, 1));
 		row.addChangeListener(pl);
 		panel.add(row);
 		add(panel);
@@ -64,7 +64,7 @@ public class WedgePanel extends OptionPanel
 		label = new JLabel("Columns: ");
 		label.setToolTipText("Sets the number of columns on the board. If 0, as many columns as rows.");
 		panel.add(label);
-		col = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		col = new JSpinner(new SpinnerNumberModel(2, 2, Integer.MAX_VALUE, 1));
 		col.addChangeListener(pl);
 		panel.add(col);
 		add(panel);
@@ -78,9 +78,8 @@ public class WedgePanel extends OptionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				createBoard();
-				maker.addBoard(displayer.getPreviewPanel().getBoardData());
-				maker.getCurrentBoard().setContainerInfo(createInfo());
+				maker.addBoard(createInfo());
+				//maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -97,9 +96,8 @@ public class WedgePanel extends OptionPanel
 		add(buttonPanel);
 		
 		add(Box.createVerticalStrut(5));
-		
-		createBoard();
-		displayer.getPreviewPanel().setBoard(board);
+
+		displayer.getPreviewPanel().setBoard(createInfo());
 	}
 
 	@Override

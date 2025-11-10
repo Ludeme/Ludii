@@ -68,7 +68,7 @@ public class HexPanel extends OptionPanel {
 		label.setToolTipText("Primary dimension of the board.");
 		p.add(label);
 
-		primSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		primSpinner = new JSpinner(new SpinnerNumberModel(2, 1, Integer.MAX_VALUE, 1));
 		primSpinner.addChangeListener(pl);
 		p.add(primSpinner);
 		add(p);
@@ -94,9 +94,8 @@ public class HexPanel extends OptionPanel {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				createBoard();
-				maker.addBoard(displayer.getPreviewPanel().getBoardData());
-				maker.getCurrentBoard().setContainerInfo(createInfo());
+				maker.addBoard(createInfo());
+				//maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -113,9 +112,8 @@ public class HexPanel extends OptionPanel {
 		add(buttonPanel);
 		
 		add(Box.createVerticalGlue());
-		
-		createBoard();
-		displayer.getPreviewPanel().setBoard(board);
+
+		displayer.getPreviewPanel().setBoard(createInfo());
 	}
 
 	@Override

@@ -95,8 +95,7 @@ public class GraphView extends JPanel {
     public void addVertex(Vertex vertex) {
         if (!vertexes.contains(vertex)) {
             vertexes.add(vertex);
-            op.createBoard();
-            displayer.getPreviewPanel().setBoard(op.board());
+            displayer.getPreviewPanel().setBoard(op.createInfo());
             displayer.getPreviewPanel().repaint();
         }
     }
@@ -104,8 +103,7 @@ public class GraphView extends JPanel {
     public void removeHovered() {
         vertexes.remove(hoveredVertex);
         hoveredVertex = null;
-        op.createBoard();
-        displayer.getPreviewPanel().setBoard(op.board());
+        displayer.getPreviewPanel().setBoard(op.createInfo());
         displayer.getPreviewPanel().repaint();
     }
 
@@ -124,8 +122,7 @@ public class GraphView extends JPanel {
                     reversedKey = edge.end().toString() + edge.start().toString();
             edgeFromVertex.put(key,edge);
             edgeFromVertex.put(reversedKey,edge);
-            op.createBoard();
-            displayer.getPreviewPanel().setBoard(op.board());
+            displayer.getPreviewPanel().setBoard(op.createInfo());
             displayer.getPreviewPanel().repaint();
         }
     }
@@ -137,8 +134,7 @@ public class GraphView extends JPanel {
         edgeFromVertex.remove(key);
         edgeFromVertex.remove(reversedKey);
         edges.remove(toRemove);
-        op.createBoard();
-        displayer.getPreviewPanel().setBoard(op.board());
+        displayer.getPreviewPanel().setBoard(op.createInfo());
         displayer.getPreviewPanel().repaint();
     }
 

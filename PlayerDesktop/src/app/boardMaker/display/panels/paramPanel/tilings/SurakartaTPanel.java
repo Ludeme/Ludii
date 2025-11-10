@@ -68,7 +68,7 @@ public class SurakartaTPanel extends SurakartaPanel
 		label = new JLabel("Loops: ");
 		label.setToolTipText("Number of loops. If 0, then add a loop for every 2 cells on the side ((FirstDim - 1) / 2).");
 		panel.add(label);
-		loop = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
+		loop = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
 		loop.addChangeListener(pl);
 		panel.add(loop);
 		add(panel);
@@ -93,9 +93,8 @@ public class SurakartaTPanel extends SurakartaPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				createBoard();
-				maker.addBoard(displayer.getPreviewPanel().getBoardData());
-				maker.getCurrentBoard().setContainerInfo(createInfo());
+				maker.addBoard(createInfo());
+				//maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}
 		}));
@@ -112,9 +111,8 @@ public class SurakartaTPanel extends SurakartaPanel
 		add(buttonPanel);
 		
 		add(Box.createVerticalStrut(5));
-		
-		createBoard();
-		displayer.getPreviewPanel().setBoard(board);
+
+		displayer.getPreviewPanel().setBoard(createInfo());
 	}
 	
 	@Override

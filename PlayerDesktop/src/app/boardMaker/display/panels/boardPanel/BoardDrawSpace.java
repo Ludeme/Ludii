@@ -2,6 +2,7 @@ package app.boardMaker.display.panels.boardPanel;
 
 import app.boardMaker.dataStruct.board.BoardData;
 import app.boardMaker.dataStruct.board.BoardRange;
+import app.boardMaker.dataStruct.state.BoardMakerState;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.*;
@@ -72,7 +73,7 @@ public class BoardDrawSpace extends JPanel {
 
         BoardData currentBoard = maker.getCurrentBoard();
         if (currentBoard != null) {
-            maker.drawBoard(currentBoard,this,camera);
+            /*maker.drawBoard(currentBoard,this,camera);
             BufferedImage image = SVGUtil.createSVGImage(currentBoard.getSVG(), getWidth(),getHeight());
             g2d.drawImage(image,camera.offX(), -camera.offY(), null);
 
@@ -198,8 +199,15 @@ public class BoardDrawSpace extends JPanel {
                     Point pt = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),currentBoard.getPlacement());
                     g2d.fillOval(pt.x - dotSize/2,pt.y - dotSize/2,dotSize,dotSize);
                 }
-            }
+            }*/
         }
+
+        BoardMakerState state = maker.state();
+        if (state.currentBoard() == null) {
+            return;
+        }
+        BufferedImage image = SVGUtil.createSVGImage(state.currentSVG(maker.shownSite()), getWidth(),getHeight());
+        g2d.drawImage(image,camera.offX(), -camera.offY(), null);
     }
 
     public void setCreatePoly(boolean b) {

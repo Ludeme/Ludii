@@ -1,6 +1,10 @@
 package app.boardMaker.dataStruct.board.graphFunction.operators;
 
 import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
+import game.functions.floats.FloatConstant;
+import game.functions.floats.FloatFunction;
+import game.functions.graph.GraphFunction;
+import game.functions.graph.operators.Add;
 import game.types.board.SiteType;
 import other.topology.Edge;
 import other.topology.Vertex;
@@ -15,12 +19,15 @@ public class AddInfo implements GraphInfo {
     private List<Edge> edges;
     private List<List<Vertex>> cells;
 
+    private GraphFunction function;
+
     public AddInfo(SiteType added, GraphInfo gfct, List<Vertex> vertices, List<Edge> edges, List<List<Vertex>> cells) {
         this.added = added;
         this.graphFunction = gfct;
         this.vertices = vertices;
         this.edges = edges;
         this.cells = cells;
+        createFunction();
     }
 
     @Override
@@ -37,6 +44,59 @@ public class AddInfo implements GraphInfo {
 
             default :
                 return "";
+        }
+    }
+
+    @Override
+    public GraphFunction function() {
+        return function;
+    }
+
+    private void createFunction() {
+        switch (added) {
+            case Cell :
+                FloatFunction[][][] c = new FloatFunction[cells.size()][][];
+                for (int i = 0; i < cells.size(); i++) {
+                    List<Vertex> cell = cells.get(i);
+                    FloatFunction[][] array = new FloatFunction[cell.size()][2];
+                    for (int j = 0; j < cell.size(); j++) {
+                        Vertex vertex = cell.get(j);
+                        array[j][0] = new FloatConstant((float) vertex.centroid().getX());
+                        array[j][1] = new FloatConstant((float) vertex.centroid().getY());
+                    }
+                    c[i] = array;
+                }
+                function = new Add(graphFunction.function(),null,null,null,
+                        null,c,null,false);
+                break;
+
+            case Edge :
+                FloatFunction[][][] e = new FloatFunction[edges.size()][2][2];
+                for (int i = 0; i < edges.size(); i++) {
+                    Edge edge = edges.get(i);
+                    e[i][0][0] = new FloatConstant((float) edge.vA().centroid().getX());
+                    e[i][0][1] = new FloatConstant((float) edge.vA().centroid().getY());
+                    e[i][1][0] = new FloatConstant((float) edge.vB().centroid().getX());
+                    e[i][1][1] = new FloatConstant((float) edge.vB().centroid().getY());
+                }
+                function = new Add(graphFunction.function(),null,e,null,
+                        null,null,null,false);
+                break;
+
+            case Vertex :
+                FloatFunction[][] v = new FloatFunction[vertices.size()][2];
+                for (int i = 0; i < vertices.size(); i++) {
+                    Vertex vertex = vertices.get(i);
+                    v[i] = new FloatFunction[]{new FloatConstant((float) vertex.centroid().getX()),
+                            new FloatConstant((float) vertex.centroid().getY())};
+                }
+                function = new Add(graphFunction.function(),v,null,null,
+                        null,null,null,false);
+                break;
+
+            default :
+                function = null;
+                break;
         }
     }
 

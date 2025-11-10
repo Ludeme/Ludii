@@ -37,14 +37,11 @@ public class PreviewListener implements ActionListener, ChangeListener
 	public void stateChanged(ChangeEvent e)
 	{
 		if (op != null) {
-			op.createBoard();
-			pp.setBoard(op.board());
+			pp.setBoard(op.createInfo());
 		} else if (mp != null) {
-			mp.createBoard();
-			pp.setBoard(mp.board());
+			pp.setBoard(mp.createInfo());
 		} else if (sp != null) {
-			sp.createBoard();
-			pp.setBoard(sp.board());
+			pp.setBoard(sp.createInfo());
 		}
 		pp.revalidate();
 		pp.repaint();
@@ -54,14 +51,11 @@ public class PreviewListener implements ActionListener, ChangeListener
 	public void actionPerformed(ActionEvent e)
 	{
 		if (op != null) {
-			op.createBoard();
-			pp.setBoard(op.board());
+			pp.setBoard(op.createInfo());
 		} else if (mp != null) {
-			mp.createBoard();
-			pp.setBoard(mp.board());
+			pp.setBoard(mp.createInfo());
 		} else if (sp != null) {
-			sp.createBoard();
-			pp.setBoard(sp.board());
+			pp.setBoard(sp.createInfo());
 		}
 		pp.revalidate();
 		pp.repaint();

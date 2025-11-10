@@ -3,6 +3,8 @@ package app.boardMaker.handlers;
 import javax.swing.*;
 
 import app.DesktopApp;
+import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.state.BoardMakerState;
 import app.boardMaker.display.panels.westPanel.itemList.ItemList;
 import app.boardMaker.dataStruct.board.BoardData;
 import app.boardMaker.utils.BoardUtils;
@@ -54,6 +56,7 @@ public class Maker
 	private int cellRadius;
 
 	private BoardData currentBoard;
+	private BoardMakerState state;
 
 	private ItemList itemList;
 	
@@ -61,6 +64,8 @@ public class Maker
 		displayer = new Displayer(this);
 		bridge = new Bridge();
 		this.mainApp = app;
+
+		state = new BoardMakerState();
 	}
 	
 	/**
@@ -88,6 +93,9 @@ public class Maker
 
 		itemList.addBoard(currentBoard);
 		itemList.reload(itemList.boardRoot());
+	}
+	public void addBoard(ContainerInfo board) {
+		state.setCurrentBoard(board);
 	}
 
 	/**
@@ -173,6 +181,10 @@ public class Maker
 	 */
 	public Displayer getDisplayer() {
 		return displayer;
+	}
+
+	public BoardMakerState state() {
+		return state;
 	}
 
 	public BoardData getCurrentBoard() {
