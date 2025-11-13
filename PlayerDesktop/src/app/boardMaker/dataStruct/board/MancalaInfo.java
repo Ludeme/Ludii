@@ -1,6 +1,7 @@
 package app.boardMaker.dataStruct.board;
 
 import app.boardMaker.handlers.Maker;
+import app.boardMaker.utils.Camera;
 import bridge.Bridge;
 import game.Game;
 import game.equipment.Equipment;
@@ -20,6 +21,7 @@ import view.container.styles.board.MancalaStyle;
 import view.container.styles.board.graph.GraphStyle;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class MancalaInfo implements ContainerInfo{
     private int nrow;
@@ -29,8 +31,12 @@ public class MancalaInfo implements ContainerInfo{
 
     private MancalaBoard board;
     private Context context;
+
     private String boardSVG;
+
     private int cellRadius;
+    private double boardScale;
+    private Rectangle placement;
 
     private Maker maker;
 
@@ -90,5 +96,28 @@ public class MancalaInfo implements ContainerInfo{
         boardSVG = gameStyle.containerSVGImage();
 
         cellRadius = gameStyle.cellRadiusPixels();
+        boardScale = gameStyle.containerScale();
+
+        Point2D center = new Point2D.Double(0.5,0.5);
+        Point origin = new Point(0,0);
+
+        Rectangle realPlacement = new Rectangle((int) (origin.getX() + placement.getWidth() * (1.0 - boardScale) * center.getX()),
+                (int) (origin.getY() + placement.getHeight() * (1.0 - boardScale) * center.getY()),
+                (int) (placement.getWidth() * boardScale),
+                (int) (placement.getHeight() * boardScale));
+        setPlacement(realPlacement);
+    }
+
+    @Override
+    public void setPlacement(Rectangle p) {
+        this.placement = p;
+    }
+
+    @Override
+    public void shiftPlacement(Camera c) {
+        placement = new Rectangle((int) (c.offX() + placement.getWidth()),
+                (int) (-c.offY() + placement.getHeight()),
+                (int) placement.getWidth(),
+                (int) placement.getHeight());
     }
 }

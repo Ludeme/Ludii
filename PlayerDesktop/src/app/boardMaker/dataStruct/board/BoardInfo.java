@@ -2,6 +2,7 @@ package app.boardMaker.dataStruct.board;
 
 import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
 import app.boardMaker.handlers.Maker;
+import app.boardMaker.utils.Camera;
 import bridge.Bridge;
 import game.Game;
 import game.equipment.Equipment;
@@ -18,15 +19,20 @@ import view.container.styles.BoardStyle;
 import view.container.styles.board.graph.GraphStyle;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class BoardInfo implements ContainerInfo{
     private GraphInfo graphInfo;
 
     private Board board;
     private Context context;
+
     private String boardSVG;
     private String graphSVG;
+
     private int cellRadius;
+    private double boardScale;
+    private Rectangle boardPlacement;
 
     private Maker maker;
 
@@ -109,5 +115,28 @@ public class BoardInfo implements ContainerInfo{
         graphSVG = gameStyle.containerSVGImage();
 
         cellRadius = gameStyle.cellRadiusPixels();
+        boardScale = gameStyle.containerScale();
+
+        Point2D center = new Point2D.Double(0.5,0.5);
+        Point origin = new Point(0,0);
+
+        Rectangle realPlacement = new Rectangle((int) (origin.getX() + placement.getWidth() * (1.0 - boardScale) * center.getX()),
+                (int) (origin.getY() + placement.getHeight() * (1.0 - boardScale) * center.getY()),
+                (int) (placement.getWidth() * boardScale),
+                (int) (placement.getHeight() * boardScale));
+        setPlacement(realPlacement);
+    }
+
+    @Override
+    public void setPlacement(Rectangle p) {
+        this.boardPlacement = p;
+    }
+
+    @Override
+    public void shiftPlacement(Camera c) {
+        boardPlacement = new Rectangle((int) (c.dx() + boardPlacement.getX()),
+                (int) (c.dy() + boardPlacement.getY()),
+                (int) boardPlacement.getWidth(),
+                (int) boardPlacement.getHeight());
     }
 }

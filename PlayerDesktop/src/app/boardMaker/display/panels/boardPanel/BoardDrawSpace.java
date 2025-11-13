@@ -208,6 +208,7 @@ public class BoardDrawSpace extends JPanel {
         }
         BufferedImage image = SVGUtil.createSVGImage(state.currentSVG(maker.shownSite()), getWidth(),getHeight());
         g2d.drawImage(image,camera.offX(), -camera.offY(), null);
+        state.currentBoardInfo().shiftPlacement(camera);
     }
 
     public void setCreatePoly(boolean b) {

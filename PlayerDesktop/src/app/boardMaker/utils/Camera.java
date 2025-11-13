@@ -16,6 +16,8 @@ public class Camera extends MouseAdapter
 	private int lastY;
 	private int offX = 0;
 	private int offY = 0;
+	private int dx = 0;
+	private int dy = 0;
 	
 	private boolean pressed = false;
 	
@@ -45,8 +47,11 @@ public class Camera extends MouseAdapter
 	public void mouseDragged(MouseEvent e)
 	{
 		if (pressed) {
-			offX += (e.getX() - lastX);
-			offY += (view.getHeight() - e.getY() - lastY);
+			dx = (e.getX() - lastX);
+			dy = (view.getHeight() - e.getY() - lastY);
+
+			offX += dx;
+			offY += dy;
 
 			lastX = e.getX();
 			lastY = view.getHeight() - e.getY();
@@ -62,5 +67,13 @@ public class Camera extends MouseAdapter
 		if (e.getButton() == 2) {
 			pressed = false;
 		}
-	}	
+	}
+
+	public int dx() {
+		return dx;
+	}
+
+	public int dy() {
+		return dy;
+	}
 }
