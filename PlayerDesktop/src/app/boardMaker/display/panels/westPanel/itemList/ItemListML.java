@@ -27,9 +27,9 @@ public class ItemListML extends MouseAdapter {
             if (e.getClickCount() == 2) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
                 if (node instanceof ItemListBoardNode) {
-                    itemList.selectedBoardNode = (ItemListBoardNode) node;
-                    BoardData data = ((ItemListBoardNode) node).data();
-                    maker.switchBoard(data);
+                    itemList.selectedBoard = (ItemListBoardNode) node;
+                    int idx = itemList.boardRoot().getIndex(node);
+                    maker.switchBoard(idx);
                 } else if (node instanceof ItemListAddNode) {
                     ItemListAddNode addNode = (ItemListAddNode) node;
                     addNode.addItem();

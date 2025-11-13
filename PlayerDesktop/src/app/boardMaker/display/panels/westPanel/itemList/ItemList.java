@@ -1,5 +1,7 @@
 package app.boardMaker.display.panels.westPanel.itemList;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
+import app.boardMaker.dataStruct.board.ContainerInfo;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListAddNode;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListBoardNode;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListPawnNode;
@@ -29,9 +31,11 @@ public class ItemList extends JPanel {
     private DefaultMutableTreeNode pawnRoot;
 
     private HashMap<String, BoardData> boards;
+    private HashMap<String,ContainerInfo> boardMap;
     private HashMap<String, Piece> pieces;
 
     protected ItemListBoardNode selectedBoardNode;
+    protected ItemListBoardNode selectedBoard;
 
 
     public ItemList(Maker maker) {
@@ -40,6 +44,7 @@ public class ItemList extends JPanel {
         this.maker = maker;
         boards = new HashMap<>();
         pieces = new HashMap<>();
+        boardMap = new HashMap<>();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Items");
         createChildren(root);
@@ -71,6 +76,24 @@ public class ItemList extends JPanel {
         return boards;
     }
 
+    public void addBoard(ContainerInfo board) {
+        String input = JOptionPane.showInputDialog(maker.getDisplayer().getFrame(),"Choose a name for the board: ","Name selection",JOptionPane.PLAIN_MESSAGE);
+        if (selectedBoard == null) {
+            ItemListBoardNode node = new ItemListBoardNode(input, board);
+            boardRoot.insert(node,boardRoot.getChildCount() - 1);
+            selectedBoard = node;
+            boardMap.put(input,board);
+        } else {
+            selectedBoard.setName(input);
+            selectedBoard.setBoardInfo(board);
+            boardMap.put(input,board);
+        }
+    }
+    public void updateBoard(ContainerInfo board) {
+        selectedBoard.setBoardInfo(board);
+        String name = selectedBoard.name();
+        boardMap.replace(name,board);
+    }
     public void addBoard(BoardData board) {
         if (selectedBoardNode == null) {
             String input = JOptionPane.showInputDialog(maker.getDisplayer().getFrame(),"Choose a name for the board: ","Name selection",JOptionPane.PLAIN_MESSAGE);
@@ -110,11 +133,13 @@ public class ItemList extends JPanel {
     }
 
     public void addEmptyBoard() {
-        ItemListBoardNode emptyNode = new ItemListBoardNode("Empty board",null);
-        boardRoot.insert(emptyNode,boardRoot.getChildCount() - 1);
-        selectedBoardNode = emptyNode;
+        ItemListBoardNode emptyNode = new ItemListBoardNode("Empty board",new BoardInfo());
+        int idx = boardRoot.getChildCount() - 1;
+        boardRoot.insert(emptyNode,idx);
+        selectedBoard = emptyNode;
         ((DefaultTreeModel)boardListTree.getModel()).reload(boardRoot);
-        maker.switchBoard(null);
+        maker.state().addEmptyBoard();
+        maker.switchBoard(idx);
     }
 
     public JTree tree() {

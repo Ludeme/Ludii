@@ -88,13 +88,21 @@ public class Maker
 	/**
 	 * Adds a newly created board
 	 */
-	public void addBoard(BoardData board) {
+	public void setBoard(BoardData board) {
 		currentBoard = board.copy();
 
 		itemList.addBoard(currentBoard);
 		itemList.reload(itemList.boardRoot());
 	}
-	public void addBoard(ContainerInfo board) {
+	public void setBoard(ContainerInfo board) {
+		if (state.currentBoardInfo().board() == null) {
+			System.out.println("new");
+			itemList.addBoard(board);
+			itemList.reload(itemList.boardRoot());
+		} else {
+			System.out.println("update");
+			itemList.updateBoard(board);
+		}
 		state.setCurrentBoard(board);
 	}
 
@@ -104,6 +112,11 @@ public class Maker
 	 */
 	public void switchBoard(BoardData data) {
 		currentBoard = data;
+		displayer.getBoardPanel().revalidate();
+		displayer.getBoardPanel().repaint();
+	}
+	public void switchBoard(int idx) {
+		state.setCurrentIdx(idx);
 		displayer.getBoardPanel().revalidate();
 		displayer.getBoardPanel().repaint();
 	}

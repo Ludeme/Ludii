@@ -148,7 +148,7 @@ public class SquarePanel extends OptionPanel {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				maker.addBoard(createInfo());
+				maker.setBoard(createInfo());
 				//maker.getCurrentBoard().setContainerInfo(createInfo());
 				displayer.mainView();	
 			}

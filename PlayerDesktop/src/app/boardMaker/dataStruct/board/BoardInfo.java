@@ -29,7 +29,6 @@ public class BoardInfo implements ContainerInfo{
     private int cellRadius;
 
     private Maker maker;
-    private String name;
 
     public BoardInfo(Maker maker, GraphInfo graphInfo) {
         this.maker = maker;
@@ -69,14 +68,6 @@ public class BoardInfo implements ContainerInfo{
         } else {
             return graphSVG;
         }
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

@@ -16,9 +16,8 @@ public class BoardMakerState {
 
     public BoardMakerState() {
         boards = new ArrayList<>();
-        addEmptyBoard();
         pieces = new ArrayList<>();
-        pieces.add(new PieceInfo());
+        addEmptyBoard();
         currentIdx = 0;
     }
 
@@ -32,8 +31,8 @@ public class BoardMakerState {
 
     public void addEmptyBoard() {
         BoardInfo empty = new BoardInfo();
-        empty.setName("Empty");
         boards.add(empty);
+        pieces.add(new PieceInfo());
     }
 
     public void setCurrentBoard(ContainerInfo board) {

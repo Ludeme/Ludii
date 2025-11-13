@@ -110,7 +110,7 @@ public class MergeDialog extends JDialog {
                         break;
                 }
                 result.setContainerInfo(new BoardInfo(maker,info));
-                maker.addBoard(result);
+                maker.setBoard(result);
                 maker.getDisplayer().getCurrentDisplay().repaint();
                 dispose();
             }

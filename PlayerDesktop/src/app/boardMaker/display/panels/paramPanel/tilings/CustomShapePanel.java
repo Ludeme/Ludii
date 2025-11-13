@@ -84,7 +84,7 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 createBoard();
-                maker.addBoard(displayer.getPreviewPanel().getBoardData());
+                maker.setBoard(displayer.getPreviewPanel().getBoardData());
                 maker.getCurrentBoard().setContainerInfo(createInfo());
                 displayer.mainView();
             }
