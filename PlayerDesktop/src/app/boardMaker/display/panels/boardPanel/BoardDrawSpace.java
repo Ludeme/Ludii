@@ -203,7 +203,7 @@ public class BoardDrawSpace extends JPanel {
         }
 
         BoardMakerState state = maker.state();
-        if (state.currentBoard() == null) {
+        if (state.currentBoardInfo().board() == null) {
             return;
         }
         BufferedImage image = SVGUtil.createSVGImage(state.currentSVG(maker.shownSite()), getWidth(),getHeight());

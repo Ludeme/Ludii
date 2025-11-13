@@ -84,6 +84,11 @@ public class BoardInfo implements ContainerInfo{
         return board;
     }
 
+    @Override
+    public String optionalMetadata() {
+        return "";
+    }
+
     private void createBoard() {
         board = new Board(graphInfo.function(),null,null,null,null,
                 maker.getSiteType(),maker.largeStack());

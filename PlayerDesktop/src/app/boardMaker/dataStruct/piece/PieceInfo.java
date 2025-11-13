@@ -14,6 +14,7 @@ public class PieceInfo {
     public PieceInfo() {
         piecesPlacedbySite = new HashMap<>();
         piecesPlacedbyName = new HashMap<>();
+        piecesUsed = new ArrayList<>();
     }
 
     public void addPiece(int site, Piece piece) {

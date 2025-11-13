@@ -61,6 +61,11 @@ public class MancalaInfo implements ContainerInfo{
         return board;
     }
 
+    @Override
+    public String optionalMetadata() {
+        return "(metadata \n(graphics {\n(board Style Mancala)\n})\n)";
+    }
+
     private void createBoard() {
         board = new MancalaBoard(nrow,ncol,storeType,nstores,maker.largeStack(),null,null);
         buildBoard();

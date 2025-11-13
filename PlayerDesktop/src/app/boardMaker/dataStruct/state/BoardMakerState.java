@@ -3,7 +3,6 @@ package app.boardMaker.dataStruct.state;
 import app.boardMaker.dataStruct.board.BoardInfo;
 import app.boardMaker.dataStruct.board.ContainerInfo;
 import app.boardMaker.dataStruct.piece.PieceInfo;
-import game.equipment.container.board.Board;
 import game.types.board.SiteType;
 
 import java.util.ArrayList;
@@ -42,8 +41,12 @@ public class BoardMakerState {
         boards.remove(currentIdx + 1);
     }
 
-    public Board currentBoard() {
-        return boards.get(currentIdx).board();
+    public ContainerInfo currentBoardInfo() {
+        return boards.get(currentIdx);
+    }
+
+    public PieceInfo currentPieceInfo() {
+        return pieces.get(currentIdx);
     }
 
     public String currentSVG(SiteType type) {

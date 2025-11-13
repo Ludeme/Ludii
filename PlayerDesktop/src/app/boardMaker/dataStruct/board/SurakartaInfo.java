@@ -53,6 +53,11 @@ public class SurakartaInfo implements ContainerInfo{
     }
 
     @Override
+    public String optionalMetadata() {
+        return "(metadata \n(graphics {\n(board Style Surakarta)\n})\n)";
+    }
+
+    @Override
     public String getSVG(SiteType site) {
         return boardSVG;
     }

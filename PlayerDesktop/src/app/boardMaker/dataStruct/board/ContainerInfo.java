@@ -7,4 +7,5 @@ public interface ContainerInfo {
     public String description();
     public String getSVG(SiteType site);
     public Board board();
+    public String optionalMetadata();
 }
