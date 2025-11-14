@@ -134,9 +134,11 @@ public class BoardInfo implements ContainerInfo{
 
     @Override
     public void shiftPlacement(Camera c) {
-        boardPlacement = new Rectangle((int) (c.dx() + boardPlacement.getX()),
-                (int) (c.dy() + boardPlacement.getY()),
-                (int) boardPlacement.getWidth(),
-                (int) boardPlacement.getHeight());
+        int boardsize = Math.min(maker.getDisplayer().getBoardPanel().getHeight(),
+                maker.getDisplayer().getBoardPanel().getWidth());
+        boardPlacement = new Rectangle((int) (c.offX() + boardsize * (1.0 - boardScale) * 0.5),
+                (int) (-c.offY() + boardsize * (1.0 - boardScale) * 0.5),
+                (int) (boardsize * boardScale),
+                (int) (boardsize * boardScale));
     }
 }

@@ -36,7 +36,7 @@ public class MancalaInfo implements ContainerInfo{
 
     private int cellRadius;
     private double boardScale;
-    private Rectangle placement;
+    private Rectangle boardPlacement;
 
     private Maker maker;
 
@@ -110,14 +110,16 @@ public class MancalaInfo implements ContainerInfo{
 
     @Override
     public void setPlacement(Rectangle p) {
-        this.placement = p;
+        this.boardPlacement = p;
     }
 
     @Override
     public void shiftPlacement(Camera c) {
-        placement = new Rectangle((int) (c.offX() + placement.getWidth()),
-                (int) (-c.offY() + placement.getHeight()),
-                (int) placement.getWidth(),
-                (int) placement.getHeight());
+        int boardsize = Math.min(maker.getDisplayer().getBoardPanel().getHeight(),
+                maker.getDisplayer().getBoardPanel().getWidth());
+        boardPlacement = new Rectangle((int) (c.offX() + boardsize * (1.0 - boardScale) * 0.5),
+                (int) (-c.offY() + boardsize * (1.0 - boardScale) * 0.5),
+                (int) (boardsize * boardScale),
+                (int) (boardsize * boardScale));
     }
 }

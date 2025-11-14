@@ -96,11 +96,9 @@ public class Maker
 	}
 	public void setBoard(ContainerInfo board) {
 		if (state.currentBoardInfo().board() == null) {
-			System.out.println("new");
 			itemList.addBoard(board);
 			itemList.reload(itemList.boardRoot());
 		} else {
-			System.out.println("update");
 			itemList.updateBoard(board);
 		}
 		state.setCurrentBoard(board);
@@ -108,13 +106,8 @@ public class Maker
 
 	/**
 	 * Switch which board is displayed
-	 * @param data the data about the board to display
+	 * @param idx the index of the selected board
 	 */
-	public void switchBoard(BoardData data) {
-		currentBoard = data;
-		displayer.getBoardPanel().revalidate();
-		displayer.getBoardPanel().repaint();
-	}
 	public void switchBoard(int idx) {
 		state.setCurrentIdx(idx);
 		displayer.getBoardPanel().revalidate();

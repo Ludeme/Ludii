@@ -1,6 +1,9 @@
 package app.boardMaker.display.panels.paramPanel.tilings;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
 import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
+import app.boardMaker.dataStruct.board.graphFunction.generator.*;
 import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.display.panels.polygonView.PolygonView;
@@ -83,9 +86,8 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
         buttonPanel.add(new CreateButton(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createBoard();
-                maker.setBoard(displayer.getPreviewPanel().getBoardData());
-                maker.getCurrentBoard().setContainerInfo(createInfo());
+                maker.setBoard(createInfo());
+                //maker.getCurrentBoard().setContainerInfo(createInfo());
                 displayer.mainView();
             }
         }));
@@ -99,8 +101,7 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
 
         add(Box.createVerticalGlue());
 
-        createBoard();
-        displayer.getPreviewPanel().setBoard(board);
+        displayer.getPreviewPanel().setBoard(createInfo());
     }
 
     private void makeSquareCard() {
@@ -175,7 +176,38 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
 
     @Override
     public ContainerInfo createInfo() {
-        return null;
+        String tiling = (String) tilingCBox.getSelectedItem();
+        GraphInfo info;
+        if (pv.getPoly().size() <= 2) {
+            return null;
+        }
+        switch (tiling) {
+            case "Celtic" :
+                System.out.println("celt");
+                info = new CelticInfo(pv.getPoly());
+                break;
+
+            case "Hexagon" :
+                info = new HexInfo(pv.getPoly());
+                break;
+
+            case "Square" :
+                info = new SquareInfo(pv.getPoly(), (DiagonalsType) diagCBox.getSelectedItem());
+                break;
+
+            case "Semi-regular" :
+                info = new SemiregularInfo(pv.getPoly(), (TilingType) tileTypeCBox.getSelectedItem());
+                break;
+
+            case "Triangle" :
+                info = new TriangleInfo(pv.getPoly());
+                break;
+
+            default :
+                info = null;
+                break;
+        }
+        return new BoardInfo(maker,info);
     }
 
     @Override
@@ -185,17 +217,26 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
         switch (tiling) {
             case "Celtic" :
                 cl.show(cards,"Empty");
+                break;
+
             case "Hexagon" :
                 cl.show(cards,"Empty");
+                break;
+
             case "Square" :
                 cl.show(cards,tiling);
+                break;
+
             case "Semi-regular" :
                 cl.show(cards,tiling);
+                break;
+
             case "Triangle" :
                 cl.show(cards,"Empty");
+                break;
+                
             default : break;
         }
-        createBoard();
-        displayer.getPreviewPanel().setBoard(board);
+        displayer.getPreviewPanel().setBoard(createInfo());
     }
 }

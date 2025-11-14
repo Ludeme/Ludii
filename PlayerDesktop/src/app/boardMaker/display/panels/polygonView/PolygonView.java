@@ -79,8 +79,7 @@ public class PolygonView extends JPanel
 		if (!vertexes.contains(v)) {
 			vertexes.add(v);
 			current = v;
-			op.createBoard();
-			displayer.getPreviewPanel().setBoard(op.board());
+			displayer.getPreviewPanel().setBoard(op.createInfo());
 			displayer.getPreviewPanel().repaint();
 		}
 	}
@@ -93,8 +92,7 @@ public class PolygonView extends JPanel
 			} else {
 				current = vertexes.get(vertexes.size() - 1);
 			}
-			op.createBoard();
-			displayer.getPreviewPanel().setBoard(op.board());
+			displayer.getPreviewPanel().setBoard(op.createInfo());
 			displayer.getPreviewPanel().repaint();
 		}
 	}

@@ -1,15 +1,20 @@
 package app.boardMaker.dataStruct.board.graphFunction.generator;
 
 import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
+import app.boardMaker.utils.Vertex;
 import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.hex.Hex;
 import game.functions.graph.generators.basis.hex.HexShapeType;
+import game.util.graph.Poly;
+
+import java.util.List;
 
 public class HexInfo implements GraphInfo {
     private HexShapeType shape;
     private int dimA;
     private int dimB;
+    private List<Vertex> vertices;
 
     private GraphFunction function;
 
@@ -20,9 +25,18 @@ public class HexInfo implements GraphInfo {
         createFunction();
     }
 
+    public HexInfo(List<Vertex> vertices) {
+        this.vertices = vertices;
+        createFunction();
+    }
+
     @Override
     public String description() {
-        return String.format("(hex %s %d %d)", shape, dimA,dimB);
+        if (vertices == null) {
+            return String.format("(hex %s %d %d)", shape, dimA,dimB);
+        } else {
+            return String.format("(hex (poly %s))", printVertices());
+        }
     }
 
     @Override
@@ -31,6 +45,27 @@ public class HexInfo implements GraphInfo {
     }
 
     private void createFunction() {
-        function = Hex.construct(shape,new DimConstant(dimA),new DimConstant(dimB));
+        if (vertices == null) {
+            function = Hex.construct(shape,new DimConstant(dimA),new DimConstant(dimB));
+        } else {
+            Float[][] pts = new Float[vertices.size()][2];
+
+            for (int i = 0; i < vertices.size(); i++) {
+                pts[i][0] = (float) vertices.get(i).getX();
+                pts[i][1] = (float) vertices.get(i).getY();
+            }
+
+            function = Hex.construct(new Poly(pts,null),null);
+        }
+    }
+
+    private String printVertices() {
+        StringBuilder s = new StringBuilder();
+        s.append("{");
+        for (Vertex v : vertices) {
+            s.append(String.format(" {%d %d} ",(int) v.getX(), (int) v.getY()));
+        }
+        s.append("}");
+        return s.toString();
     }
 }
