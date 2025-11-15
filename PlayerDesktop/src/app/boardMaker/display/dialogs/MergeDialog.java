@@ -36,12 +36,12 @@ public class MergeDialog extends JDialog {
     private BoardPlacementPanel right;
     private ResultPanel center;
 
-    private BoardData result;
+    private BoardInfo resultInfo;
 
     public MergeDialog(Maker maker, Transformations type) {
         this.maker = maker;
         this.transformation = type;
-        this.result = new BoardData(maker);
+        this.resultInfo = new BoardInfo(maker);
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setModalityType(ModalityType.APPLICATION_MODAL);
@@ -77,40 +77,8 @@ public class MergeDialog extends JDialog {
         panel.add(new CreateButton(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GraphInfo info;
-                double lx = (Double) left.shiftX.getValue(), ly = (Double) left.shiftY.getValue();
-                double rx = (Double) right.shiftX.getValue(), ry = (Double) right.shiftY.getValue();
-                GraphInfo leftInfo;
-                if (lx == 0 && ly == 0) {
-                    leftInfo = left.graphInfo;
-                } else {
-                    leftInfo = new ShiftInfo((float) lx, (float) ly,left.graphInfo);
-                }
-                GraphInfo rightInfo;
-                if (rx == 0 && ry == 0) {
-                    rightInfo = right.graphInfo;
-                } else {
-                    rightInfo = new ShiftInfo((float) rx, (float) ry,right.graphInfo);
-                }
-                switch (transformation) {
-                    case Merge :
-                        info = new MergeInfo(leftInfo,rightInfo);
-                        break;
-
-                    case Union:
-                        info = new UnionInfo(leftInfo,rightInfo);
-                        break;
-
-                    case Intersect :
-                        info = new IntersectInfo(leftInfo,rightInfo);
-                        break;
-
-                    default :
-                        info = null;
-                        break;
-                }
-                result.setContainerInfo(new BoardInfo(maker,info));
-                maker.setBoard(result);
+                maker.getItemList().addEmptyBoard();
+                maker.setBoard(resultInfo);
                 maker.getDisplayer().getCurrentDisplay().repaint();
                 dispose();
             }
@@ -126,43 +94,30 @@ public class MergeDialog extends JDialog {
     }
 
     private void computeBoard() {
-        ArrayList<GraphFunction> boards = new ArrayList<>();
-        if (left.board != null) {
-            boards.add(left.board.getBoard().graphFunction());
-        }
-        if (right.board != null) {
-            boards.add(right.board.getBoard().graphFunction());
-        }
-        GraphFunction graph;
-        Board board;
+        GraphInfo graph;
         switch (transformation) {
             case Transformations.Merge :
-                graph = new Merge(boards.toArray(new GraphFunction[0]),false);
-                board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
-                result.setBoard(board);
+                graph = new MergeInfo(left.graphInfo,right.graphInfo);
+                resultInfo.setGraphInfo(graph);
                 break;
 
             case Transformations.Union :
-                graph = new Union(boards.toArray(new GraphFunction[0]),false);
-                board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
-                result.setBoard(board);
+                graph = new UnionInfo(left.graphInfo,right.graphInfo);
+                resultInfo.setGraphInfo(graph);
                 break;
 
             case Transformations.Intersect :
-                graph = new Intersect(boards.toArray(new GraphFunction[0]));
-                board = new Board(graph,null,null,null,null,maker.getSiteType(),maker.largeStack());
-                result.setBoard(board);
+                graph = new IntersectInfo(left.graphInfo,right.graphInfo);
+                resultInfo.setGraphInfo(graph);
                 break;
 
             default :
                 break;
         }
-        maker.drawBoard(result,center,null);
     }
 
     private class BoardPlacementPanel extends JPanel implements ActionListener, ChangeListener {
-        BoardData board = null;
-        GraphFunction baseFunction;
+        GraphInfo baseInfo;
         GraphInfo graphInfo;
 
         JComboBox<String> boardCB;
@@ -211,33 +166,24 @@ public class MergeDialog extends JDialog {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (board == null) {
-                board = new BoardData(maker);
-            }
-            baseFunction = maker.getItemList().get((String) boardCB.getSelectedItem()).getBoard().graphFunction();
-            graphInfo = ((BoardInfo)maker.getItemList().get((String) boardCB.getSelectedItem()).getContainerInfo()).getGraphInfo();
-            board.setBoard(new Board(apply_placement(),null,null,null,null,
-                    maker.getSiteType(),maker.largeStack()));
+            baseInfo = ((BoardInfo)(maker.getItemList().get((String) boardCB.getSelectedItem()))).getGraphInfo();
+            graphInfo = apply_placement(baseInfo);
             computeBoard();
             center.repaint();
         }
 
         @Override
         public void stateChanged(ChangeEvent e) {
-            if (board == null) {
-                return;
-            }
-            board.setBoard(new Board(apply_placement(),null,null,null,null,
-                    maker.getSiteType(),maker.largeStack()));
+            graphInfo = apply_placement(baseInfo);
             computeBoard();
             center.repaint();
         }
 
-        private GraphFunction apply_placement() {
-            GraphFunction function = baseFunction;
+        private GraphInfo apply_placement(GraphInfo info) {
+            GraphInfo function = info;
             if ((Double) shiftX.getValue() != 0.0 || (Double) shiftY.getValue() != 0.0) {
-                function = new Shift(new FloatConstant(((Double) shiftX.getValue()).floatValue()),
-                        new FloatConstant(((Double) shiftY.getValue()).floatValue()),null,function);
+                double sx = (Double) shiftX.getValue(), sy = (Double) shiftY.getValue();
+                function = new ShiftInfo((float) sx, (float) sy,info);
             }
 
             return function;
@@ -257,8 +203,8 @@ public class MergeDialog extends JDialog {
             g2d.setBackground(Color.white);
             g2d.clearRect(0,0,getWidth(),getHeight());
 
-            if (result.getBoard() != null) {
-                BufferedImage image = SVGUtil.createSVGImage(result.getSVG(), this.getWidth(),this.getHeight());
+            if (resultInfo.getBoard() != null) {
+                BufferedImage image = SVGUtil.createSVGImage(resultInfo.getSVG(maker.getSiteType()), this.getWidth(),this.getHeight());
                 g2d.drawImage(image,0
                         ,0,null);
             }

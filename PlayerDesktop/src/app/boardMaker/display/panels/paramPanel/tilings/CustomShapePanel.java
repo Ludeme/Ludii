@@ -234,7 +234,7 @@ public class CustomShapePanel extends OptionPanel implements ItemListener {
             case "Triangle" :
                 cl.show(cards,"Empty");
                 break;
-                
+
             default : break;
         }
         displayer.getPreviewPanel().setBoard(createInfo());

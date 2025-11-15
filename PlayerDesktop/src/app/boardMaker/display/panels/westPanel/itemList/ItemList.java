@@ -72,8 +72,8 @@ public class ItemList extends JPanel {
         ((DefaultTreeModel) boardListTree.getModel()).reload(node);
     }
 
-    public HashMap<String,BoardData> boards() {
-        return boards;
+    public HashMap<String,ContainerInfo> boards() {
+        return boardMap;
     }
 
     public void addBoard(ContainerInfo board) {
@@ -94,33 +94,9 @@ public class ItemList extends JPanel {
         String name = selectedBoard.name();
         boardMap.replace(name,board);
     }
-    public void addBoard(BoardData board) {
-        if (selectedBoardNode == null) {
-            String input = JOptionPane.showInputDialog(maker.getDisplayer().getFrame(),"Choose a name for the board: ","Name selection",JOptionPane.PLAIN_MESSAGE);
-            ItemListBoardNode node = new ItemListBoardNode(input, board);
-            boardRoot.insert(node,boardRoot.getChildCount() - 1);
-            selectedBoardNode = node;
-            boards.put(input,board);
-        } else {
-            if (selectedBoardNode.data() == null) {
-                String input = JOptionPane.showInputDialog(maker.getDisplayer().getFrame(),"Choose a name for the board: ","Name selection",JOptionPane.PLAIN_MESSAGE);
-                selectedBoardNode.setName(input);
-                selectedBoardNode.setData(board);
-                boards.put(input,board);
-            } else {
-                if (board.getBoard().graphFunction() instanceof Merge) {
-                    selectedBoardNode = null;
-                    addBoard(board);
-                }
-                selectedBoardNode.setData(board);
-                String name = selectedBoardNode.name();
-                boards.replace(name,board);
-            }
-        }
-    }
 
-    public BoardData get(String key) {
-        return boards.get(key);
+    public ContainerInfo get(String key) {
+        return boardMap.get(key);
     }
 
     private void createChildren(DefaultMutableTreeNode root) {

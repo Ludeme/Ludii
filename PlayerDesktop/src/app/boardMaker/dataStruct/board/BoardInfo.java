@@ -42,6 +42,10 @@ public class BoardInfo implements ContainerInfo{
         createBoard();
     }
 
+    public BoardInfo(Maker maker) {
+        this.maker = maker;
+    }
+
     public BoardInfo() {
     }
 
@@ -90,6 +94,16 @@ public class BoardInfo implements ContainerInfo{
         board = new Board(graphInfo.function(),null,null,null,null,
                 maker.getSiteType(),maker.largeStack());
         buildBoard();
+    }
+
+    @Override
+    public Context context() {
+        return context;
+    }
+
+    @Override
+    public Rectangle placement() {
+        return boardPlacement;
     }
 
     private void buildBoard() {

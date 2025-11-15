@@ -88,12 +88,6 @@ public class Maker
 	/**
 	 * Adds a newly created board
 	 */
-	public void setBoard(BoardData board) {
-		currentBoard = board.copy();
-
-		itemList.addBoard(currentBoard);
-		itemList.reload(itemList.boardRoot());
-	}
 	public void setBoard(ContainerInfo board) {
 		if (state.currentBoardInfo().board() == null) {
 			itemList.addBoard(board);

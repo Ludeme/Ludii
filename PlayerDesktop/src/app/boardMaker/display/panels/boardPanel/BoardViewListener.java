@@ -1,5 +1,6 @@
 package app.boardMaker.display.panels.boardPanel;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.menu.popup.boardpopup.BoardPopupMenu;
 import app.boardMaker.utils.CoordinatesUtil;
@@ -23,7 +24,7 @@ public class BoardViewListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (maker.getCurrentBoard() == null) {
+        if (maker.state().currentBoardInfo().board() == null) {
             return;
         }
 
@@ -52,13 +53,13 @@ public class BoardViewListener extends MouseAdapter {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (maker.getCurrentBoard() == null || view.createPoly() || view.isRemoving() || view.isAdding()) {
+        if (maker.state().currentBoardInfo().board() == null || view.createPoly() || view.isRemoving() || view.isAdding()) {
             return;
         }
 
         Point click = new Point(e.getX(),e.getY());
-        if (e.isPopupTrigger() && clickOnBoard(click,maker.getCurrentBoard().getPlacement())
-                && !(maker.getCurrentBoard().getBoard() instanceof MancalaBoard || maker.getCurrentBoard().getBoard() instanceof SurakartaBoard)) {
+        if (e.isPopupTrigger() && clickOnBoard(click,maker.state().currentBoardInfo().placement())
+                && maker.state().currentBoardInfo() instanceof BoardInfo) {
             BoardPopupMenu popup = new BoardPopupMenu(maker);
             popup.create();
             popup.show(e.getComponent(),e.getX(),e.getY());

@@ -4,6 +4,8 @@ import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.Union;
 
+import java.util.ArrayList;
+
 public class UnionInfo implements GraphInfo {
     private GraphInfo first;
     private GraphInfo second;
@@ -18,7 +20,7 @@ public class UnionInfo implements GraphInfo {
 
     @Override
     public String description() {
-        return String.format("(union %s %s)",first.description(),second.description());
+        return String.format("(union {%s %s})",first == null ? "" : first.description(),second == null ? "" : second.description());
     }
 
     @Override
@@ -27,6 +29,13 @@ public class UnionInfo implements GraphInfo {
     }
 
     private void createFunction() {
-        function = new Union(first.function(),second.function(),false);
+        ArrayList<GraphFunction> fcts = new ArrayList<>();
+        if (first != null) {
+            fcts.add(first.function());
+        }
+        if (second != null) {
+            fcts.add(second.function());
+        }
+        function = new Union(fcts.toArray(new GraphFunction[0]),false);
     }
 }

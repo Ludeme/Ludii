@@ -114,6 +114,16 @@ public class MancalaInfo implements ContainerInfo{
     }
 
     @Override
+    public Context context() {
+        return context;
+    }
+
+    @Override
+    public Rectangle placement() {
+        return boardPlacement;
+    }
+
+    @Override
     public void shiftPlacement(Camera c) {
         int boardsize = Math.min(maker.getDisplayer().getBoardPanel().getHeight(),
                 maker.getDisplayer().getBoardPanel().getWidth());

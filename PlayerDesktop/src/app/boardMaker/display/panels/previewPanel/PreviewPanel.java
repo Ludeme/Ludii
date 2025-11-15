@@ -24,14 +24,11 @@ public class PreviewPanel extends JTabbedPane
 
 	private boolean visible;
 
-	private BoardData data;
 	private ContainerInfo board;
 	
 	public PreviewPanel(Maker maker) {
 		this.displayer = maker.getDisplayer();
 		this.maker = maker;
-
-		data = new BoardData(maker);
 
 		displayer.setPreviewPanel(this);
 
@@ -45,21 +42,9 @@ public class PreviewPanel extends JTabbedPane
 	public boolean visible() {
 		return visible;
 	}
-	
-	public void setBoard(Board board) {
-		data.setBoard(board);
-	}
 
 	public void setBoard(ContainerInfo board) {
 		this.board = board;
-	}
-
-	public BoardData getBoardData() {
-		return data;
-	}
-
-	public Board getBoard() {
-		return data.getBoard();
 	}
 
 	class PreviewDrawSpace extends JPanel {

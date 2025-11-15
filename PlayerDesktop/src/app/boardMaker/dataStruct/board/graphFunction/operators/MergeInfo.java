@@ -4,6 +4,8 @@ import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.Merge;
 
+import java.util.ArrayList;
+
 public class MergeInfo implements GraphInfo {
     private GraphInfo first;
     private GraphInfo second;
@@ -18,7 +20,7 @@ public class MergeInfo implements GraphInfo {
 
     @Override
     public String description() {
-        return String.format("(merge %s %s)",first.description(),second.description());
+        return String.format("(merge {%s %s})",first == null ? "" : first.description(),second == null ? "" : second.description());
     }
 
     @Override
@@ -27,6 +29,13 @@ public class MergeInfo implements GraphInfo {
     }
 
     private void createFunction() {
-        function = new Merge(first.function(),second.function(),false);
+        ArrayList<GraphFunction> fcts = new ArrayList<>();
+        if (first != null) {
+            fcts.add(first.function());
+        }
+        if (second != null) {
+            fcts.add(second.function());
+        }
+        function = new Merge(fcts.toArray(new GraphFunction[0]),false);
     }
 }
