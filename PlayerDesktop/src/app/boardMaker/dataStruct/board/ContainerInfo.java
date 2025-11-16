@@ -13,7 +13,8 @@ public interface ContainerInfo {
     public Board board();
     public String optionalMetadata();
     public void setPlacement(Rectangle p);
-    public void shiftPlacement(Camera c);
+    public void shiftPlacement(Camera c,Container view);
     public Rectangle placement();
     public Context context();
+    public BoardRange range();
 }

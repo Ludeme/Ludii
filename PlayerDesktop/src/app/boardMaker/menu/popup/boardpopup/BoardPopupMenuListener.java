@@ -184,7 +184,7 @@ public class BoardPopupMenuListener implements ActionListener {
 
     private void apply_scale(double valX, double valY) {
         BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
-        GraphInfo newInfo;
+        ScaleInfo newInfo;
         if (boardInfo.getGraphInfo() instanceof ScaleInfo) {
             newInfo = new ScaleInfo((float) valX, (float) valY,((ScaleInfo)boardInfo.getGraphInfo()).getGraphFunction());
         } else {
@@ -195,8 +195,8 @@ public class BoardPopupMenuListener implements ActionListener {
     }
 
     private void apply_skew(float value) {
-        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
-        GraphInfo newInfo;
+        BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
+        SkewInfo newInfo;
         if (boardInfo.getGraphInfo() instanceof SkewInfo) {
             newInfo = new SkewInfo(value,((SkewInfo)boardInfo.getGraphInfo()).getGraphFunction());
         } else {
@@ -208,7 +208,7 @@ public class BoardPopupMenuListener implements ActionListener {
 
     private void apply_rotation(int angle) {
         BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
-        GraphInfo newInfo;
+        RotateInfo newInfo;
         if (boardInfo.getGraphInfo() instanceof RotateInfo) {
             newInfo = new RotateInfo(angle,((RotateInfo)boardInfo.getGraphInfo()).getGraphFunction());
         } else {
@@ -220,48 +220,42 @@ public class BoardPopupMenuListener implements ActionListener {
 
     private void apply_trim() {
         BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
-        GraphInfo newInfo = new TrimInfo(boardInfo.getGraphInfo());
+        TrimInfo newInfo = new TrimInfo(boardInfo.getGraphInfo());
         boardInfo.setGraphInfo(newInfo);
         displayer.getBoardPanel().repaint();
     }
 
     private void apply_split_cross() {
         BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
-        GraphInfo newInfo = new SplitCrossInfo(boardInfo.getGraphInfo());
+        SplitCrossInfo newInfo = new SplitCrossInfo(boardInfo.getGraphInfo());
         boardInfo.setGraphInfo(newInfo);
         displayer.getBoardPanel().repaint();
     }
 
     private void apply_make_faces() {
         BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
-        GraphInfo newInfo = new MakeFaceInfo(boardInfo.getGraphInfo());
+        MakeFaceInfo newInfo = new MakeFaceInfo(boardInfo.getGraphInfo());
         boardInfo.setGraphInfo(newInfo);
         displayer.getBoardPanel().repaint();
     }
 
     private void apply_dual() {
         BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
-        GraphInfo newInfo = new DualInfo(boardInfo.getGraphInfo());
+        DualInfo newInfo = new DualInfo(boardInfo.getGraphInfo());
         boardInfo.setGraphInfo(newInfo);
-        displayer.getBoardPanel().repaint();
-    }
-
-    private void update_board(GraphFunction function, Board old) {
-        Board newBoard = BoardUtils.change_function(function,old,maker);
-        maker.getCurrentBoard().setBoard(newBoard);
         displayer.getBoardPanel().repaint();
     }
 
     private void apply_complete(boolean b) {
         BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
-        GraphInfo newInfo = new CompleteInfo(boardInfo.getGraphInfo(),b);
+        CompleteInfo newInfo = new CompleteInfo(boardInfo.getGraphInfo(),b);
         boardInfo.setGraphInfo(newInfo);
         displayer.getBoardPanel().repaint();
     }
 
     private void apply_subdivide(int nfaces) {
         BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
-        GraphInfo newInfo = new SubdivideInfo(boardInfo.getGraphInfo(),nfaces);
+        SubdivideInfo newInfo = new SubdivideInfo(boardInfo.getGraphInfo(),nfaces);
         boardInfo.setGraphInfo(newInfo);
         displayer.getBoardPanel().repaint();
     }

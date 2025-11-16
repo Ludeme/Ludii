@@ -71,144 +71,137 @@ public class BoardDrawSpace extends JPanel {
         g2d.setBackground(Color.white);
         g2d.clearRect(0, 0, getWidth(), getHeight());
 
-        BoardData currentBoard = maker.getCurrentBoard();
-        if (currentBoard != null) {
-            /*maker.drawBoard(currentBoard,this,camera);
-            BufferedImage image = SVGUtil.createSVGImage(currentBoard.getSVG(), getWidth(),getHeight());
-            g2d.drawImage(image,camera.offX(), -camera.offY(), null);
-
-            if (createPoly) {
-                String text = "Press Enter to confirm.\nPress Esc. to cancel.";
-                DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
-
-                if (vertices.size() >= 2) {
-                    g2d.setColor(Color.black);
-                    for (int i = 0; i < vertices.size(); i++) {
-                        g2d.setColor(Color.black);
-
-                        int x1 = vertices.get(i).x + camera.offX();
-                        int y1 = vertices.get(i).y - camera.offY();
-                        int x2 = vertices.get((i + 1) % vertices.size()).x + camera.offX();
-                        int y2 = vertices.get((i + 1) % vertices.size()).y - camera.offY();
-
-                        g2d.setStroke(new BasicStroke(5));
-                        g2d.drawLine(x1, y1, x2, y2);
-                    }
-                }
-
-                for (Point pt : vertices) {
-                    if (pt.equals(current)) {
-                        g2d.setColor(Color.red);
-                    } else {
-                        g2d.setColor(Color.blue);
-                    }
-                    g2d.fillOval(pt.x - dotSize/2 + camera.offX(), pt.y - dotSize/2 - camera.offY(), dotSize,dotSize);
-                }
-            } else if (remove) {
-                String text = "Press Enter to confirm.\nPress Esc. to cancel.";
-                DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
-
-                List<? extends TopologyElement> elements = currentBoard.getBoard().topology().getGraphElements(removeType);
-                for (int i = 0; i < elements.size(); i++) {
-                    if (removedIndices.contains(i)) {
-                        g2d.setColor(Color.red);
-                    } else {
-                        g2d.setColor(Color.gray);
-                    }
-                    Point pt = CoordinatesUtil.screenPosn(elements.get(i).centroid(),currentBoard.getPlacement());
-                    g2d.fillOval(pt.x - dotSize/2,pt.y - dotSize/2,dotSize,dotSize);
-                }
-            } else if (adding) {
-                String text = "Press Enter to confirm.\nPress Esc. to cancel.";
-                if (addedType == SiteType.Cell) {
-                    text = "Click on the first vertex of a cell to close it.\n" + text;
-                }
-                DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
-
-                List<Vertex> elements = currentBoard.getBoard().topology().vertices();
-                BoardRange scale = BoardUtils.computeRange(currentBoard.getBoard().graph());
-
-                g2d.setColor(Color.black);
-                g2d.setStroke(new BasicStroke(3));
-                for (Integer[] edge : addedEdges) {
-                    Point[] pts = new Point[2];
-                    for (int j = 0; j < edge.length; j++) {
-                        if (edge[j] < elements.size()) {
-                            pts[j] = CoordinatesUtil.screenPosn(elements.get(edge[j]).centroid(), currentBoard.getPlacement());
-                        } else {
-                            pts[j] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(edge[j] - elements.size()), scale), currentBoard.getPlacement());
-                        }
-                    }
-                    g2d.drawLine(pts[0].x, pts[0].y, pts[1].x, pts[1].y);
-                }
-                g2d.setColor(Color.black);
-                for (List<Integer> cell : addedCells) {
-                    for (int i = 0; i < cell.size(); i++) {
-                        Point[] pts = new Point[2];
-                        int id1 = cell.get(i), id2 = i == cell.size()-1 ? cell.getFirst() : cell.get(i+1);
-                        if (id1 < elements.size()) {
-                            pts[0] = CoordinatesUtil.screenPosn(elements.get(id1).centroid(), currentBoard.getPlacement());
-                        } else {
-                            pts[0] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(id1 - elements.size()), scale), currentBoard.getPlacement());
-                        }
-                        if (id2 < elements.size()) {
-                            pts[1] = CoordinatesUtil.screenPosn(elements.get(id2).centroid(), currentBoard.getPlacement());
-                        } else {
-                            pts[1] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(id2 - elements.size()), scale), currentBoard.getPlacement());
-                        }
-                        g2d.drawLine(pts[0].x, pts[0].y, pts[1].x, pts[1].y);
-                    }
-                }
-                g2d.setColor(Color.yellow);
-                for (int i = 0; curCell != null && i < curCell.size() - 1; i++) {
-                    Point[] pts = new Point[2];
-                    int id1 = curCell.get(i), id2 = curCell.get(i+1);
-                    if (id1 < elements.size()) {
-                        pts[0] = CoordinatesUtil.screenPosn(elements.get(id1).centroid(), currentBoard.getPlacement());
-                    } else {
-                        pts[0] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(id1 - elements.size()), scale), currentBoard.getPlacement());
-                    }
-                    if (id2 < elements.size()) {
-                        pts[1] = CoordinatesUtil.screenPosn(elements.get(id2).centroid(), currentBoard.getPlacement());
-                    } else {
-                        pts[1] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(id2 - elements.size()), scale), currentBoard.getPlacement());
-                    }
-                    g2d.drawLine(pts[0].x, pts[0].y, pts[1].x, pts[1].y);
-                }
-
-                for (int i = 0; i < elements.size(); i++) {
-                    if ((curEdge != null && curEdge[0] == i) || (curCell != null && curCell.getLast() == i)) {
-                        g2d.setColor(Color.blue);
-                    } else if (curCell != null && curCell.getFirst() == i) {
-                        g2d.setColor(Color.red);
-                    } else {
-                        g2d.setColor(Color.gray);
-                    }
-                    Point pt = CoordinatesUtil.screenPosn(elements.get(i).centroid(), currentBoard.getPlacement());
-                    g2d.fillOval(pt.x - dotSize / 2, pt.y - dotSize / 2, dotSize, dotSize);
-                }
-
-                for (int i = 0; i < addedVertices.size(); i++) {
-                    if ((curEdge != null && curEdge[0] - elements.size() == i) || (curCell != null && curCell.getLast() - elements.size() == i)) {
-                        g2d.setColor(Color.blue);
-                    } else if (curCell != null && curCell.getFirst() - elements.size() == i) {
-                        g2d.setColor(Color.red);
-                    } else {
-                        g2d.setColor(Color.green);
-                    }
-                    Point pt = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),currentBoard.getPlacement());
-                    g2d.fillOval(pt.x - dotSize/2,pt.y - dotSize/2,dotSize,dotSize);
-                }
-            }*/
-        }
-
         BoardMakerState state = maker.state();
         if (state.currentBoardInfo().board() == null) {
             return;
         }
         BufferedImage image = SVGUtil.createSVGImage(state.currentSVG(maker.shownSite()), getWidth(),getHeight());
         g2d.drawImage(image,camera.offX(), -camera.offY(), null);
-        state.currentBoardInfo().shiftPlacement(camera);
+        state.currentBoardInfo().shiftPlacement(camera,this);
+
+        if (createPoly) {
+            String text = "Press Enter to confirm.\nPress Esc. to cancel.";
+            DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
+
+            if (vertices.size() >= 2) {
+                g2d.setColor(Color.black);
+                for (int i = 0; i < vertices.size(); i++) {
+                    g2d.setColor(Color.black);
+
+                    int x1 = vertices.get(i).x + camera.offX();
+                    int y1 = vertices.get(i).y - camera.offY();
+                    int x2 = vertices.get((i + 1) % vertices.size()).x + camera.offX();
+                    int y2 = vertices.get((i + 1) % vertices.size()).y - camera.offY();
+
+                    g2d.setStroke(new BasicStroke(5));
+                    g2d.drawLine(x1, y1, x2, y2);
+                }
+            }
+
+            for (Point pt : vertices) {
+                if (pt.equals(current)) {
+                    g2d.setColor(Color.red);
+                } else {
+                    g2d.setColor(Color.blue);
+                }
+                g2d.fillOval(pt.x - dotSize/2 + camera.offX(), pt.y - dotSize/2 - camera.offY(), dotSize,dotSize);
+            }
+        } else if (remove) {
+            String text = "Press Enter to confirm.\nPress Esc. to cancel.";
+            DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
+
+            List<? extends TopologyElement> elements = state.currentBoardInfo().board().topology().getGraphElements(removeType);
+            for (int i = 0; i < elements.size(); i++) {
+                if (removedIndices.contains(i)) {
+                    g2d.setColor(Color.red);
+                } else {
+                    g2d.setColor(Color.gray);
+                }
+                Point pt = CoordinatesUtil.screenPosn(elements.get(i).centroid(),state.currentBoardInfo().placement());
+                g2d.fillOval(pt.x - dotSize/2,pt.y - dotSize/2,dotSize,dotSize);
+            }
+        } else if (adding) {
+            String text = "Press Enter to confirm.\nPress Esc. to cancel.";
+            if (addedType == SiteType.Cell) {
+                text = "Click on the first vertex of a cell to close it.\n" + text;
+            }
+            DrawingUtils.horizontallyCenteredText(g2d, text, getWidth(), getHeight() - text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
+
+            List<Vertex> elements = state.currentBoardInfo().board().topology().vertices();
+            BoardRange scale = state.currentBoardInfo().range();
+
+            g2d.setColor(Color.black);
+            g2d.setStroke(new BasicStroke(3));
+            for (Integer[] edge : addedEdges) {
+                Point[] pts = new Point[2];
+                for (int j = 0; j < edge.length; j++) {
+                    if (edge[j] < elements.size()) {
+                        pts[j] = CoordinatesUtil.screenPosn(elements.get(edge[j]).centroid(), state.currentBoardInfo().placement());
+                    } else {
+                        pts[j] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(edge[j] - elements.size()), scale), state.currentBoardInfo().placement());
+                    }
+                }
+                g2d.drawLine(pts[0].x, pts[0].y, pts[1].x, pts[1].y);
+            }
+            g2d.setColor(Color.black);
+            for (List<Integer> cell : addedCells) {
+                for (int i = 0; i < cell.size(); i++) {
+                    Point[] pts = new Point[2];
+                    int id1 = cell.get(i), id2 = i == cell.size() - 1 ? cell.getFirst() : cell.get(i + 1);
+                    if (id1 < elements.size()) {
+                        pts[0] = CoordinatesUtil.screenPosn(elements.get(id1).centroid(), state.currentBoardInfo().placement());
+                    } else {
+                        pts[0] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(id1 - elements.size()), scale), state.currentBoardInfo().placement());
+                    }
+                    if (id2 < elements.size()) {
+                        pts[1] = CoordinatesUtil.screenPosn(elements.get(id2).centroid(), state.currentBoardInfo().placement());
+                    } else {
+                        pts[1] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(id2 - elements.size()), scale), state.currentBoardInfo().placement());
+                    }
+                    g2d.drawLine(pts[0].x, pts[0].y, pts[1].x, pts[1].y);
+                }
+            }
+            g2d.setColor(Color.yellow);
+            for (int i = 0; curCell != null && i < curCell.size() - 1; i++) {
+                Point[] pts = new Point[2];
+                int id1 = curCell.get(i), id2 = curCell.get(i + 1);
+                if (id1 < elements.size()) {
+                    pts[0] = CoordinatesUtil.screenPosn(elements.get(id1).centroid(), state.currentBoardInfo().placement());
+                } else {
+                    pts[0] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(id1 - elements.size()), scale), state.currentBoardInfo().placement());
+                }
+                if (id2 < elements.size()) {
+                    pts[1] = CoordinatesUtil.screenPosn(elements.get(id2).centroid(), state.currentBoardInfo().placement());
+                } else {
+                    pts[1] = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(id2 - elements.size()), scale), state.currentBoardInfo().placement());
+                }
+                g2d.drawLine(pts[0].x, pts[0].y, pts[1].x, pts[1].y);
+            }
+
+            for (int i = 0; i < elements.size(); i++) {
+                if ((curEdge != null && curEdge[0] == i) || (curCell != null && curCell.getLast() == i)) {
+                    g2d.setColor(Color.blue);
+                } else if (curCell != null && curCell.getFirst() == i) {
+                    g2d.setColor(Color.red);
+                } else {
+                    g2d.setColor(Color.gray);
+                }
+                Point pt = CoordinatesUtil.screenPosn(elements.get(i).centroid(), state.currentBoardInfo().placement());
+                g2d.fillOval(pt.x - dotSize / 2, pt.y - dotSize / 2, dotSize, dotSize);
+            }
+
+            for (int i = 0; i < addedVertices.size(); i++) {
+                if ((curEdge != null && curEdge[0] - elements.size() == i) || (curCell != null && curCell.getLast() - elements.size() == i)) {
+                    g2d.setColor(Color.blue);
+                } else if (curCell != null && curCell.getFirst() - elements.size() == i) {
+                    g2d.setColor(Color.red);
+                } else {
+                    g2d.setColor(Color.green);
+                }
+                Point pt = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i), scale), state.currentBoardInfo().placement());
+                g2d.fillOval(pt.x - dotSize / 2, pt.y - dotSize / 2, dotSize, dotSize);
+            }
+        }
     }
 
     public void setCreatePoly(boolean b) {
@@ -289,11 +282,11 @@ public class BoardDrawSpace extends JPanel {
     }
 
     public void addIndex(Point click) {
-        List<? extends TopologyElement> elements = maker.getCurrentBoard().getBoard().topology().getGraphElements(removeType);
+        List<? extends TopologyElement> elements = maker.state().currentBoardInfo().board().topology().getGraphElements(removeType);
 
         for (int i = 0; i < elements.size(); i++) {
             Point2D cent = elements.get(i).centroid();
-            Point pt = CoordinatesUtil.screenPosn(cent,maker.getCurrentBoard().getPlacement());
+            Point pt = CoordinatesUtil.screenPosn(cent,maker.state().currentBoardInfo().placement());
             if ((Math.sqrt(Math.pow(pt.getX() - click.x - camera().offX(),2) + Math.pow(pt.getY() - click.y + camera.offY(),2))) < (double) dotSize / 2) {
                 if (!removedIndices.contains(i)) {
                     removedIndices.add(i);
@@ -305,10 +298,10 @@ public class BoardDrawSpace extends JPanel {
     }
 
     public void removeIndex(Point click) {
-        List<? extends TopologyElement> elements = maker.getCurrentBoard().getBoard().topology().getGraphElements(removeType);
+        List<? extends TopologyElement> elements = maker.state().currentBoardInfo().board().topology().getGraphElements(removeType);
         for (int i = 0; i < elements.size(); i++) {
             Point2D cent = elements.get(i).centroid();
-            Point pt = CoordinatesUtil.screenPosn(cent,maker.getCurrentBoard().getPlacement());
+            Point pt = CoordinatesUtil.screenPosn(cent,maker.state().currentBoardInfo().placement());
             if ((Math.sqrt(Math.pow(pt.getX() - click.x - camera().offX(),2) + Math.pow(pt.getY() - click.y + camera.offY(),2))) < (double) dotSize / 2) {
                 if (removedIndices.contains(i)) {
                     removedIndices.remove((Integer) i);
@@ -340,12 +333,12 @@ public class BoardDrawSpace extends JPanel {
     }
 
     public void addVertex(Point click) {
-        Point2D coord = CoordinatesUtil.boardPosn(click,maker.getCurrentBoard().getPlacement(),maker.getCurrentBoard().getBoard().graph(),camera);
-        BoardRange scale = BoardUtils.computeRange(maker.getCurrentBoard().getBoard().graph());
-        List<Vertex> elements = maker.getCurrentBoard().getBoard().topology().vertices();
+        Point2D coord = CoordinatesUtil.boardPosn(click,maker.state().currentBoardInfo().placement(),maker.state().currentBoardInfo().range(),camera);
+        BoardRange scale = maker.state().currentBoardInfo().range();
+        List<Vertex> elements = maker.state().currentBoardInfo().board().topology().vertices();
         if (addedType == SiteType.Vertex) {
             for (int i = 0; i < addedVertices.size(); i++) {
-                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.getCurrentBoard().getPlacement());
+                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.state().currentBoardInfo().placement());
                 if (click.distance(screen) < (double) dotSize /2) {
                     return;
                 }
@@ -355,7 +348,7 @@ public class BoardDrawSpace extends JPanel {
         } else if (addedType == SiteType.Edge) {
             //Click on vertex of the board
             for (int i = 0; i < elements.size(); i++) {
-                Point screen = CoordinatesUtil.screenPosn(elements.get(i).centroid(),maker.getCurrentBoard().getPlacement());
+                Point screen = CoordinatesUtil.screenPosn(elements.get(i).centroid(),maker.state().currentBoardInfo().placement());
                 screen.x = screen.x - camera.offX();
                 screen.y = screen.y + camera.offY();
                 if (click.distance(screen) < (double) dotSize / 2) {
@@ -377,7 +370,7 @@ public class BoardDrawSpace extends JPanel {
             }
             //Click outside the board
             for (int i = 0; i < addedVertices.size(); i++) {
-                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.getCurrentBoard().getPlacement());
+                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.state().currentBoardInfo().placement());
                 screen.x = screen.x - camera.offX();
                 screen.y = screen.y + camera.offY();
                 // On an already added vertex
@@ -416,7 +409,7 @@ public class BoardDrawSpace extends JPanel {
         } else if (addedType == SiteType.Cell) {
             // Vertex of the board
             for (int i = 0; i < elements.size(); i++) {
-                Point screen = CoordinatesUtil.screenPosn(elements.get(i).centroid(),maker.getCurrentBoard().getPlacement());
+                Point screen = CoordinatesUtil.screenPosn(elements.get(i).centroid(),maker.state().currentBoardInfo().placement());
                 screen.x = screen.x - camera.offX();
                 screen.y = screen.y + camera.offY();
                 if (click.distance(screen) < (double) dotSize / 2) {
@@ -440,7 +433,7 @@ public class BoardDrawSpace extends JPanel {
             }
             // Vertex already present outside the board
             for (int i = 0; i < addedVertices.size(); i++) {
-                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.getCurrentBoard().getPlacement());
+                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.state().currentBoardInfo().placement());
                 screen.x = screen.x - camera.offX();
                 screen.y = screen.y + camera.offY();
                 if (click.distance(screen) < (double) dotSize /2) {
@@ -479,11 +472,11 @@ public class BoardDrawSpace extends JPanel {
     }
 
     public void removeVertex(Point click) {
-        BoardRange scale = BoardUtils.computeRange(maker.getCurrentBoard().getBoard().graph());
-        List<Vertex> elements = maker.getCurrentBoard().getBoard().topology().vertices();
+        BoardRange scale = maker.state().currentBoardInfo().range();
+        List<Vertex> elements = maker.state().currentBoardInfo().board().topology().vertices();
         if (addedType == SiteType.Vertex) {
             for (int i = 0; i < addedVertices.size(); i++) {
-                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.getCurrentBoard().getPlacement());
+                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.state().currentBoardInfo().placement());
                 screen.x = screen.x - camera.offX();
                 screen.y = screen.y + camera.offY();
                 if (click.distance(screen) < (double) dotSize / 2) {
@@ -499,7 +492,7 @@ public class BoardDrawSpace extends JPanel {
             }
         } else if (addedType == SiteType.Cell) {
             for (int i = 0; i < elements.size(); i++) {
-                Point screen = CoordinatesUtil.screenPosn(elements.get(i).centroid(),maker.getCurrentBoard().getPlacement());
+                Point screen = CoordinatesUtil.screenPosn(elements.get(i).centroid(),maker.state().currentBoardInfo().placement());
                 screen.x = screen.x - camera.offX();
                 screen.y = screen.y + camera.offY();
                 if (click.distance(screen) < (double) dotSize / 2) {
@@ -515,7 +508,7 @@ public class BoardDrawSpace extends JPanel {
             }
             // Vertex already present outside the board
             for (int i = 0; i < addedVertices.size(); i++) {
-                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.getCurrentBoard().getPlacement());
+                Point screen = CoordinatesUtil.screenPosn(CoordinatesUtil.normalizeThenCenter(addedVertices.get(i),scale),maker.state().currentBoardInfo().placement());
                 screen.x = screen.x - camera.offX();
                 screen.y = screen.y + camera.offY();
                 if (click.distance(screen) < (double) dotSize /2) {

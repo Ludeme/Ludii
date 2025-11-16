@@ -2,11 +2,10 @@ package app.boardMaker.display.panels.boardPanel;
 
 import app.boardMaker.dataStruct.board.BoardInfo;
 import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
-import app.boardMaker.dataStruct.board.graphFunction.operators.RemoveInfo;
+import app.boardMaker.dataStruct.board.graphFunction.operators.*;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
 import app.boardMaker.utils.BoardUtils;
-import app.boardMaker.utils.CoordinatesUtil;
 import game.equipment.container.board.Board;
 import game.functions.dim.DimConstant;
 import game.functions.dim.DimFunction;
@@ -15,7 +14,6 @@ import game.functions.floats.FloatFunction;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.*;
 import game.types.board.SiteType;
-import game.util.graph.Poly;
 import game.util.graph.Vertex;
 import other.topology.Edge;
 
@@ -64,19 +62,19 @@ public class BoardViewKeyListener extends KeyAdapter {
     }
 
     private void apply_add() {
-        Board oldBoard = maker.getCurrentBoard().getBoard();
-        GraphFunction newFunction;
+        BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
+        AddInfo newInfo;
         if (view.addedType == SiteType.Vertex) {
-            FloatFunction[][] vertices = new FloatFunction[view.addedVertices.size()][2];
+            Float[][] vertices = new Float[view.addedVertices.size()][2];
             for (int i = 0; i < view.addedVertices.size(); i++) {
                 Point2D pt = view.addedVertices.get(i);
-                vertices[i] = new FloatConstant[] {new FloatConstant((float)pt.getX())
-                        ,new FloatConstant((float)pt.getY())};
+                vertices[i] = new Float[] {(float)pt.getX()
+                        ,(float)pt.getY()};
             }
-            newFunction = new Add(oldBoard.graphFunction(),vertices,null,null,null,null,null,false);
+            newInfo = new AddInfo(view.addedType,boardInfo.getGraphInfo(),vertices,null,null);
         } else if (view.addedType == SiteType.Edge) {
-            List<Vertex> vertices = oldBoard.graph().vertices();
-            List<FloatFunction[][]> coordEdges = new ArrayList<>();
+            List<Vertex> vertices = boardInfo.board().graph().vertices();
+            List<Float[][]> coordEdges = new ArrayList<>();
             for (Integer[] edge : view.addedEdges) {
                 int vA = edge[0], vB = edge[1];
                 Point2D pt1;
@@ -93,101 +91,63 @@ public class BoardViewKeyListener extends KeyAdapter {
                 } else {
                     pt2 = vertices.get(vB).pt2D();
                 }
-                coordEdges.add(new FloatFunction[][]{{new FloatConstant((float)pt1.getX()), new FloatConstant((float)pt1.getY())}
-                            , {new FloatConstant((float)pt2.getX()), new FloatConstant((float)pt2.getY())}});
+                coordEdges.add(new Float[][]{{(float)pt1.getX(), (float)pt1.getY()}
+                            , {(float)pt2.getX(), (float)pt2.getY()}});
 
             }
-            newFunction = new Add(oldBoard.graphFunction(),null,coordEdges.toArray(new FloatFunction[0][][]),
-                    null,null,null,null,false);
+            newInfo = new AddInfo(view.addedType,boardInfo.getGraphInfo(),null,coordEdges,null);
         } else {
-            List<Vertex> vertices = oldBoard.graph().vertices();
-            List<FloatFunction[][]> coordCells = new ArrayList<>();
+            List<Vertex> vertices = boardInfo.board().graph().vertices();
+            List<Float[][]> coordCells = new ArrayList<>();
             for (List<Integer> cell : view.addedCells) {
-                FloatFunction[][] coords = new FloatFunction[cell.size()][2];
+                Float[][] coords = new Float[cell.size()][2];
                 for (int i = 0; i < cell.size(); i++) {
                     int id = cell.get(i);
                     if (id < vertices.size()) {
                         Point2D pt = vertices.get(id).pt2D();
-                        coords[i] = new FloatFunction[]{new FloatConstant((float) pt.getX()),
-                                new FloatConstant((float) pt.getY())};
+                        coords[i] = new Float[]{(float) pt.getX(),
+                                (float) pt.getY()};
                     } else {
                         Point2D pt = view.addedVertices.get(id - vertices.size());
-                        coords[i] = new FloatFunction[]{new FloatConstant((float) pt.getX()),
-                                new FloatConstant((float) pt.getY())};
+                        coords[i] = new Float[]{(float) pt.getX(),
+                                (float) pt.getY()};
                     }
                 }
                 coordCells.add(coords);
             }
-            newFunction = new Add(oldBoard.graphFunction(),null,null,null,
-                    null,coordCells.toArray(new FloatFunction[0][][]),null,false);
+            newInfo = new AddInfo(view.addedType,boardInfo.getGraphInfo(),null,null, coordCells);
         }
-        update_board(newFunction,oldBoard);
+        boardInfo.setGraphInfo(newInfo);
+        view.repaint();
     }
 
     private void apply_remove(List<Integer> indices) {
-        Board oldBoard = maker.getCurrentBoard().getBoard();
-        GraphFunction newFunction;
-        List<Edge> edgeList = maker.getCurrentBoard().getBoard().topology().edges();
-        if (view.removedType() == SiteType.Cell) {
-            DimFunction[] cells = new DimFunction[indices.size()];
-            for (int i = 0; i < indices.size(); i++) {
-                cells[i] = new DimConstant(indices.get(i));
-            }
-            newFunction = new Remove(oldBoard.graphFunction(),null,cells,null,null,null,null,true);
-        } else if (view.removedType() == SiteType.Vertex) {
-            DimFunction[] vertices = new DimFunction[indices.size()];
-            for (int i = 0; i < indices.size(); i++) {
-                vertices[i] = new DimConstant(indices.get(i));
-            }
-            newFunction = new Remove(oldBoard.graphFunction(),null,null,null,null,null,vertices,true);
-        } else {
-            DimFunction[][] edges = new DimFunction[indices.size()][2];
-            for (int i = 0; i < indices.size(); i++) {
-                Edge edge = edgeList.get(indices.get(i));
-                edges[i] = new DimFunction[]{new DimConstant(edge.vA().index()),new DimConstant(edge.vB().index())};
-            }
-            newFunction = new Remove(oldBoard.graphFunction(),null,null,null,edges,null,null,true);
-        }
-        update_board(newFunction,oldBoard);
-
-        BoardInfo boardInfo = (BoardInfo) maker.getCurrentBoard().getContainerInfo();
-        GraphInfo newInfo = new RemoveInfo(view.removedType(),boardInfo.getGraphInfo(),indices,edgeList);
+        BoardInfo boardInfo = (BoardInfo) maker.state().currentBoardInfo();
+        GraphInfo newInfo;
+        List<Edge> edgeList = maker.state().currentBoardInfo().board().topology().edges();
+        newInfo = new RemoveInfo(view.removedType(),boardInfo.getGraphInfo(),indices,edgeList);
         boardInfo.setGraphInfo(newInfo);
     }
 
     private void apply_transformation(Transformations transformation, List<Point> vertices) {
         if (transformation == Transformations.Clip) {
-            Board oldBoard = maker.getCurrentBoard().getBoard();
-            Poly poly = makePolygon(vertices);
-            GraphFunction newFunction = new Clip(oldBoard.graphFunction(),poly);
-            update_board(newFunction,oldBoard);
+            BoardInfo info = (BoardInfo) maker.state().currentBoardInfo();
+            ClipInfo newInfo = new ClipInfo(info.getGraphInfo(),vertices);
+            newInfo.createFunction(info.placement(),info.range(),view.camera());
+            info.setGraphInfo(newInfo);
+            maker.getDisplayer().getBoardPanel().repaint();
         } else if (transformation == Transformations.Hole) {
-            Board oldBoard = maker.getCurrentBoard().getBoard();
-            Poly poly = makePolygon(vertices);
-            GraphFunction newFunction = new Hole(oldBoard.graphFunction(),poly);
-            update_board(newFunction,oldBoard);
+            BoardInfo info = (BoardInfo) maker.state().currentBoardInfo();
+            HoleInfo newInfo = new HoleInfo(info.getGraphInfo(),vertices);
+            newInfo.createFunction(info.placement(),info.range(),view.camera());
+            info.setGraphInfo(newInfo);
+            maker.getDisplayer().getBoardPanel().repaint();
         } else if (transformation == Transformations.Keep) {
-            Board oldBoard = maker.getCurrentBoard().getBoard();
-            Poly poly = makePolygon(vertices);
-            GraphFunction newFunction = new Keep(oldBoard.graphFunction(),poly);
-            update_board(newFunction,oldBoard);
+            BoardInfo info = (BoardInfo) maker.state().currentBoardInfo();
+            KeepInfo newInfo = new KeepInfo(info.getGraphInfo(),vertices);
+            newInfo.createFunction(info.placement(),info.range(),view.camera());
+            info.setGraphInfo(newInfo);
+            maker.getDisplayer().getBoardPanel().repaint();
         }
-    }
-
-    private Poly makePolygon(List<Point> vertices) {
-        Float[][] pts = new Float[vertices.size()][2];
-        for (int i = 0; i < vertices.size(); i++) {
-            Point2D pt = CoordinatesUtil.boardPosn(vertices.get(i),maker.getCurrentBoard().getPlacement(),maker.getCurrentBoard().getBoard().graph(),view.camera());
-
-            pts[i][0] = (float) pt.getX();
-            pts[i][1] = (float) pt.getY();
-        }
-        return new Poly(pts, null);
-    }
-
-    private void update_board(GraphFunction function, Board old) {
-        Board newBoard = BoardUtils.change_function(function,old,maker);
-        maker.getCurrentBoard().setBoard(newBoard);
-        maker.getDisplayer().getBoardPanel().repaint();
     }
 }

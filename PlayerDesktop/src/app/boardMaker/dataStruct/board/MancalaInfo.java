@@ -1,6 +1,7 @@
 package app.boardMaker.dataStruct.board;
 
 import app.boardMaker.handlers.Maker;
+import app.boardMaker.utils.BoardUtils;
 import app.boardMaker.utils.Camera;
 import bridge.Bridge;
 import game.Game;
@@ -37,6 +38,7 @@ public class MancalaInfo implements ContainerInfo{
     private int cellRadius;
     private double boardScale;
     private Rectangle boardPlacement;
+    private BoardRange range;
 
     private Maker maker;
 
@@ -77,6 +79,11 @@ public class MancalaInfo implements ContainerInfo{
         buildBoard();
     }
 
+    @Override
+    public BoardRange range() {
+        return range;
+    }
+
     private void buildBoard() {
         Game game = new Game(maker.getName(), new Players(maker.getPlayers()), new Mode(maker.getMode()),
                 new Equipment(new Item[] {board}), null);
@@ -106,6 +113,8 @@ public class MancalaInfo implements ContainerInfo{
                 (int) (placement.getWidth() * boardScale),
                 (int) (placement.getHeight() * boardScale));
         setPlacement(realPlacement);
+
+        range = BoardUtils.computeRange(board.graph());
     }
 
     @Override
@@ -124,9 +133,9 @@ public class MancalaInfo implements ContainerInfo{
     }
 
     @Override
-    public void shiftPlacement(Camera c) {
-        int boardsize = Math.min(maker.getDisplayer().getBoardPanel().getHeight(),
-                maker.getDisplayer().getBoardPanel().getWidth());
+    public void shiftPlacement(Camera c,Container view) {
+        int boardsize = Math.min(view.getHeight(),
+                view.getWidth());
         boardPlacement = new Rectangle((int) (c.offX() + boardsize * (1.0 - boardScale) * 0.5),
                 (int) (-c.offY() + boardsize * (1.0 - boardScale) * 0.5),
                 (int) (boardsize * boardScale),

@@ -22,7 +22,7 @@ public class CoordinatesUtil {
         return screenPos;
     }
 
-    public static Point2D boardPosn(Point screenPos, Rectangle placement, Graph graph, Camera camera) {
+    public static Point2D boardPosn(Point screenPos, Rectangle placement, BoardRange scale, Camera camera) {
         Point2D centeredPos = new Point2D.Double();
 
         if (camera == null) {
@@ -32,7 +32,6 @@ public class CoordinatesUtil {
         centeredPos.setLocation((screenPos.getX() + camera.offX() - placement.x) / placement.getWidth(),
                 (placement.y + placement.getHeight() - screenPos.getY() + camera.offY()) / placement.getHeight());
 
-        BoardRange scale = BoardUtils.computeRange(graph);
         double maxX_n = normalize(scale.getMaxX(), scale.getMin(), scale.getMax());
         double maxY_n = normalize(scale.getMaxY(), scale.getMin(), scale.getMax());
         double minX_n = normalize(scale.getMinX(), scale.getMin(), scale.getMax());
