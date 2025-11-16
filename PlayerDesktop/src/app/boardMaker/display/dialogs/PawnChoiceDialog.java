@@ -16,6 +16,7 @@ import org.jfree.graphics2d.svg.SVGGraphics2D;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,9 +33,12 @@ public class PawnChoiceDialog extends JDialog {
     private JComboBox<RoleType> ownerBox;
     private String selectedPawn = "Dot";
 
-    public PawnChoiceDialog(ItemList itemList, Maker maker) {
+    private DefaultMutableTreeNode parentNode;
+
+    public PawnChoiceDialog(ItemList itemList, Maker maker, DefaultMutableTreeNode parent) {
         this.itemList = itemList;
         this.maker = maker;
+        this.parentNode = parent;
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setModalityType(ModalityType.APPLICATION_MODAL);
@@ -84,7 +88,7 @@ public class PawnChoiceDialog extends JDialog {
         buttonPanel.add(new CreateButton(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemList.addPawn(selectedPawn, (RoleType) ownerBox.getSelectedItem());
+                itemList.addPawn(selectedPawn, (RoleType) ownerBox.getSelectedItem(),parentNode);
                 dispose();
             }
         }));

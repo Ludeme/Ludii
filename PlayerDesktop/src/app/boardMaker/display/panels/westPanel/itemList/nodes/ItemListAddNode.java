@@ -35,7 +35,7 @@ public class ItemListAddNode extends DefaultMutableTreeNode {
         if (type == ItemType.Board) {
             itemList.addEmptyBoard();
         } else if (type == ItemType.Pawn) {
-            new PawnChoiceDialog(itemList, maker);
+            new PawnChoiceDialog(itemList, maker, (DefaultMutableTreeNode) getParent());
         }
     }
 }

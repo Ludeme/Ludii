@@ -152,10 +152,15 @@ public class BoardInfo implements ContainerInfo{
 
     @Override
     public void shiftPlacement(Camera c, Container view) {
+        int ox = 0, oy = 0;
+        if (c != null) {
+            ox = c.offX();
+            oy = -c.offY();
+        }
         int boardsize = Math.min(view.getHeight(),
                 view.getWidth());
-        boardPlacement = new Rectangle((int) (c.offX() + boardsize * (1.0 - boardScale) * 0.5),
-                (int) (-c.offY() + boardsize * (1.0 - boardScale) * 0.5),
+        boardPlacement = new Rectangle((int) (ox + boardsize * (1.0 - boardScale) * 0.5),
+                (int) (oy + boardsize * (1.0 - boardScale) * 0.5),
                 (int) (boardsize * boardScale),
                 (int) (boardsize * boardScale));
     }
@@ -163,5 +168,15 @@ public class BoardInfo implements ContainerInfo{
     @Override
     public BoardRange range() {
         return range;
+    }
+
+    @Override
+    public double cellRadius() {
+        return cellRadius;
+    }
+
+    @Override
+    public double scale() {
+        return boardScale;
     }
 }

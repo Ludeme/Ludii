@@ -26,11 +26,26 @@ public class PiecePopupMenu extends JPopupMenu {
         JMenuItem submenuItem;
 
         submenu = new JMenu("Add piece");
-        for (String pieceName : maker.getItemList().pieces().keySet()) {
-            submenuItem = new JMenuItem(pieceName);
-            submenuItem.setActionCommand(pieceName);
-            submenuItem.addActionListener(listener);
-            submenu.add(submenuItem);
+        for (Piece piece : maker.state().currentPieceInfo().piecesUsed()) {
+            if (piece.role() == RoleType.Each) {
+                for (int i = 1; i <= maker.getPlayers(); i++) {
+                    String pieceName = piece.name() + i;
+                    submenuItem = new JMenuItem(pieceName);
+                    submenuItem.setActionCommand(pieceName);
+                    submenuItem.addActionListener(listener);
+                    submenu.add(submenuItem);
+                }
+            } else if (piece.role() == RoleType.Shared) {
+                submenuItem = new JMenuItem(piece.name());
+                submenuItem.setActionCommand(piece.name());
+                submenuItem.addActionListener(listener);
+                submenu.add(submenuItem);
+            } else {
+                submenuItem = new JMenuItem(piece.name());
+                submenuItem.setActionCommand(piece.name() + piece.role().ordinal());
+                submenuItem.addActionListener(listener);
+                submenu.add(submenuItem);
+            }
         }
         add(submenu);
 
@@ -56,6 +71,7 @@ public class PiecePopupMenu extends JPopupMenu {
 
                 default :
                     view.setAdding(action);
+                    view.setPiece(e.getActionCommand());
                     view.repaint();
                     break;
             }

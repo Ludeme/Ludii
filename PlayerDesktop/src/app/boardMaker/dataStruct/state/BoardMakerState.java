@@ -48,6 +48,10 @@ public class BoardMakerState {
         return pieces.get(currentIdx);
     }
 
+    public PieceInfo pieceInfo(int idx) {
+        return pieces.get(idx);
+    }
+
     public String currentSVG(SiteType type) {
         return boards.get(currentIdx).getSVG(type);
     }

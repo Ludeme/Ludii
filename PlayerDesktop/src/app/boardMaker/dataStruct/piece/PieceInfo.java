@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PieceInfo {
-    private HashMap<Integer, Piece> piecesPlacedbySite;
+    private HashMap<Integer, String> piecesPlacedbySite;
     private HashMap<String, List<Integer>> piecesPlacedbyName;
     private List<Piece> piecesUsed;
 
@@ -17,28 +17,28 @@ public class PieceInfo {
         piecesUsed = new ArrayList<>();
     }
 
-    public void addPiece(int site, Piece piece) {
-        piecesPlacedbySite.put(site,piece);
-        if (piecesPlacedbyName.containsKey(piece.name())) {
-            piecesPlacedbyName.get(piece.name()).add(site);
+    public void addPiece(int site, String pieceName) {
+        piecesPlacedbySite.put(site,pieceName);
+        if (piecesPlacedbyName.containsKey(pieceName)) {
+            piecesPlacedbyName.get(pieceName).add(site);
         } else {
             ArrayList<Integer> list = new ArrayList<>();
             list.add(site);
-            piecesPlacedbyName.put(piece.name(),list);
+            piecesPlacedbyName.put(pieceName,list);
         }
     }
 
     public void removePiece(int site) {
-        Piece piece = piecesPlacedbySite.get(site);
+        String piece = piecesPlacedbySite.get(site);
         piecesPlacedbySite.remove(site);
-        List<Integer> list = piecesPlacedbyName.get(piece.name());
+        List<Integer> list = piecesPlacedbyName.get(piece);
         list.remove((Integer) site);
         if (list.isEmpty()) {
-            piecesPlacedbyName.remove(piece.name());
+            piecesPlacedbyName.remove(piece);
         }
     }
 
-    public HashMap<Integer,Piece> piecesPlacedbySite() {
+    public HashMap<Integer,String> piecesPlacedbySite() {
         return piecesPlacedbySite;
     }
 
@@ -74,5 +74,9 @@ public class PieceInfo {
         }
 
         return s.toString();
+    }
+
+    public List<Piece> piecesUsed() {
+        return piecesUsed;
     }
 }

@@ -17,4 +17,6 @@ public interface ContainerInfo {
     public Rectangle placement();
     public Context context();
     public BoardRange range();
+    public double scale();
+    public double cellRadius();
 }

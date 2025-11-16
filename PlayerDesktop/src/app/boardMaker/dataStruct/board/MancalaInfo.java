@@ -84,6 +84,16 @@ public class MancalaInfo implements ContainerInfo{
         return range;
     }
 
+    @Override
+    public double cellRadius() {
+        return cellRadius;
+    }
+
+    @Override
+    public double scale() {
+        return boardScale;
+    }
+
     private void buildBoard() {
         Game game = new Game(maker.getName(), new Players(maker.getPlayers()), new Mode(maker.getMode()),
                 new Equipment(new Item[] {board}), null);
@@ -134,10 +144,15 @@ public class MancalaInfo implements ContainerInfo{
 
     @Override
     public void shiftPlacement(Camera c,Container view) {
+        int ox = 0, oy = 0;
+        if (c != null) {
+            ox = c.offX();
+            oy = -c.offY();
+        }
         int boardsize = Math.min(view.getHeight(),
                 view.getWidth());
-        boardPlacement = new Rectangle((int) (c.offX() + boardsize * (1.0 - boardScale) * 0.5),
-                (int) (-c.offY() + boardsize * (1.0 - boardScale) * 0.5),
+        boardPlacement = new Rectangle((int) (ox + boardsize * (1.0 - boardScale) * 0.5),
+                (int) (oy + boardsize * (1.0 - boardScale) * 0.5),
                 (int) (boardsize * boardScale),
                 (int) (boardsize * boardScale));
     }

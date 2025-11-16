@@ -2,6 +2,7 @@ package app.boardMaker.display.panels.westPanel.itemList;
 
 import app.boardMaker.dataStruct.board.BoardInfo;
 import app.boardMaker.dataStruct.board.ContainerInfo;
+import app.boardMaker.dataStruct.piece.PieceInfo;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListAddNode;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListBoardNode;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListPawnNode;
@@ -28,13 +29,9 @@ public class ItemList extends JPanel {
     private ItemListRenderer renderer;
 
     private DefaultMutableTreeNode boardRoot;
-    private DefaultMutableTreeNode pawnRoot;
 
-    private HashMap<String, BoardData> boards;
     private HashMap<String,ContainerInfo> boardMap;
-    private HashMap<String, Piece> pieces;
 
-    protected ItemListBoardNode selectedBoardNode;
     protected ItemListBoardNode selectedBoard;
 
 
@@ -42,8 +39,6 @@ public class ItemList extends JPanel {
         super(new BorderLayout());
 
         this.maker = maker;
-        boards = new HashMap<>();
-        pieces = new HashMap<>();
         boardMap = new HashMap<>();
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Items");
@@ -88,7 +83,17 @@ public class ItemList extends JPanel {
             selectedBoard.setBoardInfo(board);
             boardMap.put(input,board);
         }
+        createPieceSubTree();
     }
+
+    private void createPieceSubTree() {
+        DefaultMutableTreeNode pieceRoot = new DefaultMutableTreeNode("Pieces");
+        selectedBoard.add(pieceRoot);
+        ItemListAddNode addNode = new ItemListAddNode(ItemType.Pawn,this,maker);
+        pieceRoot.add(addNode);
+        reload(selectedBoard);
+    }
+
     public void updateBoard(ContainerInfo board) {
         selectedBoard.setBoardInfo(board);
         String name = selectedBoard.name();
@@ -103,9 +108,6 @@ public class ItemList extends JPanel {
         boardRoot = new DefaultMutableTreeNode("Boards");
         boardRoot.add(new ItemListAddNode(ItemType.Board, this,maker));
         root.add(boardRoot);
-        pawnRoot = new DefaultMutableTreeNode("Pawns");
-        pawnRoot.add(new ItemListAddNode(ItemType.Pawn, this,maker));
-        root.add(pawnRoot);
     }
 
     public void addEmptyBoard() {
@@ -122,15 +124,16 @@ public class ItemList extends JPanel {
         return boardListTree;
     }
 
-    public void addPawn(String name, RoleType owner) {
+    public void addPawn(String name, RoleType owner, DefaultMutableTreeNode parent) {
         ItemListPawnNode pawn = new ItemListPawnNode(name,owner);
-        pawnRoot.insert(pawn, pawnRoot.getChildCount() - 1);
-        addToPieces(name,owner);
-        ((DefaultTreeModel)boardListTree.getModel()).reload(pawnRoot);
+        parent.insert(pawn, parent.getChildCount() - 1);
+        int idx = boardRoot.getIndex(parent.getParent());
+        addToPieces(name,owner,idx);
+        ((DefaultTreeModel)boardListTree.getModel()).reload(parent);
     }
 
-    private void addToPieces(String name, RoleType owner) {
-        if (owner == RoleType.Each) {
+    private void addToPieces(String name, RoleType owner, int index) {
+        /*if (owner == RoleType.Each) {
             for (int i = 1; i <= maker.getPlayers(); i++) {
                 pieces.put(name + i,new Piece(name + i,owner,null,null,null,null,null,null));
             }
@@ -138,10 +141,8 @@ public class ItemList extends JPanel {
             pieces.put(name,new Piece(name,owner,null,null,null,null,null,null));
         } else {
             pieces.put(name + owner.ordinal(),new Piece(name + owner.ordinal(),owner,null,null,null,null,null,null));
-        }
-    }
-
-    public HashMap<String, Piece> pieces() {
-        return pieces;
+        }*/
+        PieceInfo pieceInfo = maker.state().pieceInfo(index);
+        pieceInfo.piecesUsed().add(new Piece(name,owner,null,null,null,null,null,null));
     }
 }

@@ -1,5 +1,6 @@
 package app.boardMaker.display.panels.pieceView;
 
+import app.boardMaker.dataStruct.state.BoardMakerState;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.menu.popup.piecepopup.PiecePopupMenu;
 import app.boardMaker.dataStruct.board.BoardData;
@@ -34,6 +35,7 @@ public class PieceView extends JPanel {
 
     private boolean adding = false;
     private boolean removing = false;
+    private String pieceName;
 
     private String pieceToAdd;
     private List<Integer> sitesSelected;
@@ -54,23 +56,22 @@ public class PieceView extends JPanel {
         g2d.setBackground(Color.white);
         g2d.clearRect(0,0,getWidth(),getHeight());
 
-        if (maker.getCurrentBoard() == null) {
+        if (maker.state().currentBoardInfo().board() == null) {
             return;
         }
 
-        BoardData currentBoard = maker.getCurrentBoard();
-        maker.drawBoard(currentBoard,this,null);
+        BoardMakerState state = maker.state();
         int size = Math.min(getWidth(),getHeight());
-        BufferedImage image = SVGUtil.createSVGImage(currentBoard.getSVG(), size,size);
+        BufferedImage image = SVGUtil.createSVGImage(state.currentSVG(maker.getSiteType()), size,size);
         g2d.drawImage(image, (getWidth() - size) / 2, (getHeight() - size) / 2, null);
 
-        double boardScale = maker.boardScale();
+        double boardScale = state.currentBoardInfo().scale();
         placement = new Rectangle((int) ((getWidth() - size) / 2 + size * (1 - boardScale) * 0.5),
                 (int) ((getHeight() - size) / 2 + size * (1 - boardScale) * 0.5),
                 (int) (size * boardScale), (int) (size * boardScale));
 
-        List<? extends TopologyElement> elements = currentBoard.getBoard().topology().getGraphElements(maker.getSiteType());
-        HashMap<Integer,Piece> pieces = currentBoard.pieceInfo().piecesPlacedbySite();
+        List<? extends TopologyElement> elements = state.currentBoardInfo().board().topology().getGraphElements(maker.getSiteType());
+        HashMap<Integer,String> pieces = state.currentPieceInfo().piecesPlacedbySite();
 
         if (!pieces.isEmpty()) {
             drawPieces(g2d,pieces,elements);
@@ -85,8 +86,8 @@ public class PieceView extends JPanel {
         DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
 
         for (int i = 0; i < elements.size(); i++) {
-            if ((currentBoard.pieceInfo().piecesPlacedbySite().containsKey((Integer) i) && adding)
-                    || (removing && !currentBoard.pieceInfo().piecesPlacedbySite().containsKey((Integer) i))) {
+            if ((state.currentPieceInfo().piecesPlacedbySite().containsKey((Integer) i) && adding)
+                    || (removing && !state.currentPieceInfo().piecesPlacedbySite().containsKey((Integer) i))) {
                 continue;
             }
             if (sitesSelected.contains(i)) {
@@ -101,9 +102,9 @@ public class PieceView extends JPanel {
         }
     }
 
-    private void drawPieces(Graphics2D g2d, HashMap<Integer,Piece> pieces, List<? extends TopologyElement> elements) {
+    private void drawPieces(Graphics2D g2d, HashMap<Integer,String> pieces, List<? extends TopologyElement> elements) {
         for (int i = 0; i < elements.size(); i++) {
-            Piece piece = pieces.get(i);
+            String piece = pieces.get(i);
             Point2D centroid = elements.get(i).centroid();
             Point emplacement = CoordinatesUtil.screenPosn(centroid,placement);
             if (piece != null) {
@@ -113,14 +114,14 @@ public class PieceView extends JPanel {
         }
     }
 
-    private BufferedImage getPieceImage(Piece piece) {
-        int size = maker.cellradius();
+    private BufferedImage getPieceImage(String pieceName) {
+        int size = (int) maker.state().currentBoardInfo().cellRadius();
         SVGGraphics2D g2d = new SVGGraphics2D(size, size);
-        String path = ImageUtil.getImageFullPath(piece.getNameWithoutNumber());
+        String path = ImageUtil.getImageFullPath(StringRoutines.removeTrailingNumbers(pieceName));
 
         Color edgeColor = Color.black;
         Color fillColor;
-        String trailingNumber = StringRoutines.getTrailingNumbers(piece.name());
+        String trailingNumber = StringRoutines.getTrailingNumbers(pieceName);
         if (trailingNumber.isEmpty() || Integer.parseInt(trailingNumber) == 0) {
             fillColor = SettingsColour.ORIGINAL_PLAYER_COLOURS[0];
         } else {
@@ -139,6 +140,10 @@ public class PieceView extends JPanel {
         pieceToAdd = pieceName;
     }
 
+    public void setPiece(String pieceName) {
+        this.pieceName = pieceName;
+    }
+
     public void resetValues() {
         adding = false;
         removing = false;
@@ -152,7 +157,7 @@ public class PieceView extends JPanel {
             Point click = new Point(e.getX(),e.getY());
 
             if (adding || removing) {
-                List<? extends TopologyElement> elements = maker.getCurrentBoard().getBoard().topology().getGraphElements(maker.getSiteType());
+                List<? extends TopologyElement> elements = maker.state().currentBoardInfo().board().topology().getGraphElements(maker.getSiteType());
                 for (int i = 0; i < elements.size(); i++) {
                     TopologyElement elem = elements.get(i);
                     Point coord = CoordinatesUtil.screenPosn(elem.centroid(),placement);
@@ -208,7 +213,7 @@ public class PieceView extends JPanel {
         }
 
         private void removePieces() {
-            PieceInfo info = maker.getCurrentBoard().pieceInfo();
+            PieceInfo info = maker.state().currentPieceInfo();
 
             for (Integer site : sitesSelected) {
                 info.removePiece(site);
@@ -216,11 +221,10 @@ public class PieceView extends JPanel {
         }
 
         private void addPieces() {
-            PieceInfo info = maker.getCurrentBoard().pieceInfo();
-            Piece piece = maker.getItemList().pieces().get(pieceToAdd);
+            PieceInfo info = maker.state().currentPieceInfo();
 
             for (Integer site : sitesSelected) {
-                info.addPiece(site,piece);
+                info.addPiece(site,pieceName);
             }
         }
     }
