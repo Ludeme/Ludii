@@ -80,7 +80,7 @@ public class BoardPanel extends JTabbedPane
 	}
 
 	public void showBoard() {
-		setComponentAt(indexOfTab("View"),boardView);
+		setComponentAt(0,boardView);
 		setup = false;
 
 		revalidate();
@@ -88,7 +88,7 @@ public class BoardPanel extends JTabbedPane
 	}
 
 	public void showSetup() {
-		setComponentAt(indexOfTab("View"),pieceView);
+		setComponentAt(0,pieceView);
 		setup = true;
 
 		revalidate();
