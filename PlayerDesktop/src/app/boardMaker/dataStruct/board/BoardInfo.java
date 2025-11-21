@@ -53,8 +53,8 @@ public class BoardInfo implements ContainerInfo{
 
     @Override
     public String description() {
-        return "(board " + graphInfo.description() + " use:" + maker.getSiteType()
-                + " largeStack:" + maker.largeStack() + ")\n";
+        return String.format("(board %s use:%s%s)\n",graphInfo.description(),maker.getSiteType()
+                ,maker.largeStack() ? " largeStack:true" : "");
     }
 
     public void setGraphInfo(GraphInfo graphFunction) {

@@ -19,7 +19,7 @@ public class WestPanel extends JTabbedPane {
         ItemList itemList = new ItemList(maker);
 
         addTab("Library", library);
-        addTab("Items", itemList);
+        addTab("Boards", itemList);
     }
 
     public void visibility(boolean b) {

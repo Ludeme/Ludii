@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PieceInfo {
-    private HashMap<Integer, String> piecesPlacedbySite;
-    private HashMap<String, List<Integer>> piecesPlacedbyName;
+    private HashMap<String, String> piecesPlacedbySite;
+    private HashMap<String, List<String>> piecesPlacedbyName;
     private List<Piece> piecesUsed;
 
     public PieceInfo() {
@@ -17,32 +17,32 @@ public class PieceInfo {
         piecesUsed = new ArrayList<>();
     }
 
-    public void addPiece(int site, String pieceName) {
+    public void addPiece(String site, String pieceName) {
         piecesPlacedbySite.put(site,pieceName);
         if (piecesPlacedbyName.containsKey(pieceName)) {
             piecesPlacedbyName.get(pieceName).add(site);
         } else {
-            ArrayList<Integer> list = new ArrayList<>();
+            ArrayList<String> list = new ArrayList<>();
             list.add(site);
             piecesPlacedbyName.put(pieceName,list);
         }
     }
 
-    public void removePiece(int site) {
+    public void removePiece(String site) {
         String piece = piecesPlacedbySite.get(site);
         piecesPlacedbySite.remove(site);
-        List<Integer> list = piecesPlacedbyName.get(piece);
-        list.remove((Integer) site);
+        List<String> list = piecesPlacedbyName.get(piece);
+        list.remove(site);
         if (list.isEmpty()) {
             piecesPlacedbyName.remove(piece);
         }
     }
 
-    public HashMap<Integer,String> piecesPlacedbySite() {
+    public HashMap<String,String> piecesPlacedbySite() {
         return piecesPlacedbySite;
     }
 
-    public HashMap<String,List<Integer>> piecesPlacedbyName() {
+    public HashMap<String,List<String>> piecesPlacedbyName() {
         return piecesPlacedbyName;
     }
 
@@ -56,8 +56,8 @@ public class PieceInfo {
         s.append("(start {\n");
         for (String name : piecesPlacedbyName.keySet()) {
             s.append("(place \"" + name + "\" {");
-            for (Integer site : piecesPlacedbyName.get(name)) {
-                s.append(" " + site + " ");
+            for (String site : piecesPlacedbyName.get(name)) {
+                s.append(String.format(" \"%s\" ",site));
             }
             s.append("})\n");
         }

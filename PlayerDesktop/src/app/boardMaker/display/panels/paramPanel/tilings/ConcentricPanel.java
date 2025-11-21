@@ -66,7 +66,7 @@ public class ConcentricPanel extends OptionPanel implements  ItemListener
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
+		//setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
 
 		pl = new PreviewListener(this,displayer.getPreviewPanel());
 		

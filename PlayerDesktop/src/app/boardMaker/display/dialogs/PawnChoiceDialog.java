@@ -178,6 +178,7 @@ public class PawnChoiceDialog extends JDialog {
 
                 addTab(folder,new JScrollPane(list));
             }
+            setSelectedIndex(indexOfTab("chess"));
         }
     }
 

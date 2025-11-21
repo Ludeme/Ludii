@@ -36,7 +36,7 @@ public class ParamPanel extends JPanel
 		tiling = new JPanel();
 		tiling.add(new JLabel("Placeholder"));
 		
-		scroll = new JScrollPane(tiling,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll = new JScrollPane(tiling,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		tab = new JTabbedPane();
 		tab.addTab("Board parameters", scroll);
@@ -47,7 +47,7 @@ public class ParamPanel extends JPanel
 	public void setPanel(JPanel p) {
 		tiling = p;
 		scroll.setViewportView(p);
-		
+
 		revalidate();
 		repaint();
 	}

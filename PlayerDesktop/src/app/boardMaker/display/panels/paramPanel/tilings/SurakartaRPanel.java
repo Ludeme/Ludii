@@ -51,8 +51,8 @@ public class SurakartaRPanel extends SurakartaPanel
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));	
-		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		//setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
 		
 		add(Box.createVerticalStrut(5));
 		

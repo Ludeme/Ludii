@@ -116,7 +116,7 @@ public class BoardMakerTabbedBar extends JTabbedPane
 
 		toolbar.addSeparator();
 
-		label = new JLabel("View: ");
+		label = new JLabel("Tool: ");
 		toolbar.add(label);
 
 		group = new ButtonGroup();
@@ -138,7 +138,7 @@ public class BoardMakerTabbedBar extends JTabbedPane
 
 		toolbar.addSeparator();
 
-		JButton playButton = new JButton("Write and play");
+		JButton playButton = new JButton("Load in Ludii");
 		int size = 20;
 		SVGGraphics2D g2d = new SVGGraphics2D(size, size);
 		String filename = ImageUtil.getImageFullPath("button-play");

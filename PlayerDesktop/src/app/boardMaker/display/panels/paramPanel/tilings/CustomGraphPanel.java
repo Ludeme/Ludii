@@ -46,7 +46,7 @@ public class CustomGraphPanel extends OptionPanel {
 
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
+        //setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
 
         pl = new PreviewListener(this, displayer.getPreviewPanel());
 

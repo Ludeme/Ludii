@@ -1,7 +1,6 @@
 package app.boardMaker.handlers;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,12 +14,11 @@ import app.boardMaker.display.panels.previewPanel.PreviewPanel;
 import app.boardMaker.display.tabbedBar.BoardMakerTabbedBar;
 import app.boardMaker.display.window.BoardMakerFrame;
 import app.boardMaker.display.window.BoardMakerPane;
-import game.players.Player;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
-import game.types.play.RoleType;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 
 /**
  * Graphics handler of the desktop app
@@ -63,6 +61,7 @@ public class Displayer
 	public void mainView() {
 		boardMakerPane.invalidate();
 		boardMakerPane.removeAll();
+		boardMakerPane.setLayout(new BorderLayout());
 
 		previewPanel.visibility(false);
 		paramPanel.visibility(false);
@@ -85,6 +84,7 @@ public class Displayer
 	public void creationView() {
 		boardMakerPane.invalidate();
 		boardMakerPane.removeAll();
+		boardMakerPane.setLayout(new BorderLayout());
 
 		boardMakerPane.add(tabbedBar,BorderLayout.NORTH);
 
@@ -107,6 +107,7 @@ public class Displayer
 	public void creationViewPoly() {
 		boardMakerPane.invalidate();
 		boardMakerPane.removeAll();
+		boardMakerPane.setLayout(new BorderLayout());
 
 		boardMakerPane.add(tabbedBar,BorderLayout.NORTH);
 
@@ -126,8 +127,11 @@ public class Displayer
 	public void welcomeView() {
 		boardMakerPane.invalidate();
 		boardMakerPane.removeAll();
+		boardMakerPane.setLayout(new BoxLayout(boardMakerPane,BoxLayout.Y_AXIS));
 
+		boardMakerPane.add(Box.createVerticalGlue());
 		boardMakerPane.add(new WelcomePanel(),BorderLayout.CENTER);
+		boardMakerPane.add(Box.createVerticalGlue());
 
 		boardMakerPane.revalidate();
 		boardMakerPane.repaint();
@@ -147,8 +151,8 @@ public class Displayer
 		
 		size = new Dimension(boardMakerPane.getWidth() / 4, boardMakerPane.getHeight());
 
-		paramPanel.setPreferredSize(size);
-		paramPanel.setMaximumSize(size);
+		//paramPanel.setPreferredSize(size);
+		//paramPanel.setMaximumSize(size);
 
 		westPanel.setPreferredSize(size);
 		westPanel.setMaximumSize(size);
@@ -219,50 +223,62 @@ public class Displayer
 
 	private class WelcomePanel extends JPanel {
 		public WelcomePanel() {
-			super(new BorderLayout());
 
-			JPanel panel = new JPanel();
-			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+			JPanel main = new JPanel(new BorderLayout());
+			JPanel left = new JPanel();
+			left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+			JPanel right = new JPanel();
+			right.setLayout(new BoxLayout(right,BoxLayout.Y_AXIS));
 
-			panel.add(Box.createVerticalGlue());
+			left.add(Box.createVerticalGlue());
+			right.add(Box.createVerticalGlue());
 
-			JPanel p = new JPanel();
+			JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			JLabel label = new JLabel("Game name: ");
 			p.add(label);
+			left.add(p);
+			p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			JTextField textfield = new JTextField("New Game",10);
 			p.add(textfield);
-			panel.add(p);
+			right.add(p);
 
-			panel.add(Box.createVerticalStrut(5));
+			left.add(Box.createVerticalStrut(5));
+			right.add(Box.createVerticalStrut(5));
 
-			p = new JPanel();
+			p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			label = new JLabel("Players: ");
 			p.add(label);
+			left.add(p);
+			p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			JSpinner players = new JSpinner(new SpinnerNumberModel(2, 0, 16, 1));
 			p.add(players);
-			panel.add(p);
+			right.add(p);
 
-			panel.add(Box.createVerticalStrut(5));
+			left.add(Box.createVerticalStrut(5));
+			right.add(Box.createVerticalStrut(5));
 
-			p = new JPanel();
+			p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			label = new JLabel("Game mode: ");
 			p.add(label);
+			left.add(p);
+			p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			JComboBox<ModeType> mode = new JComboBox<>(ModeType.values());
 			mode.removeItem(ModeType.Simulation);
 			p.add(mode);
-			panel.add(p);
+			right.add(p);
 
-			panel.add(Box.createVerticalStrut(5));
+			left.add(Box.createVerticalStrut(5));
+			right.add(Box.createVerticalStrut(5));
 
-			p = new JPanel();
+			p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			label = new JLabel("Site: ");
 			p.add(label);
+			left.add(p);
+			p = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			JComboBox<SiteType> site = new JComboBox<>(SiteType.values());
 			site.setSelectedItem(SiteType.Cell);
 			p.add(site);
-			panel.add(p);
-
-			panel.add(Box.createVerticalStrut(5));
+			right.add(p);
 
 			JPanel buttonPanel = new JPanel();
 			JButton button = new CreateButton(new ActionListener() {
@@ -290,9 +306,12 @@ public class Displayer
 				}
 			});
 			//buttonPanel.add(button);
-			panel.add(buttonPanel);
+			main.add(left,BorderLayout.WEST);
+			main.add(right,BorderLayout.EAST);
+			main.add(buttonPanel,BorderLayout.SOUTH);
+			main.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED,Color.black,Color.darkGray));
 
-			add(panel,BorderLayout.PAGE_START);
+			add(main);
 		}
 	}
 }

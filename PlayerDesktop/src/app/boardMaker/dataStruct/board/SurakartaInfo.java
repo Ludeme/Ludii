@@ -51,8 +51,8 @@ public class SurakartaInfo implements ContainerInfo{
 
     @Override
     public String description() {
-        return "(surakartaBoard " + graphFunction.description() + " loops:" + nloops + " from:" + startLoops +
-                " largeStack: " + maker.largeStack() + ")\n";
+        return String.format("(surakartaBoard %s loops:%d from:%d%s)\n",graphFunction.description(),nloops,startLoops
+                ,maker.largeStack() ? " largeStack:true" : "");
     }
 
     @Override

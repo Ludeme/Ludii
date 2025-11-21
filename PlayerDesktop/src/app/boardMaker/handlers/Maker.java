@@ -23,6 +23,7 @@ import game.types.board.SiteType;
 import game.types.play.ModeType;
 import other.context.Context;
 import other.trial.Trial;
+import supplementary.AutoIndenter;
 import util.PlaneType;
 import view.container.ContainerStyle;
 import view.container.styles.BoardStyle;
@@ -51,11 +52,7 @@ public class Maker
 	private SiteType shownSite = SiteType.Cell;
 	private boolean largeStack = false;
 
-	private double boardratio = 1.0;
-	private double boardScale;
-	private int cellRadius;
 
-	private BoardData currentBoard;
 	private BoardMakerState state;
 
 	private ItemList itemList;
@@ -96,6 +93,7 @@ public class Maker
 			itemList.updateBoard(board);
 		}
 		state.setCurrentBoard(board);
+		switchBoard(state.currentIdx());
 	}
 
 	/**
@@ -104,6 +102,7 @@ public class Maker
 	 */
 	public void switchBoard(int idx) {
 		state.setCurrentIdx(idx);
+		displayer.getBoardPanel().setTitleAt(0,itemList.boardRoot().getChildAt(idx).toString());
 		displayer.getBoardPanel().revalidate();
 		displayer.getBoardPanel().repaint();
 	}
@@ -120,10 +119,6 @@ public class Maker
 
 	public BoardMakerState state() {
 		return state;
-	}
-
-	public BoardData getCurrentBoard() {
-		return currentBoard;
 	}
 
 	public Bridge getBridge() {
@@ -170,9 +165,6 @@ public class Maker
 		return shownSite;
 	}
 
-	public int cellradius() {
-		return cellRadius;
-	}
 	//--------------------------------------------------------------------------------
 	
 	/**
@@ -218,12 +210,9 @@ public class Maker
 		return displayer.getBoardPanel().setup();
 	}
 
-	public double boardScale() {
-		return boardScale;
-	}
-
 	public void writeAndPlay() {
 		writeDescription();
+		AutoIndenter.indentFileNicely(filename);
 		playGame();
 	}
 

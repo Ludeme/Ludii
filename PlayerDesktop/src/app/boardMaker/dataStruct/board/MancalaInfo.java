@@ -55,8 +55,8 @@ public class MancalaInfo implements ContainerInfo{
 
     @Override
     public String description() {
-        return "(mancalaBoard " + nrow + " " + ncol + " store:" + storeType + " numStores:" + nstores +
-                " largeStack:" + maker.largeStack() + ")\n";
+        return String.format("(mancalaBoard %d %d store:%s numStores:%d%s)\n",nrow,ncol,storeType,nstores
+                ,maker.largeStack() ? " largeStack:true" : "");
     }
 
     @Override

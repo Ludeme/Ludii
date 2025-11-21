@@ -1,5 +1,6 @@
 package app.boardMaker.display.panels.pieceView;
 
+import app.boardMaker.dataStruct.board.BoardInfo;
 import app.boardMaker.dataStruct.state.BoardMakerState;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.menu.popup.piecepopup.PiecePopupMenu;
@@ -9,6 +10,7 @@ import app.boardMaker.utils.DrawingUtils;
 import app.boardMaker.dataStruct.piece.PieceInfo;
 import app.utils.SVGUtil;
 import game.equipment.component.Piece;
+import game.types.board.SiteType;
 import graphics.ImageUtil;
 import graphics.svg.SVGtoImage;
 import main.StringRoutines;
@@ -38,7 +40,7 @@ public class PieceView extends JPanel {
     private String pieceName;
 
     private String pieceToAdd;
-    private List<Integer> sitesSelected;
+    private List<String> sitesSelected;
 
     public PieceView(Maker maker) {
         this.maker = maker;
@@ -70,8 +72,13 @@ public class PieceView extends JPanel {
                 (int) ((getHeight() - size) / 2 + size * (1 - boardScale) * 0.5),
                 (int) (size * boardScale), (int) (size * boardScale));
 
-        List<? extends TopologyElement> elements = state.currentBoardInfo().board().topology().getGraphElements(maker.getSiteType());
-        HashMap<Integer,String> pieces = state.currentPieceInfo().piecesPlacedbySite();
+        List<? extends TopologyElement> elements;
+        if (state.currentBoardInfo() instanceof BoardInfo) {
+            elements = state.currentBoardInfo().board().topology().getGraphElements(maker.getSiteType());
+        } else {
+            elements = state.currentBoardInfo().board().topology().getGraphElements(SiteType.Vertex);
+        }
+        HashMap<String,String> pieces = state.currentPieceInfo().piecesPlacedbySite();
 
         if (!pieces.isEmpty()) {
             drawPieces(g2d,pieces,elements);
@@ -86,11 +93,11 @@ public class PieceView extends JPanel {
         DrawingUtils.horizontallyCenteredText(g2d,text,getWidth(),getHeight()-text.split("\n").length * g2d.getFontMetrics().getHeight() - 5);
 
         for (int i = 0; i < elements.size(); i++) {
-            if ((state.currentPieceInfo().piecesPlacedbySite().containsKey((Integer) i) && adding)
-                    || (removing && !state.currentPieceInfo().piecesPlacedbySite().containsKey((Integer) i))) {
+            if ((state.currentPieceInfo().piecesPlacedbySite().containsKey((String)elements.get(i).label()) && adding)
+                    || (removing && !state.currentPieceInfo().piecesPlacedbySite().containsKey((String)elements.get(i).label()))) {
                 continue;
             }
-            if (sitesSelected.contains(i)) {
+            if (sitesSelected.contains(elements.get(i).label())) {
                 g2d.setColor(Color.green);
             } else {
                 g2d.setColor(Color.gray);
@@ -102,9 +109,9 @@ public class PieceView extends JPanel {
         }
     }
 
-    private void drawPieces(Graphics2D g2d, HashMap<Integer,String> pieces, List<? extends TopologyElement> elements) {
+    private void drawPieces(Graphics2D g2d, HashMap<String,String> pieces, List<? extends TopologyElement> elements) {
         for (int i = 0; i < elements.size(); i++) {
-            String piece = pieces.get(i);
+            String piece = pieces.get(elements.get(i).label());
             Point2D centroid = elements.get(i).centroid();
             Point emplacement = CoordinatesUtil.screenPosn(centroid,placement);
             if (piece != null) {
@@ -155,17 +162,21 @@ public class PieceView extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             Point click = new Point(e.getX(),e.getY());
-
             if (adding || removing) {
-                List<? extends TopologyElement> elements = maker.state().currentBoardInfo().board().topology().getGraphElements(maker.getSiteType());
+                List<? extends TopologyElement> elements;
+                if (maker.state().currentBoardInfo() instanceof BoardInfo) {
+                    elements = maker.state().currentBoardInfo().board().topology().getGraphElements(maker.getSiteType());
+                } else {
+                    elements = maker.state().currentBoardInfo().board().topology().getGraphElements(SiteType.Vertex);
+                }
                 for (int i = 0; i < elements.size(); i++) {
                     TopologyElement elem = elements.get(i);
                     Point coord = CoordinatesUtil.screenPosn(elem.centroid(),placement);
                     if (click.distance(coord) < maker.getDisplayer().getBoardPanel().dotSize() / 2) {
-                        if (e.getButton() == MouseEvent.BUTTON1 && !sitesSelected.contains(i)) {
-                            sitesSelected.add(i);
+                        if (e.getButton() == MouseEvent.BUTTON1 && !sitesSelected.contains(elem.label())) {
+                            sitesSelected.add(elem.label());
                         } else if (e.getButton() == MouseEvent.BUTTON3) {
-                            sitesSelected.remove((Integer) i);
+                            sitesSelected.remove(elem.label());
                         }
                         repaint();
                         return;
@@ -215,7 +226,7 @@ public class PieceView extends JPanel {
         private void removePieces() {
             PieceInfo info = maker.state().currentPieceInfo();
 
-            for (Integer site : sitesSelected) {
+            for (String site : sitesSelected) {
                 info.removePiece(site);
             }
         }
@@ -223,7 +234,7 @@ public class PieceView extends JPanel {
         private void addPieces() {
             PieceInfo info = maker.state().currentPieceInfo();
 
-            for (Integer site : sitesSelected) {
+            for (String site : sitesSelected) {
                 info.addPiece(site,pieceName);
             }
         }

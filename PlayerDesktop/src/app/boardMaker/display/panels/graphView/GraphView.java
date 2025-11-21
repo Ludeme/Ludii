@@ -31,7 +31,6 @@ public class GraphView extends JPanel {
 
     private List<Vertex> vertexes;
     private List<Edge> edges;
-    private Map<String,Edge> edgeFromVertex;
 
     public GraphView(Maker maker, OptionPanel op) {
         this.maker = maker;
@@ -42,7 +41,6 @@ public class GraphView extends JPanel {
 
         vertexes = new ArrayList<>();
         edges = new ArrayList<>();
-        edgeFromVertex = new HashMap<>();
 
         addMouseListener(camera);
         addMouseMotionListener(camera);
@@ -101,6 +99,16 @@ public class GraphView extends JPanel {
     }
 
     public void removeHovered() {
+        ArrayList<Integer> edgesToRemove = new ArrayList<>();
+        for (int i = 0; i < edges.size(); i++) {
+            Edge e = edges.get(i);
+            if (e.start().equals(hoveredVertex) || e.end().equals(hoveredVertex)) {
+                edgesToRemove.add(i);
+            }
+        }
+        for (int i : edgesToRemove.reversed()) {
+            edges.remove(i);
+        }
         vertexes.remove(hoveredVertex);
         hoveredVertex = null;
         displayer.getPreviewPanel().setBoard(op.createInfo());
@@ -118,24 +126,21 @@ public class GraphView extends JPanel {
     public void addEdge(Edge edge) {
         if (!edges.contains(edge)) {
             edges.add(edge);
-            String key = edge.start().toString() + edge.end().toString(),
-                    reversedKey = edge.end().toString() + edge.start().toString();
-            edgeFromVertex.put(key,edge);
-            edgeFromVertex.put(reversedKey,edge);
             displayer.getPreviewPanel().setBoard(op.createInfo());
             displayer.getPreviewPanel().repaint();
         }
     }
 
     public void removeEdge(Vertex start, Vertex end) {
-        String key = start.toString() + end.toString(),
-                reversedKey = end.toString() + start.toString();
-        Edge toRemove = edgeFromVertex.get(key);
-        edgeFromVertex.remove(key);
-        edgeFromVertex.remove(reversedKey);
-        edges.remove(toRemove);
-        displayer.getPreviewPanel().setBoard(op.createInfo());
-        displayer.getPreviewPanel().repaint();
+        for (int i = 0; i < edges.size(); i++) {
+            Edge e = edges.get(i);
+            if ((e.start().equals(start) && e.end().equals(end)) || (e.start().equals(end) && e.end().equals(start))) {
+                edges.remove(i);
+                displayer.getPreviewPanel().setBoard(op.createInfo());
+                displayer.getPreviewPanel().repaint();
+                return;
+            }
+        }
     }
 
     @Override

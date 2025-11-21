@@ -17,7 +17,6 @@ public class BoardMakerState {
     public BoardMakerState() {
         boards = new ArrayList<>();
         pieces = new ArrayList<>();
-        addEmptyBoard();
         currentIdx = 0;
     }
 

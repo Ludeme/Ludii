@@ -41,9 +41,9 @@ public class ItemList extends JPanel {
         this.maker = maker;
         boardMap = new HashMap<>();
 
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Items");
-        createChildren(root);
-        boardListTree = new JTree(root);
+        boardRoot = new DefaultMutableTreeNode("Boards");
+        boardRoot.add(new ItemListAddNode(ItemType.Board, this,maker));
+        boardListTree = new JTree(boardRoot);
         renderer = new ItemListRenderer(boardListTree);
         boardListTree.setCellRenderer(renderer);
 
@@ -57,6 +57,7 @@ public class ItemList extends JPanel {
         boardListView = new JScrollPane(boardListTree);
 
         add(boardListView,BorderLayout.CENTER);
+        addEmptyBoard();
     }
 
     public DefaultMutableTreeNode boardRoot() {
@@ -84,6 +85,9 @@ public class ItemList extends JPanel {
             boardMap.put(input,board);
         }
         createPieceSubTree();
+        JOptionPane.showMessageDialog(maker.getDisplayer().getFrame(),
+                String.format("The board %s has been created and can be accessed in the \"Boards\" tab",input),
+                "New board",JOptionPane.PLAIN_MESSAGE);
     }
 
     private void createPieceSubTree() {
@@ -102,12 +106,6 @@ public class ItemList extends JPanel {
 
     public ContainerInfo get(String key) {
         return boardMap.get(key);
-    }
-
-    private void createChildren(DefaultMutableTreeNode root) {
-        boardRoot = new DefaultMutableTreeNode("Boards");
-        boardRoot.add(new ItemListAddNode(ItemType.Board, this,maker));
-        root.add(boardRoot);
     }
 
     public void addEmptyBoard() {

@@ -49,7 +49,7 @@ public class BrickPanel extends OptionPanel
 		this.displayer = maker.getDisplayer();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
+		//setPreferredSize(new Dimension(displayer.getFrame().getWidth() / 4 - 5, 0));
 
 		pl = new PreviewListener(this, displayer.getPreviewPanel());
 		
