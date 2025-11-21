@@ -309,7 +309,7 @@ public class Displayer
 			main.add(left,BorderLayout.WEST);
 			main.add(right,BorderLayout.EAST);
 			main.add(buttonPanel,BorderLayout.SOUTH);
-			main.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED,Color.black,Color.darkGray));
+			main.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
 			add(main);
 		}
