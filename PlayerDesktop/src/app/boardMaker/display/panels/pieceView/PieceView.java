@@ -187,7 +187,20 @@ public class PieceView extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if (adding || removing) {
+            if (adding || removing || maker.state().currentPieceInfo().piecesUsed().isEmpty()) {
+                return;
+            }
+
+            if (e.isPopupTrigger()) {
+                PiecePopupMenu popup = new PiecePopupMenu(maker, PieceView.this);
+                popup.create();
+                popup.show(e.getComponent(),e.getX(),e.getY());
+            }
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (adding || removing || maker.state().currentPieceInfo().piecesUsed().isEmpty()) {
                 return;
             }
 

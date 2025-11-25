@@ -66,6 +66,21 @@ public class BoardViewListener extends MouseAdapter {
         }
     }
 
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (maker.state().currentBoardInfo().board() == null || view.createPoly() || view.isRemoving() || view.isAdding()) {
+            return;
+        }
+
+        Point click = new Point(e.getX(),e.getY());
+        if (e.isPopupTrigger() && clickOnBoard(click,maker.state().currentBoardInfo().placement())
+                && maker.state().currentBoardInfo() instanceof BoardInfo) {
+            BoardPopupMenu popup = new BoardPopupMenu(maker);
+            popup.create();
+            popup.show(e.getComponent(),e.getX(),e.getY());
+        }
+    }
+
     private boolean clickOnBoard(Point click, Rectangle placement) {
         if (click.getX() > placement.getX() && click.getX() < placement.getMaxX()) {
             if (click.getY() > placement.getY() && click.getY() < placement.getMaxY()) {
