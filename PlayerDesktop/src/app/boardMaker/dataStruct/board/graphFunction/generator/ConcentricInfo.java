@@ -10,6 +10,9 @@ import game.functions.graph.generators.shape.concentric.ConcentricShapeType;
 
 import java.util.List;
 
+/**
+ * Class used to store information about the Concentric graph function
+ */
 public class ConcentricInfo implements GraphInfo {
     private ConcentricShapeType shape;
     private int nsides;

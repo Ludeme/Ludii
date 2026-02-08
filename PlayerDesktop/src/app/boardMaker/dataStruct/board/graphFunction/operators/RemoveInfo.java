@@ -10,10 +10,17 @@ import other.topology.Edge;
 
 import java.util.List;
 
+/**
+ * Class used to store information about the Remove graph function
+ */
 public class RemoveInfo implements GraphInfo {
+    // Type of graph element to remove
     private SiteType removedType;
+    // The graph function to remove from
     private GraphInfo graphFunction;
+    // Indices of sites to remove
     private List<Integer> removedIndices;
+    // Edges of the graph
     private List<Edge> edges;
 
     private GraphFunction function;

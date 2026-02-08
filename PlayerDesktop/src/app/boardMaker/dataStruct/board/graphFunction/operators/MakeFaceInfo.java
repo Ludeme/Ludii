@@ -4,6 +4,9 @@ import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.MakeFaces;
 
+/**
+ * Class used to store information about the Makeface graph function
+ */
 public class MakeFaceInfo implements GraphInfo {
     private GraphInfo graphFunction;
 

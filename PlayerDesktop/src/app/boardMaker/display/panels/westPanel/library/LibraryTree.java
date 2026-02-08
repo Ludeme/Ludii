@@ -65,6 +65,14 @@ public class LibraryTree extends DefaultMutableTreeNode {
         board = new DefaultMutableTreeNode(info);
         cat.add(board);
 
+        info = new LibraryBoardInfo("Regular","RegularPanel");
+        board = new DefaultMutableTreeNode(info);
+        cat.add(board);
+
+        info = new LibraryBoardInfo("Repeat","RepeatPanel");
+        board = new DefaultMutableTreeNode(info);
+        cat.add(board);
+
         info = new LibraryBoardInfo("Semi-regular","TilingPanel");
         board = new DefaultMutableTreeNode(info);
         cat.add(board);

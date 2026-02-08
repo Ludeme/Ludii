@@ -81,7 +81,7 @@ public class BoardPopupMenuListener implements ActionListener {
                 int baseAngle = maker.state().currentBoardInfo().board().graphFunction() instanceof Rotate ?
                         (int) ((Rotate) maker.state().currentBoardInfo().board().graphFunction()).angle(maker.state().currentBoardInfo().context()) : 0;
                 JSpinner rotSpinner = new JSpinner(new SpinnerNumberModel(baseAngle,0,360,1));
-                int rotOption = JOptionPane.showOptionDialog(null, rotSpinner,"Angle to rotate",JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null,null,null);
+                int rotOption = JOptionPane.showOptionDialog(null, rotSpinner,"Angle to rotate (degree)",JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null,null,null);
                 if (rotOption == JOptionPane.OK_OPTION) {
                     int angle = (Integer) rotSpinner.getValue();
                     apply_rotation(angle);

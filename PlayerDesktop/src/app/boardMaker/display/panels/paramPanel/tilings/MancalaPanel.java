@@ -78,6 +78,7 @@ public class MancalaPanel extends JPanel
 		panel.add(label);
 		sBox = new JComboBox<StoreType>(StoreType.values());
 		sBox.setSelectedItem(StoreType.Outer);
+		sBox.removeItem(StoreType.Inner);
 		sBox.addActionListener(pl);
 		panel.add(sBox);
 		add(panel);

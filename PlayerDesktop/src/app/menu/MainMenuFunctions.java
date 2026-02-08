@@ -240,6 +240,7 @@ public class MainMenuFunctions extends JMenuBar
 			// Create and launch an instance of the visual editor
 			setStartVisualEditor(new StartVisualEditor(app));
 		}
+		// Create and launch an instance of the Board Maker
 		else if (source.getText().equals("Board Maker"))
 		{
 			StartBoardMaker.create(app);

@@ -25,9 +25,13 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class MancalaInfo implements ContainerInfo{
+    // Number of rows
     private int nrow;
+    // Number of columns
     private int ncol;
+    // Type of the stores
     private StoreType storeType;
+    // Number of stores
     private int nstores;
 
     private MancalaBoard board;
@@ -74,6 +78,9 @@ public class MancalaInfo implements ContainerInfo{
         return "(metadata \n(graphics {\n(board Style Mancala)\n})\n)";
     }
 
+    /**
+     * Creates the board
+     */
     private void createBoard() {
         board = new MancalaBoard(nrow,ncol,storeType,nstores,maker.largeStack(),null,null);
         buildBoard();
@@ -94,6 +101,9 @@ public class MancalaInfo implements ContainerInfo{
         return boardScale;
     }
 
+    /**
+     * Construct the board
+     */
     private void buildBoard() {
         Game game = new Game(maker.getName(), new Players(maker.getPlayers()), new Mode(maker.getMode()),
                 new Equipment(new Item[] {board}), null);
@@ -143,6 +153,9 @@ public class MancalaInfo implements ContainerInfo{
     }
 
     @Override
+    /**
+     * Update the placement of the board
+     */
     public void shiftPlacement(Camera c,Container view) {
         int ox = 0, oy = 0;
         if (c != null) {

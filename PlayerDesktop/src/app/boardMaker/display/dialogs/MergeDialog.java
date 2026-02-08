@@ -10,12 +10,7 @@ import app.boardMaker.display.components.buttons.CancelButton;
 import app.boardMaker.display.components.buttons.CreateButton;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.Transformations;
-import app.boardMaker.dataStruct.board.BoardData;
 import app.utils.SVGUtil;
-import game.equipment.container.board.Board;
-import game.functions.floats.FloatConstant;
-import game.functions.graph.GraphFunction;
-import game.functions.graph.operators.*;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -25,17 +20,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
+/**
+ * Dialog used to merge/union/intersect boards
+ */
 public class MergeDialog extends JDialog {
     private Maker maker;
-
+    // The transformation to use (merge, union or intersect)
     private Transformations transformation;
-
+    // Left panel
     private BoardPlacementPanel left;
+    // Right panel
     private BoardPlacementPanel right;
+    // Center panel
     private ResultPanel center;
-
+    // Result of transformation
     private BoardInfo resultInfo;
 
     public MergeDialog(Maker maker, Transformations type) {

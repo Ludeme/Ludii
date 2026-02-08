@@ -6,6 +6,9 @@ import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.square.DiagonalsType;
 import game.functions.graph.generators.shape.Rectangle;
 
+/**
+ * Class used to store information about the Rectangle graph function
+ */
 public class RectangleInfo implements GraphInfo {
     private int nrow;
     private int ncol;

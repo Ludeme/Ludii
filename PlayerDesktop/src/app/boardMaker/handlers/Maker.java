@@ -6,33 +6,11 @@ import app.DesktopApp;
 import app.boardMaker.dataStruct.board.ContainerInfo;
 import app.boardMaker.dataStruct.state.BoardMakerState;
 import app.boardMaker.display.panels.westPanel.itemList.ItemList;
-import app.boardMaker.dataStruct.board.BoardData;
-import app.boardMaker.utils.BoardUtils;
-import app.boardMaker.utils.Camera;
 import app.loading.GameLoading;
 import bridge.Bridge;
-import game.Game;
-import game.equipment.Equipment;
-import game.equipment.Item;
-import game.equipment.container.board.Board;
-import game.equipment.container.board.custom.MancalaBoard;
-import game.equipment.container.board.custom.SurakartaBoard;
-import game.mode.Mode;
-import game.players.Players;
 import game.types.board.SiteType;
 import game.types.play.ModeType;
-import other.context.Context;
-import other.trial.Trial;
 import supplementary.AutoIndenter;
-import util.PlaneType;
-import view.container.ContainerStyle;
-import view.container.styles.BoardStyle;
-import view.container.styles.board.MancalaStyle;
-import view.container.styles.board.SurakartaStyle;
-import view.container.styles.board.graph.GraphStyle;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
 
 /**
  * General handler of the board maker app.

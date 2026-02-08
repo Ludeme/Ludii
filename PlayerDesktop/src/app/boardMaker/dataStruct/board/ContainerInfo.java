@@ -7,6 +7,9 @@ import other.context.Context;
 
 import java.awt.*;
 
+/**
+ * An interface representing a container
+ */
 public interface ContainerInfo {
     public String description();
     public String getSVG(SiteType site);

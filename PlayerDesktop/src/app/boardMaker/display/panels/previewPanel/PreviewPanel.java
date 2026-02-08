@@ -9,9 +9,7 @@ import javax.swing.JTabbedPane;
 import app.boardMaker.dataStruct.board.ContainerInfo;
 import app.boardMaker.handlers.Displayer;
 import app.boardMaker.handlers.Maker;
-import app.boardMaker.dataStruct.board.BoardData;
 import app.utils.SVGUtil;
-import game.equipment.container.board.Board;
 
 /**
  * A class for the preview of the board during its creation

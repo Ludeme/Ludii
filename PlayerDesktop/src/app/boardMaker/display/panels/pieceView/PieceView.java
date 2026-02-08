@@ -4,12 +4,10 @@ import app.boardMaker.dataStruct.board.BoardInfo;
 import app.boardMaker.dataStruct.state.BoardMakerState;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.menu.popup.piecepopup.PiecePopupMenu;
-import app.boardMaker.dataStruct.board.BoardData;
 import app.boardMaker.utils.CoordinatesUtil;
 import app.boardMaker.utils.DrawingUtils;
 import app.boardMaker.dataStruct.piece.PieceInfo;
 import app.utils.SVGUtil;
-import game.equipment.component.Piece;
 import game.types.board.SiteType;
 import graphics.ImageUtil;
 import graphics.svg.SVGtoImage;
@@ -248,7 +246,7 @@ public class PieceView extends JPanel {
             PieceInfo info = maker.state().currentPieceInfo();
 
             for (String site : sitesSelected) {
-                info.addPiece(site,pieceName);
+                info.placePiece(site,pieceName);
             }
         }
     }

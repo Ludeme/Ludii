@@ -8,10 +8,15 @@ import game.types.board.SiteType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class representing the state of the Boardmaker
+ */
 public class BoardMakerState {
+    // List of created boards
     private List<ContainerInfo> boards;
+    // List of created set of pieces
     private List<PieceInfo> pieces;
-
+    // Index of current board and piece set selected
     private int currentIdx;
 
     public BoardMakerState() {

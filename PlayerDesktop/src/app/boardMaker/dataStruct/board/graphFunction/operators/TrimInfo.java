@@ -4,6 +4,9 @@ import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.Trim;
 
+/**
+ * Class used to store information about the Trim graph function
+ */
 public class TrimInfo implements GraphInfo {
     private GraphInfo graphFunction;
 

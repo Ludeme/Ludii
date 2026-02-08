@@ -27,7 +27,7 @@ public class LibraryML extends MouseAdapter {
             if (node.isLeaf()) {
                 String classname = ((LibraryBoardInfo) node.getUserObject()).getClassname();
                 try {
-                    if (classname.equals("CustomShapePanel") || classname.equals("CustomGraphPanel")) {
+                    if (classname.equals("CustomShapePanel") || classname.equals("CustomGraphPanel") || classname.equals("RepeatPanel")) {
                         displayer.creationViewPoly();
                     } else {
                         displayer.creationView();

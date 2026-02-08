@@ -1,5 +1,8 @@
 package app.boardMaker.dataStruct.board;
 
+/**
+ * A class used to store mins and maxs coordinates of board
+ */
 public class BoardRange {
     private double minX;
     private double maxX;

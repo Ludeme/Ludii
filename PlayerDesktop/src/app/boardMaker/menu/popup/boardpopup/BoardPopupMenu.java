@@ -1,12 +1,8 @@
 package app.boardMaker.menu.popup.boardpopup;
 
-import app.boardMaker.display.components.sliders.RotationSlider;
 import app.boardMaker.handlers.Maker;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.PopupMenuListener;
 
 public class BoardPopupMenu extends JPopupMenu {
     private Maker maker;

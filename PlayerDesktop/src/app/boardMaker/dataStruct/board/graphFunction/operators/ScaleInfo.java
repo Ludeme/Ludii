@@ -7,6 +7,9 @@ import game.functions.graph.operators.Scale;
 
 import java.util.Locale;
 
+/**
+ * Class used to store information about the Scale graph function
+ */
 public class ScaleInfo implements GraphInfo {
     private float sx;
     private float sy;

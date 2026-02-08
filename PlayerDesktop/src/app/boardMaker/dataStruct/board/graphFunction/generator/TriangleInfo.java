@@ -10,6 +10,9 @@ import game.util.graph.Poly;
 
 import java.util.List;
 
+/**
+ * Class used to store information about the Triangle graph function
+ */
 public class TriangleInfo implements GraphInfo {
     private TriShapeType shape;
     private int dimA;

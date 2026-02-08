@@ -14,8 +14,13 @@ import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Class used to store information about the Hole graph function
+ */
 public class HoleInfo implements GraphInfo {
+    // List of ON SCREEN vertices defining the hole zone
     private List<Point> vertices;
+    // List of vertices in the board coordinates system defining the hole zone
     private Float[][] updatedVertices;
     private GraphInfo graphFunction;
 
@@ -51,7 +56,7 @@ public class HoleInfo implements GraphInfo {
         StringBuilder s = new StringBuilder();
         s.append("{");
         for (Float[] v : updatedVertices) {
-            s.append(String.format(Locale.ENGLISH," {%.2f %.2f} ", v[0], v[1]));
+            s.append(String.format(Locale.ENGLISH," {%.3f %.3f} ", v[0], v[1]));
         }
         s.append("}");
         return s.toString();

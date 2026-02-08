@@ -6,6 +6,9 @@ import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.brick.Brick;
 import game.functions.graph.generators.basis.brick.BrickShapeType;
 
+/**
+ * Class used to store information about the brick graph function
+ */
 public class BrickInfo implements GraphInfo {
     private BrickShapeType shape;
     private int dimA;

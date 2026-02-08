@@ -25,7 +25,7 @@ public class ItemListAddNode extends DefaultMutableTreeNode {
             case Board :
                 return "Add new empty board";
             case Pawn :
-                return "Add new pawn";
+                return "Add new piece";
             default :
                 return "";
         }

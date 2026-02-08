@@ -70,11 +70,17 @@ public class SurakartaInfo implements ContainerInfo{
         return boardSVG;
     }
 
+    /**
+     * Creates the board
+     */
     private void createBoard() {
         board = new SurakartaBoard(graphFunction.function(),nloops,startLoops,maker.largeStack());
         buildBoard();
     }
 
+    /**
+     * Construct the board
+     */
     private void buildBoard() {
         Game game = new Game(maker.getName(), new Players(maker.getPlayers()), new Mode(maker.getMode()),
                 new Equipment(new Item[] {board}), null);
@@ -139,6 +145,9 @@ public class SurakartaInfo implements ContainerInfo{
     }
 
     @Override
+    /**
+     * Update the placement of the board
+     */
     public void shiftPlacement(Camera c,Container view) {
         int ox = 0, oy = 0;
         if (c != null) {

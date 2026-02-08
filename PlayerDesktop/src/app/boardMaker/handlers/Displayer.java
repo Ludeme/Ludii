@@ -9,7 +9,6 @@ import app.boardMaker.display.panels.westPanel.WestPanel;
 
 import app.boardMaker.display.panels.boardPanel.BoardPanel;
 import app.boardMaker.display.panels.paramPanel.ParamPanel;
-import app.boardMaker.display.panels.pawnPanel.PawnPanel;
 import app.boardMaker.display.panels.previewPanel.PreviewPanel;
 import app.boardMaker.display.tabbedBar.BoardMakerTabbedBar;
 import app.boardMaker.display.window.BoardMakerFrame;
@@ -38,8 +37,6 @@ public class Displayer
 	private BoardPanel boardPanel;
 	/** Board parameter panel */
 	private ParamPanel paramPanel;
-	/** Panel containing list of pawns */
-	private PawnPanel pawnPanel;
 	/** Panel containing the board preview */
 	private PreviewPanel previewPanel;
 
@@ -208,11 +205,7 @@ public class Displayer
 	public void setParamPanel(ParamPanel pp) {
 		paramPanel = pp;
 	}
-	
-	public void setPawnPanel(PawnPanel pp) {
-		pawnPanel = pp;
-	}
-	
+
 	public void setPreviewPanel(PreviewPanel pp) {
 		previewPanel = pp;
 	}

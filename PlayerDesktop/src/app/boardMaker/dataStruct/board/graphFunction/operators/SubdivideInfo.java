@@ -5,6 +5,9 @@ import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.Subdivide;
 
+/**
+ * Class used to store information about the Subdivide graph function
+ */
 public class SubdivideInfo implements GraphInfo {
     private GraphInfo graphInfo;
     private int min;

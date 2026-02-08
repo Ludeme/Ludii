@@ -6,8 +6,13 @@ import game.functions.graph.operators.Merge;
 
 import java.util.ArrayList;
 
+/**
+ * Class used to store information about the Merge graph function
+ */
 public class MergeInfo implements GraphInfo {
+    // First graph to merge
     private GraphInfo first;
+    // Second graph to merge
     private GraphInfo second;
 
     private GraphFunction function;

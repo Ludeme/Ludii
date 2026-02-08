@@ -9,9 +9,13 @@ import game.util.graph.Poly;
 
 import java.util.List;
 
+/**
+ * Class used to store information about the Celtic graph function
+ */
 public class CelticInfo implements GraphInfo {
     private int nrow;
     private int ncol;
+    // List of the vertices of the polygon shape
     private List<Vertex> vertices;
 
     private GraphFunction function;

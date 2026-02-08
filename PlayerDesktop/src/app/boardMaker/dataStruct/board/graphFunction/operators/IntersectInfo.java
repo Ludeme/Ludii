@@ -6,8 +6,13 @@ import game.functions.graph.operators.Intersect;
 
 import java.util.ArrayList;
 
+/**
+ * Class used to store information about the Intersect graph function
+ */
 public class IntersectInfo implements GraphInfo {
+    // First graph to intersect
     private GraphInfo first;
+    // Second graph to intersect
     private GraphInfo second;
 
     private GraphFunction function;

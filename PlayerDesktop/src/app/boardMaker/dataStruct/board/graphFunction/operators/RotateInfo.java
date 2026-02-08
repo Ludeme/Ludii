@@ -7,6 +7,9 @@ import game.functions.graph.operators.Rotate;
 
 import java.util.Locale;
 
+/**
+ * Class used to store information about the Rotate graph function
+ */
 public class RotateInfo implements GraphInfo {
     private float angle;
     private GraphInfo graphFunction;

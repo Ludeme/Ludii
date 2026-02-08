@@ -1,5 +1,8 @@
 package app.boardMaker.utils;
 
+/**
+ * Edge for custom graph creation
+ */
 public class Edge {
     private Vertex start;
     private Vertex end;

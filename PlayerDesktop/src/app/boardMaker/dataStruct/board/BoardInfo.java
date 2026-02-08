@@ -22,18 +22,28 @@ import view.container.styles.board.graph.GraphStyle;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * A class used to represent a classic board
+ */
 public class BoardInfo implements ContainerInfo{
+    // The graph function of the board
     private GraphInfo graphInfo;
-
+    // The board
     private Board board;
+    // The context of the board
     private Context context;
-
+    // The image of the cell view of the board
     private String boardSVG;
+    // The image of the graph view of the board
     private String graphSVG;
 
+    // Size of smallest cell
     private int cellRadius;
+    // Scale of the board
     private double boardScale;
+    // Placement of the board
     private Rectangle boardPlacement;
+    // Range of the board
     private BoardRange range;
 
     private Maker maker;
@@ -70,10 +80,6 @@ public class BoardInfo implements ContainerInfo{
         return board;
     }
 
-    public int getCellRadius() {
-        return cellRadius;
-    }
-
     public String getSVG(SiteType type) {
         if (type == SiteType.Cell) {
             return boardSVG;
@@ -92,6 +98,9 @@ public class BoardInfo implements ContainerInfo{
         return "";
     }
 
+    /**
+     * Creates the board
+     */
     private void createBoard() {
         board = new Board(graphInfo.function(),null,null,null,null,
                 maker.getSiteType(),maker.largeStack());
@@ -108,6 +117,9 @@ public class BoardInfo implements ContainerInfo{
         return boardPlacement;
     }
 
+    /**
+     * Construct the board
+     */
     private void buildBoard() {
         Game game = new Game(maker.getName(), new Players(maker.getPlayers()), new Mode(maker.getMode()),
                 new Equipment(new Item[] {board}), null);
@@ -151,6 +163,9 @@ public class BoardInfo implements ContainerInfo{
     }
 
     @Override
+    /**
+     * Update the placement of the board
+     */
     public void shiftPlacement(Camera c, Container view) {
         int ox = 0, oy = 0;
         if (c != null) {

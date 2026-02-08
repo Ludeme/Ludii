@@ -11,6 +11,9 @@ import game.util.graph.Poly;
 
 import java.util.List;
 
+/**
+ * Class used to store information about the Square graph function
+ */
 public class SquareInfo implements GraphInfo {
     private SquareShapeType shape;
     private int dim;

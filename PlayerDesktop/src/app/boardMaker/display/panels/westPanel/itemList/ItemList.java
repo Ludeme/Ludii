@@ -8,9 +8,7 @@ import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListBoardNode;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListPawnNode;
 import app.boardMaker.handlers.Maker;
 import app.boardMaker.res.ItemType;
-import app.boardMaker.dataStruct.board.BoardData;
 import game.equipment.component.Piece;
-import game.functions.graph.operators.Merge;
 import game.types.play.RoleType;
 
 import javax.swing.*;
@@ -44,6 +42,7 @@ public class ItemList extends JPanel {
         boardRoot = new DefaultMutableTreeNode("Boards");
         boardRoot.add(new ItemListAddNode(ItemType.Board, this,maker));
         boardListTree = new JTree(boardRoot);
+        boardListTree.setToggleClickCount(0);
         renderer = new ItemListRenderer(boardListTree);
         boardListTree.setCellRenderer(renderer);
 
@@ -131,15 +130,6 @@ public class ItemList extends JPanel {
     }
 
     private void addToPieces(String name, RoleType owner, int index) {
-        /*if (owner == RoleType.Each) {
-            for (int i = 1; i <= maker.getPlayers(); i++) {
-                pieces.put(name + i,new Piece(name + i,owner,null,null,null,null,null,null));
-            }
-        } else if (owner == RoleType.Shared) {
-            pieces.put(name,new Piece(name,owner,null,null,null,null,null,null));
-        } else {
-            pieces.put(name + owner.ordinal(),new Piece(name + owner.ordinal(),owner,null,null,null,null,null,null));
-        }*/
         PieceInfo pieceInfo = maker.state().pieceInfo(index);
         pieceInfo.piecesUsed().add(new Piece(name,owner,null,null,null,null,null,null));
     }

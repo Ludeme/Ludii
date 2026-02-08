@@ -44,13 +44,14 @@ public class CustomGraphPanel extends OptionPanel {
         gvContainer.addTab("Custom Graph",gv);
         displayer.getBoardMakerPane().add(gvContainer,BorderLayout.CENTER);
 
-
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout());
+        JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         //setPreferredSize(new Dimension(displayer.getParamPanel().getWidth(), displayer.getParamPanel().getHeight()));
 
         pl = new PreviewListener(this, displayer.getPreviewPanel());
 
-        add(Box.createVerticalStrut(5));
+        p.add(Box.createVerticalStrut(5));
 
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         ButtonGroup group = new ButtonGroup();
@@ -76,6 +77,12 @@ public class CustomGraphPanel extends OptionPanel {
         group.add(button);
         panel.add(button);
 
+        p.add(panel);
+
+        p.add(Box.createVerticalStrut(5));
+
+        panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
         button = new JRadioButton("Remove vertex");
         button.addActionListener(new ActionListener() {
             @Override
@@ -96,9 +103,9 @@ public class CustomGraphPanel extends OptionPanel {
         group.add(button);
         panel.add(button);
 
-        add(panel);
+        p.add(panel);
 
-        add(Box.createVerticalGlue());
+        p.add(Box.createVerticalGlue());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(new CreateButton(new ActionListener()
@@ -125,9 +132,11 @@ public class CustomGraphPanel extends OptionPanel {
             }
         }));
 
-        add(buttonPanel);
+        p.add(buttonPanel);
 
-        add(Box.createVerticalStrut(5));
+        p.add(Box.createVerticalStrut(5));
+
+        add(p,BorderLayout.PAGE_START);
 
         displayer.getPreviewPanel().setBoard(createInfo());
     }

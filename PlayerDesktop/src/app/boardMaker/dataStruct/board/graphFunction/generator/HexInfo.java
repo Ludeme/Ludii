@@ -10,6 +10,9 @@ import game.util.graph.Poly;
 
 import java.util.List;
 
+/**
+ * Class used to store information about the Hex graph function
+ */
 public class HexInfo implements GraphInfo {
     private HexShapeType shape;
     private int dimA;

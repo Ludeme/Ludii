@@ -12,13 +12,21 @@ import other.topology.Vertex;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Class used to store information about the Concentric graph function
+ */
 public class AddInfo implements GraphInfo {
+    // Type of graph element to be added
     private SiteType added;
+    // The graph function to be modified
     private GraphInfo graphFunction;
+    // Vertices to add, only used when added == Vertex
     private Float[][] vertices;
+    // List of edges to add
     private List<Float[][]> edges;
+    // List of cells to add
     private List<Float[][]> cells;
-
+    // The current function
     private GraphFunction function;
 
     public AddInfo(SiteType added, GraphInfo gfct, Float[][] vertices, List<Float[][]> edges, List<Float[][]> cells) {
@@ -104,7 +112,7 @@ public class AddInfo implements GraphInfo {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < vertices.length; i++) {
             Float[] v = vertices[i];
-            s.append(String.format(Locale.ENGLISH,"{%.2f %.2f}",v[0],v[1]));
+            s.append(String.format(Locale.ENGLISH,"{%.3f %.3f}",v[0],v[1]));
             if (i != vertices.length - 1) {
                 s.append(" ");
             }
@@ -118,7 +126,7 @@ public class AddInfo implements GraphInfo {
             Float[][] e = edges.get(i);
             Float[] va = e[0], vb = e[1];
             s.append("{");
-            s.append(String.format(Locale.ENGLISH,"{%.2f %.2f} {%.2f %.2f}",
+            s.append(String.format(Locale.ENGLISH,"{%.3f %.3f} {%.3f %.3f}",
                     va[0],va[1],vb[0],vb[1]));
             s.append("}");
             if (i != edges.size() - 1) {
@@ -135,7 +143,7 @@ public class AddInfo implements GraphInfo {
             s.append("{");
             for (int j = 0; j < c.length; j++) {
                 Float[] v = c[j];
-                s.append(String.format(Locale.ENGLISH,"{%.2f %.2f}",v[0],v[1]));
+                s.append(String.format(Locale.ENGLISH,"{%.3f %.3f}",v[0],v[1]));
                 if (j != c.length - 1) {
                     s.append(" ");
                 }

@@ -6,6 +6,9 @@ import game.functions.graph.operators.Union;
 
 import java.util.ArrayList;
 
+/**
+ * Class used to store information about the Union graph function
+ */
 public class UnionInfo implements GraphInfo {
     private GraphInfo first;
     private GraphInfo second;

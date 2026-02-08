@@ -27,6 +27,7 @@ public class Writer {
         description.append(String.format("(game \"%s\"\n",maker.getName()));
 
         description.append(String.format("(players %d)\n",maker.getPlayers()));
+        description.append(String.format("(mode %s)\n",maker.getMode()));
 
         description.append("(equipment {\n");
         createBoardDescription(description,maker.state().currentBoardInfo());

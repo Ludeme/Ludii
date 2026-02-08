@@ -10,6 +10,9 @@ import game.util.graph.Poly;
 
 import java.util.List;
 
+/**
+ * Class used to store information about the Tiling graph function
+ */
 public class SemiregularInfo implements GraphInfo {
     private TilingType tiling;
     private int dimA;

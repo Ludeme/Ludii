@@ -2,6 +2,9 @@ package app.boardMaker.utils;
 
 import java.util.Locale;
 
+/**
+ * Vertex for custom graph creation
+ */
 public class Vertex
 {
 	private double x;

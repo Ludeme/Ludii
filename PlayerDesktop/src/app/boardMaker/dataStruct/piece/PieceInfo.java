@@ -6,9 +6,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * A class to represent a set of pieces
+ */
 public class PieceInfo {
+    // Maps the coordinates of sites and the pieces placed on them
     private HashMap<String, String> piecesPlacedbySite;
+    // Maps a piece and the coordinates of all the sites it is placed on
     private HashMap<String, List<String>> piecesPlacedbyName;
+    // List of pieces used in the set
     private List<Piece> piecesUsed;
 
     public PieceInfo() {
@@ -17,7 +23,12 @@ public class PieceInfo {
         piecesUsed = new ArrayList<>();
     }
 
-    public void addPiece(String site, String pieceName) {
+    /**
+     * Place a piece on a site
+     * @param site the coordinates of the site
+     * @param pieceName internal name of the piece
+     */
+    public void placePiece(String site, String pieceName) {
         piecesPlacedbySite.put(site,pieceName);
         if (piecesPlacedbyName.containsKey(pieceName)) {
             piecesPlacedbyName.get(pieceName).add(site);
@@ -28,6 +39,10 @@ public class PieceInfo {
         }
     }
 
+    /**
+     * Removes a piece from a site
+     * @param site the site to remove from
+     */
     public void removePiece(String site) {
         String piece = piecesPlacedbySite.get(site);
         piecesPlacedbySite.remove(site);
@@ -42,10 +57,10 @@ public class PieceInfo {
         return piecesPlacedbySite;
     }
 
-    public HashMap<String,List<String>> piecesPlacedbyName() {
-        return piecesPlacedbyName;
-    }
-
+    /**
+     * Creates the description of the start rules
+     * @return the start rules
+     */
     public String setupDescription() {
         StringBuilder s = new StringBuilder();
 
@@ -66,6 +81,10 @@ public class PieceInfo {
         return s.toString();
     }
 
+    /**
+     * Creates the description of pieces in the equipment
+     * @return the pieces definition
+     */
     public String pieceDescription() {
         StringBuilder s = new StringBuilder();
 

@@ -7,18 +7,24 @@ import javax.swing.JPanel;
 
 /**
  * Class acting as a camera for a panel using classic coordinates (not Java)
+ * Controlled using mouse wheel click (button 2)
  */
 public class Camera extends MouseAdapter
 {
 	private JPanel view;
-	
+	/** Last x position of the camera */
 	private int lastX;
+	/** Last y position of the camera */
 	private int lastY;
+	/** Total x offset **/
 	private int offX = 0;
+	/** Total y offset **/
 	private int offY = 0;
+	/** X displacement **/
 	private int dx = 0;
+	/** Y displacement **/
 	private int dy = 0;
-	
+	/** Mouse pressed **/
 	private boolean pressed = false;
 	
 	public Camera(JPanel view) {
@@ -67,13 +73,5 @@ public class Camera extends MouseAdapter
 		if (e.getButton() == 2) {
 			pressed = false;
 		}
-	}
-
-	public int dx() {
-		return dx;
-	}
-
-	public int dy() {
-		return dy;
 	}
 }

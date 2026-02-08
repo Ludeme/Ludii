@@ -4,6 +4,9 @@ import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.SplitCrossings;
 
+/**
+ * Class used to store information about the SplitCrossings graph function
+ */
 public class SplitCrossInfo implements GraphInfo {
     GraphInfo graphFunction;
 

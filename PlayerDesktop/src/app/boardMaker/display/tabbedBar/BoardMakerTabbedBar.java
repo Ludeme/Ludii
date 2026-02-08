@@ -151,7 +151,11 @@ public class BoardMakerTabbedBar extends JTabbedPane
 		playButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				maker.writeAndPlay();
+				if (maker.state().currentBoardInfo().board() == null) {
+					JOptionPane.showMessageDialog(maker.getDisplayer().getFrame(),"Please select a non empty board first!","Warning!",JOptionPane.WARNING_MESSAGE);
+				} else {
+					maker.writeAndPlay();
+				}
 			}
 		});
 		toolbar.add(playButton);

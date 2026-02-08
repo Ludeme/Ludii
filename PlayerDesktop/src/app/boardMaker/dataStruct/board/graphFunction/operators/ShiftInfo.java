@@ -7,6 +7,9 @@ import game.functions.graph.operators.Shift;
 
 import java.util.Locale;
 
+/**
+ * Class used to store information about the Shift graph function
+ */
 public class ShiftInfo implements GraphInfo {
     private float dx;
     private float dy;

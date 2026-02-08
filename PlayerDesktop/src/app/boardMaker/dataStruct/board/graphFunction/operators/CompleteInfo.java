@@ -4,6 +4,9 @@ import app.boardMaker.dataStruct.board.graphFunction.GraphInfo;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.operators.Complete;
 
+/**
+ * Class used to store information about the Complete graph function
+ */
 public class CompleteInfo implements GraphInfo {
     private GraphInfo graphFunction;
     private boolean eachCell;

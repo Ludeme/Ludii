@@ -5,6 +5,9 @@ import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.basis.quadhex.Quadhex;
 
+/**
+ * Class used to store information about the Quadhex graph function
+ */
 public class QuadhexInfo implements GraphInfo {
     private int dim;
     private boolean thirds;

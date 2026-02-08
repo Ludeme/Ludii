@@ -5,6 +5,9 @@ import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.shape.Wedge;
 
+/**
+ * Class used to store information about the Wedge graph function
+ */
 public class WedgeInfo implements GraphInfo {
     private int nrow;
     private int ncol;

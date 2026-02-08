@@ -8,6 +8,9 @@ import game.util.graph.Graph;
 
 import java.util.List;
 
+/**
+ * Class used to store information about custom graph (ex: (graph ...))
+ */
 public class CustomInfo implements GraphInfo {
     private List<Vertex> vertices;
     private List<Edge> edges;

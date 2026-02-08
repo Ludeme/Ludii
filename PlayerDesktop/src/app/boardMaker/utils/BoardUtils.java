@@ -12,44 +12,11 @@ import game.util.graph.Graph;
 import java.awt.geom.Point2D;
 
 public class BoardUtils {
-    public static Board copyBoard(Board old, Maker maker) {
-        Board newBoard;
-        if (old instanceof MancalaBoard) {
-            MancalaBoard o = (MancalaBoard) old;
-            newBoard = new MancalaBoard(o.numRows(),o.numColumns(),o.storeType(),o.numStore(),maker.largeStack(),null,null);
-        } else if (old instanceof SurakartaBoard) {
-            SurakartaBoard s = (SurakartaBoard) old;
-            newBoard = new SurakartaBoard(s.graphFunction(),s.getNumLoops(),s.getStartAtRow(),maker.largeStack());
-        } else {
-            if (old.tracks().isEmpty()) {
-                newBoard = new Board(old.graphFunction(), null,
-                        null,null,null,
-                        maker.getSiteType(),maker.largeStack());
-            } else {
-                newBoard = new Board(old.graphFunction(), old.tracks().getFirst(),
-                        old.tracks().toArray(new Track[0]),null,null,
-                        maker.getSiteType(),maker.largeStack());
-            }
-        }
-
-        return newBoard;
-    }
-
-    public static Board change_function(GraphFunction newFunc, Board old, Maker maker) {
-        Board newBoard;
-        if (old.tracks().isEmpty()) {
-            newBoard = new Board(newFunc,null,
-                    null,null,null,
-                    maker.getSiteType(),maker.largeStack());
-        } else {
-            newBoard = new Board(newFunc,old.tracks().getFirst(),
-                    old.tracks().toArray(new Track[0]),null,null,
-                    maker.getSiteType(),maker.largeStack());
-        }
-
-        return newBoard;
-    }
-
+    /**
+     * Computes the range of the graph (ie: min and max values along x and y axis)
+     * @param graph the graph to compute range from
+     * @return the range of the graph
+     */
     public static BoardRange computeRange(Graph graph) {
         double minX = Double.POSITIVE_INFINITY;
         double minY = Double.POSITIVE_INFINITY;

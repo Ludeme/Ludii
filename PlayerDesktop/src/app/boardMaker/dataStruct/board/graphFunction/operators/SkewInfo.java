@@ -6,6 +6,9 @@ import game.functions.graph.operators.Skew;
 
 import java.util.Locale;
 
+/**
+ * Class used to store information about the Skew graph function
+ */
 public class SkewInfo implements GraphInfo {
     private float value;
     private GraphInfo graphFunction;

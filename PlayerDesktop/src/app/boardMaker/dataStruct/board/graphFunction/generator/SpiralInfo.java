@@ -5,6 +5,9 @@ import game.functions.dim.DimConstant;
 import game.functions.graph.GraphFunction;
 import game.functions.graph.generators.shape.Spiral;
 
+/**
+ * Class used to store information about the Spiral graph function
+ */
 public class SpiralInfo implements GraphInfo {
     private int turns;
     private int sites;

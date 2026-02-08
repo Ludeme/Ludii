@@ -1,6 +1,5 @@
 package app.boardMaker.display.panels.boardPanel;
 
-import app.boardMaker.dataStruct.board.BoardData;
 import app.boardMaker.dataStruct.board.BoardRange;
 import app.boardMaker.dataStruct.state.BoardMakerState;
 import app.boardMaker.handlers.Maker;

@@ -26,13 +26,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Dialog to select piece
+ */
 public class PawnChoiceDialog extends JDialog {
     private ItemList itemList;
     private Maker maker;
-
+    // Owner of the piece
     private JComboBox<RoleType> ownerBox;
+    // Name of selected piece
     private String selectedPawn = "Dot";
-
+    // Node in the ItemList where to add the new piece
     private DefaultMutableTreeNode parentNode;
 
     public PawnChoiceDialog(ItemList itemList, Maker maker, DefaultMutableTreeNode parent) {
@@ -64,7 +68,7 @@ public class PawnChoiceDialog extends JDialog {
         JPanel listPanel = new JPanel();
         listPanel.setLayout(new BoxLayout(listPanel,BoxLayout.Y_AXIS));
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel selectLabel = new JLabel("Select a pawn: ");
+        JLabel selectLabel = new JLabel("Select a piece: ");
         p.add(selectLabel);
         listPanel.add(p);
         listPanel.add(Box.createVerticalStrut(5));

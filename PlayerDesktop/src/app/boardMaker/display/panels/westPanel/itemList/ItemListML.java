@@ -3,7 +3,6 @@ package app.boardMaker.display.panels.westPanel.itemList;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListAddNode;
 import app.boardMaker.display.panels.westPanel.itemList.nodes.ItemListBoardNode;
 import app.boardMaker.handlers.Maker;
-import app.boardMaker.dataStruct.board.BoardData;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
