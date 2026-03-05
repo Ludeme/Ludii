@@ -146,7 +146,7 @@ public class BoardDrawSpace extends JPanel {
             for (List<Integer> cell : addedCells) {
                 for (int i = 0; i < cell.size(); i++) {
                     Point[] pts = new Point[2];
-                    int id1 = cell.get(i), id2 = i == cell.size() - 1 ? cell.getFirst() : cell.get(i + 1);
+                    int id1 = cell.get(i), id2 = i == cell.size() - 1 ? cell.get(0) : cell.get(i + 1);
                     if (id1 < elements.size()) {
                         pts[0] = CoordinatesUtil.screenPosn(elements.get(id1).centroid(), state.currentBoardInfo().placement());
                     } else {
@@ -178,9 +178,9 @@ public class BoardDrawSpace extends JPanel {
             }
 
             for (int i = 0; i < elements.size(); i++) {
-                if ((curEdge != null && curEdge[0] == i) || (curCell != null && curCell.getLast() == i)) {
+                if ((curEdge != null && curEdge[0] == i) || (curCell != null && curCell.get(curCell.size() - 1) == i)) {
                     g2d.setColor(Color.blue);
-                } else if (curCell != null && curCell.getFirst() == i) {
+                } else if (curCell != null && curCell.get(0) == i) {
                     g2d.setColor(Color.red);
                 } else {
                     g2d.setColor(Color.gray);
@@ -190,9 +190,9 @@ public class BoardDrawSpace extends JPanel {
             }
 
             for (int i = 0; i < addedVertices.size(); i++) {
-                if ((curEdge != null && curEdge[0] - elements.size() == i) || (curCell != null && curCell.getLast() - elements.size() == i)) {
+                if ((curEdge != null && curEdge[0] - elements.size() == i) || (curCell != null && curCell.get(curCell.size() - 1) - elements.size() == i)) {
                     g2d.setColor(Color.blue);
-                } else if (curCell != null && curCell.getFirst() - elements.size() == i) {
+                } else if (curCell != null && curCell.get(0) - elements.size() == i) {
                     g2d.setColor(Color.red);
                 } else {
                     g2d.setColor(Color.green);
@@ -239,7 +239,7 @@ public class BoardDrawSpace extends JPanel {
             if (pt.equals(click) || (Math.sqrt(Math.pow(pt.x - click.x,2) + Math.pow(pt.y - click.y,2))) < (double) dotSize / 2) {
                 vertices.remove(pt);
                 if (pt.equals(current) && !vertices.isEmpty()) {
-                    current = vertices.getLast();
+                    current = vertices.get(vertices.size() - 1);
                 } else {
                     current = null;
                 }
@@ -421,7 +421,7 @@ public class BoardDrawSpace extends JPanel {
                         if (!curCell.contains(i)) {
                             curCell.add(i);
                             repaint();
-                        } else if (curCell.getFirst() == i) {
+                        } else if (curCell.get(0) == i) {
                             addedCells.add(curCell);
                             curCell = null;
                             repaint();
@@ -445,7 +445,7 @@ public class BoardDrawSpace extends JPanel {
                         if (!curCell.contains(i + elements.size())) {
                             curCell.add(i + elements.size());
                             repaint();
-                        } else if (curCell.getFirst() == i + elements.size()) {
+                        } else if (curCell.get(0) == i + elements.size()) {
                             addedCells.add(curCell);
                             curCell = null;
                             repaint();

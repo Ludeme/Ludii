@@ -95,17 +95,17 @@ public class MergeDialog extends JDialog {
     private void computeBoard() {
         GraphInfo graph;
         switch (transformation) {
-            case Transformations.Merge :
+            case Merge :
                 graph = new MergeInfo(left.graphInfo,right.graphInfo);
                 resultInfo.setGraphInfo(graph);
                 break;
 
-            case Transformations.Union :
+            case Union :
                 graph = new UnionInfo(left.graphInfo,right.graphInfo);
                 resultInfo.setGraphInfo(graph);
                 break;
 
-            case Transformations.Intersect :
+            case Intersect :
                 graph = new IntersectInfo(left.graphInfo,right.graphInfo);
                 resultInfo.setGraphInfo(graph);
                 break;

@@ -106,8 +106,8 @@ public class GraphView extends JPanel {
                 edgesToRemove.add(i);
             }
         }
-        for (int i : edgesToRemove.reversed()) {
-            edges.remove(i);
+        for (int i = edgesToRemove.size() - 1; i >= 0; i--) {
+            edges.remove((int)edgesToRemove.get(i));
         }
         vertexes.remove(hoveredVertex);
         hoveredVertex = null;
