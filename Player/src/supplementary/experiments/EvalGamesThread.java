@@ -28,6 +28,7 @@ public class EvalGamesThread extends Thread
 	 * @param AIName 
 	 * @param numGames 
 	 * @param thinkingTime 
+	 * @param iterationLimit
 	 * @param maxNumTurns 
 	 * @return Constructs a thread for games to be evaluated in
 	 */
@@ -40,6 +41,7 @@ public class EvalGamesThread extends Thread
 		final String AIName,
 		final int numGames,
 		final double thinkingTime,
+		final int iterationLimit,
 		final int maxNumTurns, 
 		final List<Metric> metricsToEvaluate, 
 		final ArrayList<Double> weights,
@@ -56,6 +58,7 @@ public class EvalGamesThread extends Thread
 				AIName,
 				numGames,
 				thinkingTime,
+				iterationLimit,
 				maxNumTurns,
 				metricsToEvaluate,
 				weights,
@@ -110,6 +113,9 @@ public class EvalGamesThread extends Thread
 		/** Thinking time per move (in seconds) */
 		protected final double thinkingTime;
 		
+		/** Iteration limit per move (-1 means no limit) */
+		protected final int iterationLimit;
+		
 		/** The metrics we want to evaluate */
 		protected final List<Metric> metricsToEvaluate;
 		
@@ -128,6 +134,7 @@ public class EvalGamesThread extends Thread
 		 * @param AIName
 		 * @param numGames 
 		 * @param thinkingTime 
+		 * @param iterationLimit
 		 * @param maxNumTurns 
 		 * @param weights
 		 * @param metricsToEvaluate
@@ -141,6 +148,7 @@ public class EvalGamesThread extends Thread
 			final String AIName,
 			final int numGames,
 			final double thinkingTime,
+			final int iterationLimit,
 			final int maxNumTurns, 
 			final List<Metric> metricsToEvaluate, 
 			final ArrayList<Double> weights,
@@ -155,6 +163,7 @@ public class EvalGamesThread extends Thread
 			this.AIName = AIName;
 			this.numGames = numGames;
 			this.thinkingTime = thinkingTime;
+			this.iterationLimit = iterationLimit;
 			this.metricsToEvaluate = metricsToEvaluate;
 			this.weights = weights;
 			this.useDatabaseGames = useDatabaseGames;
@@ -165,7 +174,8 @@ public class EvalGamesThread extends Thread
 		@Override
 		public void run()
 		{
-			EvalGames.evaluateGame(evaluation, report, game, gameOptions, AIName, numGames, thinkingTime, maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
+			EvalGames.evaluateGame(evaluation, report, game, gameOptions, AIName, numGames, thinkingTime, iterationLimit,
+					maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
 		}
 	}
 

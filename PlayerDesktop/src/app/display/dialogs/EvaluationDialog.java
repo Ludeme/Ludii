@@ -428,6 +428,7 @@ public class EvaluationDialog extends JDialog
 				final int numberIterations = Integer.valueOf(textFieldNumberTrials.getText().toString()).intValue();
 				
 				double thinkTime = 0.5;
+				int iterationLimit = -1;
 				String AIName = null;
 				
 				switch(comboBoxAIAgents.getSelectedItem().toString())
@@ -465,7 +466,8 @@ public class EvaluationDialog extends JDialog
 				for (final Double d : weights)
 					weightsCopy.add(new Double(d.doubleValue()));
 				
-				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, AIName, metrics, weightsCopy, useDatabaseTrialsCheckBox.isSelected());
+				AIPlayer.AIEvalution(app, report, numberIterations, maxTurns, thinkTime, iterationLimit, AIName, metrics, 
+						weightsCopy, useDatabaseTrialsCheckBox.isSelected());
 				DesktopApp.view().tabPanel().select(TabView.PanelAnalysis);
 			}
 		});

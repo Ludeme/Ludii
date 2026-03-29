@@ -23,7 +23,9 @@ public class AIPlayer
 	/**
 	 * Evaluates a single specified game and option combination, based on the AI parameters passed in.
 	 */
-	public static void AIEvalution(final PlayerApp app, final Report report, final int numberTrials, final int maxTurns, final double thinkTime, final String AIName, final List<Metric> metricsToEvaluate, final ArrayList<Double> weights, final boolean useDatabaseGames)
+	public static void AIEvalution(final PlayerApp app, final Report report, final int numberTrials, 
+			final int maxTurns, final double thinkTime, final int iterationLimit, final String AIName, 
+			final List<Metric> metricsToEvaluate, final ArrayList<Double> weights, final boolean useDatabaseGames)
 	{
 		final Evaluation evaluation = new Evaluation();
 		final Game game = app.manager().ref().context().game();
@@ -37,7 +39,7 @@ public class AIPlayer
 		final EvalGamesThread evalThread = 	EvalGamesThread.construct
 											(
 												evaluation, report, game, options, AIName, 
-												numberTrials, thinkTime, maxTurns,
+												numberTrials, thinkTime, iterationLimit, maxTurns,
 												metricsToEvaluate, weights, useDatabaseGames
 											);
 		evalThread.setDaemon(true);

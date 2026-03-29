@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
@@ -50,12 +52,146 @@ public class EvalGames
 	//-------------------------------------------------------------------------
 	
 	/**
+	 * Evaluates given list of games
+	 */
+	private static void evaluateGames
+	(
+		final Report report, final List<String> gameNames, final int numberTrials, final int maxTurns, 
+		final double thinkTime, final int iterationLimit, final String AIName, final boolean useDBGames
+	)
+	{
+		final Evaluation evaluation = new Evaluation();
+		final List<Metric> metrics = evaluation.conceptMetrics();
+		final ArrayList<Double> weights = new ArrayList<>();
+		for (int i = 0; i < metrics.size(); i++)
+			weights.add(Double.valueOf(1));
+		
+		String outputString = "GameName,";
+		for (int m = 0; m < metrics.size(); m++)
+		{
+			outputString += metrics.get(m).name() + ",";
+		}
+		outputString = outputString.substring(0, outputString.length()-1) + "\n";
+		
+		final String[] allGameNames = FileHandling.listGames();
+		final List<String> gameNamesToTest = new ArrayList<String>();
+
+		for (final String gameName : allGameNames)
+		{
+			final String name = gameName.replaceAll(Pattern.quote("\\"), "/");
+			
+			boolean nameMatch = false;
+			for (final String mustContain : gameNames)
+			{
+				if (name.contains(mustContain))
+				{
+					nameMatch = true;
+					break;
+				}
+			}
+			
+			if (!nameMatch)
+				continue;
+
+			final String[] nameParts = name.split(Pattern.quote("/"));
+			boolean exclude = false;
+
+			for (int i = 0; i < nameParts.length - 1; i++)
+			{
+				final String part = nameParts[i].toLowerCase();
+				if (part.contains("plex"))
+				{
+					exclude = true;
+					break;
+				}
+
+				if (part.contains("wishlist"))
+				{
+					exclude = true;
+					break;
+				}
+
+				if (part.contains("wip"))
+				{
+					exclude = true;
+					break;
+				}
+
+				if (part.contains("subgame"))
+				{
+					exclude = true;
+					break;
+				}
+
+				if (part.contains("deduction"))
+				{
+					exclude = true;
+					break;
+				}
+
+				if (part.contains("reconstruction"))
+				{
+					exclude = true;
+					break;
+				}
+
+				if (part.contains("test"))
+				{
+					exclude = true;
+					break;
+				}
+
+				if (part.contains("def"))
+				{
+					exclude = true;
+					break;
+				}
+
+				if (part.contains("proprietary"))
+				{
+					exclude = true;
+					break;
+				}
+			}
+
+			if (!exclude)
+			{
+				gameNamesToTest.add(name);
+			}
+		}
+		
+		for (final String s : gameNamesToTest)
+		{
+			System.out.println("\n" + s);
+			final String gameName = s.split("\\/")[s.split("\\/").length-1];
+			final Game tempGame = GameLoader.loadGameFromName(gameName);
+			
+			if (tempGame.hasSubgames()) // TODO, we don't currently support matches
+				continue;
+			
+			outputString += evaluateGame(evaluation, report, tempGame, 
+					tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), 
+					AIName, numberTrials, thinkTime, iterationLimit, maxTurns, metrics, weights, useDBGames);
+		}
+		
+		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath, false)))
+		{
+			writer.write(outputString);
+			writer.close();
+		}
+		catch (final IOException e1)
+		{
+			e1.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Evaluates all games/rulesets.
 	 */
 	private static void evaluateAllGames
 	(
 		final Report report, final int numberTrials, final int maxTurns, final double thinkTime, 
-		final String AIName, final boolean useDBGames
+		final int iterationLimit, final String AIName, final boolean useDBGames
 	)
 	{
 		final Evaluation evaluation = new Evaluation();
@@ -89,11 +225,15 @@ public class EvalGames
 					// Record ludemeplexes for each ruleset
 					for (int rs = 0; rs < rulesets.size(); rs++)
 						if (!rulesets.get(rs).optionSettings().isEmpty())
-							outputString += evaluateGame(evaluation, report, tempGame, rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
+							outputString += evaluateGame(evaluation, report, tempGame, 
+									rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, iterationLimit,
+									maxTurns, metrics, weights, useDBGames);
 				}
 				else
 				{
-					outputString += evaluateGame(evaluation, report, tempGame, tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), AIName, numberTrials, thinkTime, maxTurns, metrics, weights, useDBGames);
+					outputString += evaluateGame(evaluation, report, tempGame, 
+							tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), 
+							AIName, numberTrials, thinkTime, iterationLimit, maxTurns, metrics, weights, useDBGames);
 				}
 			}
 		}
@@ -123,6 +263,7 @@ public class EvalGames
 		final String AIName,
 		final int numGames,
 		final double thinkingTimeEach,
+		final int iterationLimit,
 		final int maxNumTurns, 
 		final List<Metric> metricsToEvaluate, 
 		final ArrayList<Double> weights,
@@ -286,7 +427,7 @@ public class EvalGames
 						context, 
 						aiPlayers, 
 						thinkingTime, 
-						-1, -1, 0.0,
+						iterationLimit, -1, 0.0,
 						true, // block call until it returns
 						false, false, 
 						null, null
@@ -437,6 +578,7 @@ public class EvalGames
 	/**
 	 * @param args
 	 */
+	@SuppressWarnings("unchecked")
 	public static void main(final String[] args)
 	{
 		// Define options for arg parser
@@ -466,6 +608,12 @@ public class EvalGames
 				.withNumVals(1)
 				.withType(OptionTypes.Double));
 		argParse.addOption(new ArgOption()
+				.withNames("--iteration-limit")
+				.help("Iteration limit for AI.")
+				.withDefault(Integer.valueOf(-1))
+				.withNumVals(1)
+				.withType(OptionTypes.Int));
+		argParse.addOption(new ArgOption()
 				.withNames("--AIName")
 				.help("Name of the Agent to use.")
 				.withDefault("Ludii AI")
@@ -477,6 +625,12 @@ public class EvalGames
 				.withDefault(Boolean.valueOf(true))
 				.withNumVals(1)
 				.withType(OptionTypes.Boolean));
+		argParse.addOption(new ArgOption()
+				.withNames("--game-names")
+				.help("Only games that include at least one of the provided strings in their name are included.")
+				.withDefault(Arrays.asList(""))
+				.withNumVals("+")
+				.withType(OptionTypes.String));
 		
 		if (!argParse.parseArguments(args))
 			return;
@@ -486,7 +640,15 @@ public class EvalGames
 		final double thinkTime = argParse.getValueDouble("--thinkTime");
 		final String AIName = argParse.getValueString("--AIName");
 		final boolean useDatabaseGames = argParse.getValueBool("--useDatabaseGames");
+		final int iterationLimit = argParse.getValueInt("--iteration-limit");
 		
-		evaluateAllGames(null, numberTrials, maxTurns, thinkTime, AIName, useDatabaseGames);
+		List<String> gameNames = ((List<String>) argParse.getValue("--game-names"));
+		
+		if (gameNames.isEmpty()) {
+			evaluateAllGames(new Report(), numberTrials, maxTurns, thinkTime, iterationLimit, AIName, useDatabaseGames);
+		}
+		else {
+			evaluateGames(new Report(), gameNames, numberTrials, maxTurns, thinkTime, iterationLimit, AIName, useDatabaseGames);
+		}
 	}
 }
