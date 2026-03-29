@@ -382,12 +382,14 @@ NEW CTOR
 PARAM JAVADOC: [<repetitionType>]: The type of repetition [Positional].
 EXAMPLE: (is Repeat Positional)
 NEW CTOR
-(is Pattern {<stepType>} [<siteType>] [from:<int>] ([what:<int>]  | [whats:{<int>}]))
-PARAM JAVADOC: {<stepType>}: The walk describing the pattern.
+(is <isPatternType> [{<stepType>}] [<siteType>] ([from:<int>]) ([what:<int>] ([whats:{<int>}]) ([froms:<region>])
+PARAM JAVADOC: <isPatternType>: The type of query to perform.
+PARAM JAVADOC: [{<stepType>}]: The walk describing the pattern.
 PARAM JAVADOC: [<siteType>]: The type of the site from to detect the pattern.
 PARAM JAVADOC: [from:<int>]: The site from to detect the pattern [(last To)].
 PARAM JAVADOC: [what:<int>]: The piece to check in the pattern [piece in from].
 PARAM JAVADOC: [whats:{<int>}]: The sequence of pieces to check in the pattern [piece in from].
+PARAM JAVADOC: [froms:<region>]: The sites from to detect the pattern [(last To)].
 EXAMPLE: (is Pattern {F R F R F})
 NEW CTOR
 (is <isTreeType> (<player>  | <roleType>))
@@ -540,6 +542,12 @@ PARAM JAVADOC: <region>: The region.
 PARAM JAVADOC: <intArrayFunction>: The array of integers.
 EXAMPLE: (is In {(last To) (last From)} (sites Mover))
 EXAMPLE: (is In (last To) (sites Mover))
+NEW CTOR
+(is Freedom [<siteType>] <region> [<int>])
+PARAM JAVADOC: [<siteType>]: 
+PARAM JAVADOC: <region>: The locations of the piece to check.
+PARAM JAVADOC: [<int>]: Check if still freedom if a piece is placed at this position
+EXAMPLE: (is Threatened (id "King" Mover) at:(to))
 TYPE: game.functions.booleans.is.IsAngleType
 TYPE JAVADOC: Defines the types of Is for a connected or blocked test.
 CONST JAVADOC: Acute: To check if a site and two other sites checking conditions form an acute angle (< 90 degrees).
@@ -567,6 +575,10 @@ CONST JAVADOC: SidesMatch: To detect whether the terminus of a tile matches with
 CONST JAVADOC: PipsMatch: To detect whether the pips of a domino match its neighbours.
 CONST JAVADOC: Flat: To Ensures that in a 3D board, all the pieces in the bottom layer must be  placed so that they do not fall.
 CONST JAVADOC: AnyDie: To check if any current die is equal to a specific value.
+TYPE: game.functions.booleans.is.IsPatternType
+TYPE JAVADOC: Defines the types of Is for the detection of a pattern.
+CONST JAVADOC: Pattern: To detect a pattern from a site.
+CONST JAVADOC: PyramidCorners: To detect a pyramid corners from a site.
 TYPE: game.functions.booleans.is.IsPlayerType
 TYPE JAVADOC: Defines the types of Is test for a player.
 CONST JAVADOC: Mover: To check if a player is the mover.
@@ -1505,13 +1517,14 @@ CONST JAVADOC: Team16: Team 16.
 TYPE: game.functions.intArray.sizes.Sizes
 TYPE JAVADOC: Returns an array of sizes of many regions.
 NEW CTOR
-(sizes Group [<siteType>] [<direction>] ([<roleType>]  | [of:<int>]  | [If:<boolean>]) [min:<int>])
+(sizes Group [<siteType>] [<direction>] ([<roleType>]  | [of:<int>]  | [If:<boolean>]) [min:<int>] [isVisible:<boolean>])
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: [<direction>]: The directions of the connection between elements in the group [Adjacent].
 PARAM JAVADOC: [<roleType>]: The role of the player [All].
 PARAM JAVADOC: [of:<int>]: The index of the player.
 PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the group.
 PARAM JAVADOC: [min:<int>]: Minimum size of each group [0].
+PARAM JAVADOC: [isVisible:<boolean>]: If all items of group have to be visible
 EXAMPLE: (sizes Group Orthogonal P1)
 TYPE: game.functions.intArray.state.Rotations
 TYPE JAVADOC: Returns the list of rotation indices according to a tiling type.
@@ -1726,12 +1739,15 @@ EXAMPLE: (count Players)
 EXAMPLE: (count Vertices)
 EXAMPLE: (count Moves)
 NEW CTOR
-(count [<countSiteType>] [<siteType>] ([in:<region>]  | [at:<int>]  | [<string>]))
+(count [<countSiteType>] [<siteType>] ([in:<region>]  | [at:<int>]  | [<string>]) [who:<roleType>] ([what:<int>]  | [whats:{<int>}]))
 PARAM JAVADOC: [<countSiteType>]: The property to count.
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: [in:<region>]: The region to count.
 PARAM JAVADOC: [at:<int>]: The site from which to compute the count [(last To)].
 PARAM JAVADOC: [<string>]: The name of the container from which to count the number of sites or the name of the piece to count only pieces of that type.
+PARAM JAVADOC: [who:<roleType>]: Player id the counted items belong to
+PARAM JAVADOC: [what:<int>]: 
+PARAM JAVADOC: [whats:{<int>}]: 
 EXAMPLE: (count at:(last To))
 EXAMPLE: (count Sites in:(sites Empty))
 NEW CTOR
@@ -1746,25 +1762,20 @@ PARAM JAVADOC: [If:<boolean>]: The condition to check for each site where is the
 EXAMPLE: (count Pieces Mover)
 EXAMPLE: (count Pips)
 NEW CTOR
-(count <countGroupsType> [<siteType>] [<direction>] [If:<boolean>] [min:<int>] [isVisible:<boolean>])
+(count <countGroupsType> [<siteType>] [<direction>] [<region>] [If:<boolean>] [min:<int>] [isVisible:<boolean>])
 PARAM JAVADOC: <countGroupsType>: The property to count.
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: [<direction>]: The directions of the connection between elements in the group [Adjacent].
+PARAM JAVADOC: [<region>]: 
 PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the group [(is Occupied (to))].
 PARAM JAVADOC: [min:<int>]: Minimum size of each group [0].
 PARAM JAVADOC: [isVisible:<boolean>]: Whether the group has to be visibly connected or not (a connection can not be hidden by another component)
 EXAMPLE: (count Groups Orthogonal)
 NEW CTOR
-(count SitesPlatformBelow [<siteType>] [<int>] <roleType>)
-PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
-PARAM JAVADOC: [<int>]: The site to test.
-PARAM JAVADOC: <roleType>: Player id the counted items belong to
-EXAMPLE: (count SitesPlatformBelow Mover)
-NEW CTOR
 (count SizeBiggestLine [<siteType>] [<absoluteDirection>] [If:<boolean>])
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
-PARAM JAVADOC: [<absoluteDirection>]: The directions of the connection between elements in the group [Adjacent].
-PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the group [(is Occupied (to))].
+PARAM JAVADOC: [<absoluteDirection>]: The directions of the connection between elements in the line [Adjacent].
+PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the line [(is Occupied (to))].
 EXAMPLE: (count SizeBiggestLine Orthogonal)
 NEW CTOR
 (count Liberties [<siteType>] [at:<int>] [<direction>] [If:<boolean>])
@@ -1822,12 +1833,14 @@ CONST JAVADOC: Neighbours: Number of neighbours (not necessarily connected).
 CONST JAVADOC: Orthogonal: Number of orthogonal elements.
 CONST JAVADOC: Diagonal: Number of diagonal elements.
 CONST JAVADOC: Off: Number of off-diagonal elements.
+CONST JAVADOC: SitesPlatformBelow: Number of sites occupied by an item of a given player on the sites (platform) bellow another site.
 TYPE: game.functions.ints.count.sizeBiggestGroup.CountSizeBiggestGroup
-TYPE JAVADOC: Returns the size of the biggest Group
+TYPE JAVADOC: Returns the size of the biggest Group on the board
 NEW CTOR
-(countSizeBiggestGroup [<siteType>] [<direction>] ([If:<boolean>]  | [isVisible:<boolean>]))
+(countSizeBiggestGroup [<siteType>] [<direction>] [<region>] ([If:<boolean>]  | [isVisible:<boolean>]))
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
 PARAM JAVADOC: [<direction>]: The directions of the connection between elements in the group [Adjacent].
+PARAM JAVADOC: [<region>]: The locations to look for the groups.
 PARAM JAVADOC: [If:<boolean>]: The condition on the pieces to include in the group.
 PARAM JAVADOC: [isVisible:<boolean>]: Visibility condition for group pieces
 TYPE: game.functions.ints.dice.Face
@@ -2542,6 +2555,7 @@ CONST JAVADOC: Edge: End points of an edge.
 CONST JAVADOC: State: Sites with a specified state value.
 CONST JAVADOC: Empty: Empty (i.e. unoccupied) sites of a container.
 CONST JAVADOC: Layer: Sites in a specified layer.
+CONST JAVADOC: Support: Sites which are supporting other pieces on sites top of them .
 TYPE: game.functions.region.sites.SitesMoveType
 TYPE JAVADOC: Specifies sets of sites based on the positions of moves.
 CONST JAVADOC: From: From-positions of a collection of moves as a set of sites.
@@ -3974,13 +3988,14 @@ PARAM JAVADOC: [value:<int>]: The piece value to place [Undefined].
 EXAMPLE: (place Stack items:{"Counter2" "Counter1"} 0)
 EXAMPLE: (place Stack "Disc1" coord:"A1" count:5)
 NEW CTOR
-(place Random [<region>] {<string>} [count:<int>] [state:<int>] [value:<int>] [<siteType>])
+(place Random [<region>] {<string>} [count:<int>] [state:<int>] [value:<int>] [<siteType>] [<booleanConstant>])
 PARAM JAVADOC: [<region>]: The region in which to randomly place piece(s).
 PARAM JAVADOC: {<string>}: The names of the item to place.
 PARAM JAVADOC: [count:<int>]: The number of items to place [1].
 PARAM JAVADOC: [state:<int>]: The state value to place [Undefined].
 PARAM JAVADOC: [value:<int>]: The piece value to place [Undefined].
 PARAM JAVADOC: [<siteType>]: The graph element type [default SiteType of the board].
+PARAM JAVADOC: [<booleanConstant>]: Whether the given 'items' should be selected in random order for placement.
 EXAMPLE: (place Random {"Pawn1" "Pawn2"})
 NEW CTOR
 (place Random {<string>} [count:{<int>}] [state:<int>] [value:<int>] <int> [<siteType>])
