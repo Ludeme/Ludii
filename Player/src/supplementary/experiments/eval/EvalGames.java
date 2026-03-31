@@ -11,7 +11,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.commons.rng.RandomProviderState;
 import org.apache.commons.rng.core.RandomProviderDefaultState;
@@ -73,104 +72,28 @@ public class EvalGames
 		}
 		outputString = outputString.substring(0, outputString.length()-1) + "\n";
 		
-		final String[] allGameNames = FileHandling.listGames();
-		final List<String> gameNamesToTest = new ArrayList<String>();
-
-		for (final String gameName : allGameNames)
-		{
-			final String name = gameName.replaceAll(Pattern.quote("\\"), "/");
-			
-			boolean nameMatch = false;
-			for (final String mustContain : gameNames)
-			{
-				if (name.contains(mustContain))
-				{
-					nameMatch = true;
-					break;
-				}
-			}
-			
-			if (!nameMatch)
-				continue;
-
-			final String[] nameParts = name.split(Pattern.quote("/"));
-			boolean exclude = false;
-
-			for (int i = 0; i < nameParts.length - 1; i++)
-			{
-				final String part = nameParts[i].toLowerCase();
-				if (part.contains("plex"))
-				{
-					exclude = true;
-					break;
-				}
-
-				if (part.contains("wishlist"))
-				{
-					exclude = true;
-					break;
-				}
-
-				if (part.contains("wip"))
-				{
-					exclude = true;
-					break;
-				}
-
-				if (part.contains("subgame"))
-				{
-					exclude = true;
-					break;
-				}
-
-				if (part.contains("deduction"))
-				{
-					exclude = true;
-					break;
-				}
-
-				if (part.contains("reconstruction"))
-				{
-					exclude = true;
-					break;
-				}
-
-				if (part.contains("test"))
-				{
-					exclude = true;
-					break;
-				}
-
-				if (part.contains("def"))
-				{
-					exclude = true;
-					break;
-				}
-
-				if (part.contains("proprietary"))
-				{
-					exclude = true;
-					break;
-				}
-			}
-
-			if (!exclude)
-			{
-				gameNamesToTest.add(name);
-			}
-		}
 		
-		for (final String s : gameNamesToTest)
+		for (final String s : gameNames)
 		{
 			System.out.println("\n" + s);
-			final String gameName = s.split("\\/")[s.split("\\/").length-1];
-			final Game tempGame = GameLoader.loadGameFromName(gameName);
+			final Game game;
+			final File gameFile = new File(s);
 			
-			if (tempGame.hasSubgames()) // TODO, we don't currently support matches
+			if (gameFile.exists()) {
+				game = GameLoader.loadGameFromFile(gameFile);
+			}
+			else
+			{
+				final String gameName = s.split("\\/")[s.split("\\/").length-1];
+				game = GameLoader.loadGameFromName(gameName);
+			}
+
+			
+			if (game.hasSubgames()) // TODO, we don't currently support matches
 				continue;
 			
-			outputString += evaluateGame(evaluation, report, tempGame, 
-					tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), 
+			outputString += evaluateGame(evaluation, report, game, 
+					game.description().gameOptions().allOptionStrings(game.getOptions()), 
 					AIName, numberTrials, thinkTime, iterationLimit, maxTurns, metrics, weights, useDBGames);
 		}
 		
