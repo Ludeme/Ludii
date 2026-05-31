@@ -56,7 +56,8 @@ public class EvalGames
 	private static void evaluateGames
 	(
 		final Report report, final List<String> gameNames, final int numberTrials, final int maxTurns, 
-		final double thinkTime, final int iterationLimit, final String AIName, final boolean useDBGames
+		final double thinkTime, final int iterationLimit, final String AIName, final boolean useDBGames,
+		final boolean ignoreDatabase
 	)
 	{
 		final Evaluation evaluation = new Evaluation();
@@ -94,7 +95,7 @@ public class EvalGames
 			
 			outputString += evaluateGame(evaluation, report, game, 
 					game.description().gameOptions().allOptionStrings(game.getOptions()), 
-					AIName, numberTrials, thinkTime, iterationLimit, maxTurns, metrics, weights, useDBGames);
+					AIName, numberTrials, thinkTime, iterationLimit, maxTurns, metrics, weights, useDBGames, ignoreDatabase);
 		}
 		
 		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath, false)))
@@ -114,7 +115,7 @@ public class EvalGames
 	private static void evaluateAllGames
 	(
 		final Report report, final int numberTrials, final int maxTurns, final double thinkTime, 
-		final int iterationLimit, final String AIName, final boolean useDBGames
+		final int iterationLimit, final String AIName, final boolean useDBGames, final boolean ignoreDatabase
 	)
 	{
 		final Evaluation evaluation = new Evaluation();
@@ -150,13 +151,13 @@ public class EvalGames
 						if (!rulesets.get(rs).optionSettings().isEmpty())
 							outputString += evaluateGame(evaluation, report, tempGame, 
 									rulesets.get(rs).optionSettings(), AIName, numberTrials, thinkTime, iterationLimit,
-									maxTurns, metrics, weights, useDBGames);
+									maxTurns, metrics, weights, useDBGames, ignoreDatabase);
 				}
 				else
 				{
 					outputString += evaluateGame(evaluation, report, tempGame, 
 							tempGame.description().gameOptions().allOptionStrings(tempGame.getOptions()), 
-							AIName, numberTrials, thinkTime, iterationLimit, maxTurns, metrics, weights, useDBGames);
+							AIName, numberTrials, thinkTime, iterationLimit, maxTurns, metrics, weights, useDBGames, ignoreDatabase);
 				}
 			}
 		}
@@ -190,7 +191,8 @@ public class EvalGames
 		final int maxNumTurns, 
 		final List<Metric> metricsToEvaluate, 
 		final ArrayList<Double> weights,
-		final boolean useDatabaseGames
+		final boolean useDatabaseGames,
+		final boolean ignoreDatabase
 	)
 	{
 		final Game game = (Game)Compiler.compile(originalGame.description(), new UserSelections(gameOptions), report, false);		
@@ -267,7 +269,7 @@ public class EvalGames
 		
 		// Get any valid trials that were in database.
 		ArrayList<String> databaseTrials = new ArrayList<>();
-		if (useDatabaseGames)
+		if (useDatabaseGames && !ignoreDatabase)
 		{
 			databaseTrials = databaseFunctionsPublic.getTrialsFromDatabase
 			(
@@ -399,7 +401,7 @@ public class EvalGames
 				
 				allStoredTrials.add(new Trial(context.trial()));
 				
-				if (!usingSavedTrial)					
+				if (!usingSavedTrial && !ignoreDatabase)					
 					databaseFunctionsPublic.storeTrialInDatabase
 					(
 						game.name(), 
@@ -554,6 +556,10 @@ public class EvalGames
 				.withDefault(Arrays.asList(""))
 				.withNumVals("+")
 				.withType(OptionTypes.String));
+		argParse.addOption(new ArgOption()
+				.withNames("--ignore-database")
+				.help("Skip anything related to Ludii's official database.")
+				.withType(OptionTypes.Boolean));
 		
 		if (!argParse.parseArguments(args))
 			return;
@@ -564,14 +570,14 @@ public class EvalGames
 		final String AIName = argParse.getValueString("--AIName");
 		final boolean useDatabaseGames = argParse.getValueBool("--useDatabaseGames");
 		final int iterationLimit = argParse.getValueInt("--iteration-limit");
-		
+		final boolean ignoreDatabase = argParse.getValueBool("--ignore-database");	
 		List<String> gameNames = ((List<String>) argParse.getValue("--game-names"));
 		
 		if (gameNames.isEmpty()) {
-			evaluateAllGames(new Report(), numberTrials, maxTurns, thinkTime, iterationLimit, AIName, useDatabaseGames);
+			evaluateAllGames(new Report(), numberTrials, maxTurns, thinkTime, iterationLimit, AIName, useDatabaseGames, ignoreDatabase);
 		}
 		else {
-			evaluateGames(new Report(), gameNames, numberTrials, maxTurns, thinkTime, iterationLimit, AIName, useDatabaseGames);
+			evaluateGames(new Report(), gameNames, numberTrials, maxTurns, thinkTime, iterationLimit, AIName, useDatabaseGames, ignoreDatabase);
 		}
 	}
 }

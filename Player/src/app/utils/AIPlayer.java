@@ -40,7 +40,7 @@ public class AIPlayer
 											(
 												evaluation, report, game, options, AIName, 
 												numberTrials, thinkTime, iterationLimit, maxTurns,
-												metricsToEvaluate, weights, useDatabaseGames
+												metricsToEvaluate, weights, useDatabaseGames, false
 											);
 		evalThread.setDaemon(true);
 		evalThread.start();

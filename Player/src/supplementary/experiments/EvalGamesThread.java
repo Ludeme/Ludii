@@ -45,7 +45,8 @@ public class EvalGamesThread extends Thread
 		final int maxNumTurns, 
 		final List<Metric> metricsToEvaluate, 
 		final ArrayList<Double> weights,
-		final boolean useDatabaseGames
+		final boolean useDatabaseGames,
+		final boolean ignoreDatabase
 	)
 	{
 		final EvalGamesThreadRunnable runnable = 
@@ -62,7 +63,8 @@ public class EvalGamesThread extends Thread
 				maxNumTurns,
 				metricsToEvaluate,
 				weights,
-				useDatabaseGames
+				useDatabaseGames,
+				ignoreDatabase
 			);
 
 		return new EvalGamesThread(runnable);
@@ -124,6 +126,9 @@ public class EvalGamesThread extends Thread
 		
 		/** Use saved trials from the database if available. */
 		protected boolean useDatabaseGames;
+		
+		/** Ignore anything related to database */
+		protected boolean ignoreDatabase;
 
 		//---------------------------------------------------------------------
 
@@ -152,7 +157,8 @@ public class EvalGamesThread extends Thread
 			final int maxNumTurns, 
 			final List<Metric> metricsToEvaluate, 
 			final ArrayList<Double> weights,
-			final boolean useDatabaseGames
+			final boolean useDatabaseGames,
+			final boolean ignoreDatabase
 		)
 		{
 			this.evaluation = evaluation;
@@ -167,6 +173,7 @@ public class EvalGamesThread extends Thread
 			this.metricsToEvaluate = metricsToEvaluate;
 			this.weights = weights;
 			this.useDatabaseGames = useDatabaseGames;
+			this.ignoreDatabase = ignoreDatabase;
 		}
 
 		//---------------------------------------------------------------------
@@ -175,7 +182,7 @@ public class EvalGamesThread extends Thread
 		public void run()
 		{
 			EvalGames.evaluateGame(evaluation, report, game, gameOptions, AIName, numGames, thinkingTime, iterationLimit,
-					maxNumTurns, metricsToEvaluate, weights, useDatabaseGames);
+					maxNumTurns, metricsToEvaluate, weights, useDatabaseGames, ignoreDatabase);
 		}
 	}
 
