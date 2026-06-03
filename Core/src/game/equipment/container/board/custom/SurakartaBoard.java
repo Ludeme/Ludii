@@ -349,4 +349,11 @@ public class SurakartaBoard extends Board
 	
 	//-------------------------------------------------------------------------
 
+	public int getNumLoops() {
+		return numLoops;
+	}
+
+	public int getStartAtRow() {
+		return startAtRow;
+	}
 }

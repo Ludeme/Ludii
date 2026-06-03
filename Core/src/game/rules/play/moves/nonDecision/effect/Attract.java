@@ -27,7 +27,7 @@ import other.topology.Topology;
 import other.topology.TopologyElement;
 
 /**
- * Is used to attract all the pieces as close as possible to a site.
+ * Is used to attract all the pieces by a certain number of steps to a site.
  * 
  * @author Eric.Piette
  */
@@ -45,6 +45,9 @@ public final class Attract extends Effect
 
 	/** Add on Cell/Edge/Vertex. */
 	protected SiteType type;
+	
+	/** Distance of forced movement. */
+	private final Integer distance;
 
 	//-------------------------------------------------------------------------
 
@@ -52,6 +55,7 @@ public final class Attract extends Effect
 	 * @param from The data of the from location [(from (last To))].
 	 * @param dirn The specific direction [Adjacent].
 	 * @param then The moves applied after that move is applied.
+	 * @param dist The distance on which a piece is attracted.
 	 * 
 	 * @example (attract (from (last To)) Diagonal)
 	 */
@@ -59,13 +63,15 @@ public final class Attract extends Effect
 	(
 			@Opt final game.util.moves.From from,
 			@Opt final AbsoluteDirection    dirn,
-			@Opt final Then                 then
+			@Opt final Then                 then,
+			@Opt final Integer				dist
 	)
 	{
 		super(then);
 		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
 		dirnChoice = (dirn == null) ? new Directions(AbsoluteDirection.Adjacent, null) : new Directions(dirn, null);
 		type = (from == null) ? null : from.type();
+		distance = (dist == null) ? null : dist;
 	}
 
 	//-------------------------------------------------------------------------
@@ -90,11 +96,12 @@ public final class Attract extends Effect
 				context);
 
 		for (final AbsoluteDirection direction : directions)
-		{
+		{	
 			final List<Radial> radialList = graph.trajectories().radials(type, fromV.index(), direction);
 			for (final Radial radial : radialList)
 			{
 				final TIntArrayList piecesInThisDirection = new TIntArrayList();
+				final TIntArrayList piecesOrigin = new TIntArrayList();
 
 				for (int toIdx = 1; toIdx < radial.steps().length; toIdx++)
 				{
@@ -103,14 +110,21 @@ public final class Attract extends Effect
 					if (what != 0)
 					{
 						piecesInThisDirection.add(what);
+						piecesOrigin.add(toIdx);
 						final BaseAction removeAction = ActionRemove.construct(context.board().defaultSite(), to, Constants.UNDEFINED, true);
 						final Move move = new Move(removeAction);
 						moves.moves().add(move);
 					}
 				}
-				for (int toIdx = 1; toIdx <= piecesInThisDirection.size(); toIdx++)
+				for (int toIdx = 1, firstFreeCell = 1; toIdx <= piecesInThisDirection.size(); toIdx++)
 				{
-					final int to = radial.steps()[toIdx].id();
+					final int to;
+					if (distance == null || piecesOrigin.getQuick(toIdx - 1) - distance < firstFreeCell) {
+						to = radial.steps()[toIdx].id();
+					} else {
+						to = radial.steps()[piecesOrigin.getQuick(toIdx - 1) - distance].id();
+					}
+					firstFreeCell = toIdx + 1;
 					final int what = piecesInThisDirection.getQuick(toIdx - 1);
 					final Action actionAdd = new ActionAdd(type, to, what, 1, Constants.UNDEFINED, Constants.UNDEFINED,
 							Constants.UNDEFINED,
@@ -243,7 +257,7 @@ public final class Attract extends Effect
 		if (then() != null)
 			thenString = " then " + then().toEnglish(game);
 		
-		return "attracts all pieces towards " + type.name() + " " + startLocationFn.toEnglish(game) + thenString;
+		return "attracts all pieces towards " + type.name() + " " + startLocationFn.toEnglish(game) + " by " + distance + " steps " + thenString;
 	}
 
 }

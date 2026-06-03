@@ -48,5 +48,6 @@ public enum SquareShapeType
 	
 	/** Alternating sides are staggered. */
 	Limping,
+
 	;
 }

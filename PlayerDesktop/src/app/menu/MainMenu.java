@@ -182,6 +182,12 @@ public class MainMenu extends JMenuBar
 			menuItem = new JMenuItem("Visual Editor (Beta)");
 			menuItem.addActionListener(al);
 			menu.add(menuItem);
+			
+			menu.addSeparator();
+			
+			menuItem = new JMenuItem("Board Maker");
+			menuItem.addActionListener(al);
+			menu.add(menuItem);
 		}
 
 		//---------------------------------------------------------------------

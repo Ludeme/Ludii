@@ -127,4 +127,16 @@ public final class Scale extends BaseGraphFunction
 		concepts.or(graphFn.concepts(game));
 		return concepts;
 	}
+
+	public float scaleX(Context context) {
+		return scaleXFn.eval(context);
+	}
+
+	public float scaleY(Context context) {
+		return scaleYFn.eval(context);
+	}
+
+	public GraphFunction graphFunction() {
+		return graphFn;
+	}
 }
