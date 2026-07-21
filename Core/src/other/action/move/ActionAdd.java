@@ -309,9 +309,14 @@ public final class ActionAdd extends BaseAction
 			final int oldCount = cs.count(to, type);
 			cs.setSite(context.state(), to, Constants.UNDEFINED, Constants.UNDEFINED, (game.requiresCount() ? oldCount + count : 1), state, rotation, value,type);
 		}
-		
-		updateTrackIndices(context);
-		
+
+		// For a stacking game, applyStack() already called updateTrackIndices()
+		// above; calling it a second time here double-counts the placement in
+		// OnTrackIndices (a `+= count` accumulator), so only fire it here when
+		// applyStack() was not run.
+		if (!requiresStack)
+			updateTrackIndices(context);
+
 		return this;
 	}
 

@@ -1020,6 +1020,13 @@ public class ContainerGraphStateStacks extends ContainerStateStacks
 			}
 			chunkStacksVertex[site].setWhat(state, 0);
 			chunkStacksVertex[site].setWho(state, 0);
+			// Also clear the vacated top slot's state/rotation/value, matching
+			// the level-less remove(...) overload above; otherwise a stale
+			// value survives in the reused chunk slot and is resurrected by a
+			// later state-less addItemGeneric() (the hand-entry push path).
+			chunkStacksVertex[site].setState(state, 0);
+			chunkStacksVertex[site].setRotation(state, 0);
+			chunkStacksVertex[site].setValue(state, 0);
 			chunkStacksVertex[site].decrementSize(state);
 			return componentRemove;
 		}
@@ -1039,6 +1046,11 @@ public class ContainerGraphStateStacks extends ContainerStateStacks
 		}
 		chunkStacksEdge[site].setWhat(state, 0);
 		chunkStacksEdge[site].setWho(state, 0);
+		// Also clear the vacated top slot's state/rotation/value, matching the
+		// level-less remove(...) overload above (see the Vertex branch).
+		chunkStacksEdge[site].setState(state, 0);
+		chunkStacksEdge[site].setRotation(state, 0);
+		chunkStacksEdge[site].setValue(state, 0);
 		chunkStacksEdge[site].decrementSize(state);
 		return componentRemove;
 	}
