@@ -1,15 +1,5 @@
 package view.container.aspects.components.board;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import bridge.Bridge;
 import game.equipment.component.Component;
 import game.equipment.container.Container;
@@ -19,6 +9,15 @@ import game.equipment.other.Map;
 import game.types.board.SiteType;
 import game.types.board.StoreType;
 import graphics.ImageProcessing;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import main.math.MathRoutines;
 import metadata.graphics.Graphics;
 import other.concept.Concept;
@@ -32,291 +31,360 @@ import view.container.styles.board.MancalaStyle;
 
 /**
  * Mancala components properties.
- * 
+ *
  * @author Matthew.Stephenson and cambolbro and Eric.Piette
  */
-public class MancalaComponents extends ContainerComponents
-{
-	private final BoardStyle boardStyle;
-	
-	//-------------------------------------------------------------------------
-	
-	public MancalaComponents(final Bridge bridge, final MancalaStyle containerStyle)
-	{
-		super(bridge, containerStyle);
-		boardStyle = containerStyle;
-	}
-	
-	//-------------------------------------------------------------------------
+public class MancalaComponents extends ContainerComponents {
 
-	/** Colour of the seeds. */
-	private final Color seedColour = new Color(255, 255, 230);
+  private final BoardStyle boardStyle;
 
-	/** Piece placements. */
-	private final Point2D.Double[][] offsets =
-	{
-		{},
-		{
-			// 1 seed
-			new Point2D.Double(0, 0),
-		},
-		{
-			// 2 seeds
-			new Point2D.Double(-1, 0),
-			new Point2D.Double( 1, 0),
-		},
-		{
-			// 3 seeds
-			new Point2D.Double(-1.0, -0.8),
-			new Point2D.Double( 1.0, -0.8),
-			new Point2D.Double( 0.0,  1.0),
-		},
-		{
-			// 4 seed
-			new Point2D.Double(-1.0, -1.0),
-			new Point2D.Double( 1.0, -1.0),
-			new Point2D.Double(-1.0,  1.0),
-			new Point2D.Double( 1.0,  1.0),
-		},
-		{
-			// 5 seeds
-			new Point2D.Double(-1.0, -1.0),
-			new Point2D.Double( 1.0, -1.0),
-			new Point2D.Double(-1.0,  1.0),
-			new Point2D.Double( 1.0,  1.0),
-			new Point2D.Double( 0.0,  0.0),
-		},
-	};
-	
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public void drawComponents(final Graphics2D g2d, final Context context)
-	{		
-		final boolean stackingGame = context.game().isStacking();
-		final Rectangle placement = boardStyle.placement();
-		final int cellRadiusPixels = boardStyle.cellRadiusPixels();
+  public MancalaComponents(
+    final Bridge bridge,
+    final MancalaStyle containerStyle
+  ) {
+    super(bridge, containerStyle);
+    boardStyle = containerStyle;
+  }
 
-		final boolean circleTiling = context.game().booleanConcepts().get(Concept.CircleTiling.id());
-		
-		// Set the seed size
-		final boolean withStore = (context.board() instanceof MancalaBoard)
-				? !((MancalaBoard) context.board()).storeType().equals(StoreType.None)
-				: true;
-		final int indexHoleBL = (withStore) ? 1 : 0;
-		final Point ptA = boardStyle.screenPosn(boardStyle.topology().vertices().get(circleTiling ? 0 : indexHoleBL).centroid());
-		final Point ptB = boardStyle.screenPosn(
-				boardStyle.topology().vertices().get(circleTiling ? 1 : (indexHoleBL + 1)).centroid());
-		
-		final double unit = MathRoutines.distance(ptA, ptB); 
-		
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+  //-------------------------------------------------------------------------
 
-		final Board board = context.board();
-		final Topology graph = board.topology();
-		final Graphics graphics = context.metadata().graphics();
-		
-		final String label = "Board";
-		final Container equip = context.game().mapContainer().get(label);
+  /** Colour of the seeds. */
+  private final Color seedColour = new Color(255, 255, 230);
 
-		final Color shadeBase  = seedColour;
-		final Color shadeDark  = MathRoutines.shade(shadeBase, 0.75);
-		final Color shadeLight = MathRoutines.shade(shadeBase, 1.5);
+  /** Piece placements. */
+  private final Point2D.Double[][] offsets = {
+    {},
+    {
+      // 1 seed
+      new Point2D.Double(0, 0),
+    },
+    {
+      // 2 seeds
+      new Point2D.Double(-1, 0),
+      new Point2D.Double(1, 0),
+    },
+    {
+      // 3 seeds
+      new Point2D.Double(-1.0, -0.8),
+      new Point2D.Double(1.0, -0.8),
+      new Point2D.Double(0.0, 1.0),
+    },
+    {
+      // 4 seed
+      new Point2D.Double(-1.0, -1.0),
+      new Point2D.Double(1.0, -1.0),
+      new Point2D.Double(-1.0, 1.0),
+      new Point2D.Double(1.0, 1.0),
+    },
+    {
+      // 5 seeds
+      new Point2D.Double(-1.0, -1.0),
+      new Point2D.Double(1.0, -1.0),
+      new Point2D.Double(-1.0, 1.0),
+      new Point2D.Double(1.0, 1.0),
+      new Point2D.Double(0.0, 0.0),
+    },
+  };
 
-		if (equip == null)
-			return;
+  //-------------------------------------------------------------------------
 
-		// This game has a board
-		final State state = context.state();
-		final ContainerState cs = state.containerStates()[0];
+  @Override
+  public void drawComponents(final Graphics2D g2d, final Context context) {
+    final boolean stackingGame = context.game().isStacking();
+    final Rectangle placement = boardStyle.placement();
+    final int cellRadiusPixels = boardStyle.cellRadiusPixels();
 
-		for (int site = 0; site < graph.vertices().size(); site++)
-		{
-			final Point pt = boardStyle.screenPosn(graph.vertices().get(site).centroid());
-			final int count = stackingGame ? cs.sizeStack(site, SiteType.Vertex) : cs.count(site, SiteType.Vertex);
-			
-			final int cx = pt.x;
-			final int cy = pt.y;
+    final boolean circleTiling = context
+      .game()
+      .booleanConcepts()
+      .get(Concept.CircleTiling.id());
 
-			final int swRing = (int) (boardStyle.cellRadius() * placement.width / 10.0);
-			final BasicStroke strokeRink = new BasicStroke(swRing, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
-			g2d.setStroke(strokeRink);
+    // Set the seed size
+    final boolean withStore =
+      context.board() instanceof MancalaBoard
+        ? !((MancalaBoard) context.board()).storeType().equals(StoreType.None)
+        : true;
+    final int indexHoleBL = withStore ? 1 : 0;
+    final Point ptA = boardStyle.screenPosn(
+      boardStyle
+        .topology()
+        .vertices()
+        .get(circleTiling ? 0 : indexHoleBL)
+        .centroid()
+    );
+    final Point ptB = boardStyle.screenPosn(
+      boardStyle
+        .topology()
+        .vertices()
+        .get(circleTiling ? 1 : indexHoleBL + 1)
+        .centroid()
+    );
 
-			// Code for drawing the tuz (ring around holes that are coloured based on player value).
-			if (context.game().metadata().graphics().showPlayerHoles())
-			{
-				for (int i = 1; i <= context.game().players().count(); i++)
-				{
-					if (state.getValue(i) == site)
-					{
-						final int r = cellRadiusPixels;
-						g2d.setColor(bridge.settingsColour().playerColour(context, i));
-						g2d.drawArc(cx-r, cy-r, 2*r, 2*r, 0, 360);
-					}
-				}
-			}
-			
-			// Code for drawing the tuz (ring around holes that are coloured based on local state).
-			if (context.game().metadata().graphics().holesUseLocalState())
-			{
-				for (int i = 1; i <= context.game().players().count(); i++)
-				{
-					if (i == cs.stateVertex(site))
-					{
-						final int r = cellRadiusPixels;
-						g2d.setColor(bridge.settingsColour().playerColour(context, i));
-						g2d.drawArc(cx-r, cy-r, 2*r, 2*r, 0, 360);
-					}
-				}
-			}
+    final double unit = MathRoutines.distance(ptA, ptB);
 
-			// Code for drawing rings around each kalah based on which player they are for.
-			if (context.game().metadata().graphics().showPits())
-			{
-				if (context.game().equipment().maps().length != 0)
-				{
-					final Map map = context.game().equipment().maps()[0];
-					for (int p = 1; p <= context.game().players().count(); p++)
-					{
-						final int ownedSite = map.to(p);
-	
-						if (ownedSite == site)
-						{
-							final int r = cellRadiusPixels;
-							g2d.setColor(bridge.settingsColour().playerColour(context, p));
-							g2d.drawArc(cx-r, cy-r, 2*r, 2*r, 0, 360);
-						}
-					}
-				}
-			}
+    g2d.setRenderingHint(
+      RenderingHints.KEY_ANTIALIASING,
+      RenderingHints.VALUE_ANTIALIAS_ON
+    );
+    g2d.setRenderingHint(
+      RenderingHints.KEY_RENDERING,
+      RenderingHints.VALUE_RENDER_QUALITY
+    );
+    g2d.setRenderingHint(
+      RenderingHints.KEY_INTERPOLATION,
+      RenderingHints.VALUE_INTERPOLATION_BICUBIC
+    );
+    g2d.setRenderingHint(
+      RenderingHints.KEY_COLOR_RENDERING,
+      RenderingHints.VALUE_COLOR_RENDER_QUALITY
+    );
+    g2d.setRenderingHint(
+      RenderingHints.KEY_ALPHA_INTERPOLATION,
+      RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY
+    );
+    g2d.setRenderingHint(
+      RenderingHints.KEY_TEXT_ANTIALIASING,
+      RenderingHints.VALUE_TEXT_ANTIALIAS_ON
+    );
 
-			if(stackingGame)
-			{
-				if (count > 0)
-				{
-					final int group = Math.min(count, offsets.length-1);
-					
-					for(int level = 0; level < count; level++)
-					{
-						final int what = cs.what(site, level, SiteType.Vertex);
-						final int who = cs.who(site, level, SiteType.Vertex);
-						final Component component = (what > 0) ? context.components()[what] : null;
-						double scale = (component == null) ? 1.0 :  graphics.pieceScale(context, who, component.name(), boardStyle.container().index(), cs.state(site, SiteType.Vertex), cs.value(site, SiteType.Vertex)).getX();
-						scale = (scale == 0.0) ? 1.0 : scale;
-						final int seedRadius = Math.max((int) (1*scale), (int) (0.19 * unit* scale)) ;
-						Color colorWho = graphics.playerColour(context, who);
-						colorWho = colorWho == null ? seedColour : colorWho;
+    final Board board = context.board();
+    final Topology graph = board.topology();
+    final Graphics graphics = context.metadata().graphics();
 
-						final boolean defaultSeed = (component == null) ? true : component.name().equals("Seed");
+    final String label = "Board";
+    final Container equip = context.game().mapContainer().get(label);
 
-						if(defaultSeed)
-						{
-							if(level < 5)
-							{
-							// Draw pieces
-							final int groupIndex = Math.min(5, level);
-							final Point2D.Double off = offsets[group][groupIndex];
-							final int x = cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
-							final int y = cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
-							ImageProcessing.ballImage(g2d, x, y, (seedRadius), colorWho);
-							}
-						}
-						else
-						{
-							// Draw pieces
-							final int groupIndex = Math.min(4, level);
-							final Point2D.Double off = offsets[group][groupIndex];
-							final int x = cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
-							final int y = cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
-							ImageProcessing.ballImage(g2d, x, y, (seedRadius), colorWho);
-						}
-					}
-					
-					if(count > 5)
-					{
-					// Draw piece count
-					final Font oldFont = g2d.getFont();
-					final Font font = new Font(oldFont.getFontName(), Font.BOLD, (int) (0.45 * boardStyle.cellRadius() * placement.width));
-					g2d.setFont(font);
+    final Color shadeBase = seedColour;
+    final Color shadeDark = MathRoutines.shade(shadeBase, 0.75);
+    final Color shadeLight = MathRoutines.shade(shadeBase, 1.5);
 
-					final String str = Integer.toString(count);
-					final Rectangle2D bounds = font.getStringBounds(str, g2d.getFontRenderContext());
+    if (equip == null) return;
 
-					final int tx = cx - (int)(0.5 * bounds.getWidth() + 0.5);
-					final int ty = cy + (int)(0.4 * bounds.getHeight() + 0.5);
+    // This game has a board
+    final State state = context.state();
+    final ContainerState cs = state.containerStates()[0];
 
-					g2d.setColor(Color.black);
-					g2d.drawString(str, tx, ty-1);
+    for (int site = 0; site < graph.vertices().size(); site++) {
+      final Point pt = boardStyle.screenPosn(
+        graph.vertices().get(site).centroid()
+      );
+      final int count = stackingGame
+        ? cs.sizeStack(site, SiteType.Vertex)
+        : cs.count(site, SiteType.Vertex);
 
-					g2d.setColor(shadeLight);
-					g2d.drawString(str, tx, ty+1);
+      final int cx = pt.x;
+      final int cy = pt.y;
 
-					g2d.setColor(shadeDark);
-					g2d.drawString(str, tx, ty);
+      final int swRing = (int) ((boardStyle.cellRadius() * placement.width) /
+        10.0);
+      final BasicStroke strokeRink = new BasicStroke(
+        swRing,
+        BasicStroke.CAP_BUTT,
+        BasicStroke.JOIN_MITER
+      );
+      g2d.setStroke(strokeRink);
 
-					g2d.setFont(oldFont);
-					}
-				}
-			}
-			else
-			{
-				if (count > 0)
-				{
-					final int what = cs.what(site, SiteType.Vertex);
-					final int who = cs.who(site, SiteType.Vertex);
-					final Component component = (what > 0) ? context.components()[what] : null;
-					double scale = (component == null) ? 1.0 :  graphics.pieceScale(context, who, component.name(), boardStyle.container().index(), cs.state(site, SiteType.Vertex), cs.value(site, SiteType.Vertex)).getX();
-					scale = (scale == 0.0) ? 1.0 : scale;
-					final int seedRadius = Math.max((int) (1*scale), (int) (0.19 * unit* scale)) ;
-					Color colorWho = graphics.playerColour(context, who);
-					colorWho = colorWho == null ? seedColour : colorWho;
-							
-					// Draw pieces
-					final int group = Math.min(count, offsets.length-1);
-					for (int s = 0; s < offsets[group].length; s++)
-					{
-						final Point2D.Double off = offsets[group][s];
-	
-						final int x = cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
-						final int y = cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
-						
-						ImageProcessing.ballImage(g2d, x, y, (seedRadius), colorWho);
-					}
-	
-					if (count > 5)
-					{
-						// Draw piece count
-						final Font oldFont = g2d.getFont();
-						final Font font = new Font(oldFont.getFontName(), Font.BOLD, (int) (0.45 * boardStyle.cellRadius() * placement.width));
-						g2d.setFont(font);
-	
-						final String str = Integer.toString(count);
-						final Rectangle2D bounds = font.getStringBounds(str, g2d.getFontRenderContext());
-	
-						final int tx = cx - (int)(0.5 * bounds.getWidth() + 0.5);
-						final int ty = cy + (int)(0.4 * bounds.getHeight() + 0.5);
-	
-						g2d.setColor(Color.black);
-						g2d.drawString(str, tx, ty-1);
-	
-						g2d.setColor(shadeLight);
-						g2d.drawString(str, tx, ty+1);
-	
-						g2d.setColor(shadeDark);
-						g2d.drawString(str, tx, ty);
-	
-						g2d.setFont(oldFont);
-					}
-				}
-			}
-		}
-	}
-	
-	//-------------------------------------------------------------------------
-	
+      // Code for drawing the tuz (ring around holes that are coloured based on player value).
+      if (context.game().metadata().graphics().showPlayerHoles()) {
+        for (int i = 1; i <= context.game().players().count(); i++) {
+          if (state.getValue(i) == site) {
+            final int r = cellRadiusPixels;
+            g2d.setColor(bridge.settingsColour().playerColour(context, i));
+            g2d.drawArc(cx - r, cy - r, 2 * r, 2 * r, 0, 360);
+          }
+        }
+      }
+
+      // Code for drawing the tuz (ring around holes that are coloured based on local state).
+      if (context.game().metadata().graphics().holesUseLocalState()) {
+        for (int i = 1; i <= context.game().players().count(); i++) {
+          if (i == cs.stateVertex(site)) {
+            final int r = cellRadiusPixels;
+            g2d.setColor(bridge.settingsColour().playerColour(context, i));
+            g2d.drawArc(cx - r, cy - r, 2 * r, 2 * r, 0, 360);
+          }
+        }
+      }
+
+      // Code for drawing rings around each kalah based on which player they are for.
+      if (context.game().metadata().graphics().showPits()) {
+        if (context.game().equipment().maps().length != 0) {
+          final Map map = context.game().equipment().maps()[0];
+          for (int p = 1; p <= context.game().players().count(); p++) {
+            final int ownedSite = map.to(p);
+
+            if (ownedSite == site) {
+              final int r = cellRadiusPixels;
+              g2d.setColor(bridge.settingsColour().playerColour(context, p));
+              g2d.drawArc(cx - r, cy - r, 2 * r, 2 * r, 0, 360);
+            }
+          }
+        }
+      }
+
+      if (stackingGame) {
+        if (count > 0) {
+          final int group = Math.min(count, offsets.length - 1);
+
+          for (int level = 0; level < count; level++) {
+            final int what = cs.what(site, level, SiteType.Vertex);
+            final int who = cs.who(site, level, SiteType.Vertex);
+            final Component component =
+              what > 0 ? context.components()[what] : null;
+            double scale =
+              component == null
+                ? 1.0
+                : graphics
+                    .pieceScale(
+                      context,
+                      who,
+                      component.name(),
+                      boardStyle.container().index(),
+                      cs.state(site, SiteType.Vertex),
+                      cs.value(site, SiteType.Vertex)
+                    )
+                    .getX();
+            scale = scale == 0.0 ? 1.0 : scale;
+            final int seedRadius = Math.max(
+              (int) (1 * scale),
+              (int) (0.19 * unit * scale)
+            );
+            Color colorWho = graphics.playerColour(context, who);
+            colorWho = colorWho == null ? seedColour : colorWho;
+
+            final boolean defaultSeed =
+              component == null ? true : component.name().equals("Seed");
+
+            if (defaultSeed) {
+              if (level < 5) {
+                // Draw pieces
+                final int groupIndex = Math.min(5, level);
+                final Point2D.Double off = offsets[group][groupIndex];
+                final int x =
+                  cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
+                final int y =
+                  cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
+                ImageProcessing.ballImage(g2d, x, y, seedRadius, colorWho);
+              }
+            } else {
+              // Draw pieces
+              final int groupIndex = Math.min(4, level);
+              final Point2D.Double off = offsets[group][groupIndex];
+              final int x =
+                cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
+              final int y =
+                cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
+              ImageProcessing.ballImage(g2d, x, y, seedRadius, colorWho);
+            }
+          }
+
+          if (count > 5) {
+            // Draw piece count
+            final Font oldFont = g2d.getFont();
+            final Font font = new Font(
+              oldFont.getFontName(),
+              Font.BOLD,
+              (int) (0.45 * boardStyle.cellRadius() * placement.width)
+            );
+            g2d.setFont(font);
+
+            final String str = Integer.toString(count);
+            final Rectangle2D bounds = font.getStringBounds(
+              str,
+              g2d.getFontRenderContext()
+            );
+
+            final int tx = cx - (int) (0.5 * bounds.getWidth() + 0.5);
+            final int ty = cy + (int) (0.4 * bounds.getHeight() + 0.5);
+
+            g2d.setColor(Color.black);
+            g2d.drawString(str, tx, ty - 1);
+
+            g2d.setColor(shadeLight);
+            g2d.drawString(str, tx, ty + 1);
+
+            g2d.setColor(shadeDark);
+            g2d.drawString(str, tx, ty);
+
+            g2d.setFont(oldFont);
+          }
+        }
+      } else {
+        if (count > 0) {
+          final int what = cs.what(site, SiteType.Vertex);
+          final int who = cs.who(site, SiteType.Vertex);
+          final Component component =
+            what > 0 ? context.components()[what] : null;
+          double scale =
+            component == null
+              ? 1.0
+              : graphics
+                  .pieceScale(
+                    context,
+                    who,
+                    component.name(),
+                    boardStyle.container().index(),
+                    cs.state(site, SiteType.Vertex),
+                    cs.value(site, SiteType.Vertex)
+                  )
+                  .getX();
+          scale = scale == 0.0 ? 1.0 : scale;
+          final int seedRadius = Math.max(
+            (int) (1 * scale),
+            (int) (0.19 * unit * scale)
+          );
+          Color colorWho = graphics.playerColour(context, who);
+          colorWho = colorWho == null ? seedColour : colorWho;
+
+          // Draw pieces
+          final int group = Math.min(count, offsets.length - 1);
+          for (int s = 0; s < offsets[group].length; s++) {
+            final Point2D.Double off = offsets[group][s];
+
+            final int x =
+              cx + (int) (off.x * seedRadius + 0.5) - seedRadius + 1;
+            final int y =
+              cy - (int) (off.y * seedRadius + 0.5) - seedRadius + 1;
+
+            ImageProcessing.ballImage(g2d, x, y, seedRadius, colorWho);
+          }
+
+          if (count > 5) {
+            // Draw piece count
+            final Font oldFont = g2d.getFont();
+            final Font font = new Font(
+              oldFont.getFontName(),
+              Font.BOLD,
+              (int) (0.45 * boardStyle.cellRadius() * placement.width)
+            );
+            g2d.setFont(font);
+
+            final String str = Integer.toString(count);
+            final Rectangle2D bounds = font.getStringBounds(
+              str,
+              g2d.getFontRenderContext()
+            );
+
+            final int tx = cx - (int) (0.5 * bounds.getWidth() + 0.5);
+            final int ty = cy + (int) (0.4 * bounds.getHeight() + 0.5);
+
+            g2d.setColor(Color.black);
+            g2d.drawString(str, tx, ty - 1);
+
+            g2d.setColor(shadeLight);
+            g2d.drawString(str, tx, ty + 1);
+
+            g2d.setColor(shadeDark);
+            g2d.drawString(str, tx, ty);
+
+            g2d.setFont(oldFont);
+          }
+        }
+      }
+    }
+  }
+
+  //-------------------------------------------------------------------------
 }

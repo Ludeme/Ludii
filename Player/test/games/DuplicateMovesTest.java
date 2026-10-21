@@ -2,15 +2,13 @@ package games;
 
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-
 import game.Game;
 import game.rules.phase.Phase;
 import game.rules.play.moves.Moves;
+import java.util.ArrayList;
+import java.util.List;
 import main.FileHandling;
+import org.junit.Test;
 import other.AI;
 import other.GameLoader;
 import other.context.Context;
@@ -21,87 +19,87 @@ import other.trial.Trial;
 /**
  * Check if in running a pre-determined number of playouts over all our games,
  * if some duplicates are present.
- * 
+ *
  * @author Eric.Piette
  */
-public class DuplicateMovesTest
-{
-	/** The number of playouts to run. */
-	final int NUM_PLAYOUTS = 1;
+public class DuplicateMovesTest {
 
-	@Test
-	public void test()
-	{
-		// Compilation of all the games.
-		boolean duplicateMove = false;
-		final String[] allGameNames = FileHandling.listGames();
-		for (int index = 0; index < allGameNames.length; index++)
-		{
-			final String gameName = allGameNames[index];
+  /** The number of playouts to run. */
+  final int NUM_PLAYOUTS = 1;
 
-			final String name = gameName.substring(gameName.lastIndexOf('/') + 1, gameName.length());
+  @Test
+  public void test() {
+    // Compilation of all the games.
+    boolean duplicateMove = false;
+    final String[] allGameNames = FileHandling.listGames();
+    for (int index = 0; index < allGameNames.length; index++) {
+      final String gameName = allGameNames[index];
 
-			// if (!name.equals("Chex.lud"))
-			// continue;
+      final String name = gameName.substring(
+        gameName.lastIndexOf('/') + 1,
+        gameName.length()
+      );
 
-			if (FileHandling.shouldIgnoreLudAnalysis(gameName))
-				continue;
+      // if (!name.equals("Chex.lud"))
+      // continue;
 
-			System.out.println("Compilation of : " + gameName);
-			final Game game = GameLoader.loadGameFromName(gameName);
+      if (FileHandling.shouldIgnoreLudAnalysis(gameName)) continue;
 
-			if (game.hasSubgames() || game.isDeductionPuzzle() || game.isSimulationMoveGame())
-				continue;
+      System.out.println("Compilation of : " + gameName);
+      final Game game = GameLoader.loadGameFromName(gameName);
 
-			for (int i = 0; i < NUM_PLAYOUTS; i++)
-			{
-				boolean duplicateMoveInPlayout = false;
-				final List<AI> ais = new ArrayList<AI>();
-				ais.add(null);
-				for (int p = 1; p <= game.players().count(); ++p)
-					ais.add(new utils.RandomAI());
+      if (
+        game.hasSubgames() ||
+        game.isDeductionPuzzle() ||
+        game.isSimulationMoveGame()
+      ) continue;
 
-				final Context context = new Context(game, new Trial(game));
-				final Trial trial = context.trial();
-				game.start(context);
+      for (int i = 0; i < NUM_PLAYOUTS; i++) {
+        boolean duplicateMoveInPlayout = false;
+        final List<AI> ais = new ArrayList<AI>();
+        ais.add(null);
+        for (int p = 1; p <= game.players().count(); ++p) ais.add(
+          new utils.RandomAI()
+        );
 
-				for (int p = 1; p <= game.players().count(); ++p)
-					ais.get(p).initAI(game, p);
+        final Context context = new Context(game, new Trial(game));
+        final Trial trial = context.trial();
+        game.start(context);
 
-				final Model model = context.model();
+        for (int p = 1; p <= game.players().count(); ++p) ais
+          .get(p)
+          .initAI(game, p);
 
-				while (!trial.over())
-				{
-					final int mover = context.state().mover();
-					final Phase currPhase = game.rules().phases()[context.state().currentPhase(mover)];
-					final Moves legal = currPhase.play().moves().eval(context);
+        final Model model = context.model();
 
-					for (int j = 0; j < legal.moves().size(); j++)
-					{
-						final Move m1 = legal.moves().get(j);
+        while (!trial.over()) {
+          final int mover = context.state().mover();
+          final Phase currPhase = game
+            .rules()
+            .phases()[context.state().currentPhase(mover)];
+          final Moves legal = currPhase.play().moves().eval(context);
 
-						for (int k = j + 1; k < legal.moves().size(); k++)
-						{
+          for (int j = 0; j < legal.moves().size(); j++) {
+            final Move m1 = legal.moves().get(j);
 
-							final Move m2 = legal.moves().get(k);
+            for (int k = j + 1; k < legal.moves().size(); k++) {
+              final Move m2 = legal.moves().get(k);
 
-							if (Model.movesEqual(m1, m2, context))
-							{
-								duplicateMove = true;
-								if (!duplicateMoveInPlayout)
-									System.err.println("DUPLICATE move in " + name);
-								duplicateMoveInPlayout = true;
-							}
-						}
-					}
+              if (Model.movesEqual(m1, m2, context)) {
+                duplicateMove = true;
+                if (!duplicateMoveInPlayout) System.err.println(
+                  "DUPLICATE move in " + name
+                );
+                duplicateMoveInPlayout = true;
+              }
+            }
+          }
 
-					model.startNewStep(context, ais, 1.0);
-				}
-			}
-		}
+          model.startNewStep(context, ais, 1.0);
+        }
+      }
+    }
 
-		if (duplicateMove)
-			fail();
-	}
-
+    if (duplicateMove) fail();
+  }
 }

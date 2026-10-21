@@ -11,11 +11,11 @@ import search.flat.HeuristicSampleAdapted.MoveHeuristicEvaluation;
  *
  */
 public interface HeuristicProportionViewInterface {
+  void addObserver(HeuristicSampleAdapted heuristicSampleAdapted);
 
-	void addObserver(HeuristicSampleAdapted heuristicSampleAdapted);
-
-	void update(MoveHeuristicEvaluation latestMoveHeuristicEvaluation, Game game, Context context);
-
-	
-
+  void update(
+    MoveHeuristicEvaluation latestMoveHeuristicEvaluation,
+    Game game,
+    Context context
+  );
 }

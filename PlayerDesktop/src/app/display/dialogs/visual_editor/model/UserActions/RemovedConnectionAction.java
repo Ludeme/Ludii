@@ -11,64 +11,67 @@ import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
  * @author Filipp Dokienko
  */
 
-public class RemovedConnectionAction implements IUserAction
-{
+public class RemovedConnectionAction implements IUserAction {
 
-    private final IGraphPanel graphPanel;
-    private final DescriptionGraph graph;
-    private final LudemeNode from;
-    private final LudemeNode to;
-    private final NodeArgument nodeArgument;
+  private final IGraphPanel graphPanel;
+  private final DescriptionGraph graph;
+  private final LudemeNode from;
+  private final LudemeNode to;
+  private final NodeArgument nodeArgument;
 
-    public RemovedConnectionAction(IGraphPanel graphPanel, LudemeNode from, LudemeNode to, NodeArgument nodeArgument)
-    {
-        this.graphPanel = graphPanel;
-        this.graph = graphPanel.graph();
-        this.from = from;
-        this.to = to;
-        this.nodeArgument = nodeArgument;
-        //this.index = index;
-    }
+  public RemovedConnectionAction(
+    IGraphPanel graphPanel,
+    LudemeNode from,
+    LudemeNode to,
+    NodeArgument nodeArgument
+  ) {
+    this.graphPanel = graphPanel;
+    this.graph = graphPanel.graph();
+    this.from = from;
+    this.to = to;
+    this.nodeArgument = nodeArgument;
+    //this.index = index;
+  }
 
-    /**
-     * @return The type of the action
-     */
-    @Override
-    public ActionType actionType() {
-        return ActionType.REMOVED_INPUT;
-    }
+  /**
+   * @return The type of the action
+   */
+  @Override
+  public ActionType actionType() {
+    return ActionType.REMOVED_INPUT;
+  }
 
-    /**
-     * @return The graph panel that was affected by the action
-     */
-    @Override
-    public IGraphPanel graphPanel() {
-        return graphPanel;
-    }
+  /**
+   * @return The graph panel that was affected by the action
+   */
+  @Override
+  public IGraphPanel graphPanel() {
+    return graphPanel;
+  }
 
-    /**
-     * @return The description graph that was affected by the action
-     */
-    @Override
-    public DescriptionGraph graph() {
-        return graph;
-    }
+  /**
+   * @return The description graph that was affected by the action
+   */
+  @Override
+  public DescriptionGraph graph() {
+    return graph;
+  }
 
-    /**
-     * Undoes the action
-     */
-    @Override
-    public void undo() {
-        Handler.addEdge(graph, from, to, nodeArgument);
-        Handler.updateInput(graph, from, nodeArgument, to);
-    }
+  /**
+   * Undoes the action
+   */
+  @Override
+  public void undo() {
+    Handler.addEdge(graph, from, to, nodeArgument);
+    Handler.updateInput(graph, from, nodeArgument, to);
+  }
 
-    /**
-     * Redoes the action
-     */
-    @Override
-    public void redo() {
-        Handler.removeEdge(graph, from, to);
-        Handler.updateInput(graph, from, nodeArgument, null);
-    }
+  /**
+   * Redoes the action
+   */
+  @Override
+  public void redo() {
+    Handler.removeEdge(graph, from, to);
+    Handler.updateInput(graph, from, nodeArgument, null);
+  }
 }

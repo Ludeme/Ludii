@@ -9,18 +9,15 @@ import other.context.Context;
  *
  * @author Dennis Soemers
  */
-public interface HeuristicTransformation extends AIItem
-{
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param context
-	 * @param heuristicScore
-	 * @return Transformed version of given score
-	 */
-	public float transform(final Context context, final float heuristicScore);
-	
-	//-------------------------------------------------------------------------
+public interface HeuristicTransformation extends AIItem {
+  //-------------------------------------------------------------------------
 
+  /**
+   * @param context
+   * @param heuristicScore
+   * @return Transformed version of given score
+   */
+  public float transform(final Context context, final float heuristicScore);
+
+  //-------------------------------------------------------------------------
 }

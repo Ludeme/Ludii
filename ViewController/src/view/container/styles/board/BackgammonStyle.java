@@ -11,14 +11,16 @@ import view.container.styles.BoardStyle;
  * Custom style for Backgammon boards.
  * @author cambolbro
  */
-public class BackgammonStyle extends BoardStyle
-{
-	public BackgammonStyle(final Bridge bridge, final Container container) 
-	{
-		super(bridge, container);
-		final BackgammonPlacement backgammonPlacement = new BackgammonPlacement(bridge, this);
-		containerPlacement = backgammonPlacement;
-		containerDesign = new BackgammonDesign(this, backgammonPlacement);
-		containerComponents = new BackgammonComponents(bridge, this);
-	}
+public class BackgammonStyle extends BoardStyle {
+
+  public BackgammonStyle(final Bridge bridge, final Container container) {
+    super(bridge, container);
+    final BackgammonPlacement backgammonPlacement = new BackgammonPlacement(
+      bridge,
+      this
+    );
+    containerPlacement = backgammonPlacement;
+    containerDesign = new BackgammonDesign(this, backgammonPlacement);
+    containerComponents = new BackgammonComponents(bridge, this);
+  }
 }

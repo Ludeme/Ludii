@@ -1,155 +1,151 @@
 package game.util.directions;
 
-import java.util.BitSet;
-
 import game.Game;
+import java.util.BitSet;
 
 /**
  * Rotational directions.
- * 
+ *
  * @author Eric.Piette
  */
-public enum RotationalDirection implements DirectionFacing
-{
-	/** Outwards direction. */
-	Out(DirectionUniqueName.Out){ @Override public AbsoluteDirection toAbsolute(){ return AbsoluteDirection.Out; }}, 
-	
-	/** Clockwise direction. */
-	CW(DirectionUniqueName.CW){ @Override public AbsoluteDirection toAbsolute(){ return AbsoluteDirection.CW; }},
-	
-	/** Inwards direction. */
-	In(DirectionUniqueName.In){ @Override public AbsoluteDirection toAbsolute(){ return AbsoluteDirection.In; }},
-	
-	/** Counter-Clockwise direction. */
-	CCW(DirectionUniqueName.CCW){ @Override public AbsoluteDirection toAbsolute(){ return AbsoluteDirection.CCW; }},
-	;
+public enum RotationalDirection implements DirectionFacing {
+  /** Outwards direction. */
+  Out(DirectionUniqueName.Out) {
+    @Override
+    public AbsoluteDirection toAbsolute() {
+      return AbsoluteDirection.Out;
+    }
+  },
 
-	/** Left direction of each direction. */
-	private static final RotationalDirection[] LEFT;
+  /** Clockwise direction. */
+  CW(DirectionUniqueName.CW) {
+    @Override
+    public AbsoluteDirection toAbsolute() {
+      return AbsoluteDirection.CW;
+    }
+  },
 
-	/** Right direction of each direction. */
-	private static final RotationalDirection[] RIGHT;
+  /** Inwards direction. */
+  In(DirectionUniqueName.In) {
+    @Override
+    public AbsoluteDirection toAbsolute() {
+      return AbsoluteDirection.In;
+    }
+  },
 
-	/** Opposite direction of each direction. */
-	private static final RotationalDirection[] OPPOSITE;
+  /** Counter-Clockwise direction. */
+  CCW(DirectionUniqueName.CCW) {
+    @Override
+    public AbsoluteDirection toAbsolute() {
+      return AbsoluteDirection.CCW;
+    }
+  };
 
-	static
-	{
-		LEFT = new RotationalDirection[]
-		{ CCW, In, CW, Out };
-		RIGHT = new RotationalDirection[]
-		{ CW,  In, CCW, Out};
-		OPPOSITE = new RotationalDirection[]
-		{ In, CCW, Out, CW };
-	}
+  /** Left direction of each direction. */
+  private static final RotationalDirection[] LEFT;
 
-	/** The unique name of each direction. */
-	final DirectionUniqueName uniqueName;
+  /** Right direction of each direction. */
+  private static final RotationalDirection[] RIGHT;
 
-	/**
-	 * @param origDirnType
-	 */
-	private RotationalDirection(final DirectionUniqueName uniqueName)
-	{
-		this.uniqueName = uniqueName;
-	}
+  /** Opposite direction of each direction. */
+  private static final RotationalDirection[] OPPOSITE;
 
-	@Override
-	public DirectionFacing left()
-	{
-		return LEFT[ordinal()];
-	}
+  static {
+    LEFT = new RotationalDirection[] { CCW, In, CW, Out };
+    RIGHT = new RotationalDirection[] { CW, In, CCW, Out };
+    OPPOSITE = new RotationalDirection[] { In, CCW, Out, CW };
+  }
 
-	@Override
-	public DirectionFacing leftward()
-	{
-		return LEFT[ordinal()];
-	}
+  /** The unique name of each direction. */
+  final DirectionUniqueName uniqueName;
 
-	@Override
-	public DirectionFacing right()
-	{
-		return RIGHT[ordinal()];
-	}
+  /**
+   * @param origDirnType
+   */
+  private RotationalDirection(final DirectionUniqueName uniqueName) {
+    this.uniqueName = uniqueName;
+  }
 
-	@Override
-	public DirectionFacing rightward()
-	{
-		return RIGHT[ordinal()];
-	}
+  @Override
+  public DirectionFacing left() {
+    return LEFT[ordinal()];
+  }
 
-	@Override
-	public DirectionFacing opposite()
-	{
-		return OPPOSITE[ordinal()];
-	}
+  @Override
+  public DirectionFacing leftward() {
+    return LEFT[ordinal()];
+  }
 
-	@Override
-	public int index()
-	{
-		return ordinal();
-	}
+  @Override
+  public DirectionFacing right() {
+    return RIGHT[ordinal()];
+  }
 
-	@Override
-	public DirectionUniqueName uniqueName()
-	{
-		return uniqueName;
-	}
-	
-	@Override
-	public int numDirectionValues()
-	{
-		return RotationalDirection.values().length;
-	}
+  @Override
+  public DirectionFacing rightward() {
+    return RIGHT[ordinal()];
+  }
 
-	//-------------------------------------------------------------------------
-	// Ludeme overrides
+  @Override
+  public DirectionFacing opposite() {
+    return OPPOSITE[ordinal()];
+  }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		return new BitSet();
-	}
+  @Override
+  public int index() {
+    return ordinal();
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		return new BitSet();
-	}
+  @Override
+  public DirectionUniqueName uniqueName() {
+    return uniqueName;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		return new BitSet();
-	}
-	
-	@Override
-	public BitSet readsEvalContextFlat()
-	{
-		return new BitSet();
-	}
+  @Override
+  public int numDirectionValues() {
+    return RotationalDirection.values().length;
+  }
 
-	@Override
-	public BitSet writesEvalContextFlat()
-	{
-		return new BitSet();
-	}
+  //-------------------------------------------------------------------------
+  // Ludeme overrides
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		return false;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    return new BitSet();
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		return false;
-	}
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return name();
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    return new BitSet();
+  }
+
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    return new BitSet();
+  }
+
+  @Override
+  public BitSet readsEvalContextFlat() {
+    return new BitSet();
+  }
+
+  @Override
+  public BitSet writesEvalContextFlat() {
+    return new BitSet();
+  }
+
+  @Override
+  public boolean missingRequirement(final Game game) {
+    return false;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    return false;
+  }
+
+  @Override
+  public String toEnglish(final Game game) {
+    return name();
+  }
 }

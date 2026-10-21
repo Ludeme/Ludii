@@ -1,8 +1,7 @@
 package other.action.state;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
+import java.util.BitSet;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.BaseAction;
@@ -14,132 +13,115 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionSetCounter extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionSetCounter extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The new counter. */
-	private final int counter;
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /** The new counter. */
+  private final int counter;
 
-	/**
-	 * @param counter The new counter.
-	 */
-	public ActionSetCounter
-	(
-		final int counter
-	)
-	{
-		this.counter = counter;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionSetCounter object from a detailed String
-	 * (generated using toDetailedString())
-	 * @param detailedString
-	 */
-	public ActionSetCounter(final String detailedString)
-	{
-		assert (detailedString.startsWith("[SetCounter:"));
+  /**
+   * @param counter The new counter.
+   */
+  public ActionSetCounter(final int counter) {
+    this.counter = counter;
+  }
 
-		final String strCounter = Action.extractData(detailedString, "counter");
-		counter = Integer.parseInt(strCounter);
+  /**
+   * Reconstructs an ActionSetCounter object from a detailed String
+   * (generated using toDetailedString())
+   * @param detailedString
+   */
+  public ActionSetCounter(final String detailedString) {
+    assert detailedString.startsWith("[SetCounter:");
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+    final String strCounter = Action.extractData(detailedString, "counter");
+    counter = Integer.parseInt(strCounter);
 
-	//-------------------------------------------------------------------------
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		context.state().setCounter(counter);
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		// No need going to be reset in game.undo(...)
-		return this;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    context.state().setCounter(counter);
+    return this;
+  }
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+  //-------------------------------------------------------------------------
 
-		sb.append("[SetCounter:");
-		sb.append("counter=" + counter);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    // No need going to be reset in game.undo(...)
+    return this;
+  }
 
-		return sb.toString();
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		return result;
-	}
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+    sb.append("[SetCounter:");
+    sb.append("counter=" + counter);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
-		if (!(obj instanceof ActionSetCounter))
-			return false;
+    return sb.toString();
+  }
 
-		final ActionSetCounter other = (ActionSetCounter) obj;
-		return (decision == other.decision && counter == other.counter);
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    return result;
+  }
 
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-	@Override
-	public String getDescription()
-	{
-		return "SetCounter";
-	}
-	
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return "Counter=" + counter;
-	}
+    if (!(obj instanceof ActionSetCounter)) return false;
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(Counter = " + counter + ")";
-	}
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.SetCounter;
-	}
+    final ActionSetCounter other = (ActionSetCounter) obj;
+    return decision == other.decision && counter == other.counter;
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public String getDescription() {
+    return "SetCounter";
+  }
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.set(Concept.SetInternalCounter.id(), true);
-		return concepts;
-	}
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return "Counter=" + counter;
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return "(Counter = " + counter + ")";
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.SetCounter;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+    concepts.set(Concept.SetInternalCounter.id(), true);
+    return concepts;
+  }
 }

@@ -9,7 +9,6 @@ import java.lang.annotation.RetentionPolicy;
  * @author cambolbro
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Anon 
-{
-	// ...
+public @interface Anon {
+  // ...
 }

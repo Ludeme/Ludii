@@ -30,7 +30,9 @@ import gameDistance.utils.apted.node.StringNodeData;
  * This is a cost model defined  with a fixed cost
  * per edit operation.
  */
-public class PerEditOperationStringNodeDataCostModel implements CostModel<StringNodeData> {
+public class PerEditOperationStringNodeDataCostModel
+  implements CostModel<StringNodeData>
+{
 
   /**
    * Stores the cost of deleting a node.
@@ -54,7 +56,11 @@ public class PerEditOperationStringNodeDataCostModel implements CostModel<String
    * @param insCost insertion cost.
    * @param renCost rename cost.
    */
-  public PerEditOperationStringNodeDataCostModel(final float delCost, final float insCost, final float renCost) {
+  public PerEditOperationStringNodeDataCostModel(
+    final float delCost,
+    final float insCost,
+    final float renCost
+  ) {
     this.delCost = delCost;
     this.insCost = insCost;
     this.renCost = renCost;
@@ -67,7 +73,7 @@ public class PerEditOperationStringNodeDataCostModel implements CostModel<String
    * @return the cost of deleting node n.
    */
   @Override
-public float del(final Node<StringNodeData> n) {
+  public float del(final Node<StringNodeData> n) {
     return delCost;
   }
 
@@ -78,7 +84,7 @@ public float del(final Node<StringNodeData> n) {
    * @return the cost of inserting node n.
    */
   @Override
-public float ins(final Node<StringNodeData> n) {
+  public float ins(final Node<StringNodeData> n) {
     return insCost;
   }
 
@@ -90,7 +96,12 @@ public float ins(final Node<StringNodeData> n) {
    * @return the cost of renaming node n1 to n2.
    */
   @Override
-public float ren(final Node<StringNodeData> n1, final Node<StringNodeData> n2) {
-    return (n1.getNodeData().getLabel().equals(n2.getNodeData().getLabel())) ? 0.0f : renCost;
+  public float ren(
+    final Node<StringNodeData> n1,
+    final Node<StringNodeData> n2
+  ) {
+    return n1.getNodeData().getLabel().equals(n2.getNodeData().getLabel())
+      ? 0.0f
+      : renCost;
   }
 }

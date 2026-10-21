@@ -11,113 +11,109 @@ import other.BaseLudeme;
 
 /**
  * Gets all the conditions or effects related to the location between ``from'' and ``to''.
- * 
+ *
  * @author Eric.Piette
  */
-public class Between extends BaseLudeme
-{
-	/** The piece to let between the from and to. */
-	private final IntFunction trail;
-	
-	/** The condition applied between the from and to. */
-	private final BooleanFunction cond;
+public class Between extends BaseLudeme {
 
-	/** The distance before the range locations. */
-	private final IntFunction before;
+  /** The piece to let between the from and to. */
+  private final IntFunction trail;
 
-	/** The range of the middle locations. */
-	private final RangeFunction range;
+  /** The condition applied between the from and to. */
+  private final BooleanFunction cond;
 
-	/** The distance after the range locations. */
-	private final IntFunction after;
+  /** The distance before the range locations. */
+  private final IntFunction before;
 
-	/** The effect to apply on the locations. */
-	private final Apply effect;
+  /** The range of the middle locations. */
+  private final RangeFunction range;
 
-	//-------------------------------------------------------------------------
+  /** The distance after the range locations. */
+  private final IntFunction after;
 
-	/**
-	 * @param before Lead distance up to ``between'' section.
-	 * @param range  Range of the ``between'' section.
-	 * @param after  Trailing distance after ``between'' section.
-	 * @param If     The condition on the location.
-	 * @param trail  The piece to let on the location.
-	 * @param effect Actions to apply.
-	 * 
-	 * @example (between if:(is Enemy (who at:(between))) (apply (remove
-	 *          (between))) )
-	 */
-	public Between
-	(
-		@Opt @Name final IntFunction     before,
-		@Opt       final RangeFunction   range,
-		@Opt @Name final IntFunction     after,
-		@Opt @Name final BooleanFunction If,
-		@Opt @Name final IntFunction     trail,
-		@Opt       final Apply           effect
-	)
-	{
-		this.trail = trail;
-		cond = If;
-		this.before = before;
-		this.range = range;
-		this.after = after;
-		this.effect = effect;
-	}
-	
-	//-------------------------------------------------------------------------
+  /** The effect to apply on the locations. */
+  private final Apply effect;
 
-	/**
-	 * @return The piece to trail
-	 */
-	public IntFunction trail()
-	{
-		return trail;
-	}
-	
-	/**
-	 * @return The effect to apply on the piece in between
-	 */
-	public Apply effect()
-	{
-		return effect;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @return The distance before the range locations.
-	 */
-	public IntFunction before()
-	{
-		return before;
-	}
+  /**
+   * @param before Lead distance up to ``between'' section.
+   * @param range  Range of the ``between'' section.
+   * @param after  Trailing distance after ``between'' section.
+   * @param If     The condition on the location.
+   * @param trail  The piece to let on the location.
+   * @param effect Actions to apply.
+   *
+   * @example (between if:(is Enemy (who at:(between))) (apply (remove
+   *          (between))) )
+   */
+  public Between(
+    @Opt @Name final IntFunction before,
+    @Opt final RangeFunction range,
+    @Opt @Name final IntFunction after,
+    @Opt @Name final BooleanFunction If,
+    @Opt @Name final IntFunction trail,
+    @Opt final Apply effect
+  ) {
+    this.trail = trail;
+    cond = If;
+    this.before = before;
+    this.range = range;
+    this.after = after;
+    this.effect = effect;
+  }
 
-	/**
-	 * @return The range of the middle locations.
-	 */
-	public RangeFunction range()
-	{
-		return range;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @return The distance after the range locations.
-	 */
-	public IntFunction after()
-	{
-		return after;
-	}
+  /**
+   * @return The piece to trail
+   */
+  public IntFunction trail() {
+    return trail;
+  }
 
-	/**
-	 * @return The region of the from location.
-	 */
-	public BooleanFunction condition()
-	{
-		return cond;
-	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		return "for all the between sites where " + cond.toEnglish(game) + " is satisfied, apply " + effect.toEnglish(game);
-	}
+  /**
+   * @return The effect to apply on the piece in between
+   */
+  public Apply effect() {
+    return effect;
+  }
+
+  /**
+   * @return The distance before the range locations.
+   */
+  public IntFunction before() {
+    return before;
+  }
+
+  /**
+   * @return The range of the middle locations.
+   */
+  public RangeFunction range() {
+    return range;
+  }
+
+  /**
+   * @return The distance after the range locations.
+   */
+  public IntFunction after() {
+    return after;
+  }
+
+  /**
+   * @return The region of the from location.
+   */
+  public BooleanFunction condition() {
+    return cond;
+  }
+
+  @Override
+  public String toEnglish(final Game game) {
+    return (
+      "for all the between sites where " +
+      cond.toEnglish(game) +
+      " is satisfied, apply " +
+      effect.toEnglish(game)
+    );
+  }
 }

@@ -5,7 +5,7 @@ import game.types.state.GameType;
 
 /**
  * Returns an integer corresponding to a dimension.
- * 
+ *
  * @author Eric.Piette and cambolbro
  */
 
@@ -13,18 +13,15 @@ import game.types.state.GameType;
 // ** Do not @Hide, or loses mapping in grammar!
 // **
 
-public interface DimFunction extends GameType
-{
-	/**
-	 * @return The result of the function.
-	 */
-	int eval();
+public interface DimFunction extends GameType {
+  /**
+   * @return The result of the function.
+   */
+  int eval();
 
-	
-	/**
-	 * @param game
-	 * @return This Function in English.
-	 */
-	String toEnglish(Game game);
-
+  /**
+   * @param game
+   * @return This Function in English.
+   */
+  String toEnglish(Game game);
 }

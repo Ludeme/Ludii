@@ -7,17 +7,18 @@ import view.container.styles.BoardStyle;
 
 /**
  * Graphic style for Surakarta boards.
- * 
+ *
  * @author cambolbro
  */
-public class UltimateTicTacToeStyle extends BoardStyle
-{
-	public UltimateTicTacToeStyle(final Bridge bridge, final Container container)
-	{
-		super(bridge, container);
-		containerDesign = new UltimateTicTacToeDesign(this, boardPlacement);
-	}
+public class UltimateTicTacToeStyle extends BoardStyle {
 
-	//-------------------------------------------------------------------------
+  public UltimateTicTacToeStyle(
+    final Bridge bridge,
+    final Container container
+  ) {
+    super(bridge, container);
+    containerDesign = new UltimateTicTacToeDesign(this, boardPlacement);
+  }
 
+  //-------------------------------------------------------------------------
 }

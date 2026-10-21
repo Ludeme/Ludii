@@ -1,8 +1,7 @@
 package other.action.state;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
+import java.util.BitSet;
 import main.collections.FastTIntArrayList;
 import other.action.Action;
 import other.action.ActionType;
@@ -15,172 +14,160 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public class ActionForgetValue extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public class ActionForgetValue extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The value to forget. */
-	private final int value;
+  //-------------------------------------------------------------------------
 
-	/** The name of the remembering values. */
-	private final String name;
+  /** The value to forget. */
+  private final int value;
 
-	/**
-	 * @param name  The name of the remembering values.
-	 * @param value The value to forget.
-	 */
-	public ActionForgetValue(final String name, final int value)
-	{
-		this.name = name;
-		this.value = value;
-	}
+  /** The name of the remembering values. */
+  private final String name;
 
-	/**
-	 * Reconstructs an ActionForgetValue object from a detailed String (generated
-	 * using toDetailedString())
-	 *
-	 * @param detailedString
-	 */
-	public ActionForgetValue(final String detailedString)
-	{
-		assert (detailedString.startsWith("[ForgetValue:"));
+  /**
+   * @param name  The name of the remembering values.
+   * @param value The value to forget.
+   */
+  public ActionForgetValue(final String name, final int value) {
+    this.name = name;
+    this.value = value;
+  }
 
-		final String strName = Action.extractData(detailedString, "name");
-		name = strName;
+  /**
+   * Reconstructs an ActionForgetValue object from a detailed String (generated
+   * using toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionForgetValue(final String detailedString) {
+    assert detailedString.startsWith("[ForgetValue:");
 
-		final String strValue = Action.extractData(detailedString, "value");
-		value = Integer.parseInt(strValue);
+    final String strName = Action.extractData(detailedString, "name");
+    name = strName;
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+    final String strValue = Action.extractData(detailedString, "value");
+    value = Integer.parseInt(strValue);
 
-	//-------------------------------------------------------------------------
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		if (name == null)
-		{
-			context.state().rememberingValues().remove(value);
-		}
-		else
-		{
-			final FastTIntArrayList rememberingValues = context.state().mapRememberingValues().get(name);
-			if (rememberingValues != null)
-			{
-				rememberingValues.remove(value);
-				if (rememberingValues.isEmpty())
-					context.state().mapRememberingValues().remove(name);
-			}
-		}
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		if (name == null)
-		{
-			context.state().rememberingValues().insert(0,value);
-		}
-		else
-		{
-			FastTIntArrayList rememberingValues = context.state().mapRememberingValues().get(name);
-			if (rememberingValues == null)
-			{
-				rememberingValues = new FastTIntArrayList();
-				context.state().mapRememberingValues().put(name, rememberingValues);
-			}
-			
-			rememberingValues.insert(0,value);
-		}
-		
-		return this;
-	}
-	
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.Forget;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    if (name == null) {
+      context.state().rememberingValues().remove(value);
+    } else {
+      final FastTIntArrayList rememberingValues = context
+        .state()
+        .mapRememberingValues()
+        .get(name);
+      if (rememberingValues != null) {
+        rememberingValues.remove(value);
+        if (rememberingValues.isEmpty()) context
+          .state()
+          .mapRememberingValues()
+          .remove(name);
+      }
+    }
+    return this;
+  }
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+  //-------------------------------------------------------------------------
 
-		sb.append("[ForgetValue:");
-		sb.append("name=" + name);
-		sb.append(",value=" + value);
-		if (decision)
-			sb.append(",decision=" + decision);
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    if (name == null) {
+      context.state().rememberingValues().insert(0, value);
+    } else {
+      FastTIntArrayList rememberingValues = context
+        .state()
+        .mapRememberingValues()
+        .get(name);
+      if (rememberingValues == null) {
+        rememberingValues = new FastTIntArrayList();
+        context.state().mapRememberingValues().put(name, rememberingValues);
+      }
 
-		sb.append(']');
+      rememberingValues.insert(0, value);
+    }
 
-		return sb.toString();
-	}
+    return this;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + value;
-		return result;
-	}
+  @Override
+  public ActionType actionType() {
+    return ActionType.Forget;
+  }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  //-------------------------------------------------------------------------
 
-		if (!(obj instanceof ActionForgetValue))
-			return false;
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-		final ActionForgetValue other = (ActionForgetValue) obj;
-		if (name != null && other.name != null)
-			if (!name.equals(other.name))
-				return false;
+    sb.append("[ForgetValue:");
+    sb.append("name=" + name);
+    sb.append(",value=" + value);
+    if (decision) sb.append(",decision=" + decision);
 
-		return (decision == other.decision && value == other.value);
-	}
+    sb.append(']');
 
-	//-------------------------------------------------------------------------
+    return sb.toString();
+  }
 
-	@Override
-	public String getDescription()
-	{
-		return "ForgetValue";
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + value;
+    return result;
+  }
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return "RememberedValues-=" + value;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(Forget Value " + ((name != null) ? "'" + name + "' " : "") + value + ")";
-	}
+    if (!(obj instanceof ActionForgetValue)) return false;
 
-	//-------------------------------------------------------------------------
+    final ActionForgetValue other = (ActionForgetValue) obj;
+    if (name != null && other.name != null) if (
+      !name.equals(other.name)
+    ) return false;
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.set(Concept.ForgetValues.id(), true);
-		return concepts;
-	}
+    return decision == other.decision && value == other.value;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    return "ForgetValue";
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return "RememberedValues-=" + value;
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return (
+      "(Forget Value " + (name != null ? "'" + name + "' " : "") + value + ")"
+    );
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+    concepts.set(Concept.ForgetValues.id(), true);
+    return concepts;
+  }
 }

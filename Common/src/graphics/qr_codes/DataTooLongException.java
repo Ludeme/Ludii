@@ -1,11 +1,11 @@
 package graphics.qr_codes;
 
-/* 
+/*
  * Fast QR Code generator library
- * 
+ *
  * Copyright (c) Project Nayuki. (MIT License)
  * https://www.nayuki.io/page/fast-qr-code-generator-library
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
@@ -44,14 +44,13 @@ package graphics.qr_codes;
  * @see QrCode#encodeSegments(java.util.List, QrCode.Ecc, int, int, int, boolean)
  * @see QrSegmentAdvanced#makeSegmentsOptimally(String, QrCode.Ecc, int, int)
  */
-public class DataTooLongException extends IllegalArgumentException 
-{
-	private static final long serialVersionUID = 1L;
+public class DataTooLongException extends IllegalArgumentException {
 
-	public DataTooLongException() {}
-		
-	public DataTooLongException(String msg) 
-	{
-		super(msg);
-	}
+  private static final long serialVersionUID = 1L;
+
+  public DataTooLongException() {}
+
+  public DataTooLongException(String msg) {
+    super(msg);
+  }
 }

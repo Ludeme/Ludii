@@ -1,66 +1,57 @@
 package metadata.graphics.show.Boolean;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Opt;
 import game.Game;
+import java.util.BitSet;
 import metadata.graphics.GraphicsItem;
 
 /**
  * Indicates whether straight edges should be shown.
- * 
+ *
  * @author Matthew.Stephenson
  */
 @Hide
-public class ShowStraightEdges implements GraphicsItem
-{
-	/** If the curved edges should be shown. */
-	private final boolean showStraightEdges;
-		
-	//-------------------------------------------------------------------------
+public class ShowStraightEdges implements GraphicsItem {
 
-	/**
-	 * @param showStraightEdges  Whether the straight edges should be shown [True].
-	 */
-	public ShowStraightEdges
-	(
-		@Opt final Boolean showStraightEdges
-	)
-	{
-		this.showStraightEdges = (showStraightEdges == null) ? true : showStraightEdges.booleanValue();
-	}
+  /** If the curved edges should be shown. */
+  private final boolean showStraightEdges;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @return If the straight edges should be shown.
-	 */
-	public boolean showStraightEdges()
-	{
-		return showStraightEdges;
-	}
-	
-	//-------------------------------------------------------------------------
+  /**
+   * @param showStraightEdges  Whether the straight edges should be shown [True].
+   */
+  public ShowStraightEdges(@Opt final Boolean showStraightEdges) {
+    this.showStraightEdges =
+      showStraightEdges == null ? true : showStraightEdges.booleanValue();
+  }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		return concepts;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		final long gameFlags = 0l;
-		return gameFlags;
-	}
+  /**
+   * @return If the straight edges should be shown.
+   */
+  public boolean showStraightEdges() {
+    return showStraightEdges;
+  }
 
-	@Override
-	public boolean needRedraw()
-	{
-		return false;
-	}
+  //-------------------------------------------------------------------------
 
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    return concepts;
+  }
+
+  @Override
+  public long gameFlags(final Game game) {
+    final long gameFlags = 0l;
+    return gameFlags;
+  }
+
+  @Override
+  public boolean needRedraw() {
+    return false;
+  }
 }

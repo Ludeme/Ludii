@@ -6,13 +6,13 @@ import java.util.List;
  * @author filreh
  */
 public interface iContext {
-    /**
-     * This method produces a string that represents the context with all its fields.
-     */
-    @Override
-	String toString();
+  /**
+   * This method produces a string that represents the context with all its fields.
+   */
+  @Override
+  String toString();
 
-    String getKey();
+  String getKey();
 
-    List<String> getWords();
+  List<String> getWords();
 }

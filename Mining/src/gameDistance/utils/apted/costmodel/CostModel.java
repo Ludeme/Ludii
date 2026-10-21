@@ -39,7 +39,6 @@ import gameDistance.utils.apted.node.Node;
  * @param <D> type of node data on which the cost model is defined.
  */
 public interface CostModel<D> {
-
   /**
    * Calculates the cost of deleting a node.
    *

@@ -1,176 +1,156 @@
 package game.functions.booleans.math;
 
-import java.util.BitSet;
-
 import annotations.Anon;
 import game.Game;
 import game.functions.booleans.BaseBooleanFunction;
 import game.functions.booleans.BooleanFunction;
+import java.util.BitSet;
 import other.concept.Concept;
 import other.context.Context;
 
 /**
  * Tests the not condition.
- * 
+ *
  * @author Eric.Piette
- * 
+ *
  */
-public final class Not extends BaseBooleanFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class Not extends BaseBooleanFunction {
 
-	//-------------------------------------------------------------------------
-	
-	/** The boolean Function to reverse */
-	private final BooleanFunction a;
+  private static final long serialVersionUID = 1L;
 
-	/** Precomputed boolean. */
-	private Boolean precomputedBoolean;
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /** The boolean Function to reverse */
+  private final BooleanFunction a;
 
-	/**
-	 * @param a The condition.
-	 * @example (not (is In (last To) (sites Mover)))
-	 */
-	public Not(@Anon final BooleanFunction a)
-	{
-		this.a = a;
-	}
+  /** Precomputed boolean. */
+  private Boolean precomputedBoolean;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean eval(final Context context)
-	{
-		if (precomputedBoolean != null)
-			return precomputedBoolean.booleanValue();
+  /**
+   * @param a The condition.
+   * @example (not (is In (last To) (sites Mover)))
+   */
+  public Not(@Anon final BooleanFunction a) {
+    this.a = a;
+  }
 
-		return !a.eval(context);
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean eval(final Context context) {
+    if (precomputedBoolean != null) return precomputedBoolean.booleanValue();
 
-	/**
-	 * @return The condition.
-	 */
-	public BooleanFunction a()
-	{
-		return a;
-	}
+    return !a.eval(context);
+  }
 
-	@Override
-	public String toString()
-	{
-		return "Not(" + a.toString() + ")";
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean isStatic()
-	{
-		return a.isStatic();
-	}
+  /**
+   * @return The condition.
+   */
+  public BooleanFunction a() {
+    return a;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		return a.gameFlags(game);
-	}
-	
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(a.concepts(game));
-		if (concepts.get(Concept.CanMove.id()))
-		{
-			concepts.set(Concept.CanMove.id(), false);
-			concepts.set(Concept.CanNotMove.id(), true);
-		}
+  @Override
+  public String toString() {
+    return "Not(" + a.toString() + ")";
+  }
 
-		concepts.set(Concept.Negation.id(), true);
+  @Override
+  public boolean isStatic() {
+    return a.isStatic();
+  }
 
-		if (concepts.get(Concept.IsFriend.id()))
-		{
-			concepts.set(Concept.IsFriend.id(), false);
-			concepts.set(Concept.IsEmpty.id(), true);
-			concepts.set(Concept.IsEnemy.id(), true);
-		}
-		else if (concepts.get(Concept.IsEnemy.id()))
-		{
-			concepts.set(Concept.IsEnemy.id(), false);
-			concepts.set(Concept.IsEmpty.id(), true);
-			concepts.set(Concept.IsFriend.id(), true);
-		}
-		else if (concepts.get(Concept.IsEmpty.id()))
-		{
-			concepts.set(Concept.IsEmpty.id(), false);
-			concepts.set(Concept.IsEnemy.id(), true);
-			concepts.set(Concept.IsFriend.id(), true);
-		}
-		
-		if(concepts.get(Concept.NoTargetPiece.id()))
-			concepts.set(Concept.NoTargetPiece.id(), false);
+  @Override
+  public long gameFlags(final Game game) {
+    return a.gameFlags(game);
+  }
 
-		return concepts;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(a.concepts(game));
+    if (concepts.get(Concept.CanMove.id())) {
+      concepts.set(Concept.CanMove.id(), false);
+      concepts.set(Concept.CanNotMove.id(), true);
+    }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(a.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+    concepts.set(Concept.Negation.id(), true);
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(a.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    if (concepts.get(Concept.IsFriend.id())) {
+      concepts.set(Concept.IsFriend.id(), false);
+      concepts.set(Concept.IsEmpty.id(), true);
+      concepts.set(Concept.IsEnemy.id(), true);
+    } else if (concepts.get(Concept.IsEnemy.id())) {
+      concepts.set(Concept.IsEnemy.id(), false);
+      concepts.set(Concept.IsEmpty.id(), true);
+      concepts.set(Concept.IsFriend.id(), true);
+    } else if (concepts.get(Concept.IsEmpty.id())) {
+      concepts.set(Concept.IsEmpty.id(), false);
+      concepts.set(Concept.IsEnemy.id(), true);
+      concepts.set(Concept.IsFriend.id(), true);
+    }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		a.preprocess(game);
+    if (concepts.get(Concept.NoTargetPiece.id())) concepts.set(
+      Concept.NoTargetPiece.id(),
+      false
+    );
 
-		if (isStatic())
-			precomputedBoolean = Boolean.valueOf(eval(new Context(game, null)));
-	}
-	
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= a.missingRequirement(game);
-		return missingRequirement;
-	}
+    return concepts;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= a.willCrash(game);
-		return willCrash;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(a.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean autoFails()
-	{
-		return a.autoSucceeds();
-	}
-	
-	@Override
-	public boolean autoSucceeds()
-	{
-		return a.autoFails();
-	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		return "not " + a.toEnglish(game);
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(a.readsEvalContextRecursive());
+    return readEvalContext;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    a.preprocess(game);
+
+    if (isStatic()) precomputedBoolean = Boolean.valueOf(
+      eval(new Context(game, null))
+    );
+  }
+
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= a.missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= a.willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public boolean autoFails() {
+    return a.autoSucceeds();
+  }
+
+  @Override
+  public boolean autoSucceeds() {
+    return a.autoFails();
+  }
+
+  @Override
+  public String toEnglish(final Game game) {
+    return "not " + a.toEnglish(game);
+  }
 }

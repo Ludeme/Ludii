@@ -7,104 +7,92 @@ import game.types.board.SiteType;
  *
  * @author Dennis Soemers
  */
-public final class CellOnlyLocation extends Location
-{
-	
-	//-------------------------------------------------------------------------
-	
-	/**  */
-	private static final long serialVersionUID = 1L;
-	
-	//-------------------------------------------------------------------------
+public final class CellOnlyLocation extends Location {
 
-	/**
-	 * The site of the component.
-	 */
-	private final int site;
+  //-------------------------------------------------------------------------
 
-	/**
-	 * The level of the component in case of stack.
-	 */
-	private int level = 0;
+  /**  */
+  private static final long serialVersionUID = 1L;
 
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Constructor for stacking game.
-	 * 
-	 * @param site
-	 * @param level
-	 */
-	public CellOnlyLocation(final int site, final int level)
-	{
-		this.site = site;
-		this.level = level;
-	}
+  //-------------------------------------------------------------------------
 
+  /**
+   * The site of the component.
+   */
+  private final int site;
 
-	/**
-	 * Constructor for non stacking game.
-	 * 
-	 * @param site
-	 */
-	public CellOnlyLocation(final int site)
-	{
-		this.site = site;
-		this.level = 0;
-	}
+  /**
+   * The level of the component in case of stack.
+   */
+  private int level = 0;
 
-	/**
-	 * Copy Constructor.
-	 * @param other
-	 */
-	private CellOnlyLocation(final CellOnlyLocation other)
-	{
-		this.site = other.site;
-		this.level = other.level;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Location copy()
-	{
-		return new CellOnlyLocation(this);
-	}
-	
-	//-------------------------------------------------------------------------
+  /**
+   * Constructor for stacking game.
+   *
+   * @param site
+   * @param level
+   */
+  public CellOnlyLocation(final int site, final int level) {
+    this.site = site;
+    this.level = level;
+  }
 
-	@Override
-	public int site() 
-	{
-		return this.site;
-	}
+  /**
+   * Constructor for non stacking game.
+   *
+   * @param site
+   */
+  public CellOnlyLocation(final int site) {
+    this.site = site;
+    this.level = 0;
+  }
 
-	@Override
-	public int level()
-	{
-		return this.level;
-	}
-	
-	@Override
-	public SiteType siteType()
-	{
-		return SiteType.Cell;
-	}
-	
-	//-------------------------------------------------------------------------
+  /**
+   * Copy Constructor.
+   * @param other
+   */
+  private CellOnlyLocation(final CellOnlyLocation other) {
+    this.site = other.site;
+    this.level = other.level;
+  }
 
-	@Override
-	public void decrementLevel()
-	{
-		this.level = this.level - 1;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public void incrementLevel()
-	{
-		this.level = this.level + 1;
-	}
+  @Override
+  public Location copy() {
+    return new CellOnlyLocation(this);
+  }
 
-	//--------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
+  @Override
+  public int site() {
+    return this.site;
+  }
+
+  @Override
+  public int level() {
+    return this.level;
+  }
+
+  @Override
+  public SiteType siteType() {
+    return SiteType.Cell;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public void decrementLevel() {
+    this.level = this.level - 1;
+  }
+
+  @Override
+  public void incrementLevel() {
+    this.level = this.level + 1;
+  }
+
+  //--------------------------------------------------------------------------
 }

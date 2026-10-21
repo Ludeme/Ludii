@@ -2,44 +2,53 @@ package app.display.dialogs.visual_editor.view.panels.menus.viewMenu;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.menus.EditorMenuBar;
-
-import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.*;
 
-public class ViewMenu extends JMenu
-{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5378448276139884202L;
-	public ViewMenu(EditorMenuBar menuBar)
-    {
-        super("View");
+public class ViewMenu extends JMenu {
 
-        JMenu appearance = new JMenu("Colour Scheme");
-        JMenu background = new JMenu("Background");
-        JMenu fontSize = new JMenu("Font Size");
+  /**
+   *
+   */
+  private static final long serialVersionUID = -5378448276139884202L;
 
-        add(appearance);
-        add(background);
-        add(fontSize);
+  public ViewMenu(EditorMenuBar menuBar) {
+    super("View");
 
-        List<String> paletteNames = Handler.palettes();
-        for (String paletteName : paletteNames)
-            EditorMenuBar.addJMenuItem(appearance, paletteName, e -> Handler.setPalette(paletteName));
+    JMenu appearance = new JMenu("Colour Scheme");
+    JMenu background = new JMenu("Background");
+    JMenu fontSize = new JMenu("Font Size");
 
-        EditorMenuBar.addJMenuItem(background, "Dot Grid", dotGrid);
-        EditorMenuBar.addJMenuItem(background, "Cartesian Grid", cartesianGrid);
-        EditorMenuBar.addJMenuItem(background, "No Grid", noGrid);
+    add(appearance);
+    add(background);
+    add(fontSize);
 
-        EditorMenuBar.addJMenuItem(fontSize, "Small", e->Handler.setFont("Small"));
-        EditorMenuBar.addJMenuItem(fontSize, "Medium", e->Handler.setFont("Medium"));
-        EditorMenuBar.addJMenuItem(fontSize, "Large", e->Handler.setFont("Large"));
+    List<String> paletteNames = Handler.palettes();
+    for (String paletteName : paletteNames)
+      EditorMenuBar.addJMenuItem(appearance, paletteName, e ->
+        Handler.setPalette(paletteName)
+      );
 
-    }
+    EditorMenuBar.addJMenuItem(background, "Dot Grid", dotGrid);
+    EditorMenuBar.addJMenuItem(background, "Cartesian Grid", cartesianGrid);
+    EditorMenuBar.addJMenuItem(background, "No Grid", noGrid);
 
-    final ActionListener dotGrid = e -> Handler.setBackground(Handler.DotGridBackground);
-    final ActionListener cartesianGrid = e -> Handler.setBackground(Handler.CartesianGridBackground);
-    final ActionListener noGrid = e -> Handler.setBackground(Handler.EmptyBackground);
+    EditorMenuBar.addJMenuItem(fontSize, "Small", e ->
+      Handler.setFont("Small")
+    );
+    EditorMenuBar.addJMenuItem(fontSize, "Medium", e ->
+      Handler.setFont("Medium")
+    );
+    EditorMenuBar.addJMenuItem(fontSize, "Large", e ->
+      Handler.setFont("Large")
+    );
+  }
+
+  final ActionListener dotGrid = e ->
+    Handler.setBackground(Handler.DotGridBackground);
+  final ActionListener cartesianGrid = e ->
+    Handler.setBackground(Handler.CartesianGridBackground);
+  final ActionListener noGrid = e ->
+    Handler.setBackground(Handler.EmptyBackground);
 }

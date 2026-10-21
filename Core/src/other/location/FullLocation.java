@@ -7,138 +7,129 @@ import game.types.board.SiteType;
  *
  * @author Dennis Soemers
  */
-public final class FullLocation extends Location
-{
-	
-	//-------------------------------------------------------------------------
-	
-	/**  */
-	private static final long serialVersionUID = 1L;
-	
-	//-------------------------------------------------------------------------
+public final class FullLocation extends Location {
 
-	/**
-	 * The site of the component.
-	 */
-	private final int site;
+  //-------------------------------------------------------------------------
 
-	/**
-	 * The level of the component in case of stack.
-	 */
-	private int level = 0;
-	
-	/**
-	 * The graph element type.
-	 */
-	private final SiteType siteType;
+  /**  */
+  private static final long serialVersionUID = 1L;
 
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Constructor for stacking game with the site type.
-	 * 
-	 * @param site
-	 * @param level
-	 * @param siteType
-	 */
-	public FullLocation(final int site, final int level, final SiteType siteType)
-	{
-		this.site = site;
-		this.level = level;
-		this.siteType = siteType;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Constructor for stacking game.
-	 * 
-	 * @param site
-	 * @param level
-	 */
-	public FullLocation(final int site, final int level)
-	{
-		this.site = site;
-		this.level = level;
-		this.siteType = SiteType.Cell;
-	}
+  /**
+   * The site of the component.
+   */
+  private final int site;
 
-	/**
-	 * Constructor for non stacking game.
-	 * 
-	 * @param site
-	 */
-	public FullLocation(final int site)
-	{
-		this.site = site;
-		this.level = 0;
-		this.siteType = SiteType.Cell;
-	}
+  /**
+   * The level of the component in case of stack.
+   */
+  private int level = 0;
 
-	/**
-	 * Constructor for non stacking game.
-	 * 
-	 * @param site
-	 * @param siteType
-	 */
-	public FullLocation(final int site, final SiteType siteType)
-	{
-		this.site = site;
-		this.level = 0;
-		this.siteType = siteType;
-	}
+  /**
+   * The graph element type.
+   */
+  private final SiteType siteType;
 
-	/**
-	 * Copy Constructor.
-	 * @param other
-	 */
-	private FullLocation(final FullLocation other)
-	{
-		this.site = other.site;
-		this.level = other.level;
-		this.siteType = other.siteType;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Location copy()
-	{
-		return new FullLocation(this);
-	}
-	
-	//-------------------------------------------------------------------------
+  /**
+   * Constructor for stacking game with the site type.
+   *
+   * @param site
+   * @param level
+   * @param siteType
+   */
+  public FullLocation(
+    final int site,
+    final int level,
+    final SiteType siteType
+  ) {
+    this.site = site;
+    this.level = level;
+    this.siteType = siteType;
+  }
 
-	@Override
-	public int site() 
-	{
-		return site;
-	}
+  /**
+   * Constructor for stacking game.
+   *
+   * @param site
+   * @param level
+   */
+  public FullLocation(final int site, final int level) {
+    this.site = site;
+    this.level = level;
+    this.siteType = SiteType.Cell;
+  }
 
-	@Override
-	public int level()
-	{
-		return level;
-	}
-	
-	@Override
-	public SiteType siteType()
-	{
-		return siteType;
-	}
-	
-	//-------------------------------------------------------------------------
+  /**
+   * Constructor for non stacking game.
+   *
+   * @param site
+   */
+  public FullLocation(final int site) {
+    this.site = site;
+    this.level = 0;
+    this.siteType = SiteType.Cell;
+  }
 
-	@Override
-	public void decrementLevel()
-	{
-		this.level = this.level - 1;
-	}
+  /**
+   * Constructor for non stacking game.
+   *
+   * @param site
+   * @param siteType
+   */
+  public FullLocation(final int site, final SiteType siteType) {
+    this.site = site;
+    this.level = 0;
+    this.siteType = siteType;
+  }
 
-	@Override
-	public void incrementLevel()
-	{
-		this.level = this.level + 1;
-	}
+  /**
+   * Copy Constructor.
+   * @param other
+   */
+  private FullLocation(final FullLocation other) {
+    this.site = other.site;
+    this.level = other.level;
+    this.siteType = other.siteType;
+  }
 
-	//--------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
+  @Override
+  public Location copy() {
+    return new FullLocation(this);
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public int site() {
+    return site;
+  }
+
+  @Override
+  public int level() {
+    return level;
+  }
+
+  @Override
+  public SiteType siteType() {
+    return siteType;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public void decrementLevel() {
+    this.level = this.level - 1;
+  }
+
+  @Override
+  public void incrementLevel() {
+    this.level = this.level + 1;
+  }
+
+  //--------------------------------------------------------------------------
 }

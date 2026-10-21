@@ -32,7 +32,6 @@ import gameDistance.utils.apted.node.Node;
  * @param <D> the type of node data.
  */
 public interface InputParser<D> {
-
   /**
    * Convert the input tree passed as string (e.g., bracket notation, XML)
    * into the tree structure.

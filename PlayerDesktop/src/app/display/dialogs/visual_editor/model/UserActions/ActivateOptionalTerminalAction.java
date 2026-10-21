@@ -9,60 +9,72 @@ import app.display.dialogs.visual_editor.view.panels.IGraphPanel;
  * Created when an optional terminal inputfield gets activated/deactivated
  */
 
-public class ActivateOptionalTerminalAction implements IUserAction
-{
-    private final IGraphPanel graphPanel;
-    private final DescriptionGraph graph;
-    private final LudemeNode node;
-    private final NodeArgument argument;
-    private final boolean wasActivated;
+public class ActivateOptionalTerminalAction implements IUserAction {
 
-    public ActivateOptionalTerminalAction(IGraphPanel graphPanel, LudemeNode node, NodeArgument argument, boolean wasActivated)
-    {
-        this.graphPanel = graphPanel;
-        this.graph = graphPanel.graph();
-        this.node = node;
-        this.argument = argument;
-        this.wasActivated = wasActivated;
-    }
+  private final IGraphPanel graphPanel;
+  private final DescriptionGraph graph;
+  private final LudemeNode node;
+  private final NodeArgument argument;
+  private final boolean wasActivated;
 
-    /**
-     * @return The type of the action
-     */
-    @Override
-    public ActionType actionType() {
-        return ActionType.ACTIVATE_OPTIONAL_TERMINAL;
-    }
+  public ActivateOptionalTerminalAction(
+    IGraphPanel graphPanel,
+    LudemeNode node,
+    NodeArgument argument,
+    boolean wasActivated
+  ) {
+    this.graphPanel = graphPanel;
+    this.graph = graphPanel.graph();
+    this.node = node;
+    this.argument = argument;
+    this.wasActivated = wasActivated;
+  }
 
-    /**
-     * @return The graph panel that was affected by the action
-     */
-    @Override
-    public IGraphPanel graphPanel() {
-        return graphPanel;
-    }
+  /**
+   * @return The type of the action
+   */
+  @Override
+  public ActionType actionType() {
+    return ActionType.ACTIVATE_OPTIONAL_TERMINAL;
+  }
 
-    /**
-     * @return The description graph that was affected by the action
-     */
-    @Override
-    public DescriptionGraph graph() {
-        return graph;
-    }
+  /**
+   * @return The graph panel that was affected by the action
+   */
+  @Override
+  public IGraphPanel graphPanel() {
+    return graphPanel;
+  }
 
-    /**
-     * Undoes the action
-     */
-    @Override
-    public void undo() {
-        graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, !wasActivated);
-    }
+  /**
+   * @return The description graph that was affected by the action
+   */
+  @Override
+  public DescriptionGraph graph() {
+    return graph;
+  }
 
-    /**
-     * Redoes the action
-     */
-    @Override
-    public void redo() {
-        graphPanel.notifyTerminalActivated(graphPanel.nodeComponent(node), argument, wasActivated);
-    }
+  /**
+   * Undoes the action
+   */
+  @Override
+  public void undo() {
+    graphPanel.notifyTerminalActivated(
+      graphPanel.nodeComponent(node),
+      argument,
+      !wasActivated
+    );
+  }
+
+  /**
+   * Redoes the action
+   */
+  @Override
+  public void redo() {
+    graphPanel.notifyTerminalActivated(
+      graphPanel.nodeComponent(node),
+      argument,
+      wasActivated
+    );
+  }
 }

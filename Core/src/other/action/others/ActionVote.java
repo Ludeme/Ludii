@@ -1,9 +1,8 @@
 package other.action.others;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.BitSet;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.BaseAction;
@@ -15,253 +14,237 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionVote extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionVote extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The vote. */
-	private final String vote;
-	
-	/** The vote represented as an int. */
-	private final int voteInt;
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous votes. */
-	private TIntArrayList previousVotes;
-	
-	/** The previous propositions. */
-	private TIntArrayList previousPropositions;
-	
-	/** The decision previously done. */
-	private int previousIsDecided;
+  /** The vote. */
+  private final String vote;
 
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param vote    The vote.
-	 * @param voteInt The vote represented by a simple int
-	 */
-	public ActionVote(final String vote, final int voteInt)
-	{
-		this.vote = vote;
-		this.voteInt = voteInt;
-	}
+  /** The vote represented as an int. */
+  private final int voteInt;
 
-	/**
-	 * Reconstructs an ActionVote object from a detailed String (generated using
-	 * toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionVote(final String detailedString)
-	{
-		assert (detailedString.startsWith("[Vote:"));
+  //-------------------------------------------------------------------------
 
-		final String strVote = Action.extractData(detailedString, "vote");
-		vote = strVote;
-		
-		final String strVoteInt = Action.extractData(detailedString, "voteInt");
-		voteInt = Integer.parseInt(strVoteInt);
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  /** The previous votes. */
+  private TIntArrayList previousVotes;
 
-	//-------------------------------------------------------------------------
+  /** The previous propositions. */
+  private TIntArrayList previousPropositions;
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		context.state().votes().add(voteInt);
+  /** The decision previously done. */
+  private int previousIsDecided;
 
-		final TIntArrayList votes = context.state().votes();
-		final int nbPlayers = context.game().players().count();
+  //-------------------------------------------------------------------------
 
-		// If the vote is over we get the result.
-		if (votes.size() == nbPlayers)
-		{
-			if(!alreadyApplied)
-			{
-				previousIsDecided = context.state().isDecided();
-				previousVotes = new TIntArrayList();
-				
-				for(int i = 0; i < context.state().votes().size()-1; i++)
-					previousVotes.add(context.state().votes().get(i));
-				
-				previousPropositions = new TIntArrayList(context.state().propositions());
-				alreadyApplied = true;
-			}
-			
-			final TIntArrayList votesChecked = new TIntArrayList();
-			int countForDecision = 0;
-			int decisionindex = 0;
-			for (int i = 0; i < votes.size(); i++)
-			{
-				final int v = votes.getQuick(i);
-				int currentCount = 0;
-				if (!votesChecked.contains(v))
-				{
-					votesChecked.add(v);
-					for (int j = i; j < votes.size(); j++)
-					{
-						if (votes.getQuick(j) == v)
-							currentCount++;
-					}
-					if (currentCount > countForDecision)
-					{
-						countForDecision = currentCount;
-						decisionindex = i;
-					}
-				}
-			}
+  /**
+   * @param vote    The vote.
+   * @param voteInt The vote represented by a simple int
+   */
+  public ActionVote(final String vote, final int voteInt) {
+    this.vote = vote;
+    this.voteInt = voteInt;
+  }
 
-			// Decision takes only by a majority of player.
-			if (countForDecision > (nbPlayers / 2))
-				context.state().setIsDecided(votes.get(decisionindex));
+  /**
+   * Reconstructs an ActionVote object from a detailed String (generated using
+   * toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionVote(final String detailedString) {
+    assert detailedString.startsWith("[Vote:");
 
-			context.state().clearPropositions();
-			context.state().clearVotes();
-		}
+    final String strVote = Action.extractData(detailedString, "vote");
+    vote = strVote;
 
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		final TIntArrayList votes = context.state().votes();
+    final String strVoteInt = Action.extractData(detailedString, "voteInt");
+    voteInt = Integer.parseInt(strVoteInt);
 
-		// If the vote is over we get the result.
-		if (votes.isEmpty())
-		{
-			context.state().setIsDecided(previousIsDecided);
-			for(int i = 0; i < previousVotes.size(); i++)
-				context.state().votes().add(previousVotes.get(i));
-			for(int i = 0; i < previousPropositions.size(); i++)
-				context.state().propositions().add(previousPropositions.get(i));
-		}
-		else
-		{
-			context.state().votes().remove(voteInt);
-		}
-		
-		return this;
-	}
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public boolean isVote()
-	{
-		return true;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    context.state().votes().add(voteInt);
 
-		sb.append("[Vote:");
-		sb.append("vote=" + vote);
-		sb.append(",voteInt=" + voteInt);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+    final TIntArrayList votes = context.state().votes();
+    final int nbPlayers = context.game().players().count();
 
-		return sb.toString();
-	}
+    // If the vote is over we get the result.
+    if (votes.size() == nbPlayers) {
+      if (!alreadyApplied) {
+        previousIsDecided = context.state().isDecided();
+        previousVotes = new TIntArrayList();
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + vote.hashCode();
-		result = prime * result + voteInt;
-		return result;
-	}
+        for (
+          int i = 0;
+          i < context.state().votes().size() - 1;
+          i++
+        ) previousVotes.add(context.state().votes().get(i));
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+        previousPropositions = new TIntArrayList(
+          context.state().propositions()
+        );
+        alreadyApplied = true;
+      }
 
-		if (!(obj instanceof ActionVote))
-			return false;
+      final TIntArrayList votesChecked = new TIntArrayList();
+      int countForDecision = 0;
+      int decisionindex = 0;
+      for (int i = 0; i < votes.size(); i++) {
+        final int v = votes.getQuick(i);
+        int currentCount = 0;
+        if (!votesChecked.contains(v)) {
+          votesChecked.add(v);
+          for (int j = i; j < votes.size(); j++) {
+            if (votes.getQuick(j) == v) currentCount++;
+          }
+          if (currentCount > countForDecision) {
+            countForDecision = currentCount;
+            decisionindex = i;
+          }
+        }
+      }
 
-		final ActionVote other = (ActionVote) obj;
-		return decision == other.decision && vote.equals(other.vote) && voteInt == other.voteInt;
-	}
+      // Decision takes only by a majority of player.
+      if (countForDecision > nbPlayers / 2) context
+        .state()
+        .setIsDecided(votes.get(decisionindex));
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return "Vote \"" + vote + "\"";
-	}
+      context.state().clearPropositions();
+      context.state().clearVotes();
+    }
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(Vote \"" + vote + "\")";
-	}
+    return this;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String getDescription()
-	{
-		return "Vote";
-	}
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    final TIntArrayList votes = context.state().votes();
 
-	//-------------------------------------------------------------------------
+    // If the vote is over we get the result.
+    if (votes.isEmpty()) {
+      context.state().setIsDecided(previousIsDecided);
+      for (int i = 0; i < previousVotes.size(); i++) context
+        .state()
+        .votes()
+        .add(previousVotes.get(i));
+      for (int i = 0; i < previousPropositions.size(); i++) context
+        .state()
+        .propositions()
+        .add(previousPropositions.get(i));
+    } else {
+      context.state().votes().remove(voteInt);
+    }
 
-	@Override
-	public String vote()
-	{
-		return vote;
-	}
-	
-	/**
-	 * @return Int representation of vote
-	 */
-	public int voteInt()
-	{
-		return voteInt;
-	}
+    return this;
+  }
 
-	@Override
-	public boolean isOtherMove()
-	{
-		return true;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.Vote;
-	}
+  @Override
+  public boolean isVote() {
+    return true;
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		if (decision)
-			concepts.set(Concept.VoteDecision.id(), true);
-		else
-			concepts.set(Concept.VoteEffect.id(), true);
-		return concepts;
-	}
+    sb.append("[Vote:");
+    sb.append("vote=" + vote);
+    sb.append(",voteInt=" + voteInt);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
+    return sb.toString();
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + vote.hashCode();
+    result = prime * result + voteInt;
+    return result;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
+
+    if (!(obj instanceof ActionVote)) return false;
+
+    final ActionVote other = (ActionVote) obj;
+    return (
+      decision == other.decision &&
+      vote.equals(other.vote) &&
+      voteInt == other.voteInt
+    );
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return "Vote \"" + vote + "\"";
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return "(Vote \"" + vote + "\")";
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    return "Vote";
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String vote() {
+    return vote;
+  }
+
+  /**
+   * @return Int representation of vote
+   */
+  public int voteInt() {
+    return voteInt;
+  }
+
+  @Override
+  public boolean isOtherMove() {
+    return true;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.Vote;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+    if (decision) concepts.set(Concept.VoteDecision.id(), true);
+    else concepts.set(Concept.VoteEffect.id(), true);
+    return concepts;
+  }
 }

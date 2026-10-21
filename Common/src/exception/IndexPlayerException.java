@@ -7,13 +7,11 @@ package exception;
  * @author Eric.Piette and cambolbro
  *
  */
-public class IndexPlayerException extends RuntimeException 
-{
-	private static final long serialVersionUID = 1L;
+public class IndexPlayerException extends RuntimeException {
 
-	public IndexPlayerException(int index)
-	{
-		System.err.println("Instantiation of a player with the index " + index);
-	}
-	
+  private static final long serialVersionUID = 1L;
+
+  public IndexPlayerException(int index) {
+    System.err.println("Instantiation of a player with the index " + index);
+  }
 }

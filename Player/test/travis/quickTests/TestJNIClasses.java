@@ -13,21 +13,15 @@ import org.junit.Test;
  * @author Dennis Soemers
  */
 @SuppressWarnings("static-method")
-public class TestJNIClasses
-{
-	
-	@Test
-	public void testFullyQualifiedNames()
-	{
-		try
-		{
-			assertNotNull(Class.forName("utils.LudiiGameWrapper"));
-			assertNotNull(Class.forName("utils.LudiiStateWrapper"));
-		}
-		catch (final ClassNotFoundException e)
-		{
-			fail();
-		}
-	}
+public class TestJNIClasses {
 
+  @Test
+  public void testFullyQualifiedNames() {
+    try {
+      assertNotNull(Class.forName("utils.LudiiGameWrapper"));
+      assertNotNull(Class.forName("utils.LudiiStateWrapper"));
+    } catch (final ClassNotFoundException e) {
+      fail();
+    }
+  }
 }

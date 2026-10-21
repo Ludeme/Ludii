@@ -1,179 +1,157 @@
 package game.rules.start.forEach.value;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Name;
 import game.Game;
 import game.functions.ints.IntFunction;
 import game.rules.start.StartRule;
+import java.util.BitSet;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
 
 /**
  * Applies a move for each value from a value to another (included).
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class ForEachValue extends StartRule
-{
-	private static final long serialVersionUID = 1L;
+public final class ForEachValue extends StartRule {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The value from. */
-	private final IntFunction minFn;
-	
-	/** The value to. */
-	private final IntFunction maxFn;
+  //-------------------------------------------------------------------------
 
-	/** The starting rule to apply. */
-	private final StartRule startRule;
+  /** The value from. */
+  private final IntFunction minFn;
 
-	/**
-	 * @param min       The minimal value.
-	 * @param max       The maximal value.
-	 * @param startRule The starting rule to apply.
-	 */
-	public ForEachValue
-	(
-		@Name final IntFunction min,
-		@Name final IntFunction max,
-			  final StartRule   startRule
-	)
-	{
-		minFn = min;
-		maxFn = max;
-		this.startRule = startRule;
-	}
+  /** The value to. */
+  private final IntFunction maxFn;
 
-	@Override
-	public void eval(final Context context)
-	{
-		final int savedValue = context.value();
-		
-		final int min = minFn.eval(context);
-		final int max = maxFn.eval(context);
-		
-		for (int to = min; to <= max; to++)
-		{
-			context.setValue(to);
-			startRule.eval(context);
-		}
-		context.setValue(savedValue);
-	}
+  /** The starting rule to apply. */
+  private final StartRule startRule;
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param min       The minimal value.
+   * @param max       The maximal value.
+   * @param startRule The starting rule to apply.
+   */
+  public ForEachValue(
+    @Name final IntFunction min,
+    @Name final IntFunction max,
+    final StartRule startRule
+  ) {
+    minFn = min;
+    maxFn = max;
+    this.startRule = startRule;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = 0l;
+  @Override
+  public void eval(final Context context) {
+    final int savedValue = context.value();
 
-		if (maxFn != null)
-			gameFlags |= maxFn.gameFlags(game);
+    final int min = minFn.eval(context);
+    final int max = maxFn.eval(context);
 
-		if (minFn != null)
-			gameFlags |= minFn.gameFlags(game);
+    for (int to = min; to <= max; to++) {
+      context.setValue(to);
+      startRule.eval(context);
+    }
+    context.setValue(savedValue);
+  }
 
-		return gameFlags;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
-		if (minFn != null)
-			concepts.or(minFn.concepts(game));
-		if (maxFn != null)
-			concepts.or(maxFn.concepts(game));
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = 0l;
 
-		concepts.set(Concept.ControlFlowStatement.id(), true);
+    if (maxFn != null) gameFlags |= maxFn.gameFlags(game);
 
-		return concepts;
-	}
+    if (minFn != null) gameFlags |= minFn.gameFlags(game);
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = writesEvalContextFlat();
-		if (minFn != null)
-			writeEvalContext.or(minFn.writesEvalContextRecursive());
-		if (maxFn != null)
-			writeEvalContext.or(maxFn.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
-	
-	@Override
-	public BitSet writesEvalContextFlat()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.set(EvalContextData.Value.id(), true);
-		return writeEvalContext;
-	}
+    return gameFlags;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
-		if (minFn != null)
-			readEvalContext.or(minFn.readsEvalContextRecursive());
-		if (maxFn != null)
-			readEvalContext.or(maxFn.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
+    if (minFn != null) concepts.or(minFn.concepts(game));
+    if (maxFn != null) concepts.or(maxFn.concepts(game));
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
-		if (minFn != null)
-			missingRequirement |= minFn.missingRequirement(game);
-		if (maxFn != null)
-		missingRequirement |= maxFn.missingRequirement(game);
-		return missingRequirement;
-	}
+    concepts.set(Concept.ControlFlowStatement.id(), true);
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
-		if (minFn != null)
-			willCrash |= minFn.willCrash(game);
-		if (maxFn != null)
-			willCrash |= maxFn.willCrash(game);
-		return willCrash;
-	}
+    return concepts;
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = writesEvalContextFlat();
+    if (minFn != null) writeEvalContext.or(minFn.writesEvalContextRecursive());
+    if (maxFn != null) writeEvalContext.or(maxFn.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		if (minFn != null)
-			minFn.preprocess(game);
-		if (maxFn != null)
-			maxFn.preprocess(game);
-	}
-	
-	//------------------------------------------------------------------------
+  @Override
+  public BitSet writesEvalContextFlat() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.set(EvalContextData.Value.id(), true);
+    return writeEvalContext;
+  }
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "for all values " + "between " + minFn.toEnglish(game) + " and " + maxFn.toEnglish(game) + " " + startRule.toEnglish(game);
-	}
-	
-	//--------------------------------------------------------------------------
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
+    if (minFn != null) readEvalContext.or(minFn.readsEvalContextRecursive());
+    if (maxFn != null) readEvalContext.or(maxFn.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
+    if (minFn != null) missingRequirement |= minFn.missingRequirement(game);
+    if (maxFn != null) missingRequirement |= maxFn.missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
+    if (minFn != null) willCrash |= minFn.willCrash(game);
+    if (maxFn != null) willCrash |= maxFn.willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    if (minFn != null) minFn.preprocess(game);
+    if (maxFn != null) maxFn.preprocess(game);
+  }
+
+  //------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    return (
+      "for all values " +
+      "between " +
+      minFn.toEnglish(game) +
+      " and " +
+      maxFn.toEnglish(game) +
+      " " +
+      startRule.toEnglish(game)
+    );
+  }
+
+  //--------------------------------------------------------------------------
 }

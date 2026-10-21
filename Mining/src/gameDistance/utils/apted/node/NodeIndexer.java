@@ -23,10 +23,9 @@
 
 package gameDistance.utils.apted.node;
 
+import gameDistance.utils.apted.costmodel.CostModel;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import gameDistance.utils.apted.costmodel.CostModel;
 
 /**
  * Indexes nodes of the input tree to the algorithm that is already parsed to
@@ -361,24 +360,25 @@ public class NodeIndexer<D, C extends CostModel> {
 
       currentSize += 1 + sizeTmp;
       descSizes += descSizesTmp;
-      if(childrenCount > 1) {
-          krSizesSum += krSizesSumTmp + sizeTmp + 1;
+      if (childrenCount > 1) {
+        krSizesSum += krSizesSumTmp + sizeTmp + 1;
       } else {
-          krSizesSum += krSizesSumTmp;
-          nodeType_L[currentPreorder] = true;
+        krSizesSum += krSizesSumTmp;
+        nodeType_L[currentPreorder] = true;
       }
-      if(childrenIt.hasNext()) {
-          revkrSizesSum += revkrSizesSumTmp + sizeTmp + 1;
+      if (childrenIt.hasNext()) {
+        revkrSizesSum += revkrSizesSumTmp + sizeTmp + 1;
       } else {
-          revkrSizesSum += revkrSizesSumTmp;
-          nodeType_R[currentPreorder] = true;
+        revkrSizesSum += revkrSizesSumTmp;
+        nodeType_R[currentPreorder] = true;
       }
     }
 
     postorder++;
 
     final int currentDescSizes = descSizes + currentSize + 1;
-    preL_to_desc_sum[preorder] = ((currentSize + 1) * (currentSize + 1 + 3)) / 2 - currentDescSizes;
+    preL_to_desc_sum[preorder] =
+      ((currentSize + 1) * (currentSize + 1 + 3)) / 2 - currentDescSizes;
     preL_to_kr_sum[preorder] = krSizesSum + currentSize + 1;
     preL_to_rev_kr_sum[preorder] = revkrSizesSum + currentSize + 1;
 
@@ -399,8 +399,8 @@ public class NodeIndexer<D, C extends CostModel> {
 
     postL_to_preL[postorder] = preorder;
     preL_to_postL[preorder] = postorder;
-    preL_to_postR[preorder] = treeSize-1-preorder;
-    postR_to_preL[treeSize-1-preorder] = preorder;
+    preL_to_postR[preorder] = treeSize - 1 - preorder;
+    postR_to_preL[treeSize - 1 - preorder] = preorder;
 
     return postorder;
   }
@@ -418,10 +418,10 @@ public class NodeIndexer<D, C extends CostModel> {
     int currentLeaf = -1;
     int nodeForSum = -1;
     int parentForSum = -1;
-    for(int i = 0; i < treeSize; i++) {
+    for (int i = 0; i < treeSize; i++) {
       preL_to_ln[i] = currentLeaf;
-      if(isLeaf(i)) {
-          currentLeaf = i;
+      if (isLeaf(i)) {
+        currentLeaf = i;
       }
 
       // This block stores leftmost leaf descendants for each node
@@ -432,7 +432,9 @@ public class NodeIndexer<D, C extends CostModel> {
       if (sizes[preorder] == 1) {
         postL_to_lld[postl] = postl;
       } else {
-        postL_to_lld[postl] = postL_to_lld[preL_to_postL[children[preorder][0]]];
+        postL_to_lld[postl] = postL_to_lld[
+          preL_to_postL[children[preorder][0]]
+        ];
       }
       // This block stores rightmost leaf descendants for each node
       // indexed in right-to-left postorder.
@@ -444,17 +446,19 @@ public class NodeIndexer<D, C extends CostModel> {
       if (sizes[preorder] == 1) {
         postR_to_rld[postr] = postr;
       } else {
-        postR_to_rld[postr] = postR_to_rld[preL_to_postR[children[preorder][children[preorder].length-1]]];
+        postR_to_rld[postr] = postR_to_rld[
+          preL_to_postR[children[preorder][children[preorder].length - 1]]
+        ];
       }
       // Count lchl and rchl.
       // [TODO] There are no values for parent node.
       if (sizes[i] == 1) {
         final int parent = parents[i];
         if (parent > -1) {
-          if (parent+1 == i) {
-          	lchl++;
-          } else if (preL_to_preR[parent]+1 == preL_to_preR[i]) {
-          	rchl++;
+          if (parent + 1 == i) {
+            lchl++;
+          } else if (preL_to_preR[parent] + 1 == preL_to_preR[i]) {
+            rchl++;
           }
         }
       }
@@ -475,9 +479,9 @@ public class NodeIndexer<D, C extends CostModel> {
 
     currentLeaf = -1;
     // [TODO] Merge with the other loop. Assume different traversal.
-    for(int i = 0; i < sizes[0]; i++) {
+    for (int i = 0; i < sizes[0]; i++) {
       preR_to_ln[i] = currentLeaf;
-      if(isLeaf(preR_to_preL[i])) {
+      if (isLeaf(preR_to_preL[i])) {
         currentLeaf = i;
       }
     }
@@ -582,5 +586,4 @@ public class NodeIndexer<D, C extends CostModel> {
   public void setCurrentNode(final int preorder) {
     currentNode = preorder;
   }
-
 }

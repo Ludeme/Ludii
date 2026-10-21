@@ -1,8 +1,5 @@
 package game.functions.region.sites.hidden;
 
-import java.util.BitSet;
-import java.util.List;
-
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -16,6 +13,8 @@ import game.types.state.GameType;
 import game.util.equipment.Region;
 import game.util.moves.Player;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.BitSet;
+import java.util.List;
 import other.PlayersIndices;
 import other.concept.Concept;
 import other.context.Context;
@@ -24,174 +23,171 @@ import other.topology.TopologyElement;
 
 /**
  * Returns all the sites which the piece index is hidden to a player on the board.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class SitesHiddenWhat extends BaseRegionFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class SitesHiddenWhat extends BaseRegionFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The player to set the hidden information. */
-	private final IntFunction whoFn;
+  //-------------------------------------------------------------------------
 
-	/** The RoleType if used */
-	private final RoleType roleType;
+  /** The player to set the hidden information. */
+  private final IntFunction whoFn;
 
-	//-------------------------------------------------------------------------
+  /** The RoleType if used */
+  private final RoleType roleType;
 
-	/**
-	 * @param type       The graph element type [default of the board].
-	 * @param to         The player with these hidden information.
-	 * @param To         The roleType with these hidden information.
-	 */
-	public SitesHiddenWhat
-	(
-			        @Opt   final SiteType type,
-		  @Name @Or        final Player   to, 
-		  @Name @Or        final RoleType To
-	)
-	{
-		this.type = type;	
-		whoFn = (to == null && To == null) ? null : To != null ? RoleType.toIntFunction(To) : to.originalIndex();
-		roleType = To;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param type       The graph element type [default of the board].
+   * @param to         The player with these hidden information.
+   * @param To         The roleType with these hidden information.
+   */
+  public SitesHiddenWhat(
+    @Opt final SiteType type,
+    @Name @Or final Player to,
+    @Name @Or final RoleType To
+  ) {
+    this.type = type;
+    whoFn =
+      to == null && To == null
+        ? null
+        : To != null
+          ? RoleType.toIntFunction(To)
+          : to.originalIndex();
+    roleType = To;
+  }
 
-	@Override
-	public Region eval(final Context context)
-	{
-		final int who = whoFn.eval(context);
-		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
-		final TIntArrayList sites = new TIntArrayList();
-		final ContainerState cs = context.containerState(0);
-		final List<? extends TopologyElement> elements = context.topology().getGraphElements(realType);
+  //-------------------------------------------------------------------------
 
-		if (roleType != null && RoleType.manyIds(roleType))
-		{
-			final TIntArrayList idPlayers = PlayersIndices.getIdRealPlayers(context, roleType);
-			for (int i = 0; i < idPlayers.size(); i++)
-			{
-				final int pid = idPlayers.get(i);
-				for (final TopologyElement element : elements)
-					if (cs.isHiddenWhat(pid, element.index(), 0, realType))
-						sites.add(element.index());
-			}
-		}
-		else
-		{
-			for (final TopologyElement element : elements)
-				if (cs.isHiddenWhat(who, element.index(), 0, realType))
-					sites.add(element.index());
-		}
+  @Override
+  public Region eval(final Context context) {
+    final int who = whoFn.eval(context);
+    final SiteType realType =
+      type != null ? type : context.game().board().defaultSite();
+    final TIntArrayList sites = new TIntArrayList();
+    final ContainerState cs = context.containerState(0);
+    final List<? extends TopologyElement> elements = context
+      .topology()
+      .getGraphElements(realType);
 
-		return new Region(sites.toArray());
-	}
+    if (roleType != null && RoleType.manyIds(roleType)) {
+      final TIntArrayList idPlayers = PlayersIndices.getIdRealPlayers(
+        context,
+        roleType
+      );
+      for (int i = 0; i < idPlayers.size(); i++) {
+        final int pid = idPlayers.get(i);
+        for (final TopologyElement element : elements)
+          if (cs.isHiddenWhat(pid, element.index(), 0, realType)) sites.add(
+            element.index()
+          );
+      }
+    } else {
+      for (final TopologyElement element : elements)
+        if (cs.isHiddenWhat(who, element.index(), 0, realType)) sites.add(
+          element.index()
+        );
+    }
 
-	//-------------------------------------------------------------------------
+    return new Region(sites.toArray());
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long flags = GameType.HiddenInfo;
-		flags |= SiteType.gameFlags(type);
-		flags |= whoFn.gameFlags(game);
-		return flags;
-	}
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
-		concepts.or(SiteType.concepts(type));
-		concepts.or(whoFn.concepts(game));
-		concepts.set(Concept.HiddenInformation.id(), true);
-		concepts.set(Concept.HidePieceType.id(), true);
-		return concepts;
-	}
+  @Override
+  public long gameFlags(final Game game) {
+    long flags = GameType.HiddenInfo;
+    flags |= SiteType.gameFlags(type);
+    flags |= whoFn.gameFlags(game);
+    return flags;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(super.writesEvalContextRecursive());
-		writeEvalContext.or(whoFn.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
+    concepts.or(SiteType.concepts(type));
+    concepts.or(whoFn.concepts(game));
+    concepts.set(Concept.HiddenInformation.id(), true);
+    concepts.set(Concept.HidePieceType.id(), true);
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
-		readEvalContext.or(whoFn.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(super.writesEvalContextRecursive());
+    writeEvalContext.or(whoFn.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= whoFn.missingRequirement(game);
-		if (roleType != null)
-		{
-			if (RoleType.isTeam(roleType) && !game.requiresTeams())
-			{
-				game.addRequirementToReport(
-						"(sites Hidden ...): A roletype corresponding to a team is used but the game has no team: "
-								+ roleType + ".");
-				missingRequirement = true;
-			}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
+    readEvalContext.or(whoFn.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-			final int indexRoleType = roleType.owner();
-			if (indexRoleType > game.players().count())
-			{
-				game.addRequirementToReport(
-						"The roletype used in the rule (sites Hidden ...) is wrong: " + roleType + ".");
-				missingRequirement = true;
-			}
-		}
-		return missingRequirement;
-	}
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= whoFn.missingRequirement(game);
+    if (roleType != null) {
+      if (RoleType.isTeam(roleType) && !game.requiresTeams()) {
+        game.addRequirementToReport(
+          "(sites Hidden ...): A roletype corresponding to a team is used but the game has no team: " +
+            roleType +
+            "."
+        );
+        missingRequirement = true;
+      }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= whoFn.willCrash(game);
-		return willCrash;
-	}
+      final int indexRoleType = roleType.owner();
+      if (indexRoleType > game.players().count()) {
+        game.addRequirementToReport(
+          "The roletype used in the rule (sites Hidden ...) is wrong: " +
+            roleType +
+            "."
+        );
+        missingRequirement = true;
+      }
+    }
+    return missingRequirement;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
-		whoFn.preprocess(game);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{		
-		String playerString = "all players";
-		if (whoFn != null)
-			playerString = "Player " + whoFn.toEnglish(game);
-		else if (roleType != null)
-			playerString = roleType.name(); 
-		
-		return "all sites where the piece is hidden for " + playerString;
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= whoFn.willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
+    whoFn.preprocess(game);
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String playerString = "all players";
+    if (whoFn != null) playerString = "Player " + whoFn.toEnglish(game);
+    else if (roleType != null) playerString = roleType.name();
+
+    return "all sites where the piece is hidden for " + playerString;
+  }
+
+  //-------------------------------------------------------------------------
 }

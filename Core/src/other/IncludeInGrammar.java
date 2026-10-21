@@ -5,7 +5,6 @@ package other;
  * for cases where this is not obvious, e.g. GravityType.
  * @author cambolbro
  */
-public interface IncludeInGrammar
-{
-	//
+public interface IncludeInGrammar {
+  //
 }

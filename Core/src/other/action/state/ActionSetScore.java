@@ -10,177 +10,156 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionSetScore extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionSetScore extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The score's player to update. */
-	private final int player;
+  //-------------------------------------------------------------------------
 
-	/** The new score. */
-	private final int score;
+  /** The score's player to update. */
+  private final int player;
 
-	/** True if the score has to be add to the current score. */
-	private final boolean add;
+  /** The new score. */
+  private final int score;
 
-	//-------------------------------------------------------------------------
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous score. */
-	private int previousScore;
-	
-	//-------------------------------------------------------------------------
+  /** True if the score has to be add to the current score. */
+  private final boolean add;
 
-	/**
-	 * @param player The index of the player.
-	 * @param score  The score.
-	 * @param add    True if the score has to be added.
-	 */
-	public ActionSetScore
-	(
-		final int player, 
-		final int score,
-		final Boolean add
-	)
-	{
-		this.player = player;
-		this.score = score;
-		this.add = (add == null) ? false : add.booleanValue();
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionSetScore object from a detailed String (generated using
-	 * toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionSetScore(final String detailedString)
-	{
-		assert (detailedString.startsWith("[SetScore:"));
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-		final String strPlayer = Action.extractData(detailedString, "player");
-		player = Integer.parseInt(strPlayer);
+  /** The previous score. */
+  private int previousScore;
 
-		final String strScore = Action.extractData(detailedString, "score");
-		score = Integer.parseInt(strScore);
+  //-------------------------------------------------------------------------
 
-		final String strAddScore = Action.extractData(detailedString, "add");
-		add = (strAddScore.isEmpty()) ? false : Boolean.parseBoolean(strAddScore);
+  /**
+   * @param player The index of the player.
+   * @param score  The score.
+   * @param add    True if the score has to be added.
+   */
+  public ActionSetScore(final int player, final int score, final Boolean add) {
+    this.player = player;
+    this.score = score;
+    this.add = add == null ? false : add.booleanValue();
+  }
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  /**
+   * Reconstructs an ActionSetScore object from a detailed String (generated using
+   * toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionSetScore(final String detailedString) {
+    assert detailedString.startsWith("[SetScore:");
 
-	//-------------------------------------------------------------------------
+    final String strPlayer = Action.extractData(detailedString, "player");
+    player = Integer.parseInt(strPlayer);
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		if(!alreadyApplied)
-		{
-			previousScore = context.score(player);
-			alreadyApplied = true;
-		}
-		
-		if (add)
-			context.setScore(player, context.score(player) + score);
-		else
-			context.setScore(player, score);
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		context.setScore(player, previousScore);
-		return this;
-	}
+    final String strScore = Action.extractData(detailedString, "score");
+    score = Integer.parseInt(strScore);
 
-	//-------------------------------------------------------------------------
+    final String strAddScore = Action.extractData(detailedString, "add");
+    add = strAddScore.isEmpty() ? false : Boolean.parseBoolean(strAddScore);
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-		sb.append("[SetScore:");
-		sb.append("player=" + player);
-		sb.append(",score=" + score);
-		if (add)
-			sb.append(",add=" + add);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+  //-------------------------------------------------------------------------
 
-		return sb.toString();
-	}
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    if (!alreadyApplied) {
+      previousScore = context.score(player);
+      alreadyApplied = true;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		return result;
-	}
+    if (add) context.setScore(player, context.score(player) + score);
+    else context.setScore(player, score);
+    return this;
+  }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  //-------------------------------------------------------------------------
 
-		if (!(obj instanceof ActionSetScore))
-			return false;
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    context.setScore(player, previousScore);
+    return this;
+  }
 
-		final ActionSetScore other = (ActionSetScore) obj;
-		return (decision == other.decision && score == other.score && player == other.player);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String getDescription()
-	{
-		return "SetScore";
-	}
-	
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		if (!add)
-			return "P" + player + "=" + score;
+  //-------------------------------------------------------------------------
 
-		return "P" + player + "+=" + score;
-	}
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		if (!add)
-			return "(Score P" + player + " = " + score + ")";
+    sb.append("[SetScore:");
+    sb.append("player=" + player);
+    sb.append(",score=" + score);
+    if (add) sb.append(",add=" + add);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
-		return "(Score P" + player + " += " + score + ")";
-	}
-		
-	//-------------------------------------------------------------------------
+    return sb.toString();
+  }
 
-	@Override
-	public int who()
-	{
-		return player;
-	}
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.SetScore;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    return result;
+  }
 
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
+
+    if (!(obj instanceof ActionSetScore)) return false;
+
+    final ActionSetScore other = (ActionSetScore) obj;
+    return (
+      decision == other.decision &&
+      score == other.score &&
+      player == other.player
+    );
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    return "SetScore";
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    if (!add) return "P" + player + "=" + score;
+
+    return "P" + player + "+=" + score;
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    if (!add) return "(Score P" + player + " = " + score + ")";
+
+    return "(Score P" + player + " += " + score + ")";
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public int who() {
+    return player;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.SetScore;
+  }
 }

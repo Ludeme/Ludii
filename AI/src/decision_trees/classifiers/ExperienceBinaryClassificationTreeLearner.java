@@ -1,9 +1,5 @@
 package decision_trees.classifiers;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
-
 import features.Feature;
 import features.FeatureVector;
 import features.WeightVector;
@@ -11,6 +7,9 @@ import features.feature_sets.BaseFeatureSet;
 import function_approx.LinearFunction;
 import gnu.trove.list.array.TFloatArrayList;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
 import main.collections.ArrayUtils;
 import main.collections.FVector;
 import training.expert_iteration.ExItExperience;
@@ -18,410 +17,385 @@ import utils.data_structures.experience_buffers.ExperienceBuffer;
 
 /**
  * Class with methods for learning binary classification trees from experience.
- * 
+ *
  * @author Dennis Soemers
  */
-public class ExperienceBinaryClassificationTreeLearner
-{
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Builds a binary classification tree node for given feature set and experience buffer
-	 * @param featureSet
-	 * @param linFunc
-	 * @param buffer
-	 * @param maxDepth
-	 * @param minSamplesPerLeaf
-	 * @return Root node of the generated tree
-	 */
-	public static DecisionTreeNode buildTree
-	(
-		final BaseFeatureSet featureSet, 
-		final LinearFunction linFunc, 
-		final ExperienceBuffer buffer, 
-		final int maxDepth,
-		final int minSamplesPerLeaf
-	)
-	{
-		final WeightVector oracleWeightVector = linFunc.effectiveParams();
-		final ExItExperience[] samples = buffer.allExperience();
-		final List<FeatureVector> allFeatureVectors = new ArrayList<FeatureVector>();
-		final TFloatArrayList allTargetLabels = new TFloatArrayList();
-		
-		for (final ExItExperience sample : samples)
-		{
-			if (sample != null && sample.moves().size() > 1)
-			{
-				final FeatureVector[] featureVectors = sample.generateFeatureVectors(featureSet);
-				final float[] logits = new float[featureVectors.length];
+public class ExperienceBinaryClassificationTreeLearner {
 
-				for (int i = 0; i < featureVectors.length; ++i)
-				{
-					final FeatureVector featureVector = featureVectors[i];
-					logits[i] = oracleWeightVector.dot(featureVector);
-				}
-				
-				final float maxLogit = ArrayUtils.max(logits);
-				final float minLogit = ArrayUtils.min(logits);
-				
-				if (maxLogit == minLogit)
-					continue;		// Nothing to learn from this, just skip it
-				
-				for (int i = 0; i < featureVectors.length; ++i)
-				{
-					final FeatureVector featureVector = featureVectors[i];
-					allFeatureVectors.add(featureVector);
-				}
-				
-				// Maximise logits for winning moves and minimise for losing moves
-				for (int i = sample.winningMoves().nextSetBit(0); i >= 0; i = sample.winningMoves().nextSetBit(i + 1))
-				{
-					logits[i] = maxLogit;
-				}
-				
-				for (int i = sample.losingMoves().nextSetBit(0); i >= 0; i = sample.losingMoves().nextSetBit(i + 1))
-				{
-					logits[i] = minLogit;
-				}
-				
-				final FVector policy = new FVector(logits);
-				policy.softmax();
-				
-				final float maxProb = policy.max();
-				
-				final float[] targets = new float[logits.length];
-				for (int i = 0; i < targets.length; ++i)
-				{
-					targets[i] = policy.get(i) / maxProb;
-				}
-				
-				for (final float target : targets)
-				{
-					allTargetLabels.add(target);
-				}
-			}
-		}
-		
-		return buildNode
-				(
-					featureSet,
-					allFeatureVectors, 
-					allTargetLabels, 
-					new BitSet(), new BitSet(), 
-					featureSet.getNumAspatialFeatures(), featureSet.getNumSpatialFeatures(),
-					maxDepth,
-					minSamplesPerLeaf
-				);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param featureSet
-	 * @param remainingFeatureVectors
-	 * @param remainingTargetLabels
-	 * @param alreadyPickedAspatials
-	 * @param alreadyPickedSpatials
-	 * @param numAspatialFeatures
-	 * @param numSpatialFeatures
-	 * @param allowedDepth
-	 * @param minSamplesPerLeaf
-	 * @return Newly built node for decision tree, for given data
-	 */
-	private static DecisionTreeNode buildNode
-	(
-		final BaseFeatureSet featureSet,
-		final List<FeatureVector> remainingFeatureVectors,
-		final TFloatArrayList remainingTargetLabels,
-		final BitSet alreadyPickedAspatials,
-		final BitSet alreadyPickedSpatials,
-		final int numAspatialFeatures,
-		final int numSpatialFeatures,
-		final int allowedDepth,
-		final int minSamplesPerLeaf
-	)
-	{
-		if (minSamplesPerLeaf <= 0)
-			throw new IllegalArgumentException("minSamplesPerLeaf must be greater than 0");
-		
-		if (remainingFeatureVectors.isEmpty())
-		{
-			return new BinaryLeafNode(0.5f);
-		}
+  //-------------------------------------------------------------------------
 
-		if (allowedDepth == 0)
-		{
-			// Have to create leaf node here
-			return new BinaryLeafNode(remainingTargetLabels.sum() / remainingTargetLabels.size());
-		}
-		
-		// For every aspatial and every spatial feature, if not already picked, compute mean prob for true and false branches
-		final double[] sumProbsIfFalseAspatial = new double[numAspatialFeatures];
-		final int[] numFalseAspatial = new int[numAspatialFeatures];
-		final double[] sumProbsIfTrueAspatial = new double[numAspatialFeatures];
-		final int[] numTrueAspatial = new int[numAspatialFeatures];
+  /**
+   * Builds a binary classification tree node for given feature set and experience buffer
+   * @param featureSet
+   * @param linFunc
+   * @param buffer
+   * @param maxDepth
+   * @param minSamplesPerLeaf
+   * @return Root node of the generated tree
+   */
+  public static DecisionTreeNode buildTree(
+    final BaseFeatureSet featureSet,
+    final LinearFunction linFunc,
+    final ExperienceBuffer buffer,
+    final int maxDepth,
+    final int minSamplesPerLeaf
+  ) {
+    final WeightVector oracleWeightVector = linFunc.effectiveParams();
+    final ExItExperience[] samples = buffer.allExperience();
+    final List<FeatureVector> allFeatureVectors =
+      new ArrayList<FeatureVector>();
+    final TFloatArrayList allTargetLabels = new TFloatArrayList();
 
-		for (int i = 0; i < numAspatialFeatures; ++i)
-		{
-			if (alreadyPickedAspatials.get(i))
-				continue;
+    for (final ExItExperience sample : samples) {
+      if (sample != null && sample.moves().size() > 1) {
+        final FeatureVector[] featureVectors = sample.generateFeatureVectors(
+          featureSet
+        );
+        final float[] logits = new float[featureVectors.length];
 
-			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
-			{
-				final FeatureVector featureVector = remainingFeatureVectors.get(j);
-				final float targetProb = remainingTargetLabels.getQuick(j);
+        for (int i = 0; i < featureVectors.length; ++i) {
+          final FeatureVector featureVector = featureVectors[i];
+          logits[i] = oracleWeightVector.dot(featureVector);
+        }
 
-				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
-				{
-					sumProbsIfTrueAspatial[i] += targetProb;
-					++numTrueAspatial[i];
-				}
-				else
-				{
-					sumProbsIfFalseAspatial[i] += targetProb;
-					++numFalseAspatial[i];
-				}
-			}
-		}
+        final float maxLogit = ArrayUtils.max(logits);
+        final float minLogit = ArrayUtils.min(logits);
 
-		final double[] sumProbsIfFalseSpatial = new double[numSpatialFeatures];
-		final int[] numFalseSpatial = new int[numSpatialFeatures];
-		final double[] sumProbsIfTrueSpatial = new double[numSpatialFeatures];
-		final int[] numTrueSpatial = new int[numSpatialFeatures];
+        if (maxLogit == minLogit) continue; // Nothing to learn from this, just skip it
 
-		for (int i = 0; i < remainingFeatureVectors.size(); ++i)
-		{
-			final FeatureVector featureVector = remainingFeatureVectors.get(i);
-			final float targetProb = remainingTargetLabels.getQuick(i);
+        for (int i = 0; i < featureVectors.length; ++i) {
+          final FeatureVector featureVector = featureVectors[i];
+          allFeatureVectors.add(featureVector);
+        }
 
-			final boolean[] active = new boolean[numSpatialFeatures];
-			final TIntArrayList sparseSpatials = featureVector.activeSpatialFeatureIndices();
+        // Maximise logits for winning moves and minimise for losing moves
+        for (
+          int i = sample.winningMoves().nextSetBit(0);
+          i >= 0;
+          i = sample.winningMoves().nextSetBit(i + 1)
+        ) {
+          logits[i] = maxLogit;
+        }
 
-			for (int j = 0; j < sparseSpatials.size(); ++j)
-			{
-				active[sparseSpatials.getQuick(j)] = true;
-			}
+        for (
+          int i = sample.losingMoves().nextSetBit(0);
+          i >= 0;
+          i = sample.losingMoves().nextSetBit(i + 1)
+        ) {
+          logits[i] = minLogit;
+        }
 
-			for (int j = 0; j < active.length; ++j)
-			{
-				if (alreadyPickedSpatials.get(j))
-					continue;
+        final FVector policy = new FVector(logits);
+        policy.softmax();
 
-				if (active[j])
-				{
-					sumProbsIfTrueSpatial[j] += targetProb;
-					++numTrueSpatial[j];
-				}
-				else
-				{
-					sumProbsIfFalseSpatial[j] += targetProb;
-					++numFalseSpatial[j];
-				}
-			}
-		}
+        final float maxProb = policy.max();
 
-		final double[] meanProbsIfFalseAspatial = new double[numAspatialFeatures];
-		final double[] meanProbsIfTrueAspatial = new double[numAspatialFeatures];
-		final double[] meanProbsIfFalseSpatial = new double[numSpatialFeatures];
-		final double[] meanProbsIfTrueSpatial = new double[numSpatialFeatures];
+        final float[] targets = new float[logits.length];
+        for (int i = 0; i < targets.length; ++i) {
+          targets[i] = policy.get(i) / maxProb;
+        }
 
-		for (int i = 0; i < numAspatialFeatures; ++i)
-		{
-			if (numFalseAspatial[i] > 0)
-				meanProbsIfFalseAspatial[i] = sumProbsIfFalseAspatial[i] / numFalseAspatial[i];
+        for (final float target : targets) {
+          allTargetLabels.add(target);
+        }
+      }
+    }
 
-			if (numTrueAspatial[i] > 0)
-				meanProbsIfTrueAspatial[i] = sumProbsIfTrueAspatial[i] / numTrueAspatial[i];
-		}
+    return buildNode(
+      featureSet,
+      allFeatureVectors,
+      allTargetLabels,
+      new BitSet(),
+      new BitSet(),
+      featureSet.getNumAspatialFeatures(),
+      featureSet.getNumSpatialFeatures(),
+      maxDepth,
+      minSamplesPerLeaf
+    );
+  }
 
-		for (int i = 0; i < numSpatialFeatures; ++i)
-		{
-			if (numFalseSpatial[i] > 0)
-				meanProbsIfFalseSpatial[i] = sumProbsIfFalseSpatial[i] / numFalseSpatial[i];
+  //-------------------------------------------------------------------------
 
-			if (numTrueSpatial[i] > 0)
-				meanProbsIfTrueSpatial[i] = sumProbsIfTrueSpatial[i] / numTrueSpatial[i];
-		}
+  /**
+   * @param featureSet
+   * @param remainingFeatureVectors
+   * @param remainingTargetLabels
+   * @param alreadyPickedAspatials
+   * @param alreadyPickedSpatials
+   * @param numAspatialFeatures
+   * @param numSpatialFeatures
+   * @param allowedDepth
+   * @param minSamplesPerLeaf
+   * @return Newly built node for decision tree, for given data
+   */
+  private static DecisionTreeNode buildNode(
+    final BaseFeatureSet featureSet,
+    final List<FeatureVector> remainingFeatureVectors,
+    final TFloatArrayList remainingTargetLabels,
+    final BitSet alreadyPickedAspatials,
+    final BitSet alreadyPickedSpatials,
+    final int numAspatialFeatures,
+    final int numSpatialFeatures,
+    final int allowedDepth,
+    final int minSamplesPerLeaf
+  ) {
+    if (minSamplesPerLeaf <= 0) throw new IllegalArgumentException(
+      "minSamplesPerLeaf must be greater than 0"
+    );
 
-		// Find feature that maximally reduces sum of squared errors
-		double minSumSquaredErrors = Double.POSITIVE_INFINITY;
-		double maxSumSquaredErrors = Double.NEGATIVE_INFINITY;
-		int bestIdx = -1;
-		boolean bestFeatureIsAspatial = true;
+    if (remainingFeatureVectors.isEmpty()) {
+      return new BinaryLeafNode(0.5f);
+    }
 
-		for (int i = 0; i < numAspatialFeatures; ++i)
-		{
-			if (numFalseAspatial[i] < minSamplesPerLeaf || numTrueAspatial[i] < minSamplesPerLeaf)
-				continue;
+    if (allowedDepth == 0) {
+      // Have to create leaf node here
+      return new BinaryLeafNode(
+        remainingTargetLabels.sum() / remainingTargetLabels.size()
+      );
+    }
 
-			double sumSquaredErrors = 0.0;
-			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
-			{
-				final FeatureVector featureVector = remainingFeatureVectors.get(j);
-				final float targetProb = remainingTargetLabels.getQuick(j);
-				final double error;
+    // For every aspatial and every spatial feature, if not already picked, compute mean prob for true and false branches
+    final double[] sumProbsIfFalseAspatial = new double[numAspatialFeatures];
+    final int[] numFalseAspatial = new int[numAspatialFeatures];
+    final double[] sumProbsIfTrueAspatial = new double[numAspatialFeatures];
+    final int[] numTrueAspatial = new int[numAspatialFeatures];
 
-				if (featureVector.aspatialFeatureValues().get(i) != 0.f)
-					error = targetProb - meanProbsIfTrueAspatial[i];
-				else
-					error = targetProb - meanProbsIfFalseAspatial[i];
+    for (int i = 0; i < numAspatialFeatures; ++i) {
+      if (alreadyPickedAspatials.get(i)) continue;
 
-				sumSquaredErrors += (error * error);
-			}
+      for (int j = 0; j < remainingFeatureVectors.size(); ++j) {
+        final FeatureVector featureVector = remainingFeatureVectors.get(j);
+        final float targetProb = remainingTargetLabels.getQuick(j);
 
-			if (sumSquaredErrors < minSumSquaredErrors)
-			{
-				minSumSquaredErrors = sumSquaredErrors;
-				bestIdx = i;
-			}
-			
-			if (sumSquaredErrors > maxSumSquaredErrors)
-			{
-				maxSumSquaredErrors = sumSquaredErrors;
-			}
-		}
+        if (featureVector.aspatialFeatureValues().get(i) != 0.f) {
+          sumProbsIfTrueAspatial[i] += targetProb;
+          ++numTrueAspatial[i];
+        } else {
+          sumProbsIfFalseAspatial[i] += targetProb;
+          ++numFalseAspatial[i];
+        }
+      }
+    }
 
-		for (int i = 0; i < numSpatialFeatures; ++i)
-		{
-			if (numFalseSpatial[i] < minSamplesPerLeaf || numTrueSpatial[i] < minSamplesPerLeaf)
-				continue;
+    final double[] sumProbsIfFalseSpatial = new double[numSpatialFeatures];
+    final int[] numFalseSpatial = new int[numSpatialFeatures];
+    final double[] sumProbsIfTrueSpatial = new double[numSpatialFeatures];
+    final int[] numTrueSpatial = new int[numSpatialFeatures];
 
-			double sumSquaredErrors = 0.0;
-			for (int j = 0; j < remainingFeatureVectors.size(); ++j)
-			{
-				final FeatureVector featureVector = remainingFeatureVectors.get(j);
-				final float targetProb = remainingTargetLabels.getQuick(j);
-				final double error;
+    for (int i = 0; i < remainingFeatureVectors.size(); ++i) {
+      final FeatureVector featureVector = remainingFeatureVectors.get(i);
+      final float targetProb = remainingTargetLabels.getQuick(i);
 
-				if (featureVector.activeSpatialFeatureIndices().contains(i))
-					error = targetProb - meanProbsIfTrueSpatial[i];
-				else
-					error = targetProb - meanProbsIfFalseSpatial[i];
+      final boolean[] active = new boolean[numSpatialFeatures];
+      final TIntArrayList sparseSpatials =
+        featureVector.activeSpatialFeatureIndices();
 
-				sumSquaredErrors += (error * error);
-			}
+      for (int j = 0; j < sparseSpatials.size(); ++j) {
+        active[sparseSpatials.getQuick(j)] = true;
+      }
 
-			if (sumSquaredErrors < minSumSquaredErrors)
-			{
-				minSumSquaredErrors = sumSquaredErrors;
-				bestIdx = i;
-				bestFeatureIsAspatial = false;
-			}
-			
-			if (sumSquaredErrors > maxSumSquaredErrors)
-			{
-				maxSumSquaredErrors = sumSquaredErrors;
-			}
-		}
+      for (int j = 0; j < active.length; ++j) {
+        if (alreadyPickedSpatials.get(j)) continue;
 
-		if (bestIdx == -1 || minSumSquaredErrors == 0.0 || minSumSquaredErrors == maxSumSquaredErrors)
-		{
-			// No point in making any split at all, so just make leaf		TODO could in theory use remaining features to compute a model again
-			return new BinaryLeafNode(remainingTargetLabels.sum() / remainingTargetLabels.size());
-		}
+        if (active[j]) {
+          sumProbsIfTrueSpatial[j] += targetProb;
+          ++numTrueSpatial[j];
+        } else {
+          sumProbsIfFalseSpatial[j] += targetProb;
+          ++numFalseSpatial[j];
+        }
+      }
+    }
 
-		final Feature splittingFeature;
-		if (bestFeatureIsAspatial)
-			splittingFeature = featureSet.aspatialFeatures()[bestIdx];
-		else
-			splittingFeature = featureSet.spatialFeatures()[bestIdx];
+    final double[] meanProbsIfFalseAspatial = new double[numAspatialFeatures];
+    final double[] meanProbsIfTrueAspatial = new double[numAspatialFeatures];
+    final double[] meanProbsIfFalseSpatial = new double[numSpatialFeatures];
+    final double[] meanProbsIfTrueSpatial = new double[numSpatialFeatures];
 
-		final BitSet newAlreadyPickedAspatials;
-		final BitSet newAlreadyPickedSpatials;
+    for (int i = 0; i < numAspatialFeatures; ++i) {
+      if (numFalseAspatial[i] > 0) meanProbsIfFalseAspatial[i] =
+        sumProbsIfFalseAspatial[i] / numFalseAspatial[i];
 
-		if (bestFeatureIsAspatial)
-		{
-			newAlreadyPickedAspatials = (BitSet) alreadyPickedAspatials.clone();
-			newAlreadyPickedAspatials.set(bestIdx);
-			newAlreadyPickedSpatials = alreadyPickedSpatials;
-		}
-		else
-		{
-			newAlreadyPickedSpatials = (BitSet) alreadyPickedSpatials.clone();
-			newAlreadyPickedSpatials.set(bestIdx);
-			newAlreadyPickedAspatials = alreadyPickedAspatials;
-		}
+      if (numTrueAspatial[i] > 0) meanProbsIfTrueAspatial[i] =
+        sumProbsIfTrueAspatial[i] / numTrueAspatial[i];
+    }
 
-		// Split remaining data for the two branches
-		final List<FeatureVector> remainingFeatureVectorsTrue = new ArrayList<FeatureVector>();
-		final TFloatArrayList remainingTargetProbsTrue = new TFloatArrayList();
+    for (int i = 0; i < numSpatialFeatures; ++i) {
+      if (numFalseSpatial[i] > 0) meanProbsIfFalseSpatial[i] =
+        sumProbsIfFalseSpatial[i] / numFalseSpatial[i];
 
-		final List<FeatureVector> remainingFeatureVectorsFalse = new ArrayList<FeatureVector>();
-		final TFloatArrayList remainingTargetProbsFalse = new TFloatArrayList();
+      if (numTrueSpatial[i] > 0) meanProbsIfTrueSpatial[i] =
+        sumProbsIfTrueSpatial[i] / numTrueSpatial[i];
+    }
 
-		if (bestFeatureIsAspatial)
-		{
-			for (int i = 0; i < remainingFeatureVectors.size(); ++i)
-			{
-				if (remainingFeatureVectors.get(i).aspatialFeatureValues().get(bestIdx) != 0.f)
-				{
-					remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
-					remainingTargetProbsTrue.add(remainingTargetLabels.getQuick(i));
-				}
-				else
-				{
-					remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
-					remainingTargetProbsFalse.add(remainingTargetLabels.getQuick(i));
-				}
-			}
-		}
-		else
-		{
-			for (int i = 0; i < remainingFeatureVectors.size(); ++i)
-			{
-				if (remainingFeatureVectors.get(i).activeSpatialFeatureIndices().contains(bestIdx))
-				{
-					remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
-					remainingTargetProbsTrue.add(remainingTargetLabels.getQuick(i));
-				}
-				else
-				{
-					remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
-					remainingTargetProbsFalse.add(remainingTargetLabels.getQuick(i));
-				}
-			}
-		}
+    // Find feature that maximally reduces sum of squared errors
+    double minSumSquaredErrors = Double.POSITIVE_INFINITY;
+    double maxSumSquaredErrors = Double.NEGATIVE_INFINITY;
+    int bestIdx = -1;
+    boolean bestFeatureIsAspatial = true;
 
-		// Create the node for case where splitting feature is true
-		final DecisionTreeNode trueBranch;
-		{
-			trueBranch = 
-					buildNode
-					(
-						featureSet,
-						remainingFeatureVectorsTrue,
-						remainingTargetProbsTrue,
-						newAlreadyPickedAspatials,
-						newAlreadyPickedSpatials,
-						numAspatialFeatures,
-						numSpatialFeatures,
-						allowedDepth - 1,
-						minSamplesPerLeaf
-					);
-		}
+    for (int i = 0; i < numAspatialFeatures; ++i) {
+      if (
+        numFalseAspatial[i] < minSamplesPerLeaf ||
+        numTrueAspatial[i] < minSamplesPerLeaf
+      ) continue;
 
-		// Create the node for case where splitting feature is false
-		final DecisionTreeNode falseBranch;
-		{
-			falseBranch = 
-					buildNode
-					(
-						featureSet,
-						remainingFeatureVectorsFalse,
-						remainingTargetProbsFalse,
-						newAlreadyPickedAspatials,
-						newAlreadyPickedSpatials,
-						numAspatialFeatures,
-						numSpatialFeatures,
-						allowedDepth - 1,
-						minSamplesPerLeaf
-					);
-		}
-		
-		return new DecisionConditionNode(splittingFeature, trueBranch, falseBranch);
-	}
-	
-	//-------------------------------------------------------------------------
+      double sumSquaredErrors = 0.0;
+      for (int j = 0; j < remainingFeatureVectors.size(); ++j) {
+        final FeatureVector featureVector = remainingFeatureVectors.get(j);
+        final float targetProb = remainingTargetLabels.getQuick(j);
+        final double error;
 
+        if (featureVector.aspatialFeatureValues().get(i) != 0.f) error =
+          targetProb - meanProbsIfTrueAspatial[i];
+        else error = targetProb - meanProbsIfFalseAspatial[i];
+
+        sumSquaredErrors += error * error;
+      }
+
+      if (sumSquaredErrors < minSumSquaredErrors) {
+        minSumSquaredErrors = sumSquaredErrors;
+        bestIdx = i;
+      }
+
+      if (sumSquaredErrors > maxSumSquaredErrors) {
+        maxSumSquaredErrors = sumSquaredErrors;
+      }
+    }
+
+    for (int i = 0; i < numSpatialFeatures; ++i) {
+      if (
+        numFalseSpatial[i] < minSamplesPerLeaf ||
+        numTrueSpatial[i] < minSamplesPerLeaf
+      ) continue;
+
+      double sumSquaredErrors = 0.0;
+      for (int j = 0; j < remainingFeatureVectors.size(); ++j) {
+        final FeatureVector featureVector = remainingFeatureVectors.get(j);
+        final float targetProb = remainingTargetLabels.getQuick(j);
+        final double error;
+
+        if (featureVector.activeSpatialFeatureIndices().contains(i)) error =
+          targetProb - meanProbsIfTrueSpatial[i];
+        else error = targetProb - meanProbsIfFalseSpatial[i];
+
+        sumSquaredErrors += error * error;
+      }
+
+      if (sumSquaredErrors < minSumSquaredErrors) {
+        minSumSquaredErrors = sumSquaredErrors;
+        bestIdx = i;
+        bestFeatureIsAspatial = false;
+      }
+
+      if (sumSquaredErrors > maxSumSquaredErrors) {
+        maxSumSquaredErrors = sumSquaredErrors;
+      }
+    }
+
+    if (
+      bestIdx == -1 ||
+      minSumSquaredErrors == 0.0 ||
+      minSumSquaredErrors == maxSumSquaredErrors
+    ) {
+      // No point in making any split at all, so just make leaf		TODO could in theory use remaining features to compute a model again
+      return new BinaryLeafNode(
+        remainingTargetLabels.sum() / remainingTargetLabels.size()
+      );
+    }
+
+    final Feature splittingFeature;
+    if (bestFeatureIsAspatial) splittingFeature = featureSet.aspatialFeatures()[
+      bestIdx
+    ];
+    else splittingFeature = featureSet.spatialFeatures()[bestIdx];
+
+    final BitSet newAlreadyPickedAspatials;
+    final BitSet newAlreadyPickedSpatials;
+
+    if (bestFeatureIsAspatial) {
+      newAlreadyPickedAspatials = (BitSet) alreadyPickedAspatials.clone();
+      newAlreadyPickedAspatials.set(bestIdx);
+      newAlreadyPickedSpatials = alreadyPickedSpatials;
+    } else {
+      newAlreadyPickedSpatials = (BitSet) alreadyPickedSpatials.clone();
+      newAlreadyPickedSpatials.set(bestIdx);
+      newAlreadyPickedAspatials = alreadyPickedAspatials;
+    }
+
+    // Split remaining data for the two branches
+    final List<FeatureVector> remainingFeatureVectorsTrue =
+      new ArrayList<FeatureVector>();
+    final TFloatArrayList remainingTargetProbsTrue = new TFloatArrayList();
+
+    final List<FeatureVector> remainingFeatureVectorsFalse =
+      new ArrayList<FeatureVector>();
+    final TFloatArrayList remainingTargetProbsFalse = new TFloatArrayList();
+
+    if (bestFeatureIsAspatial) {
+      for (int i = 0; i < remainingFeatureVectors.size(); ++i) {
+        if (
+          remainingFeatureVectors.get(i).aspatialFeatureValues().get(bestIdx) !=
+          0.f
+        ) {
+          remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
+          remainingTargetProbsTrue.add(remainingTargetLabels.getQuick(i));
+        } else {
+          remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
+          remainingTargetProbsFalse.add(remainingTargetLabels.getQuick(i));
+        }
+      }
+    } else {
+      for (int i = 0; i < remainingFeatureVectors.size(); ++i) {
+        if (
+          remainingFeatureVectors
+            .get(i)
+            .activeSpatialFeatureIndices()
+            .contains(bestIdx)
+        ) {
+          remainingFeatureVectorsTrue.add(remainingFeatureVectors.get(i));
+          remainingTargetProbsTrue.add(remainingTargetLabels.getQuick(i));
+        } else {
+          remainingFeatureVectorsFalse.add(remainingFeatureVectors.get(i));
+          remainingTargetProbsFalse.add(remainingTargetLabels.getQuick(i));
+        }
+      }
+    }
+
+    // Create the node for case where splitting feature is true
+    final DecisionTreeNode trueBranch;
+    {
+      trueBranch = buildNode(
+        featureSet,
+        remainingFeatureVectorsTrue,
+        remainingTargetProbsTrue,
+        newAlreadyPickedAspatials,
+        newAlreadyPickedSpatials,
+        numAspatialFeatures,
+        numSpatialFeatures,
+        allowedDepth - 1,
+        minSamplesPerLeaf
+      );
+    }
+
+    // Create the node for case where splitting feature is false
+    final DecisionTreeNode falseBranch;
+    {
+      falseBranch = buildNode(
+        featureSet,
+        remainingFeatureVectorsFalse,
+        remainingTargetProbsFalse,
+        newAlreadyPickedAspatials,
+        newAlreadyPickedSpatials,
+        numAspatialFeatures,
+        numSpatialFeatures,
+        allowedDepth - 1,
+        minSamplesPerLeaf
+      );
+    }
+
+    return new DecisionConditionNode(splittingFeature, trueBranch, falseBranch);
+  }
+
+  //-------------------------------------------------------------------------
 }

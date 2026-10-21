@@ -6,19 +6,16 @@ package exception;
  *
  * @author Dennis Soemers
  */
-public class UnusedOptionException extends RuntimeException
-{
-	
-	/** */
-	private static final long serialVersionUID = 1L;
+public class UnusedOptionException extends RuntimeException {
 
-	/**
-	 * Constructor
-	 * @param optionString
-	 */
-	public UnusedOptionException(final String optionString)
-	{
-		super("Unused option: " + optionString);
-	}
+  /** */
+  private static final long serialVersionUID = 1L;
 
+  /**
+   * Constructor
+   * @param optionString
+   */
+  public UnusedOptionException(final String optionString) {
+    super("Unused option: " + optionString);
+  }
 }

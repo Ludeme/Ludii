@@ -1,16 +1,15 @@
 package app.display.dialogs.visual_editor.recs;
 
-import java.util.List;
-
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.DocHandler;
 import app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandling.ModelLibrary;
 import app.display.dialogs.visual_editor.recs.validation.controller.ValidationController;
+import java.util.List;
 
 public class CodeCompletionValidationMain {
 
-    public static void main(String[] args) {
-        ValidationController.validate(0.66,5,1000,2);
-        /*int maxN = 20;
+  public static void main(String[] args) {
+    ValidationController.validate(0.66, 5, 1000, 2);
+    /*int maxN = 20;
         int[] NValues = new int[maxN];
         long[] creationDurations = new long[maxN];
         String storageLocation = "PlayerDesktop/src/app/display/dialogs/visual_editor/resources/recs/validation/modelcreation/creation_duration.csv";
@@ -36,40 +35,36 @@ public class CodeCompletionValidationMain {
             }
         }*/
 
+    //ValidationController controller = new ValidationController();
+    //controller.validate(2,15);
+  }
 
-
-
-
-        //ValidationController controller = new ValidationController();
-        //controller.validate(2,15);
+  public static void getMultipleModels(int maxN) {
+    for (int N = 2; N <= maxN; N++) {
+      ModelLibrary.getInstance().getModel(N);
+      DocHandler.getInstance().writeDocumentsFile();
     }
+  }
 
-    public static void getMultipleModels(int maxN) {
-        for(int N = 2; N <= maxN; N++) {
-            ModelLibrary.getInstance().getModel(N);
-            DocHandler.getInstance().writeDocumentsFile();
-        }
-    }
+  public static void testModelCreation() {
+    // ModelLibrary lib = ModelLibrary.getInstance();
+    //NGram model = lib.getModel(5);
+    DocHandler.getInstance().close();
+  }
 
-    public static void testModelCreation() {
-       // ModelLibrary lib = ModelLibrary.getInstance();
-        //NGram model = lib.getModel(5);
-        DocHandler.getInstance().close();
-    }
+  public static void print(Object o) {
+    System.out.println(o);
+  }
 
-    public static void print(Object o) {
-        System.out.println(o);
-    }
+  public static void print(int i) {
+    System.out.println(i);
+  }
 
-    public static void print(int i) {
-        System.out.println(i);
-    }
+  public static void print(String s) {
+    System.out.println(s);
+  }
 
-    public static void print(String s) {
-        System.out.println(s);
-    }
-
-    public static <T> void print(List<T> list) {
-        System.out.println(list);
-    }
+  public static <T> void print(List<T> list) {
+    System.out.println(list);
+  }
 }

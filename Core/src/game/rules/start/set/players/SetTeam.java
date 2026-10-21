@@ -1,13 +1,12 @@
 package game.rules.start.set.players;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import game.Game;
 import game.functions.ints.IntFunction;
 import game.rules.start.StartRule;
 import game.types.play.RoleType;
 import game.types.state.GameType;
+import java.util.BitSet;
 import other.action.state.ActionAddPlayerToTeam;
 import other.concept.Concept;
 import other.context.Context;
@@ -16,196 +15,179 @@ import other.trial.Trial;
 
 /**
  * Creates a team.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class SetTeam extends StartRule
-{
-	private static final long serialVersionUID = 1L;
+public final class SetTeam extends StartRule {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The index of the team. */
-	final IntFunction teamIdFn;
+  //-------------------------------------------------------------------------
 
-	/** The index of the players on the team. */
-	final IntFunction[] players;
+  /** The index of the team. */
+  final IntFunction teamIdFn;
 
-	/** The roletypes used to check them in the required warning method. */
-	final RoleType[] roles;
+  /** The index of the players on the team. */
+  final IntFunction[] players;
 
-	/**
-	 * @param team  The index of the team.
-	 * @param roles The roleType of each player on the team.
-	 */
-	public SetTeam
-	(
-	     final IntFunction team,
-		 final RoleType[] roles
-	)
-	{
-		teamIdFn = team;
+  /** The roletypes used to check them in the required warning method. */
+  final RoleType[] roles;
 
-		players = new IntFunction[roles.length];
-		for (int i = 0; i < roles.length; i++)
-		{
-			final RoleType role = roles[i];
-			players[i] = RoleType.toIntFunction(role);
-		}
+  /**
+   * @param team  The index of the team.
+   * @param roles The roleType of each player on the team.
+   */
+  public SetTeam(final IntFunction team, final RoleType[] roles) {
+    teamIdFn = team;
 
-		this.roles = roles;
-	}
+    players = new IntFunction[roles.length];
+    for (int i = 0; i < roles.length; i++) {
+      final RoleType role = roles[i];
+      players[i] = RoleType.toIntFunction(role);
+    }
 
-	@Override
-	public void eval(final Context context)
-	{
-		final int teamId = teamIdFn.eval(context);
-		
-		for (final IntFunction player : players)
-		{
-			final int playerIndex = player.eval(context);
+    this.roles = roles;
+  }
 
-			// We ignore all the player indices which are not real players.
-			if (playerIndex < 1 || playerIndex > context.game().players().count())
-				continue;
+  @Override
+  public void eval(final Context context) {
+    final int teamId = teamIdFn.eval(context);
 
-			final ActionAddPlayerToTeam actionTeam = new ActionAddPlayerToTeam(teamId, playerIndex);
-			actionTeam.apply(context, true);
-			context.trial().addMove(new Move(actionTeam));
-			context.trial().addInitPlacement();
-		}
+    for (final IntFunction player : players) {
+      final int playerIndex = player.eval(context);
 
-	}
+      // We ignore all the player indices which are not real players.
+      if (
+        playerIndex < 1 || playerIndex > context.game().players().count()
+      ) continue;
 
-	//-------------------------------------------------------------------------
+      final ActionAddPlayerToTeam actionTeam = new ActionAddPlayerToTeam(
+        teamId,
+        playerIndex
+      );
+      actionTeam.apply(context, true);
+      context.trial().addMove(new Move(actionTeam));
+      context.trial().addInitPlacement();
+    }
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		for (final IntFunction player : players)
-			if (!player.isStatic())
-				return false;
+  //-------------------------------------------------------------------------
 
-		if (!teamIdFn.isStatic())
-			return false;
+  @Override
+  public boolean isStatic() {
+    for (final IntFunction player : players)
+      if (!player.isStatic()) return false;
 
-		return true;
-	}
+    if (!teamIdFn.isStatic()) return false;
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = GameType.Team;
-		for (final IntFunction player : players)
-			gameFlags |= player.gameFlags(game);
-		gameFlags |= teamIdFn.gameFlags(game);
-		return gameFlags;
-	}
+    return true;
+  }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.set(Concept.Team.id(), true);
-		for (final IntFunction player : players)
-			concepts.or(player.concepts(game));
-		concepts.or(teamIdFn.concepts(game));
-		return concepts;
-	}
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = GameType.Team;
+    for (final IntFunction player : players)
+      gameFlags |= player.gameFlags(game);
+    gameFlags |= teamIdFn.gameFlags(game);
+    return gameFlags;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		for (final IntFunction player : players)
-			writeEvalContext.or(player.writesEvalContextRecursive());
-		writeEvalContext.or(teamIdFn.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.set(Concept.Team.id(), true);
+    for (final IntFunction player : players) concepts.or(player.concepts(game));
+    concepts.or(teamIdFn.concepts(game));
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		for (final IntFunction player : players)
-			readEvalContext.or(player.readsEvalContextRecursive());
-		readEvalContext.or(teamIdFn.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    for (final IntFunction player : players)
+      writeEvalContext.or(player.writesEvalContextRecursive());
+    writeEvalContext.or(teamIdFn.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		for (final IntFunction player : players)
-			player.preprocess(game);
-		teamIdFn.preprocess(game);
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    for (final IntFunction player : players)
+      readEvalContext.or(player.readsEvalContextRecursive());
+    readEvalContext.or(teamIdFn.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
+  @Override
+  public void preprocess(final Game game) {
+    for (final IntFunction player : players) player.preprocess(game);
+    teamIdFn.preprocess(game);
+  }
 
-		// We check if the roles are corrects.
-		if (roles != null)
-		{
-			for(final RoleType role : roles)
-			{
-				final int indexOwnerPhase = role.owner();
-				if (indexOwnerPhase < 1 || indexOwnerPhase > game.players().count())
-				{
-					game.addRequirementToReport(
-							"At least a roletype is wrong in a starting rules (set Team ...): " + role + ".");
-					missingRequirement = true;
-					break;
-				}
-			}
-		}
-		
-		final int teamId = teamIdFn.eval(new Context(game, new Trial(game)));
-		if (teamId < 1 || teamId > game.players().count())
-		{
-			game.addRequirementToReport(
-					"In (set Team ...), the index of the team is wrong.");
-			missingRequirement = true;
-		}
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
 
-		return missingRequirement;
-	}
+    // We check if the roles are corrects.
+    if (roles != null) {
+      for (final RoleType role : roles) {
+        final int indexOwnerPhase = role.owner();
+        if (indexOwnerPhase < 1 || indexOwnerPhase > game.players().count()) {
+          game.addRequirementToReport(
+            "At least a roletype is wrong in a starting rules (set Team ...): " +
+              role +
+              "."
+          );
+          missingRequirement = true;
+          break;
+        }
+      }
+    }
 
-	//-------------------------------------------------------------------------
+    final int teamId = teamIdFn.eval(new Context(game, new Trial(game)));
+    if (teamId < 1 || teamId > game.players().count()) {
+      game.addRequirementToReport(
+        "In (set Team ...), the index of the team is wrong."
+      );
+      missingRequirement = true;
+    }
 
-	@Override
-	public String toString()
-	{
-		final String str = "(SetTeam)";
-		return str;
-	}
-	
-	//-------------------------------------------------------------------------
+    return missingRequirement;
+  }
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		String playersString = "[";
-		if (players != null)
-		{
-			for (final IntFunction i : players)
-				playersString += "Player " + i.toEnglish(game) + ",";
-			playersString = playersString.substring(0, playersString.length());
-			playersString += "]";
-		}
-		else if (roles != null)
-		{
-			for (final RoleType i : roles)
-				playersString += i.name() + ",";
-			playersString = playersString.substring(0, playersString.length());
-			playersString += "]";
-		}
-		
-		return "Set Team " + teamIdFn.toEnglish(game) + " as the following players " + playersString;
-	}
-	
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toString() {
+    final String str = "(SetTeam)";
+    return str;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String playersString = "[";
+    if (players != null) {
+      for (final IntFunction i : players)
+        playersString += "Player " + i.toEnglish(game) + ",";
+      playersString = playersString.substring(0, playersString.length());
+      playersString += "]";
+    } else if (roles != null) {
+      for (final RoleType i : roles) playersString += i.name() + ",";
+      playersString = playersString.substring(0, playersString.length());
+      playersString += "]";
+    }
+
+    return (
+      "Set Team " +
+      teamIdFn.toEnglish(game) +
+      " as the following players " +
+      playersString
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

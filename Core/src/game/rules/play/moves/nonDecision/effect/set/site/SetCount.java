@@ -1,7 +1,5 @@
 package game.rules.play.moves.nonDecision.effect.set.site;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Opt;
 import game.Game;
@@ -11,6 +9,7 @@ import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.board.SiteType;
+import java.util.BitSet;
 import other.action.state.ActionSetCount;
 import other.concept.Concept;
 import other.context.Context;
@@ -19,192 +18,185 @@ import other.state.container.ContainerState;
 
 /**
  * Sets the count of a site.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class SetCount extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public final class SetCount extends Effect {
 
-	/** Which site. */
-	private final IntFunction locationFunction;
+  private static final long serialVersionUID = 1L;
 
-	/** New count. */
-	private final IntFunction newCount;
+  /** Which site. */
+  private final IntFunction locationFunction;
 
-	/** Add on Cell/Edge/Vertex. */
-	protected SiteType type;
+  /** New count. */
+  private final IntFunction newCount;
 
-	//-------------------------------------------------------------------------
+  /** Add on Cell/Edge/Vertex. */
+  protected SiteType type;
 
-	/**
-	 * To set the count of a site.
-	 * 
-	 * @param type             The graph element type of the location [Default =
-	 *                         Cell (or Vertex if the main board uses
-	 *                         intersections)].
-	 * @param locationFunction The site to modify the count.
-	 * @param newCount         The new count.
-	 * @param then             The moves applied after that move is applied.
-	 */
-	public SetCount
-	(
-		@Opt final SiteType    type,
-			 final IntFunction locationFunction, 
-			 final IntFunction newCount,
-		@Opt final Then        then
-	)
-	{
-		super(then);
-		this.locationFunction = locationFunction;
-		this.newCount = newCount;
-		this.type = type;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * To set the count of a site.
+   *
+   * @param type             The graph element type of the location [Default =
+   *                         Cell (or Vertex if the main board uses
+   *                         intersections)].
+   * @param locationFunction The site to modify the count.
+   * @param newCount         The new count.
+   * @param then             The moves applied after that move is applied.
+   */
+  public SetCount(
+    @Opt final SiteType type,
+    final IntFunction locationFunction,
+    final IntFunction newCount,
+    @Opt final Then then
+  ) {
+    super(then);
+    this.locationFunction = locationFunction;
+    this.newCount = newCount;
+    this.type = type;
+  }
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		// Return list of legal "to" moves
-		final Moves moves = new BaseMoves(super.then());
+  //-------------------------------------------------------------------------
 
-		final int loc = locationFunction.eval(context);
-		final int count = newCount.eval(context);
-		final ContainerState cs = context.containerState(context.containerId()[loc]);
-		final int what = cs.what(loc, type);
-		final ActionSetCount action = new ActionSetCount(type, loc, what, count);
-		final Move move = new Move(action);
-		moves.moves().add(move);
+  @Override
+  public Moves eval(final Context context) {
+    // Return list of legal "to" moves
+    final Moves moves = new BaseMoves(super.then());
 
-		if (then() != null)
-			move.then().add(then().moves());
+    final int loc = locationFunction.eval(context);
+    final int count = newCount.eval(context);
+    final ContainerState cs = context.containerState(
+      context.containerId()[loc]
+    );
+    final int what = cs.what(loc, type);
+    final ActionSetCount action = new ActionSetCount(type, loc, what, count);
+    final Move move = new Move(action);
+    moves.moves().add(move);
 
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+    if (then() != null) move.then().add(then().moves());
 
-		return moves;
-	}
+    // Store the Moves in the computed moves.
+    for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .setMovesLudeme(this);
 
-	//-------------------------------------------------------------------------
+    return moves;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = super.gameFlags(game);
+  //-------------------------------------------------------------------------
 
-		gameFlags |= SiteType.gameFlags(type);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = super.gameFlags(game);
 
-		gameFlags |= locationFunction.gameFlags(game);
-		gameFlags |= newCount.gameFlags(game);
+    gameFlags |= SiteType.gameFlags(type);
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+    gameFlags |= locationFunction.gameFlags(game);
+    gameFlags |= newCount.gameFlags(game);
 
-		return gameFlags;
-	}
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
-		concepts.or(SiteType.concepts(type));
-		concepts.or(locationFunction.concepts(game));
-		concepts.or(newCount.concepts(game));
-		concepts.set(Concept.PieceCount.id(), true);
-		concepts.set(Concept.SetCount.id(), true);
+    return gameFlags;
+  }
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
+    concepts.or(SiteType.concepts(type));
+    concepts.or(locationFunction.concepts(game));
+    concepts.or(newCount.concepts(game));
+    concepts.set(Concept.PieceCount.id(), true);
+    concepts.set(Concept.SetCount.id(), true);
 
-		return concepts;
-	}
+    if (then() != null) concepts.or(then().concepts(game));
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(super.writesEvalContextRecursive());
-		writeEvalContext.or(locationFunction.writesEvalContextRecursive());
-		writeEvalContext.or(newCount.writesEvalContextRecursive());
+    return concepts;
+  }
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(super.writesEvalContextRecursive());
+    writeEvalContext.or(locationFunction.writesEvalContextRecursive());
+    writeEvalContext.or(newCount.writesEvalContextRecursive());
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
-		readEvalContext.or(locationFunction.readsEvalContextRecursive());
-		readEvalContext.or(newCount.readsEvalContextRecursive());
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
+    readEvalContext.or(locationFunction.readsEvalContextRecursive());
+    readEvalContext.or(newCount.readsEvalContextRecursive());
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-		missingRequirement |= locationFunction.missingRequirement(game);
-		missingRequirement |= newCount.missingRequirement(game);
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+    missingRequirement |= locationFunction.missingRequirement(game);
+    missingRequirement |= newCount.missingRequirement(game);
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
 
-		willCrash |= locationFunction.willCrash(game);
-		willCrash |= newCount.willCrash(game);
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+    willCrash |= locationFunction.willCrash(game);
+    willCrash |= newCount.willCrash(game);
 
-	@Override
-	public boolean isStatic()
-	{
-		return locationFunction.isStatic() && newCount.isStatic();
-	}
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
+  @Override
+  public boolean isStatic() {
+    return locationFunction.isStatic() && newCount.isStatic();
+  }
 
-		super.preprocess(game);
-		locationFunction.preprocess(game);
-		newCount.preprocess(game);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{		
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return "set the count of " + type.name().toLowerCase() + " " + locationFunction.toEnglish(game) + " to " + newCount.toEnglish(game) + thenString;
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
 
+    super.preprocess(game);
+    locationFunction.preprocess(game);
+    newCount.preprocess(game);
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return (
+      "set the count of " +
+      type.name().toLowerCase() +
+      " " +
+      locationFunction.toEnglish(game) +
+      " to " +
+      newCount.toEnglish(game) +
+      thenString
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

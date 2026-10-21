@@ -1,4 +1,5 @@
 package gameDistance.utils.apted.test.java;
+
 /* MIT License
  *
  * Copyright (c) 2017 Mateusz Pawlik
@@ -24,17 +25,15 @@ package gameDistance.utils.apted.test.java;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
 import gameDistance.utils.apted.costmodel.StringUnitCostModel;
 import gameDistance.utils.apted.distance.APTED;
 import gameDistance.utils.apted.node.Node;
 import gameDistance.utils.apted.node.StringNodeData;
 import gameDistance.utils.apted.parser.BracketStringInputParser;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  * Correctness unit tests of distance and mapping computation.
@@ -92,7 +91,7 @@ public class CorrectnessTest {
      * @see CorrectnessTest#data()
      */
     @Override
-	public String toString() {
+    public String toString() {
       return "testID:" + testID + ",t1:" + t1 + ",t2:" + t2 + ",d:" + d;
     }
 
@@ -132,7 +131,6 @@ public class CorrectnessTest {
     public int getD() {
       return d;
     }
-
   }
 
   /**
@@ -173,12 +171,14 @@ public class CorrectnessTest {
     final Node<StringNodeData> t1 = parser.fromString(testCase.getT1());
     final Node<StringNodeData> t2 = parser.fromString(testCase.getT2());
     // Initialise APTED.
-    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(new StringUnitCostModel());
+    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(
+      new StringUnitCostModel()
+    );
     // This cast is safe due to unit cost.
-    int result = (int)apted.computeEditDistance(t1, t2);
+    int result = (int) apted.computeEditDistance(t1, t2);
     assertEquals(testCase.getD(), result);
     // Verify the symmetric case.
-    result = (int)apted.computeEditDistance(t2, t1);
+    result = (int) apted.computeEditDistance(t2, t1);
     assertEquals(testCase.getD(), result);
   }
 
@@ -199,9 +199,11 @@ public class CorrectnessTest {
     final Node<StringNodeData> t1 = parser.fromString(testCase.getT1());
     final Node<StringNodeData> t2 = parser.fromString(testCase.getT2());
     // Initialise APTED.
-    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(new StringUnitCostModel());
+    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(
+      new StringUnitCostModel()
+    );
     // This cast is safe due to unit cost.
-    final int result = (int)apted.computeEditDistance_spfTest(t1, t2, 0);
+    final int result = (int) apted.computeEditDistance_spfTest(t1, t2, 0);
     assertEquals(testCase.getD(), result);
   }
 
@@ -222,9 +224,11 @@ public class CorrectnessTest {
     final Node<StringNodeData> t1 = parser.fromString(testCase.getT1());
     final Node<StringNodeData> t2 = parser.fromString(testCase.getT2());
     // Initialise APTED.
-    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(new StringUnitCostModel());
+    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(
+      new StringUnitCostModel()
+    );
     // This cast is safe due to unit cost.
-    final int result = (int)apted.computeEditDistance_spfTest(t1, t2, 1);
+    final int result = (int) apted.computeEditDistance_spfTest(t1, t2, 1);
     assertEquals(testCase.getD(), result);
   }
 
@@ -246,15 +250,16 @@ public class CorrectnessTest {
     final Node<StringNodeData> t1 = parser.fromString(testCase.getT1());
     final Node<StringNodeData> t2 = parser.fromString(testCase.getT2());
     // Initialise APTED.
-    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(new StringUnitCostModel());
+    final APTED<StringUnitCostModel, StringNodeData> apted = new APTED<>(
+      new StringUnitCostModel()
+    );
     // Although we don't need TED value yet, TED must be computed before the
     // mapping. This cast is safe due to unit cost.
     apted.computeEditDistance(t1, t2);
     // Get TED value corresponding to the computed mapping.
     final List<int[]> mapping = apted.computeEditMapping();
     // This cast is safe due to unit cost.
-    final int result = (int)apted.mappingCost(mapping);
+    final int result = (int) apted.mappingCost(mapping);
     assertEquals(testCase.getD(), result);
   }
-
 }

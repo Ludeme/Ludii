@@ -23,13 +23,12 @@
 
 package gameDistance.utils.apted.distance;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
 import gameDistance.utils.apted.costmodel.CostModel;
 import gameDistance.utils.apted.node.Node;
 import gameDistance.utils.apted.node.NodeIndexer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Implements an exponential algorithm for the tree edit distance. It computes
@@ -122,20 +121,24 @@ public class AllPossibleMappingsTED<C extends CostModel, D> {
    */
   private ArrayList<ArrayList<int[]>> generateAllOneToOneMappings() {
     // Start with an empty mapping - all nodes are deleted or inserted.
-    final ArrayList<ArrayList<int[]>> mappings = new ArrayList<ArrayList<int[]>>(1);
+    final ArrayList<ArrayList<int[]>> mappings = new ArrayList<
+      ArrayList<int[]>
+    >(1);
     mappings.add(new ArrayList<int[]>(size1 + size2));
     // Add all deleted nodes.
     for (int n1 = 0; n1 < size1; n1++) {
-      mappings.get(0).add(new int[]{n1, -1});
+      mappings.get(0).add(new int[] { n1, -1 });
     }
     // Add all inserted nodes.
     for (int n2 = 0; n2 < size2; n2++) {
-      mappings.get(0).add(new int[]{-1, n2});
+      mappings.get(0).add(new int[] { -1, n2 });
     }
     // For each node in the source tree.
     for (int n1 = 0; n1 < size1; n1++) {
       // Duplicate all mappings and store in mappings_copy.
-      final ArrayList<ArrayList<int[]>> mappings_copy = deepMappingsCopy(mappings);
+      final ArrayList<ArrayList<int[]>> mappings_copy = deepMappingsCopy(
+        mappings
+      );
       // For each node in the destination tree.
       for (int n2 = 0; n2 < size2; n2++) {
         // For each mapping (produced for all n1 values smaller than
@@ -160,10 +163,10 @@ public class AllPossibleMappingsTED<C extends CostModel, D> {
           // mapping and extending it by (n1, n2).
           if (element_add) {
             final ArrayList<int[]> m_copy = deepMappingCopy(m);
-            m_copy.add(new int[]{n1, n2});
+            m_copy.add(new int[] { n1, n2 });
             // If a pair (n1,n2) is added, (n1,-1) and (-1,n2) must be removed.
-            removeMappingElement(m_copy, new int[]{n1, -1});
-            removeMappingElement(m_copy, new int[]{-1, n2});
+            removeMappingElement(m_copy, new int[] { n1, -1 });
+            removeMappingElement(m_copy, new int[] { -1, n2 });
             mappings.add(m_copy);
           }
         }
@@ -178,10 +181,16 @@ public class AllPossibleMappingsTED<C extends CostModel, D> {
    *
    * @param mappings set of all 1-1 mappings.
    */
-  private void removeNonTEDMappings(final ArrayList<ArrayList<int[]>> mappings) {
+  private void removeNonTEDMappings(
+    final ArrayList<ArrayList<int[]>> mappings
+  ) {
     // Validate each mapping separately.
     // Iterator safely removes mappings while iterating.
-    for (final Iterator<ArrayList<int[]>> mit = mappings.iterator(); mit.hasNext();) {
+    for (
+      final Iterator<ArrayList<int[]>> mit = mappings.iterator();
+      mit.hasNext();
+
+    ) {
       final ArrayList<int[]> m = mit.next();
       if (!isTEDMapping(m)) {
         mit.remove();
@@ -210,8 +219,10 @@ public class AllPossibleMappingsTED<C extends CostModel, D> {
         }
         // If any of the conditions below doesn't hold, discard m.
         // Validate ancestor-descendant condition.
-        boolean a = e1[0] < e2[0] && it1.preL_to_preR[e1[0]] < it1.preL_to_preR[e2[0]];
-        boolean b = e1[1] < e2[1] && it2.preL_to_preR[e1[1]] < it2.preL_to_preR[e2[1]];
+        boolean a =
+          e1[0] < e2[0] && it1.preL_to_preR[e1[0]] < it1.preL_to_preR[e2[0]];
+        boolean b =
+          e1[1] < e2[1] && it2.preL_to_preR[e1[1]] < it2.preL_to_preR[e2[1]];
         if ((a && !b) || (!a && b)) {
           // Discard the mapping.
           // If this condition doesn't hold, the next condition
@@ -249,7 +260,10 @@ public class AllPossibleMappingsTED<C extends CostModel, D> {
       for (final int[] e : m) {
         // Add edit operation cost.
         if (e[0] > -1 && e[1] > -1) {
-          m_cost += costModel.ren(it1.preL_to_node[e[0]], it2.preL_to_node[e[1]]); // USE COST MODEL - rename e[0] to e[1].
+          m_cost += costModel.ren(
+            it1.preL_to_node[e[0]],
+            it2.preL_to_node[e[1]]
+          ); // USE COST MODEL - rename e[0] to e[1].
         } else if (e[0] > -1) {
           m_cost += costModel.del(it1.preL_to_node[e[0]]); // USE COST MODEL - insert e[1].
         } else {
@@ -278,7 +292,8 @@ public class AllPossibleMappingsTED<C extends CostModel, D> {
    */
   private ArrayList<int[]> deepMappingCopy(final ArrayList<int[]> mapping) {
     final ArrayList<int[]> mapping_copy = new ArrayList<int[]>(mapping.size());
-    for (final int[] me : mapping) { // for each mapping element in a mapping
+    for (final int[] me : mapping) {
+      // for each mapping element in a mapping
       mapping_copy.add(Arrays.copyOf(me, me.length));
     }
     return mapping_copy;
@@ -290,11 +305,17 @@ public class AllPossibleMappingsTED<C extends CostModel, D> {
    * @param mappings set of mappings to copy.
    * @return set of mappings.
    */
-  private ArrayList<ArrayList<int[]>> deepMappingsCopy(final ArrayList<ArrayList<int[]>> mappings) {
-    final ArrayList<ArrayList<int[]>> mappings_copy = new ArrayList<ArrayList<int[]>>(mappings.size());
-    for (final ArrayList<int[]> m : mappings) { // for each mapping in mappings
+  private ArrayList<ArrayList<int[]>> deepMappingsCopy(
+    final ArrayList<ArrayList<int[]>> mappings
+  ) {
+    final ArrayList<ArrayList<int[]>> mappings_copy = new ArrayList<
+      ArrayList<int[]>
+    >(mappings.size());
+    for (final ArrayList<int[]> m : mappings) {
+      // for each mapping in mappings
       final ArrayList<int[]> m_copy = new ArrayList<int[]>(m.size());
-      for (final int[] me : m) { // for each mapping element in a mapping
+      for (final int[] me : m) {
+        // for each mapping element in a mapping
         m_copy.add(Arrays.copyOf(me, me.length));
       }
       mappings_copy.add(m_copy);
@@ -329,7 +350,10 @@ public class AllPossibleMappingsTED<C extends CostModel, D> {
    * @return {@code true} if {@code e} has been removed, and {@code false}
    *         otherwise.
    */
-  private boolean removeMappingElement(final ArrayList<int[]> m, final int[] e) {
+  private boolean removeMappingElement(
+    final ArrayList<int[]> m,
+    final int[] e
+  ) {
     for (final int[] me : m) {
       if (me[0] == e[0] && me[1] == e[1]) {
         m.remove(me);

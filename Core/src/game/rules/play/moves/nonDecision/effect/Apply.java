@@ -1,261 +1,216 @@
 package game.rules.play.moves.nonDecision.effect;
 
-import java.util.BitSet;
-
 import annotations.Name;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.NonDecision;
+import java.util.BitSet;
 import other.context.Context;
 
 /**
  * Returns the effect to apply only if the condition is satisfied.
- * 
+ *
  * @author Eric.Piette
  */
-public final class Apply extends Moves
-{
-	private static final long serialVersionUID = 1L;
+public final class Apply extends Moves {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Which condition. */
-	final BooleanFunction cond;
+  //-------------------------------------------------------------------------
 
-	/** If the condition is true. */
-	final NonDecision effect;
+  /** Which condition. */
+  final BooleanFunction cond;
 
-	//-------------------------------------------------------------------------
+  /** If the condition is true. */
+  final NonDecision effect;
 
-	/**
-	 * For checking a condition before to apply the default effect.
-	 * 
-	 * @param If The condition to satisfy to get the effect moves.
-	 * 
-	 * @example (apply if:(is Mover P1))
-	 */
-	public Apply
-	(
-		@Name final BooleanFunction If
-	)
-	{
-		super(null);
-		cond = If;
-		effect = null;
-	}
-	
-	/**
-	 * For applying an effect.
-	 * 
-	 * @param effect The moves to apply to make the effect.
-	 * 
-	 * @example (apply (moveAgain))
-	 */
-	public Apply
-	(
-		final NonDecision    effect
-	)
-	{
-		super(null);
-		cond = null;
-		this.effect = effect;
-	}
-	
-	/**
-	 * For applying an effect if a condition is verified.
-	 * 
-	 * @param If     The condition to satisfy to get the effect moves.
-	 * @param effect The moves to apply to make the effect.
-	 * 
-	 * @example (apply if:(is Mover P1) (moveAgain))
-	 */
-	public Apply
-	(
-	  @Name final BooleanFunction If,
-		    final NonDecision    effect
-	)
-	{
-		super(null);
-		cond = If;
-		this.effect = effect;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * For checking a condition before to apply the default effect.
+   *
+   * @param If The condition to satisfy to get the effect moves.
+   *
+   * @example (apply if:(is Mover P1))
+   */
+  public Apply(@Name final BooleanFunction If) {
+    super(null);
+    cond = If;
+    effect = null;
+  }
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		if (cond == null || cond.eval(context))
-			return effect.eval(context);
+  /**
+   * For applying an effect.
+   *
+   * @param effect The moves to apply to make the effect.
+   *
+   * @example (apply (moveAgain))
+   */
+  public Apply(final NonDecision effect) {
+    super(null);
+    cond = null;
+    this.effect = effect;
+  }
 
-		return new BaseMoves(super.then());
-	}
+  /**
+   * For applying an effect if a condition is verified.
+   *
+   * @param If     The condition to satisfy to get the effect moves.
+   * @param effect The moves to apply to make the effect.
+   *
+   * @example (apply if:(is Mover P1) (moveAgain))
+   */
+  public Apply(@Name final BooleanFunction If, final NonDecision effect) {
+    super(null);
+    cond = If;
+    this.effect = effect;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean canMove(final Context context)
-	{
-		if (cond == null || cond.eval(context))
-			return effect.canMove(context);
+  @Override
+  public Moves eval(final Context context) {
+    if (cond == null || cond.eval(context)) return effect.eval(context);
 
-		return false;
-	}
+    return new BaseMoves(super.then());
+  }
 
-	@Override
-	public boolean canMoveTo(final Context context, final int target)
-	{
-		if (cond == null || cond.eval(context))
-			return effect.canMoveTo(context, target);
-		else
-			return false;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean canMove(final Context context) {
+    if (cond == null || cond.eval(context)) return effect.canMove(context);
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long flags = super.gameFlags(game);
+    return false;
+  }
 
-		if (cond != null)
-			flags |= cond.gameFlags(game);
+  @Override
+  public boolean canMoveTo(final Context context, final int target) {
+    if (cond == null || cond.eval(context)) return effect.canMoveTo(
+      context,
+      target
+    );
+    else return false;
+  }
 
-		if (effect != null)
-			flags |= effect.gameFlags(game);
+  //-------------------------------------------------------------------------
 
-		return flags;
-	}
+  @Override
+  public long gameFlags(final Game game) {
+    long flags = super.gameFlags(game);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
+    if (cond != null) flags |= cond.gameFlags(game);
 
-		if (cond != null)
-			concepts.or(cond.concepts(game));
+    if (effect != null) flags |= effect.gameFlags(game);
 
-		if (effect != null)
-			concepts.or(effect.concepts(game));
+    return flags;
+  }
 
-		return concepts;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(super.writesEvalContextRecursive());
+    if (cond != null) concepts.or(cond.concepts(game));
 
-		if (cond != null)
-			writeEvalContext.or(cond.writesEvalContextRecursive());
+    if (effect != null) concepts.or(effect.concepts(game));
 
-		if (effect != null)
-			writeEvalContext.or(effect.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(super.writesEvalContextRecursive());
 
-		if (cond != null)
-			readEvalContext.or(cond.readsEvalContextRecursive());
+    if (cond != null) writeEvalContext.or(cond.writesEvalContextRecursive());
 
-		if (effect != null)
-			readEvalContext.or(effect.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    if (effect != null) writeEvalContext.or(
+      effect.writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
 
-		if (cond != null)
-			missingRequirement |= cond.missingRequirement(game);
+    if (cond != null) readEvalContext.or(cond.readsEvalContextRecursive());
 
-		if (effect != null)
-			missingRequirement |= effect.missingRequirement(game);
-		return missingRequirement;
-	}
+    if (effect != null) readEvalContext.or(effect.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
 
-		if (cond != null)
-			willCrash |= cond.willCrash(game);
+    if (cond != null) missingRequirement |= cond.missingRequirement(game);
 
-		if (effect != null)
-			willCrash |= effect.willCrash(game);
-		return willCrash;
-	}
+    if (effect != null) missingRequirement |= effect.missingRequirement(game);
+    return missingRequirement;
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		if (cond != null && !cond.isStatic())
-			return false;
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
 
-		if (effect != null && !effect.isStatic())
-			return false;
+    if (cond != null) willCrash |= cond.willCrash(game);
 
-		return true;
-	}
+    if (effect != null) willCrash |= effect.willCrash(game);
+    return willCrash;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		super.preprocess(game);
+  @Override
+  public boolean isStatic() {
+    if (cond != null && !cond.isStatic()) return false;
 
-		if (cond != null)
-			cond.preprocess(game);
+    if (effect != null && !effect.isStatic()) return false;
 
-		if (effect != null)
-			effect.preprocess(game);
-	}
+    return true;
+  }
 
-	/**
-	 * @return The condition.
-	 */
-	public BooleanFunction condition()
-	{
-		return cond;
-	}
+  @Override
+  public void preprocess(final Game game) {
+    super.preprocess(game);
 
-	/**
-	 * @return The effect.
-	 */
-	public Moves effect()
-	{
-		return effect;
-	}
+    if (cond != null) cond.preprocess(game);
 
-	//-------------------------------------------------------------------------
+    if (effect != null) effect.preprocess(game);
+  }
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		String text="";
-		
-		if(cond != null) 
-			text += cond.toEnglish(game) + ", ";
-		
-		text += effect.toEnglish(game);
-		
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return text + thenString;
-	}
+  /**
+   * @return The condition.
+   */
+  public BooleanFunction condition() {
+    return cond;
+  }
+
+  /**
+   * @return The effect.
+   */
+  public Moves effect() {
+    return effect;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String text = "";
+
+    if (cond != null) text += cond.toEnglish(game) + ", ";
+
+    text += effect.toEnglish(game);
+
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return text + thenString;
+  }
 }

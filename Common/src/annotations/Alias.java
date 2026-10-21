@@ -8,7 +8,6 @@ import java.lang.annotation.RetentionPolicy;
  * @author cambolbro
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Alias
-{
-	public String alias() default "";
+public @interface Alias {
+  public String alias() default "";
 }

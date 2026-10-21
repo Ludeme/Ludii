@@ -1,50 +1,48 @@
-package compiler.exceptions; 
+package compiler.exceptions;
 
 import main.StringRoutines;
 
 /**
- * 
+ *
  * @author cambolbro
  */
-public class DefineExpansionException extends CompilerException
-{
-	private static final long serialVersionUID = 1L;
-	private final String message;
-	
-	/**
-	 * @param msg
-	 */
-	public DefineExpansionException(final String msg)
-	{
-		super();
-		this.message = msg;
-	}
-	
-	@Override
-	public String getMessageBody(String gameDescription)
-	{
-		final String safeDescription = StringRoutines.escapeText(gameDescription);
-		final StringBuilder sb = new StringBuilder();
+public class DefineExpansionException extends CompilerException {
 
-		sb.append("<html>");
-		sb.append("<h2>");
-		sb.append(getMessageTitle());
-		sb.append("</h2>");
-		sb.append("<br/>");
-		sb.append("<p>");
-		sb.append(StringRoutines.highlightText(safeDescription, "define", "font", "red"));
-		sb.append("</p>");
-		sb.append("</html>");
-		
-		System.out.println(sb);
-		
-		return sb.toString();
-	}
+  private static final long serialVersionUID = 1L;
+  private final String message;
 
-	@Override
-	public String getMessageTitle()
-	{
-		return message;
-	}
+  /**
+   * @param msg
+   */
+  public DefineExpansionException(final String msg) {
+    super();
+    this.message = msg;
+  }
 
+  @Override
+  public String getMessageBody(String gameDescription) {
+    final String safeDescription = StringRoutines.escapeText(gameDescription);
+    final StringBuilder sb = new StringBuilder();
+
+    sb.append("<html>");
+    sb.append("<h2>");
+    sb.append(getMessageTitle());
+    sb.append("</h2>");
+    sb.append("<br/>");
+    sb.append("<p>");
+    sb.append(
+      StringRoutines.highlightText(safeDescription, "define", "font", "red")
+    );
+    sb.append("</p>");
+    sb.append("</html>");
+
+    System.out.println(sb);
+
+    return sb.toString();
+  }
+
+  @Override
+  public String getMessageTitle() {
+    return message;
+  }
 }

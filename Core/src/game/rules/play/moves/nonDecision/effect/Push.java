@@ -1,8 +1,5 @@
 package game.rules.play.moves.nonDecision.effect;
 
-import java.util.BitSet;
-import java.util.List;
-
 import annotations.Opt;
 import game.Game;
 import game.functions.directions.DirectionsFunction;
@@ -13,6 +10,8 @@ import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
 import game.util.graph.Radial;
+import java.util.BitSet;
+import java.util.List;
 import main.Constants;
 import other.action.Action;
 import other.action.move.ActionAdd;
@@ -26,215 +25,230 @@ import other.topology.TopologyElement;
 
 /**
  * Pushes all the pieces from a site in one direction.
- * 
+ *
  * @author Eric.Piette
  */
-public final class Push extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public final class Push extends Effect {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Location of the piece. */
-	private final IntFunction startLocationFn;
+  //-------------------------------------------------------------------------
 
-	/** Direction chosen. */
-	private final DirectionsFunction dirnChoice;
-	
-	/** Add on Cell/Edge/Vertex. */
-	protected SiteType type;
+  /** Location of the piece. */
+  private final IntFunction startLocationFn;
 
-	//-------------------------------------------------------------------------
+  /** Direction chosen. */
+  private final DirectionsFunction dirnChoice;
 
-	/**
-	 * @param from       Description of the ``from'' location [(from (last To))].
-	 * @param directions The direction to push.
-	 * @param then       The moves applied after that move is applied.
-	 * 
-	 * @example (push (from (last To)) E)
-	 */
-	public Push
-	(
-		@Opt final game.util.moves.From           from,
-			 final game.util.directions.Direction directions,
-		@Opt final Then                           then
-	)
-	{
-		super(then);		
-		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
-		type = (from == null) ? null : from.type();
-		dirnChoice = directions.directionsFunctions();
-	}
+  /** Add on Cell/Edge/Vertex. */
+  protected SiteType type;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		final Moves moves = new BaseMoves(super.then());
+  /**
+   * @param from       Description of the ``from'' location [(from (last To))].
+   * @param directions The direction to push.
+   * @param then       The moves applied after that move is applied.
+   *
+   * @example (push (from (last To)) E)
+   */
+  public Push(
+    @Opt final game.util.moves.From from,
+    final game.util.directions.Direction directions,
+    @Opt final Then then
+  ) {
+    super(then);
+    startLocationFn = from == null ? new LastTo(null) : from.loc();
+    type = from == null ? null : from.type();
+    dirnChoice = directions.directionsFunctions();
+  }
 
-		final int from = startLocationFn.eval(context);
-		if (from == Constants.OFF)
-			return moves;
+  //-------------------------------------------------------------------------
 
-		final Topology topology = context.topology();
+  @Override
+  public Moves eval(final Context context) {
+    final Moves moves = new BaseMoves(super.then());
 
-		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
-		final TopologyElement fromV = topology.getGraphElements(realType).get(from);
-		final ContainerState cs = context.state().containerStates()[0];
-		final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(realType, fromV, null, null, null, context);
+    final int from = startLocationFn.eval(context);
+    if (from == Constants.OFF) return moves;
 
-		if (directions.isEmpty())
-			return moves;
+    final Topology topology = context.topology();
 
-		final List<Radial> radials = topology.trajectories().radials(type, fromV.index(), directions.get(0));
+    final SiteType realType =
+      type != null ? type : context.game().board().defaultSite();
+    final TopologyElement fromV = topology.getGraphElements(realType).get(from);
+    final ContainerState cs = context.state().containerStates()[0];
+    final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(
+      realType,
+      fromV,
+      null,
+      null,
+      null,
+      context
+    );
 
-		for (final Radial radial : radials)
-		{
-			int currentPiece = cs.what(radial.steps()[0].id(), realType);
+    if (directions.isEmpty()) return moves;
 
-			final Action removeAction = ActionRemove.construct(realType, from, Constants.UNDEFINED, true);
-			moves.moves().add(new Move(removeAction));
+    final List<Radial> radials = topology
+      .trajectories()
+      .radials(type, fromV.index(), directions.get(0));
 
-			for (int toIdx = 1; toIdx < radial.steps().length; toIdx++)
-			{
-				final int to = radial.steps()[toIdx].id();
-				final int what = cs.what(to, realType);
-				if (what != 0)
-				{
-					final Action removeTo = ActionRemove.construct(realType, to, Constants.UNDEFINED, true);
-					moves.moves().add(new Move(removeTo));
-					final Action actionAdd = new ActionAdd(realType, to, currentPiece, 1, Constants.UNDEFINED,
-							Constants.UNDEFINED, Constants.UNDEFINED, null);
-					final Move move = new Move(actionAdd);
-					moves.moves().add(move);
-					currentPiece = what;
-				}
-				else
-				{
-					final Action actionAdd = new ActionAdd(realType, to, currentPiece, 1, Constants.UNDEFINED,
-							Constants.UNDEFINED, Constants.UNDEFINED, null);
-					final Move move = new Move(actionAdd);
-					moves.moves().add(move);
-					break;
-				}
-			}
-		}
+    for (final Radial radial : radials) {
+      int currentPiece = cs.what(radial.steps()[0].id(), realType);
 
-//		for (final Move m : moves.moves())
-//			m.setMover(context.state().mover());
+      final Action removeAction = ActionRemove.construct(
+        realType,
+        from,
+        Constants.UNDEFINED,
+        true
+      );
+      moves.moves().add(new Move(removeAction));
 
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
+      for (int toIdx = 1; toIdx < radial.steps().length; toIdx++) {
+        final int to = radial.steps()[toIdx].id();
+        final int what = cs.what(to, realType);
+        if (what != 0) {
+          final Action removeTo = ActionRemove.construct(
+            realType,
+            to,
+            Constants.UNDEFINED,
+            true
+          );
+          moves.moves().add(new Move(removeTo));
+          final Action actionAdd = new ActionAdd(
+            realType,
+            to,
+            currentPiece,
+            1,
+            Constants.UNDEFINED,
+            Constants.UNDEFINED,
+            Constants.UNDEFINED,
+            null
+          );
+          final Move move = new Move(actionAdd);
+          moves.moves().add(move);
+          currentPiece = what;
+        } else {
+          final Action actionAdd = new ActionAdd(
+            realType,
+            to,
+            currentPiece,
+            1,
+            Constants.UNDEFINED,
+            Constants.UNDEFINED,
+            Constants.UNDEFINED,
+            null
+          );
+          final Move move = new Move(actionAdd);
+          moves.moves().add(move);
+          break;
+        }
+      }
+    }
 
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+    //		for (final Move m : moves.moves())
+    //			m.setMover(context.state().mover());
 
-		return moves;
-	}
+    if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .then()
+      .add(then().moves());
 
-	//-------------------------------------------------------------------------
+    // Store the Moves in the computed moves.
+    for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .setMovesLudeme(this);
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = startLocationFn.gameFlags(game) | super.gameFlags(game);
+    return moves;
+  }
 
-		gameFlags |= SiteType.gameFlags(type);
+  //-------------------------------------------------------------------------
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = startLocationFn.gameFlags(game) | super.gameFlags(game);
 
-		return gameFlags;
-	}
+    gameFlags |= SiteType.gameFlags(type);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(SiteType.concepts(type));
-		concepts.or(super.concepts(game));
-		concepts.or(startLocationFn.concepts(game));
-		concepts.set(Concept.PushEffect.id(), true);
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+    return gameFlags;
+  }
 
-		return concepts;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(SiteType.concepts(type));
+    concepts.or(super.concepts(game));
+    concepts.or(startLocationFn.concepts(game));
+    concepts.set(Concept.PushEffect.id(), true);
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(super.writesEvalContextRecursive());
-		writeEvalContext.or(startLocationFn.writesEvalContextRecursive());
+    if (then() != null) concepts.or(then().concepts(game));
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
-		readEvalContext.or(startLocationFn.readsEvalContextRecursive());
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(super.writesEvalContextRecursive());
+    writeEvalContext.or(startLocationFn.writesEvalContextRecursive());
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
-		missingRequirement |= startLocationFn.missingRequirement(game);
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
+    readEvalContext.or(startLocationFn.readsEvalContextRecursive());
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
-		willCrash |= startLocationFn.willCrash(game);
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
+    missingRequirement |= startLocationFn.missingRequirement(game);
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
+    willCrash |= startLocationFn.willCrash(game);
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		super.preprocess(game);
-		type = SiteType.use(type, game);
-		startLocationFn.preprocess(game);
-	}
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return "push " + dirnChoice.toEnglish(game) + thenString;
-	}
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
 
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    super.preprocess(game);
+    type = SiteType.use(type, game);
+    startLocationFn.preprocess(game);
+  }
+
+  @Override
+  public String toEnglish(final Game game) {
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return "push " + dirnChoice.toEnglish(game) + thenString;
+  }
 }

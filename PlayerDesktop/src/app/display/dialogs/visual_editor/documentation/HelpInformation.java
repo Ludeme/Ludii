@@ -1,74 +1,60 @@
 package app.display.dialogs.visual_editor.documentation;
 
+import java.util.HashMap;
 import main.grammar.Clause;
 import main.grammar.ClauseArg;
 import main.grammar.Symbol;
 
-import java.util.HashMap;
+public class HelpInformation {
 
-public class HelpInformation
-{
+  private final Symbol symbol;
+  private String description;
+  private final HashMap<Clause, String> ctor = new HashMap<>(); // syntax
+  private final HashMap<Clause, String> examples = new HashMap<>(); // examples
+  private final HashMap<ClauseArg, String> parameters = new HashMap<>(); // arguments
+  private String remark = "";
 
-    private final Symbol symbol;
-    private String description;
-    private final HashMap<Clause, String> ctor = new HashMap<>(); // syntax
-    private final HashMap<Clause, String> examples = new HashMap<>(); // examples
-    private final HashMap<ClauseArg, String> parameters = new HashMap<>(); // arguments
-    private String remark = "";
+  public HelpInformation(Symbol symbol) {
+    this.symbol = symbol;
+  }
 
-    public HelpInformation(Symbol symbol)
-    {
-        this.symbol = symbol;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
+  public void addCtor(Clause clause, String syntax) {
+    ctor.put(clause, syntax);
+  }
 
-    public void addCtor(Clause clause, String syntax)
-    {
-        ctor.put(clause, syntax);
-    }
+  public void addExample(Clause clause, String example) {
+    examples.put(clause, example);
+  }
 
-    public void addExample(Clause clause, String example)
-    {
-        examples.put(clause, example);
-    }
+  public void addParameter(ClauseArg arg, String description1) {
+    parameters.put(arg, description1);
+  }
 
-    public void addParameter(ClauseArg arg, String description1)
-    {
-        parameters.put(arg, description1);
-    }
+  public void setRemark(String remark) {
+    this.remark = remark;
+  }
 
-    public void setRemark(String remark)
-    {
-        this.remark = remark;
-    }
+  public Symbol symbol() {
+    return symbol;
+  }
 
-    public Symbol symbol()
-    {
-        return symbol;
-    }
+  public String description() {
+    return description;
+  }
 
-    public String description()
-    {
-        return description;
-    }
+  public String remark() {
+    return remark;
+  }
 
-    public String remark()
-    {
-        return remark;
-    }
+  public String parameter(ClauseArg arg) {
+    return parameters.get(arg);
+  }
 
-    public String parameter(ClauseArg arg)
-    {
-        return parameters.get(arg);
-    }
-
-    public HashMap<ClauseArg, String> parameters()
-    {
-        return parameters;
-    }
-
+  public HashMap<ClauseArg, String> parameters() {
+    return parameters;
+  }
 }

@@ -1,7 +1,5 @@
 package game.rules.end;
 
-import java.util.BitSet;
-
 import annotations.Name;
 import annotations.Opt;
 import annotations.Or;
@@ -10,299 +8,282 @@ import game.functions.booleans.BooleanConstant.FalseConstant;
 import game.functions.booleans.BooleanFunction;
 import game.types.board.TrackType;
 import game.types.play.RoleType;
+import java.util.BitSet;
 import other.concept.EndConcepts;
 import other.context.Context;
 import other.context.EvalContextData;
 
 /**
  * Applies the end condition to each player of a certain type.
- * 
+ *
  * @author cambolbro and Eric.Piette
  */
-public final class ForEach extends BaseEndRule
-{
-	private static final long serialVersionUID = 1L;
+public final class ForEach extends BaseEndRule {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The Roletype to iterate. */
-	final private RoleType type;
+  //-------------------------------------------------------------------------
 
-	/** To iterate on the tracks. */
-	final private TrackType trackType;
+  /** The Roletype to iterate. */
+  private final RoleType type;
 
-	/** The condition to check for each iteration. */
-	final private BooleanFunction cond; 
+  /** To iterate on the tracks. */
+  private final TrackType trackType;
 
-	//-------------------------------------------------------------------------
+  /** The condition to check for each iteration. */
+  private final BooleanFunction cond;
 
-	/**
-	 * @param type      Role type to iterate through [Shared].
-	 * @param trackType To iterate on each track.
-	 * @param If        Condition to apply.
-	 * @param result    Result to return.
-	 * 
-	 * @example (forEach NonMover if:(is Blocked Player) (result Player Loss))
-	 */
-	public ForEach
-	(
-		@Opt @Or       final RoleType        type,
-		@Opt @Or       final TrackType       trackType,
-		         @Name final BooleanFunction If, 
-			           final Result          result
-	)
-	{
-		super(result);
-		
-		int numNonNull = 0;
-		if (type != null)
-			numNonNull++;
-		if (trackType != null)
-			numNonNull++;
+  //-------------------------------------------------------------------------
 
-		if (numNonNull > 1)
-			throw new IllegalArgumentException(
-					"ForEach(): one of RoleType or trackType has to be null.");
-		
-		this.type = (type == null) ? RoleType.Shared : type;
-		this.cond = If;
-		this.trackType = trackType;
-	}
+  /**
+   * @param type      Role type to iterate through [Shared].
+   * @param trackType To iterate on each track.
+   * @param If        Condition to apply.
+   * @param result    Result to return.
+   *
+   * @example (forEach NonMover if:(is Blocked Player) (result Player Loss))
+   */
+  public ForEach(
+    @Opt @Or final RoleType type,
+    @Opt @Or final TrackType trackType,
+    @Name final BooleanFunction If,
+    final Result result
+  ) {
+    super(result);
 
-	//-------------------------------------------------------------------------
+    int numNonNull = 0;
+    if (type != null) numNonNull++;
+    if (trackType != null) numNonNull++;
 
-	@Override
-	public EndRule eval(final Context context)
-	{
-		final int numPlayers = context.game().players().count();
+    if (numNonNull > 1) throw new IllegalArgumentException(
+      "ForEach(): one of RoleType or trackType has to be null."
+    );
 
-		if (trackType != null) // If track is specified we iterate by track.
-		{
-			final int originalTrackIndex = context.track();
-			for(int trackIndex = 0; trackIndex < context.board().tracks().size(); trackIndex++)
-			{
-				// Stop the loop if the game is inactive
-				if (!context.active())
-					break;
+    this.type = type == null ? RoleType.Shared : type;
+    this.cond = If;
+    this.trackType = trackType;
+  }
 
-				context.setTrack(trackIndex);
-				if (cond.eval(context))
-					End.applyResult(result(), context);
-			}
-			context.setTrack(originalTrackIndex);
-		}
-		else
-		{
-			final int originPlayer = context.player();
-			// Step through each player
-			for (int pid = 1; pid <= numPlayers; pid++)
-			{
-				if (type == RoleType.NonMover)
-				{
-					final int mover = context.state().mover();
-					if (pid == mover)
-						continue;
-				}
+  //-------------------------------------------------------------------------
 
-				// Do nothing if the player is not active.
-				if (!context.active(pid))
-					continue;
+  @Override
+  public EndRule eval(final Context context) {
+    final int numPlayers = context.game().players().count();
 
-				// Check that player.
-				context.setPlayer(pid);
-				if (cond.eval(context))
-					End.applyResult(result(), context);
-			}
-			context.setPlayer(originPlayer);
-		}
-		
-		return new BaseEndRule(null);
-	}
+    if (
+      trackType != null // If track is specified we iterate by track.
+    ) {
+      final int originalTrackIndex = context.track();
+      for (
+        int trackIndex = 0;
+        trackIndex < context.board().tracks().size();
+        trackIndex++
+      ) {
+        // Stop the loop if the game is inactive
+        if (!context.active()) break;
 
-	//-------------------------------------------------------------------------
+        context.setTrack(trackIndex);
+        if (cond.eval(context)) End.applyResult(result(), context);
+      }
+      context.setTrack(originalTrackIndex);
+    } else {
+      final int originPlayer = context.player();
+      // Step through each player
+      for (int pid = 1; pid <= numPlayers; pid++) {
+        if (type == RoleType.NonMover) {
+          final int mover = context.state().mover();
+          if (pid == mover) continue;
+        }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = 0;
+        // Do nothing if the player is not active.
+        if (!context.active(pid)) continue;
 
-		if (cond != null)
-			gameFlags |= cond.gameFlags(game);
+        // Check that player.
+        context.setPlayer(pid);
+        if (cond.eval(context)) End.applyResult(result(), context);
+      }
+      context.setPlayer(originPlayer);
+    }
 
-		if (result() != null)
-			gameFlags |= result().gameFlags(game);
+    return new BaseEndRule(null);
+  }
 
-		return gameFlags;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = 0;
 
-		if (cond instanceof FalseConstant)
-		{
-			game.addRequirementToReport("One of the ending condition is \"false\" which is wrong.");
-			missingRequirement = true;
-		}
+    if (cond != null) gameFlags |= cond.gameFlags(game);
 
-		if (trackType != null && !game.hasTrack())
-		{
-			game.addRequirementToReport(
-					"The ludeme (forEach Track ...) is used in the ending rules but the board has no tracks.");
-			missingRequirement = true;
-		}
+    if (result() != null) gameFlags |= result().gameFlags(game);
 
-		// We check if the roletype is correct.
-		if (type != null)
-		{
-			final int indexOwnerPhase = type.owner();
-			if (((indexOwnerPhase < 1 && !type.equals(RoleType.NonMover)) && !type.equals(RoleType.Mover)
-					&& !type.equals(RoleType.Player) && !type.equals(RoleType.All) && !type.equals(RoleType.Shared)
-					&& !type.equals(RoleType.Each)) || indexOwnerPhase > game.players().count())
-			{
-				game.addRequirementToReport(
-						"(forEach ...) is used in the ending conditions with an incorrect RoleType " + type + ".");
-				missingRequirement = true;
-			}
-		}
+    return gameFlags;
+  }
 
-		if (cond != null)
-			missingRequirement |= cond.missingRequirement(game);
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
 
-		if (result() != null)
-			missingRequirement |= result().missingRequirement(game);
-		return missingRequirement;
-	}
+    if (cond instanceof FalseConstant) {
+      game.addRequirementToReport(
+        "One of the ending condition is \"false\" which is wrong."
+      );
+      missingRequirement = true;
+    }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		if (cond != null)
-			willCrash |= cond.willCrash(game);
+    if (trackType != null && !game.hasTrack()) {
+      game.addRequirementToReport(
+        "The ludeme (forEach Track ...) is used in the ending rules but the board has no tracks."
+      );
+      missingRequirement = true;
+    }
 
-		if (result() != null)
-			willCrash |= result().willCrash(game);
-		return willCrash;
-	}
+    // We check if the roletype is correct.
+    if (type != null) {
+      final int indexOwnerPhase = type.owner();
+      if (
+        (indexOwnerPhase < 1 &&
+          !type.equals(RoleType.NonMover) &&
+          !type.equals(RoleType.Mover) &&
+          !type.equals(RoleType.Player) &&
+          !type.equals(RoleType.All) &&
+          !type.equals(RoleType.Shared) &&
+          !type.equals(RoleType.Each)) ||
+        indexOwnerPhase > game.players().count()
+      ) {
+        game.addRequirementToReport(
+          "(forEach ...) is used in the ending conditions with an incorrect RoleType " +
+            type +
+            "."
+        );
+        missingRequirement = true;
+      }
+    }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
+    if (cond != null) missingRequirement |= cond.missingRequirement(game);
 
-		if (cond != null)
-			concepts.or(cond.concepts(game));
+    if (result() != null) missingRequirement |= result().missingRequirement(
+      game
+    );
+    return missingRequirement;
+  }
 
-		if (result() != null)
-			concepts.or(result().concepts(game));
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    if (cond != null) willCrash |= cond.willCrash(game);
 
-		concepts.or(EndConcepts.get(cond, null, game, result()));
+    if (result() != null) willCrash |= result().willCrash(game);
+    return willCrash;
+  }
 
-		return concepts;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = writesEvalContextFlat();
+    if (cond != null) concepts.or(cond.concepts(game));
 
-		if (cond != null)
-			writeEvalContext.or(cond.writesEvalContextRecursive());
+    if (result() != null) concepts.or(result().concepts(game));
 
-		if (result() != null)
-			writeEvalContext.or(result().writesEvalContextRecursive());
+    concepts.or(EndConcepts.get(cond, null, game, result()));
 
-		return writeEvalContext;
-	}
-	
-	@Override
-	public BitSet writesEvalContextFlat()
-	{
-		final BitSet writeEvalContext = new BitSet();
+    return concepts;
+  }
 
-		if (trackType != null)
-			writeEvalContext.set(EvalContextData.Track.id(), true);
-		else
-			writeEvalContext.set(EvalContextData.Player.id(), true);
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = writesEvalContextFlat();
 
-		return writeEvalContext;
-	}
+    if (cond != null) writeEvalContext.or(cond.writesEvalContextRecursive());
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
+    if (result() != null) writeEvalContext.or(
+      result().writesEvalContextRecursive()
+    );
 
-		if (cond != null)
-			readEvalContext.or(cond.readsEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-		if (result() != null)
-			readEvalContext.or(result().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextFlat() {
+    final BitSet writeEvalContext = new BitSet();
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		if (cond != null)
-			cond.preprocess(game);
-		
-		if (result() != null)
-			result().preprocess(game);
-	}
+    if (trackType != null) writeEvalContext.set(
+      EvalContextData.Track.id(),
+      true
+    );
+    else writeEvalContext.set(EvalContextData.Player.id(), true);
 
-	//-------------------------------------------------------------------------
+    return writeEvalContext;
+  }
 
-	@Override
-	public BitSet stateConcepts(final Context context)
-	{
-		final int numPlayers = context.game().players().count();
-		final BitSet concepts = new BitSet();
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
 
-		if (trackType != null) // If track is specified we iterate by track.
-		{
-			final int originalTrackIndex = context.track();
-			for (int trackIndex = 0; trackIndex < context.board().tracks().size(); trackIndex++)
-			{
-				// Stop the loop if the game is inactive
-				if (!context.active())
-					break;
+    if (cond != null) readEvalContext.or(cond.readsEvalContextRecursive());
 
-				context.setTrack(trackIndex);
-				if (cond.eval(context))
-					concepts.or(EndConcepts.get(cond, context, context.game(), result()));
-			}
-			context.setTrack(originalTrackIndex);
-		}
-		else
-		{
-			final int originPlayer = context.player();
-			// Step through each player
-			for (int pid = 1; pid <= numPlayers; pid++)
-			{
-				if (type == RoleType.NonMover)
-				{
-					final int mover = context.state().mover();
-					if (pid == mover)
-						continue;
-				}
+    if (result() != null) readEvalContext.or(
+      result().readsEvalContextRecursive()
+    );
+    return readEvalContext;
+  }
 
-				// Do nothing if the player is not active.
-				if (!context.active(pid))
-					continue;
+  @Override
+  public void preprocess(final Game game) {
+    if (cond != null) cond.preprocess(game);
 
-				// Check that player.
-				context.setPlayer(pid);
-				if (cond.eval(context))
-					concepts.or(EndConcepts.get(cond, context, context.game(), result()));
-			}
-			context.setPlayer(originPlayer);
-		}
+    if (result() != null) result().preprocess(game);
+  }
 
-		return concepts;
-	}
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet stateConcepts(final Context context) {
+    final int numPlayers = context.game().players().count();
+    final BitSet concepts = new BitSet();
+
+    if (
+      trackType != null // If track is specified we iterate by track.
+    ) {
+      final int originalTrackIndex = context.track();
+      for (
+        int trackIndex = 0;
+        trackIndex < context.board().tracks().size();
+        trackIndex++
+      ) {
+        // Stop the loop if the game is inactive
+        if (!context.active()) break;
+
+        context.setTrack(trackIndex);
+        if (cond.eval(context)) concepts.or(
+          EndConcepts.get(cond, context, context.game(), result())
+        );
+      }
+      context.setTrack(originalTrackIndex);
+    } else {
+      final int originPlayer = context.player();
+      // Step through each player
+      for (int pid = 1; pid <= numPlayers; pid++) {
+        if (type == RoleType.NonMover) {
+          final int mover = context.state().mover();
+          if (pid == mover) continue;
+        }
+
+        // Do nothing if the player is not active.
+        if (!context.active(pid)) continue;
+
+        // Check that player.
+        context.setPlayer(pid);
+        if (cond.eval(context)) concepts.or(
+          EndConcepts.get(cond, context, context.game(), result())
+        );
+      }
+      context.setPlayer(originPlayer);
+    }
+
+    return concepts;
+  }
 }

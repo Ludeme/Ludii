@@ -2,59 +2,56 @@ package app.display.dialogs.visual_editor.view.panels.editor;
 
 import app.display.dialogs.visual_editor.handler.Handler;
 import app.display.dialogs.visual_editor.view.panels.editor.tabPanels.LayoutSettingsPanel;
-
 import javax.swing.*;
 
 /**
  * Sidebar panel of visual editor
  * @author nic0gin
  */
-public class EditorSidebar extends JTabbedPane
-{
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 7035094102486105836L;
-	private static EditorSidebar editorSidebar;
+public class EditorSidebar extends JTabbedPane {
 
-    /**
-     * Constructor
-     */
-    private EditorSidebar()
-    {
-        setVisible(Handler.sidebarVisible);
+  /**
+   *
+   */
+  private static final long serialVersionUID = 7035094102486105836L;
+  private static EditorSidebar editorSidebar;
 
-        // adding layout settings tab
-        LayoutSettingsPanel layoutPanel = LayoutSettingsPanel.getLayoutSettingsPanel();
-        Handler.lsPanel = layoutPanel;
-        addTab("Layout settings", layoutPanel);
-        setSelectedComponent(layoutPanel);
+  /**
+   * Constructor
+   */
+  private EditorSidebar() {
+    setVisible(Handler.sidebarVisible);
 
-        // add other tabs here...
+    // adding layout settings tab
+    LayoutSettingsPanel layoutPanel =
+      LayoutSettingsPanel.getLayoutSettingsPanel();
+    Handler.lsPanel = layoutPanel;
+    addTab("Layout settings", layoutPanel);
+    setSelectedComponent(layoutPanel);
 
-        // invisible by default
-        setVisible(false);
-    }
+    // add other tabs here...
 
-    /**
-     * Get a single instance of the editor sidebar
-     */
-    public static EditorSidebar getEditorSidebar()
-    {
-        if (editorSidebar == null) editorSidebar = new EditorSidebar();
-        return editorSidebar;
-    }
+    // invisible by default
+    setVisible(false);
+  }
 
-	@SuppressWarnings("static-method")
-    public void setSidebarVisible(boolean visible)
-    {
-        editorSidebar.setVisible(visible);
-        editorSidebar.repaint();
-    }
+  /**
+   * Get a single instance of the editor sidebar
+   */
+  public static EditorSidebar getEditorSidebar() {
+    if (editorSidebar == null) editorSidebar = new EditorSidebar();
+    return editorSidebar;
+  }
 
-	@SuppressWarnings("static-method")
-    public void setLayoutTabSelected() {
-        int LAYOUT_TAB_INDEX = 0;
-        editorSidebar.setSelectedIndex(LAYOUT_TAB_INDEX);}
+  @SuppressWarnings("static-method")
+  public void setSidebarVisible(boolean visible) {
+    editorSidebar.setVisible(visible);
+    editorSidebar.repaint();
+  }
 
+  @SuppressWarnings("static-method")
+  public void setLayoutTabSelected() {
+    int LAYOUT_TAB_INDEX = 0;
+    editorSidebar.setSelectedIndex(LAYOUT_TAB_INDEX);
+  }
 }

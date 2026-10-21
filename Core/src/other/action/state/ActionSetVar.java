@@ -1,8 +1,7 @@
 package other.action.state;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
+import java.util.BitSet;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
@@ -15,159 +14,149 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionSetVar extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionSetVar extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The name of the var */
-	private final String name;
+  //-------------------------------------------------------------------------
 
-	/** The new value. */
-	private final int value;
+  /** The name of the var */
+  private final String name;
 
-	//-------------------------------------------------------------------------
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous value. */
-	private int previousValue;
-	
-	//-------------------------------------------------------------------------
+  /** The new value. */
+  private final int value;
 
-	/**
-	 * @param name  The name of the var.
-	 * @param value The value.
-	 */
-	public ActionSetVar(final String name, final int value)
-	{
-		this.name = name;
-		this.value = value;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionSetTemp object from a detailed String (generated using
-	 * toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionSetVar(final String detailedString)
-	{
-		assert (detailedString.startsWith("[SetVar:"));
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-		final String strName = Action.extractData(detailedString, "name");
-		name = strName;
+  /** The previous value. */
+  private int previousValue;
 
-		final String strValue = Action.extractData(detailedString, "value");
-		value = Integer.parseInt(strValue);
+  //-------------------------------------------------------------------------
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  /**
+   * @param name  The name of the var.
+   * @param value The value.
+   */
+  public ActionSetVar(final String name, final int value) {
+    this.name = name;
+    this.value = value;
+  }
 
-	//-------------------------------------------------------------------------
+  /**
+   * Reconstructs an ActionSetTemp object from a detailed String (generated using
+   * toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionSetVar(final String detailedString) {
+    assert detailedString.startsWith("[SetVar:");
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		if(!alreadyApplied)
-		{
-			previousValue = context.state().getValue(name);
-			alreadyApplied = true;
-		}
-		
-		context.state().setValue(name, value);
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		if(previousValue == Constants.UNDEFINED)
-			context.state().removeKeyValue(name);
-		else
-			context.state().setValue(name, previousValue);
-		return this;
-	}
+    final String strName = Action.extractData(detailedString, "name");
+    name = strName;
 
-	//-------------------------------------------------------------------------
+    final String strValue = Action.extractData(detailedString, "value");
+    value = Integer.parseInt(strValue);
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-		sb.append("[SetVar:");
-		sb.append("name=" + name);
-		sb.append(",value=" + value);
-		if (decision)
-			sb.append(",decision=" + decision);
+  //-------------------------------------------------------------------------
 
-		sb.append(']');
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    if (!alreadyApplied) {
+      previousValue = context.state().getValue(name);
+      alreadyApplied = true;
+    }
 
-		return sb.toString();
-	}
+    context.state().setValue(name, value);
+    return this;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + value;
-		return result;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    if (previousValue == Constants.UNDEFINED) context
+      .state()
+      .removeKeyValue(name);
+    else context.state().setValue(name, previousValue);
+    return this;
+  }
 
-		if (!(obj instanceof ActionSetVar))
-			return false;
+  //-------------------------------------------------------------------------
 
-		final ActionSetVar other = (ActionSetVar) obj;
-		return (decision == other.decision && value == other.value && name.equals(other.name));
-	}
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	//-------------------------------------------------------------------------
+    sb.append("[SetVar:");
+    sb.append("name=" + name);
+    sb.append(",value=" + value);
+    if (decision) sb.append(",decision=" + decision);
 
-	@Override
-	public String getDescription()
-	{
-		return "SetVar";
-	}
+    sb.append(']');
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return name + "=" + value;
-	}
+    return sb.toString();
+  }
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(" + name + "= " + value + ")";
-	}
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.SetVar;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + value;
+    return result;
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.set(Concept.SetVar.id(), true);
-		return concepts;
-	}
+    if (!(obj instanceof ActionSetVar)) return false;
+
+    final ActionSetVar other = (ActionSetVar) obj;
+    return (
+      decision == other.decision &&
+      value == other.value &&
+      name.equals(other.name)
+    );
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    return "SetVar";
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return name + "=" + value;
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return "(" + name + "= " + value + ")";
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.SetVar;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+    concepts.set(Concept.SetVar.id(), true);
+    return concepts;
+  }
 }

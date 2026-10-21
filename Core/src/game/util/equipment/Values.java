@@ -6,49 +6,42 @@ import other.BaseLudeme;
 
 /**
  * Defines the set of values of a graph variable in a deduction puzzle.
- * 
+ *
  * @author Eric.Piette
  */
-public class Values extends BaseLudeme
-{
-	/** The graph element type. */
-	final private SiteType type;
+public class Values extends BaseLudeme {
 
-	/** The range of the values. */
-	final private Range range;
+  /** The graph element type. */
+  private final SiteType type;
 
-	//-------------------------------------------------------------------------
+  /** The range of the values. */
+  private final Range range;
 
-	/**
-	 * @param type  The graph element type.
-	 * @param range The range of the values.
-	 * @example (values Cell (range 1 9))
-	 */
-	public Values
-	(
-		final SiteType type, 
-		final Range range
-	) 
-	{
-		this.range = range;
-		this.type = type;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param type  The graph element type.
+   * @param range The range of the values.
+   * @example (values Cell (range 1 9))
+   */
+  public Values(final SiteType type, final Range range) {
+    this.range = range;
+    this.type = type;
+  }
 
-	/**
-	 * @return The graph element type.
-	 */
-	public SiteType type()
-	{
-		return type;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @return The range.
-	 */
-	public Range range()
-	{
-		return range;
-	}
+  /**
+   * @return The graph element type.
+   */
+  public SiteType type() {
+    return type;
+  }
+
+  /**
+   * @return The range.
+   */
+  public Range range() {
+    return range;
+  }
 }

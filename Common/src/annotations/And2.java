@@ -5,11 +5,10 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Named parameter in the grammar.
- * 
+ *
  * @author cambolbro
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface And2 
-{
-	// ...
+public @interface And2 {
+  // ...
 }

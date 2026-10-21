@@ -1,13 +1,12 @@
 package view.container.aspects.axes;
 
+import bridge.Bridge;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-
-import bridge.Bridge;
 import other.topology.AxisLabel;
 import other.topology.TopologyElement;
 import util.StringUtil;
@@ -15,104 +14,106 @@ import view.container.styles.BoardStyle;
 
 /**
  * Board axis properties.
- * 
+ *
  * @author Matthew.Stephenson
  */
-public class BoardAxis extends ContainerAxis
-{
-	protected BoardStyle boardStyle;
-	
-	//-------------------------------------------------------------------------
-	
-	public BoardAxis(final BoardStyle boardStyle)
-	{
-		this.boardStyle = boardStyle;
-	}
-	
-	//-------------------------------------------------------------------------
+public class BoardAxis extends ContainerAxis {
 
-	@Override
-	public void drawAxes(final Bridge bridge, final Graphics2D g2d)
-	{
-		final double fontBufferSize = bridge.settingsVC().displayFont().getSize()/boardStyle.placement().getHeight();
-		final List<AxisLabel> axisLabels = getAxisLabels(fontBufferSize);
-		
-		final Font oldFont = g2d.getFont();
+  protected BoardStyle boardStyle;
 
-		g2d.setFont(bridge.settingsVC().displayFont());
-		g2d.setColor(new Color(0, 0, 0));
+  //-------------------------------------------------------------------------
 
-		for (final AxisLabel al : axisLabels)
-		{
-			final String label = al.label();
-			final Point drawPosn = boardStyle.screenPosn(al.posn());
-			StringUtil.drawStringAtPoint(g2d, label, null, drawPosn, true);
-		}
+  public BoardAxis(final BoardStyle boardStyle) {
+    this.boardStyle = boardStyle;
+  }
 
-		g2d.setFont(oldFont);			
-	}
-	
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Determine the axis labels for the board.
-	 */
-	protected List<AxisLabel> getAxisLabels(final double fontSize) 
-	{
-		final int numCols = boardStyle.container().topology().columns(boardStyle.container().defaultSite()).size();
-		final int numRows = boardStyle.container().topology().rows(boardStyle.container().defaultSite()).size();
-		final double cellRadius = boardStyle.cellRadius();
-		
-		final List<AxisLabel> axisLabels = new ArrayList<>();
+  @Override
+  public void drawAxes(final Bridge bridge, final Graphics2D g2d) {
+    final double fontBufferSize =
+      bridge.settingsVC().displayFont().getSize() /
+      boardStyle.placement().getHeight();
+    final List<AxisLabel> axisLabels = getAxisLabels(fontBufferSize);
 
-		double minX = 9999.9;
-		double minY = 9999.9;
-		double maxX = -9999.9;
-		double maxY = -9999.9;
+    final Font oldFont = g2d.getFont();
 
-		for (final TopologyElement v : boardStyle.topology().getGraphElements(boardStyle.container().defaultSite()))
-		{
-			if (v.centroid().getX() < minX)
-				minX = v.centroid().getX();
-			if (v.centroid().getY() < minY)
-				minY = v.centroid().getY();
-			if (v.centroid().getX() > maxX)
-				maxX = v.centroid().getX();
-			if (v.centroid().getY() > maxY)
-				maxY = v.centroid().getY();
-		}
+    g2d.setFont(bridge.settingsVC().displayFont());
+    g2d.setColor(new Color(0, 0, 0));
 
-		if (boardStyle.container().topology().numEdges() == 4)
-		{
-			final int[] dim = {numRows, numCols};
+    for (final AxisLabel al : axisLabels) {
+      final String label = al.label();
+      final Point drawPosn = boardStyle.screenPosn(al.posn());
+      StringUtil.drawStringAtPoint(g2d, label, null, drawPosn, true);
+    }
 
-			// Create axis labels
-			axisLabels.clear();
+    g2d.setFont(oldFont);
+  }
 
-			for (int row = 0; row < dim[0]; row++)
-			{
-				final String label = String.format("%d", Integer.valueOf((row + 1)));
+  //-------------------------------------------------------------------------
 
-				final double x = minX - cellRadius - fontSize;
-				final double y = minY + cellRadius*2 * row;
+  /**
+   * Determine the axis labels for the board.
+   */
+  protected List<AxisLabel> getAxisLabels(final double fontSize) {
+    final int numCols = boardStyle
+      .container()
+      .topology()
+      .columns(boardStyle.container().defaultSite())
+      .size();
+    final int numRows = boardStyle
+      .container()
+      .topology()
+      .rows(boardStyle.container().defaultSite())
+      .size();
+    final double cellRadius = boardStyle.cellRadius();
 
-				final AxisLabel axisLabel = new AxisLabel(label, x, y);
-				axisLabels.add(axisLabel);
-			}
+    final List<AxisLabel> axisLabels = new ArrayList<>();
 
-			for (int col = 0; col < dim[1]; col++)
-			{
-				final String label = String.format("%c", Character.valueOf((char) ('A' + col)));
+    double minX = 9999.9;
+    double minY = 9999.9;
+    double maxX = -9999.9;
+    double maxY = -9999.9;
 
-				final double x = minX + cellRadius*2 * col;
-				final double y = minY - cellRadius - fontSize;
+    for (final TopologyElement v : boardStyle
+      .topology()
+      .getGraphElements(boardStyle.container().defaultSite())) {
+      if (v.centroid().getX() < minX) minX = v.centroid().getX();
+      if (v.centroid().getY() < minY) minY = v.centroid().getY();
+      if (v.centroid().getX() > maxX) maxX = v.centroid().getX();
+      if (v.centroid().getY() > maxY) maxY = v.centroid().getY();
+    }
 
-				final AxisLabel axisLabel = new AxisLabel(label, x, y);
-				axisLabels.add(axisLabel);
-			}
-		}
-		
-		return axisLabels;
-	}
-	
+    if (boardStyle.container().topology().numEdges() == 4) {
+      final int[] dim = { numRows, numCols };
+
+      // Create axis labels
+      axisLabels.clear();
+
+      for (int row = 0; row < dim[0]; row++) {
+        final String label = String.format("%d", Integer.valueOf(row + 1));
+
+        final double x = minX - cellRadius - fontSize;
+        final double y = minY + cellRadius * 2 * row;
+
+        final AxisLabel axisLabel = new AxisLabel(label, x, y);
+        axisLabels.add(axisLabel);
+      }
+
+      for (int col = 0; col < dim[1]; col++) {
+        final String label = String.format(
+          "%c",
+          Character.valueOf((char) ('A' + col))
+        );
+
+        final double x = minX + cellRadius * 2 * col;
+        final double y = minY - cellRadius - fontSize;
+
+        final AxisLabel axisLabel = new AxisLabel(label, x, y);
+        axisLabels.add(axisLabel);
+      }
+    }
+
+    return axisLabels;
+  }
 }

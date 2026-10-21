@@ -1,10 +1,9 @@
-package app.util;//
+package app.util; //
 
+import game.Game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import game.Game;
 import main.FileHandling;
 import main.StringRoutines;
 import main.collections.ListUtils;
@@ -14,112 +13,142 @@ import other.GameLoader;
 
 /**
  * To count the number of rulesets implemented.
- * 
+ *
  * @author Eric.Piette
  */
-public final class CountRulesetsDone
-{
-	public static void main(final String[] args)
-	{
-		countRuleSets();
-	}
+public final class CountRulesetsDone {
 
-	//-------------------------------------------------------------------------
+  public static void main(final String[] args) {
+    countRuleSets();
+  }
 
-	private static void countRuleSets()
-	{
-		int count = 0;
-		int countOptionCombinations = 0;
-		int countGame = 0;
-		int countRulesetsPerGame = 0;
-		
-		final String[] gameNames = FileHandling.listGames();
+  //-------------------------------------------------------------------------
 
-		for (int index = 0; index < gameNames.length; index++)
-		{
-			final String gameName = gameNames[index];
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/"))
-				continue;
+  private static void countRuleSets() {
+    int count = 0;
+    int countOptionCombinations = 0;
+    int countGame = 0;
+    int countRulesetsPerGame = 0;
 
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/"))
-				continue;
+    final String[] gameNames = FileHandling.listGames();
 
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/"))
-				continue;
+    for (int index = 0; index < gameNames.length; index++) {
+      final String gameName = gameNames[index];
+      if (
+        gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")
+      ) continue;
 
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
-				continue;
+      if (
+        gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/")
+      ) continue;
 
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame"))
-				continue;
+      if (
+        gameName
+          .replaceAll(Pattern.quote("\\"), "/")
+          .contains("/lud/WishlistDLP/")
+      ) continue;
 
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/pending/"))
-				continue;
-			
-			if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("reconstruction/validation/"))
-				continue;
-			
-			final Game game = GameLoader.loadGameFromName(gameName);
-			final List<Ruleset> rulesetsInGame = game.description().rulesets();
-			
-			final List<List<String>> optionCategories = new ArrayList<List<String>>();
+      if (
+        gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/")
+      ) continue;
 
-			for (int o = 0; o < game.description().gameOptions().numCategories(); o++)
-			{
-				final List<Option> options = game.description().gameOptions().categories().get(o).options();
-				final List<String> optionCategory = new ArrayList<String>();
+      if (
+        gameName.replaceAll(Pattern.quote("\\"), "/").contains("subgame")
+      ) continue;
 
-				for (int j = 0; j < options.size(); j++)
-				{
-					final Option option = options.get(j);
-					optionCategory.add(StringRoutines.join("/", option.menuHeadings().toArray(new String[0])));
-				}
+      if (
+        gameName
+          .replaceAll(Pattern.quote("\\"), "/")
+          .contains("reconstruction/pending/")
+      ) continue;
 
-				if (optionCategory.size() > 0)
-					optionCategories.add(optionCategory);
-			}
+      if (
+        gameName
+          .replaceAll(Pattern.quote("\\"), "/")
+          .contains("reconstruction/validation/")
+      ) continue;
 
-			List<List<String>> optionCombinations = ListUtils.generateTuples(optionCategories);
-			//System.out.println(game.name() + " combi = " + optionCombinations.size());
-			countOptionCombinations += optionCombinations.size();
-			
-			// Get all the rulesets of the game if it has some.
-			if (rulesetsInGame != null && !rulesetsInGame.isEmpty())
-			{
-				for (int rs = 0; rs < rulesetsInGame.size(); rs++)
-				{
-					final Ruleset ruleset = rulesetsInGame.get(rs);
-					if (!ruleset.optionSettings().isEmpty()&& !ruleset.heading().contains("Incomplete")) // We check if the ruleset is implemented.
-					{
-//						final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
-//							if(rulesetGame.computeRequirementReport())
-//							{
-//								System.out.println("WILL CRASH OR MISSING REQUIREMENT");
-//								System.out.println(rulesetGame.name() + " RULESET + " + ruleset.heading());
-//							}
-						count++;
-						countRulesetsPerGame++;
-					}
-				}
-			}
-			else
-			{
-				
-//			if(game.computeRequirementReport())
-//			{
-//				System.out.println("WILL CRASH OR MISSING REQUIREMENT");
-//				System.out.println(game.name());
-//			}
-				count++;
-				countRulesetsPerGame++;
-			}
+      final Game game = GameLoader.loadGameFromName(gameName);
+      final List<Ruleset> rulesetsInGame = game.description().rulesets();
 
-			countGame++;
-			System.out.println(countGame + " - " + gameName + " NumRulesets = " + countRulesetsPerGame + " NumOptionCombinations = " + optionCombinations.size());
-			countRulesetsPerGame = 0;
-		}
-		
-		System.out.println(count + " rulesets implemented");
-		System.out.println(countOptionCombinations + " option combinations implemented");
-	}
+      final List<List<String>> optionCategories = new ArrayList<List<String>>();
+
+      for (
+        int o = 0;
+        o < game.description().gameOptions().numCategories();
+        o++
+      ) {
+        final List<Option> options = game
+          .description()
+          .gameOptions()
+          .categories()
+          .get(o)
+          .options();
+        final List<String> optionCategory = new ArrayList<String>();
+
+        for (int j = 0; j < options.size(); j++) {
+          final Option option = options.get(j);
+          optionCategory.add(
+            StringRoutines.join(
+              "/",
+              option.menuHeadings().toArray(new String[0])
+            )
+          );
+        }
+
+        if (optionCategory.size() > 0) optionCategories.add(optionCategory);
+      }
+
+      List<List<String>> optionCombinations = ListUtils.generateTuples(
+        optionCategories
+      );
+      //System.out.println(game.name() + " combi = " + optionCombinations.size());
+      countOptionCombinations += optionCombinations.size();
+
+      // Get all the rulesets of the game if it has some.
+      if (rulesetsInGame != null && !rulesetsInGame.isEmpty()) {
+        for (int rs = 0; rs < rulesetsInGame.size(); rs++) {
+          final Ruleset ruleset = rulesetsInGame.get(rs);
+          if (
+            !ruleset.optionSettings().isEmpty() &&
+            !ruleset.heading().contains("Incomplete") // We check if the ruleset is implemented.
+          ) {
+            //						final Game rulesetGame = GameLoader.loadGameFromName(gameName, ruleset.optionSettings());
+            //							if(rulesetGame.computeRequirementReport())
+            //							{
+            //								System.out.println("WILL CRASH OR MISSING REQUIREMENT");
+            //								System.out.println(rulesetGame.name() + " RULESET + " + ruleset.heading());
+            //							}
+            count++;
+            countRulesetsPerGame++;
+          }
+        }
+      } else {
+        //			if(game.computeRequirementReport())
+        //			{
+        //				System.out.println("WILL CRASH OR MISSING REQUIREMENT");
+        //				System.out.println(game.name());
+        //			}
+        count++;
+        countRulesetsPerGame++;
+      }
+
+      countGame++;
+      System.out.println(
+        countGame +
+          " - " +
+          gameName +
+          " NumRulesets = " +
+          countRulesetsPerGame +
+          " NumOptionCombinations = " +
+          optionCombinations.size()
+      );
+      countRulesetsPerGame = 0;
+    }
+
+    System.out.println(count + " rulesets implemented");
+    System.out.println(
+      countOptionCombinations + " option combinations implemented"
+    );
+  }
 }

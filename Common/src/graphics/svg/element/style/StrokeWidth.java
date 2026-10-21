@@ -1,9 +1,8 @@
 package graphics.svg.element.style;
 
+import graphics.svg.element.Element;
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import graphics.svg.element.Element;
 
 //-----------------------------------------------------------------------------
 
@@ -11,70 +10,63 @@ import graphics.svg.element.Element;
  * SVG stroke width property.
  * @author cambolbro
  */
-public class StrokeWidth extends Style
-{
-	// Format:  stroke-width="1"
-	
-	private final double width = 1;
+public class StrokeWidth extends Style {
 
-	//-------------------------------------------------------------------------
-	
-	public StrokeWidth()
-	{
-		super("stroke-width");
-	}
-	
-	//-------------------------------------------------------------------------
+  // Format:  stroke-width="1"
 
-	public double width()
-	{
-		return width;
-	}
+  private final double width = 1;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public Element newOne()
-	{
-		return new StrokeWidth();
-	}
-	
-	//-------------------------------------------------------------------------
+  public StrokeWidth() {
+    super("stroke-width");
+  }
 
-	@Override
-	public boolean load(final String expr)
-	{
-		final boolean okay = true;
-		
-		// ...
-		
-		return okay;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public Element newInstance()
-	{
-		return null;
-	}
+  public double width() {
+    return width;
+  }
 
-	@Override
-	public void render
-	(
-		Graphics2D g2d, double x0, double y0, Color footprintColour, 
-		Color fillColour, Color strokeColour
-	)
-	{
-		// ...
-		
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public void setBounds()
-	{
-		// ...
-		
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public Element newOne() {
+    return new StrokeWidth();
+  }
 
+  //-------------------------------------------------------------------------
+
+  @Override
+  public boolean load(final String expr) {
+    final boolean okay = true;
+
+    // ...
+
+    return okay;
+  }
+
+  @Override
+  public Element newInstance() {
+    return null;
+  }
+
+  @Override
+  public void render(
+    Graphics2D g2d,
+    double x0,
+    double y0,
+    Color footprintColour,
+    Color fillColour,
+    Color strokeColour
+  ) {
+    // ...
+  }
+
+  @Override
+  public void setBounds() {
+    // ...
+  }
+
+  //-------------------------------------------------------------------------
 }

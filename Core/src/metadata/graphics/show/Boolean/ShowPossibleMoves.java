@@ -1,66 +1,57 @@
 package metadata.graphics.show.Boolean;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Opt;
 import game.Game;
+import java.util.BitSet;
 import metadata.graphics.GraphicsItem;
 
 /**
  * Indicates whether the possible moves are always shown.
- * 
+ *
  * @author Matthew.Stephenson
  */
 @Hide
-public class ShowPossibleMoves implements GraphicsItem
-{
-	/** If the possible moves are always shown. */
-	private final boolean showPossibleMoves;
-		
-	//-------------------------------------------------------------------------
+public class ShowPossibleMoves implements GraphicsItem {
 
-	/**
-	 * @param showPossibleMoves  Whether the possible moves are always shown. [True].
-	 */
-	public ShowPossibleMoves
-	(
-		@Opt final Boolean showPossibleMoves
-	)
-	{
-		this.showPossibleMoves = (showPossibleMoves == null) ? true : showPossibleMoves.booleanValue();
-	}
+  /** If the possible moves are always shown. */
+  private final boolean showPossibleMoves;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @return If the possible moves are always shown.
-	 */
-	public boolean showPossibleMoves()
-	{
-		return showPossibleMoves;
-	}
-	
-	//-------------------------------------------------------------------------
+  /**
+   * @param showPossibleMoves  Whether the possible moves are always shown. [True].
+   */
+  public ShowPossibleMoves(@Opt final Boolean showPossibleMoves) {
+    this.showPossibleMoves =
+      showPossibleMoves == null ? true : showPossibleMoves.booleanValue();
+  }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		return concepts;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		final long gameFlags = 0l;
-		return gameFlags;
-	}
+  /**
+   * @return If the possible moves are always shown.
+   */
+  public boolean showPossibleMoves() {
+    return showPossibleMoves;
+  }
 
-	@Override
-	public boolean needRedraw()
-	{
-		return false;
-	}
+  //-------------------------------------------------------------------------
 
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    return concepts;
+  }
+
+  @Override
+  public long gameFlags(final Game game) {
+    final long gameFlags = 0l;
+    return gameFlags;
+  }
+
+  @Override
+  public boolean needRedraw() {
+    return false;
+  }
 }

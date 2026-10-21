@@ -1,7 +1,5 @@
 package game.functions.ints.last;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -9,121 +7,106 @@ import game.Game;
 import game.functions.booleans.BooleanConstant;
 import game.functions.booleans.BooleanFunction;
 import game.functions.ints.BaseIntFunction;
+import java.util.BitSet;
 import main.Constants;
 import other.context.Context;
 import other.move.Move;
 
 /**
  * Returns the ``level to'' of the last move.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class LastLevelTo extends BaseIntFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class LastLevelTo extends BaseIntFunction {
 
-	//-------------------------------------------------------------------------
-	
-	/** To get the last "level" after subsequents have been applied. */
-	private final BooleanFunction afterSubsequentsFn;
-	
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param afterSubsequents Whether to return the ``level'' after applying subsequents [False].
-	 */
-	public LastLevelTo
-	(
-		@Opt @Name final BooleanFunction afterSubsequents
-	)
-	{
-		afterSubsequentsFn = (afterSubsequents == null) ? new BooleanConstant(false) : afterSubsequents;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /** To get the last "level" after subsequents have been applied. */
+  private final BooleanFunction afterSubsequentsFn;
 
-	@Override
-	public int eval(final Context context)
-	{
-		final Move action = context.trial().lastMove();
-		if (action != null)
-			if (afterSubsequentsFn.eval(context))
-				return action.levelToAfterSubsequents();
-			else
-				return action.levelTo();
-		return Constants.UNDEFINED;
+  //-------------------------------------------------------------------------
 
-	}
+  /**
+   * @param afterSubsequents Whether to return the ``level'' after applying subsequents [False].
+   */
+  public LastLevelTo(@Opt @Name final BooleanFunction afterSubsequents) {
+    afterSubsequentsFn =
+      afterSubsequents == null ? new BooleanConstant(false) : afterSubsequents;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  @Override
+  public int eval(final Context context) {
+    final Move action = context.trial().lastMove();
+    if (action != null) if (
+      afterSubsequentsFn.eval(context)
+    ) return action.levelToAfterSubsequents();
+    else return action.levelTo();
+    return Constants.UNDEFINED;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		return afterSubsequentsFn.gameFlags(game);
-	}
-	
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(afterSubsequentsFn.concepts(game));
-		return concepts;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(afterSubsequentsFn.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(afterSubsequentsFn.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public long gameFlags(final Game game) {
+    return afterSubsequentsFn.gameFlags(game);
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		afterSubsequentsFn.preprocess(game);
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(afterSubsequentsFn.concepts(game));
+    return concepts;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= afterSubsequentsFn.missingRequirement(game);
-		return missingRequirement;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(afterSubsequentsFn.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= afterSubsequentsFn.willCrash(game);
-		return willCrash;
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(afterSubsequentsFn.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		return "the level to location of the last move";
-	}
-	
-	//-------------------------------------------------------------------------
-		
+  @Override
+  public void preprocess(final Game game) {
+    afterSubsequentsFn.preprocess(game);
+  }
+
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= afterSubsequentsFn.missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= afterSubsequentsFn.willCrash(game);
+    return willCrash;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    return "the level to location of the last move";
+  }
+
+  //-------------------------------------------------------------------------
 }

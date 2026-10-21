@@ -2,18 +2,16 @@ package game.types.board;
 
 /**
  * Defines supported tiling types for boardless games.
- * 
+ *
  * @author Eric.Piette
  */
-public enum TilingBoardlessType
-{
-	/** Square tiling. */
-	Square,
+public enum TilingBoardlessType {
+  /** Square tiling. */
+  Square,
 
-	/** Triangular tiling. */
-	Triangular,
+  /** Triangular tiling. */
+  Triangular,
 
-	/** Hexagonal tiling. */
-	Hexagonal,
-	;
+  /** Hexagonal tiling. */
+  Hexagonal,
 }

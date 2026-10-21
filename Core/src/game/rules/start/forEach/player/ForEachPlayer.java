@@ -1,199 +1,178 @@
 package game.rules.start.forEach.player;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import game.Game;
 import game.functions.intArray.IntArrayFunction;
 import game.rules.start.StartRule;
+import java.util.BitSet;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
 
 /**
  * Applies a move for each value from a value to another (included).
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class ForEachPlayer extends StartRule
-{
-	private static final long serialVersionUID = 1L;
+public final class ForEachPlayer extends StartRule {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The starting rule to apply. */
-	private final StartRule startRule;
-	
-	/** The list of players. */
-	private final IntArrayFunction playersFn;
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @param startRule The starting rule to apply.
-	 */
-	public ForEachPlayer
-	(
-       final StartRule startRule
-	)
-	{
-		this.startRule = startRule;
-		playersFn = null;
-	}
-	
-	/**
-	 * @param players   The list of players.
-	 * @param startRule The starting rule to apply.
-	 */
-	public ForEachPlayer
-	(
-	     final IntArrayFunction players,
-	     final StartRule        startRule
-	)
-	{
-		playersFn = players;
-		this.startRule = startRule;
-	}
+  /** The starting rule to apply. */
+  private final StartRule startRule;
 
-	@Override
-	public void eval(final Context context)
-	{
-		final int savedPlayer = context.player();
+  /** The list of players. */
+  private final IntArrayFunction playersFn;
 
-		if (playersFn == null)
-		{
-			for (int pid = 1; pid < context.game().players().size(); pid++)
-			{
-				context.setPlayer(pid);
-				startRule.eval(context);
-			}
-		}
-		else
-		{
-			final int[] players = playersFn.eval(context);
-			for (int i = 0 ; i < players.length ;i++)
-			{
-				final int pid = players[i];
+  /**
+   * @param startRule The starting rule to apply.
+   */
+  public ForEachPlayer(final StartRule startRule) {
+    this.startRule = startRule;
+    playersFn = null;
+  }
 
-				if (pid < 0 || pid > context.game().players().size())
-					continue;
+  /**
+   * @param players   The list of players.
+   * @param startRule The starting rule to apply.
+   */
+  public ForEachPlayer(
+    final IntArrayFunction players,
+    final StartRule startRule
+  ) {
+    playersFn = players;
+    this.startRule = startRule;
+  }
 
-				context.setPlayer(pid);
-				startRule.eval(context);
-			}
-		}
+  @Override
+  public void eval(final Context context) {
+    final int savedPlayer = context.player();
 
-		context.setPlayer(savedPlayer);
-	}
+    if (playersFn == null) {
+      for (int pid = 1; pid < context.game().players().size(); pid++) {
+        context.setPlayer(pid);
+        startRule.eval(context);
+      }
+    } else {
+      final int[] players = playersFn.eval(context);
+      for (int i = 0; i < players.length; i++) {
+        final int pid = players[i];
 
-	//-------------------------------------------------------------------------
+        if (pid < 0 || pid > context.game().players().size()) continue;
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = startRule.gameFlags(game);
+        context.setPlayer(pid);
+        startRule.eval(context);
+      }
+    }
 
-		if (playersFn != null)
-			gameFlags |= playersFn.gameFlags(game);
+    context.setPlayer(savedPlayer);
+  }
 
-			return gameFlags;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = startRule.gameFlags(game);
 
-		if (playersFn != null)
-			concepts.or(playersFn.concepts(game));
+    if (playersFn != null) gameFlags |= playersFn.gameFlags(game);
 
-		concepts.or(startRule.concepts(game));
-		concepts.set(Concept.ControlFlowStatement.id(), true);
-		return concepts;
-	}
+    return gameFlags;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = writesEvalContextFlat();
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
 
-		if (playersFn != null)
-			writeEvalContext.or(playersFn.writesEvalContextRecursive());
+    if (playersFn != null) concepts.or(playersFn.concepts(game));
 
-		writeEvalContext.or(startRule.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
-	
-	@Override
-	public BitSet writesEvalContextFlat()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.set(EvalContextData.Player.id(), true);
-		return writeEvalContext;
-	}
+    concepts.or(startRule.concepts(game));
+    concepts.set(Concept.ControlFlowStatement.id(), true);
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = writesEvalContextFlat();
 
-		if (playersFn != null)
-			readEvalContext.or(playersFn.readsEvalContextRecursive());
+    if (playersFn != null) writeEvalContext.or(
+      playersFn.writesEvalContextRecursive()
+    );
 
-		readEvalContext.or(startRule.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    writeEvalContext.or(startRule.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
+  @Override
+  public BitSet writesEvalContextFlat() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.set(EvalContextData.Player.id(), true);
+    return writeEvalContext;
+  }
 
-		if (playersFn != null)
-			missingRequirement |= (playersFn.missingRequirement(game));
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
 
-		missingRequirement |= startRule.missingRequirement(game);
-		return missingRequirement;
-	}
+    if (playersFn != null) readEvalContext.or(
+      playersFn.readsEvalContextRecursive()
+    );
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
+    readEvalContext.or(startRule.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-		if (playersFn != null)
-			willCrash |= (playersFn.willCrash(game));
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
 
-		willCrash |= startRule.willCrash(game);
-		return willCrash;
-	}
+    if (playersFn != null) missingRequirement |= playersFn.missingRequirement(
+      game
+    );
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+    missingRequirement |= startRule.missingRequirement(game);
+    return missingRequirement;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		startRule.preprocess(game);
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
 
-		if (playersFn != null)
-			playersFn.preprocess(game);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "for each player in " + playersFn.toEnglish(game) + " " + startRule.toEnglish(game);
-	}
-	
-	//-------------------------------------------------------------------------
-		
+    if (playersFn != null) willCrash |= playersFn.willCrash(game);
+
+    willCrash |= startRule.willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    startRule.preprocess(game);
+
+    if (playersFn != null) playersFn.preprocess(game);
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    return (
+      "for each player in " +
+      playersFn.toEnglish(game) +
+      " " +
+      startRule.toEnglish(game)
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

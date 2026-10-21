@@ -16,127 +16,120 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionForfeit extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionForfeit extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The player. */
-	private final RoleType player;
+  //-------------------------------------------------------------------------
 
-	/**
-	 * 
-	 * @param player The player who forfeits.
-	 */
-	public ActionForfeit(final RoleType player)
-	{
-		this.player = player;
-	}
+  /** The player. */
+  private final RoleType player;
 
-	/**
-	 * Reconstructs an ActionForfeit object from a detailed String (generated using
-	 * toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionForfeit(final String detailedString)
-	{
-		assert (detailedString.startsWith("[Forfeit:"));
+  /**
+   *
+   * @param player The player who forfeits.
+   */
+  public ActionForfeit(final RoleType player) {
+    this.player = player;
+  }
 
-		final String strPlayer = Action.extractData(detailedString, "player");
-		player = RoleType.valueOf(strPlayer);
+  /**
+   * Reconstructs an ActionForfeit object from a detailed String (generated using
+   * toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionForfeit(final String detailedString) {
+    assert detailedString.startsWith("[Forfeit:");
 
-		decision = true;
-	}
+    final String strPlayer = Action.extractData(detailedString, "player");
+    player = RoleType.valueOf(strPlayer);
 
-	//-------------------------------------------------------------------------
+    decision = true;
+  }
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		// To forfeit a player has to lose directly.
-		new End(new If(new BooleanConstant(true), null, null, new Result(player, ResultType.Loss)), null).eval(context);
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		return this;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    // To forfeit a player has to lose directly.
+    new End(
+      new If(
+        new BooleanConstant(true),
+        null,
+        null,
+        new Result(player, ResultType.Loss)
+      ),
+      null
+    ).eval(context);
+    return this;
+  }
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+  //-------------------------------------------------------------------------
 
-		sb.append("[Forfeit:");
-		sb.append("player=" + player);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    return this;
+  }
 
-		return sb.toString();
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		return result;
-	}
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+    sb.append("[Forfeit:");
+    sb.append("player=" + player);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
-		if (!(obj instanceof ActionForfeit))
-			return false;
+    return sb.toString();
+  }
 
-		final ActionForfeit other = (ActionForfeit) obj;
-		return player.equals(other.player);
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    return result;
+  }
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return "Forfeit " + player;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(Forfeit " + player + ")";
-	}
+    if (!(obj instanceof ActionForfeit)) return false;
 
-	//-------------------------------------------------------------------------
+    final ActionForfeit other = (ActionForfeit) obj;
+    return player.equals(other.player);
+  }
 
-	@Override
-	public String getDescription()
-	{
-		return "Forfeit";
-	}
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return "Forfeit " + player;
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return "(Forfeit " + player + ")";
+  }
 
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.Forfeit;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean isForfeit()
-	{
-		return true;
-	}
+  @Override
+  public String getDescription() {
+    return "Forfeit";
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.Forfeit;
+  }
+
+  @Override
+  public boolean isForfeit() {
+    return true;
+  }
 }

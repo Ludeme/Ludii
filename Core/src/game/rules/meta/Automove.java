@@ -1,11 +1,10 @@
 package game.rules.meta;
 
-import java.util.BitSet;
-
 import game.Game;
 import game.rules.phase.Phase;
 import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
+import java.util.BitSet;
 import main.Constants;
 import other.MetaRules;
 import other.concept.Concept;
@@ -16,146 +15,134 @@ import other.move.MoveUtilities;
 /**
  * To apply automatically to the game all the legal moves only applicable to a
  * single site.
- * 
+ *
  * @author Eric.Piette
  */
-public class Automove extends MetaRule
-{
-	private static final long serialVersionUID = 1L;
+public class Automove extends MetaRule {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * @example (automove)
-	 */
-	public Automove()
-	{
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * @example (automove)
+   */
+  public Automove() {}
 
-	@Override
-	public void eval(final Context context)
-	{
-		context.game().metaRules().setAutomove(true);
-	}
-	
-	/**
-	 * @param context The context.
-	 * @param move The original move.
-	 */
-	public static void apply(final Context context, final Move move)
-	{
-		final Game game = context.game();
-		final MetaRules metaRules = game.metaRules();
-		if (metaRules.automove())
-		{
-			boolean repeatAutoMove = true;
+  //-------------------------------------------------------------------------
 
-			while (repeatAutoMove)
-			{
-				repeatAutoMove = false;
+  @Override
+  public void eval(final Context context) {
+    context.game().metaRules().setAutomove(true);
+  }
 
-				if (context.state().isDecided() != Constants.UNDEFINED)
-					context.state().setIsDecided(Constants.UNDEFINED);
+  /**
+   * @param context The context.
+   * @param move The original move.
+   */
+  public static void apply(final Context context, final Move move) {
+    final Game game = context.game();
+    final MetaRules metaRules = game.metaRules();
+    if (metaRules.automove()) {
+      boolean repeatAutoMove = true;
 
-				context.storeCurrentData(); // We need to save the data before to apply the move.
-				final Move moveApplied = (Move) move.apply(context, true);
+      while (repeatAutoMove) {
+        repeatAutoMove = false;
 
-				final int mover = context.state().mover();
-				final int indexPhase = context.state().currentPhase(mover); 
-				final Phase phase = context.game().rules().phases()[indexPhase];
-				final Moves newLegalMoves = phase.play().moves().eval(context);
+        if (context.state().isDecided() != Constants.UNDEFINED) context
+          .state()
+          .setIsDecided(Constants.UNDEFINED);
 
-				for (int j = 0; j < newLegalMoves.moves().size() - 1; j++)
-				{
-					final Move newMove = newLegalMoves.get(j);
-					final int site = newMove.toNonDecision();
-					int cpt = 1;
-					for (int k = j + 1; k < newLegalMoves.moves().size(); k++)
-					{
-						if (site == newLegalMoves.moves().get(k).toNonDecision())
-							cpt++;
-					}
+        context.storeCurrentData(); // We need to save the data before to apply the move.
+        final Move moveApplied = (Move) move.apply(context, true);
 
-					if (cpt != 1)
-					{
-						for (int k = 0; k < newLegalMoves.moves().size(); k++)
-						{
-							if (newLegalMoves.moves().get(k).toNonDecision() == site)
-							{
-								newLegalMoves.moves().remove(k);
-								k--;
-							}
-						}
-						j--;
-					}
-				}
+        final int mover = context.state().mover();
+        final int indexPhase = context.state().currentPhase(mover);
+        final Phase phase = context.game().rules().phases()[indexPhase];
+        final Moves newLegalMoves = phase.play().moves().eval(context);
 
-				if (!newLegalMoves.moves().isEmpty())
-				{
-					final Moves forcedMoves = new BaseMoves(null);
-					for (int j = 0; j < newLegalMoves.moves().size(); j++)
-						MoveUtilities.chainRuleCrossProduct(context, forcedMoves, null, newLegalMoves.moves().get(j), false);
-					move.then().add(forcedMoves);
+        for (int j = 0; j < newLegalMoves.moves().size() - 1; j++) {
+          final Move newMove = newLegalMoves.get(j);
+          final int site = newMove.toNonDecision();
+          int cpt = 1;
+          for (int k = j + 1; k < newLegalMoves.moves().size(); k++) {
+            if (site == newLegalMoves.moves().get(k).toNonDecision()) cpt++;
+          }
 
-					repeatAutoMove = true;
-				}
-				moveApplied.undo(context, true); // We undo the move.
-			}
-		}
-	}
+          if (cpt != 1) {
+            for (int k = 0; k < newLegalMoves.moves().size(); k++) {
+              if (newLegalMoves.moves().get(k).toNonDecision() == site) {
+                newLegalMoves.moves().remove(k);
+                k--;
+              }
+            }
+            j--;
+          }
+        }
 
-	//-------------------------------------------------------------------------
+        if (!newLegalMoves.moves().isEmpty()) {
+          final Moves forcedMoves = new BaseMoves(null);
+          for (
+            int j = 0;
+            j < newLegalMoves.moves().size();
+            j++
+          ) MoveUtilities.chainRuleCrossProduct(
+            context,
+            forcedMoves,
+            null,
+            newLegalMoves.moves().get(j),
+            false
+          );
+          move.then().add(forcedMoves);
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		return 0;
-	}
+          repeatAutoMove = true;
+        }
+        moveApplied.undo(context, true); // We undo the move.
+      }
+    }
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return true;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		// Nothing to do.
-	}
+  @Override
+  public long gameFlags(final Game game) {
+    return 0;
+  }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.set(Concept.AutoMove.id(), true);
-		return concepts;
-	}
+  @Override
+  public boolean isStatic() {
+    return true;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		final int result = 1;
-		return result;
-	}
+  @Override
+  public void preprocess(final Game game) {
+    // Nothing to do.
+  }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.set(Concept.AutoMove.id(), true);
+    return concepts;
+  }
 
-		if (!(obj instanceof Automove))
-			return false;
+  @Override
+  public int hashCode() {
+    final int result = 1;
+    return result;
+  }
 
-		return true;
-	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		return "Metarule: apply automatically to the game all the legal moves only applicable to a single site";
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
+
+    if (!(obj instanceof Automove)) return false;
+
+    return true;
+  }
+
+  @Override
+  public String toEnglish(final Game game) {
+    return "Metarule: apply automatically to the game all the legal moves only applicable to a single site";
+  }
 }

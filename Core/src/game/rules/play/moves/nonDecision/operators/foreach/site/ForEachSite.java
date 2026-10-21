@@ -1,7 +1,5 @@
 package game.rules.play.moves.nonDecision.operators.foreach.site;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -12,6 +10,7 @@ import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.util.equipment.Region;
+import java.util.BitSet;
 import main.collections.FastArrayList;
 import other.concept.Concept;
 import other.context.Context;
@@ -20,215 +19,211 @@ import other.move.Move;
 
 /**
  * Applies a move for each site in a region.
- * 
+ *
  * @author mrraow and cambolbro and Eric.Piette
- * 
+ *
  * @remarks Useful when a move has to be applied to all sites of a region
  *          according to some conditions.
  */
 @Hide
-public final class ForEachSite extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public final class ForEachSite extends Effect {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Location of the piece. */
-	private final RegionFunction regionFn;
+  //-------------------------------------------------------------------------
 
-	/** The moves to apply. */
-	private final Moves generator;
+  /** Location of the piece. */
+  private final RegionFunction regionFn;
 
-	/**
-	 * The moves to apply if the list of moves resulting from the generator is
-	 * empty.
-	 */
-	private final Moves elseMoves;
+  /** The moves to apply. */
+  private final Moves generator;
 
-	/**
-	 * @param regionFn  The region used.
-	 * @param generator The move to apply.
-	 * @param noMoveYet The moves to apply if the list of moves resulting from the
-	 *                  generator is empty.
-	 * @param then      The moves applied after that move is applied.
-	 */
-	public ForEachSite
-	(
-			 	   final RegionFunction regionFn,
-			 	   final Moves          generator,
-		@Opt @Name final Moves          noMoveYet,
-		@Opt 	   final Then           then
-	)
-	{
-		super(then);
-		this.regionFn = regionFn;
-		this.generator = generator;
-		elseMoves = noMoveYet;
-	}
+  /**
+   * The moves to apply if the list of moves resulting from the generator is
+   * empty.
+   */
+  private final Moves elseMoves;
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		final Region sites = regionFn.eval(context);
-		final Moves moves = new BaseMoves(super.then());
-		
-		final int savedTo = context.to();
-		final int originSiteValue = context.site();
+  /**
+   * @param regionFn  The region used.
+   * @param generator The move to apply.
+   * @param noMoveYet The moves to apply if the list of moves resulting from the
+   *                  generator is empty.
+   * @param then      The moves applied after that move is applied.
+   */
+  public ForEachSite(
+    final RegionFunction regionFn,
+    final Moves generator,
+    @Opt @Name final Moves noMoveYet,
+    @Opt final Then then
+  ) {
+    super(then);
+    this.regionFn = regionFn;
+    this.generator = generator;
+    elseMoves = noMoveYet;
+  }
 
-		for (int site = sites.bitSet().nextSetBit(0); site >= 0; site = sites.bitSet().nextSetBit(site + 1))
-		{
-			context.setTo(site);
-			context.setSite(site);
-			final FastArrayList<Move> generatedMoves = generator.eval(context).moves();
-			moves.moves().addAll(generatedMoves);
-		}
+  @Override
+  public Moves eval(final Context context) {
+    final Region sites = regionFn.eval(context);
+    final Moves moves = new BaseMoves(super.then());
 
-		if (moves.moves().isEmpty() && elseMoves != null)
-			return elseMoves.eval(context);
+    final int savedTo = context.to();
+    final int originSiteValue = context.site();
 
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
+    for (
+      int site = sites.bitSet().nextSetBit(0);
+      site >= 0;
+      site = sites.bitSet().nextSetBit(site + 1)
+    ) {
+      context.setTo(site);
+      context.setSite(site);
+      final FastArrayList<Move> generatedMoves = generator
+        .eval(context)
+        .moves();
+      moves.moves().addAll(generatedMoves);
+    }
 
-		context.setTo(savedTo);
-		context.setSite(originSiteValue);
+    if (moves.moves().isEmpty() && elseMoves != null) return elseMoves.eval(
+      context
+    );
 
-		return moves;
-	}
+    if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .then()
+      .add(then().moves());
 
-	//-------------------------------------------------------------------------
+    context.setTo(savedTo);
+    context.setSite(originSiteValue);
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = regionFn.gameFlags(game) | generator.gameFlags(game) | super.gameFlags(game);
+    return moves;
+  }
 
-		if (elseMoves != null)
-			gameFlags |= elseMoves.gameFlags(game);
+  //-------------------------------------------------------------------------
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags =
+      regionFn.gameFlags(game) |
+      generator.gameFlags(game) |
+      super.gameFlags(game);
 
-		return gameFlags;
-	}
+    if (elseMoves != null) gameFlags |= elseMoves.gameFlags(game);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
-		concepts.or(regionFn.concepts(game));
-		concepts.or(generator.concepts(game));
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-		if (elseMoves != null)
-			concepts.or(elseMoves.concepts(game));
+    return gameFlags;
+  }
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
+    concepts.or(regionFn.concepts(game));
+    concepts.or(generator.concepts(game));
 
-		concepts.set(Concept.ControlFlowStatement.id(), true);
+    if (elseMoves != null) concepts.or(elseMoves.concepts(game));
 
-		return concepts;
-	}
+    if (then() != null) concepts.or(then().concepts(game));
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = writesEvalContextFlat();
-		writeEvalContext.or(regionFn.writesEvalContextRecursive());
-		writeEvalContext.or(generator.writesEvalContextRecursive());
+    concepts.set(Concept.ControlFlowStatement.id(), true);
 
-		if (elseMoves != null)
-			writeEvalContext.or(elseMoves.writesEvalContextRecursive());
+    return concepts;
+  }
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
-	
-	@Override
-	public BitSet writesEvalContextFlat()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.set(EvalContextData.To.id(), true);
-		writeEvalContext.set(EvalContextData.Site.id(), true);
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = writesEvalContextFlat();
+    writeEvalContext.or(regionFn.writesEvalContextRecursive());
+    writeEvalContext.or(generator.writesEvalContextRecursive());
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
-		readEvalContext.or(regionFn.readsEvalContextRecursive());
-		readEvalContext.or(generator.readsEvalContextRecursive());
+    if (elseMoves != null) writeEvalContext.or(
+      elseMoves.writesEvalContextRecursive()
+    );
 
-		if (elseMoves != null)
-			readEvalContext.or(elseMoves.readsEvalContextRecursive());
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextFlat() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.set(EvalContextData.To.id(), true);
+    writeEvalContext.set(EvalContextData.Site.id(), true);
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
-		missingRequirement |= regionFn.missingRequirement(game);
-		missingRequirement |= generator.missingRequirement(game);
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
+    readEvalContext.or(regionFn.readsEvalContextRecursive());
+    readEvalContext.or(generator.readsEvalContextRecursive());
 
-		if (elseMoves != null)
-			missingRequirement |= elseMoves.missingRequirement(game);
+    if (elseMoves != null) readEvalContext.or(
+      elseMoves.readsEvalContextRecursive()
+    );
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
-		willCrash |= regionFn.willCrash(game);
-		willCrash |= generator.willCrash(game);
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
+    missingRequirement |= regionFn.missingRequirement(game);
+    missingRequirement |= generator.missingRequirement(game);
 
-		if (elseMoves != null)
-			willCrash |= elseMoves.willCrash(game);
+    if (elseMoves != null) missingRequirement |= elseMoves.missingRequirement(
+      game
+    );
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
+    willCrash |= regionFn.willCrash(game);
+    willCrash |= generator.willCrash(game);
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		super.preprocess(game);
-		regionFn.preprocess(game);
-		generator.preprocess(game);
-		if (elseMoves != null)
-			elseMoves.preprocess(game);
-	}
-	
-	//-------------------------------------------------------------------------
+    if (elseMoves != null) willCrash |= elseMoves.willCrash(game);
 
-	@Override
-	public String toEnglish(final Game game)
-	{
-		String text = "";
-		
-		if(regionFn != null) 
-			text = "Each turn, where the site is within " + regionFn.toEnglish(game) + ", " + generator.toEnglish(game);
-		
-		return text;
-	}
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    super.preprocess(game);
+    regionFn.preprocess(game);
+    generator.preprocess(game);
+    if (elseMoves != null) elseMoves.preprocess(game);
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String text = "";
+
+    if (regionFn != null) text =
+      "Each turn, where the site is within " +
+      regionFn.toEnglish(game) +
+      ", " +
+      generator.toEnglish(game);
+
+    return text;
+  }
 }

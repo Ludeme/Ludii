@@ -1,30 +1,28 @@
 package metadata.graphics;
 
-import java.util.BitSet;
-
 import game.Game;
+import java.util.BitSet;
 import metadata.MetadataItem;
 
 /**
  * Metadata containing graphics hints.
- * @author cambolbro 
+ * @author cambolbro
  */
-public interface GraphicsItem extends MetadataItem
-{
-	/**
-	 * @param game The game.
-	 * @return Accumulated concepts.
-	 */
-	public BitSet concepts(final Game game);
+public interface GraphicsItem extends MetadataItem {
+  /**
+   * @param game The game.
+   * @return Accumulated concepts.
+   */
+  public BitSet concepts(final Game game);
 
-	/**
-	 * @param game The game.
-	 * @return Accumulated game flags.
-	 */
-	public long gameFlags(final Game game);
+  /**
+   * @param game The game.
+   * @return Accumulated game flags.
+   */
+  public long gameFlags(final Game game);
 
-	/**
-	 * @return True if this ludeme needs to be redrawn after each move.
-	 */
-	public boolean needRedraw();
+  /**
+   * @return True if this ludeme needs to be redrawn after each move.
+   */
+  public boolean needRedraw();
 }

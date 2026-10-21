@@ -1,9 +1,5 @@
 package game.functions.region.sites.walk;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
-
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -20,208 +16,197 @@ import game.util.directions.DirectionFacing;
 import game.util.equipment.Region;
 import game.util.graph.Step;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
 import main.Constants;
 import other.ContainerId;
 import other.context.Context;
 
 /**
  * Returns all the sites of a walk got by a graphic turtle walk.
- * 
+ *
  * @author Eric Piette
  */
 @Hide
-public final class SitesWalk extends BaseRegionFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class SitesWalk extends BaseRegionFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The starting location of the walk. */
-	private final IntFunction startLocationFn;
+  //-------------------------------------------------------------------------
 
-	/** Steps for walking. */
-	private final StepType[][] possibleSteps;
+  /** The starting location of the walk. */
+  private final IntFunction startLocationFn;
 
-	/** If the walk includes all the rotations. */
-	private final BooleanFunction rotations;
+  /** Steps for walking. */
+  private final StepType[][] possibleSteps;
 
-	//-------------------------------------------------------------------------
+  /** If the walk includes all the rotations. */
+  private final BooleanFunction rotations;
 
-	/**
-	 * @param type            Type of graph element.
-	 * @param startLocationFn The starting location of the walk.
-	 * @param possibleSteps   The different turtle steps defining a graphic turtle
-	 *                        walk.
-	 * @param rotations       True if the move includes all the rotations of the
-	 *                        walk [True].
-	 */
-	public SitesWalk
-	(
-			@Opt       final SiteType        type, 
-			@Opt       final IntFunction     startLocationFn, 
-			           final StepType[][]    possibleSteps,
-			@Opt @Name final BooleanFunction rotations
-	)
-	{ 
-		this.startLocationFn = (startLocationFn == null) ? new From(null) : startLocationFn;
-		this.type = type;
-		this.possibleSteps = possibleSteps;
-		this.rotations = (rotations == null) ? new BooleanConstant(true) : rotations;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param type            Type of graph element.
+   * @param startLocationFn The starting location of the walk.
+   * @param possibleSteps   The different turtle steps defining a graphic turtle
+   *                        walk.
+   * @param rotations       True if the move includes all the rotations of the
+   *                        walk [True].
+   */
+  public SitesWalk(
+    @Opt final SiteType type,
+    @Opt final IntFunction startLocationFn,
+    final StepType[][] possibleSteps,
+    @Opt @Name final BooleanFunction rotations
+  ) {
+    this.startLocationFn =
+      startLocationFn == null ? new From(null) : startLocationFn;
+    this.type = type;
+    this.possibleSteps = possibleSteps;
+    this.rotations = rotations == null ? new BooleanConstant(true) : rotations;
+  }
 
-	@Override
-	public Region eval(final Context context)
-	{
-		final int from = startLocationFn.eval(context);
+  //-------------------------------------------------------------------------
 
-		if (from == Constants.OFF)
-			return new Region(new TIntArrayList().toArray());
+  @Override
+  public Region eval(final Context context) {
+    final int from = startLocationFn.eval(context);
 
-		final int cid = new ContainerId(null,  null,  null, null, new IntConstant(from)).eval(context);
-		final other.topology.Topology graph = context.containers()[cid].topology();
-		final boolean allRotations = rotations.eval(context);
-		final SiteType realType = (type == null) ? context.board().defaultSite() : type;
-		final List<DirectionFacing> orthogonalSupported = graph.supportedOrthogonalDirections(realType);
-		List<DirectionFacing> walkDirection;
+    if (from == Constants.OFF) return new Region(new TIntArrayList().toArray());
 
-		if (allRotations)
-			walkDirection = graph.supportedOrthogonalDirections(realType);
-		else
-		{
-			walkDirection = new ArrayList<DirectionFacing>();
-			walkDirection.add(graph.supportedOrthogonalDirections(realType).get(0));
-		}
+    final int cid = new ContainerId(
+      null,
+      null,
+      null,
+      null,
+      new IntConstant(from)
+    ).eval(context);
+    final other.topology.Topology graph = context.containers()[cid].topology();
+    final boolean allRotations = rotations.eval(context);
+    final SiteType realType =
+      type == null ? context.board().defaultSite() : type;
+    final List<DirectionFacing> orthogonalSupported =
+      graph.supportedOrthogonalDirections(realType);
+    List<DirectionFacing> walkDirection;
 
-		final TIntArrayList sitesAfterWalk = new TIntArrayList();
+    if (allRotations) walkDirection = graph.supportedOrthogonalDirections(
+      realType
+    );
+    else {
+      walkDirection = new ArrayList<DirectionFacing>();
+      walkDirection.add(graph.supportedOrthogonalDirections(realType).get(0));
+    }
 
-		for (final DirectionFacing startDirection : walkDirection)
-		{
-			for (final StepType[] steps : possibleSteps)
-			{
-				int currentLoc = from;
-				DirectionFacing currentDirection = startDirection;
+    final TIntArrayList sitesAfterWalk = new TIntArrayList();
 
-				for (final StepType step : steps)
-				{
-					if (step == StepType.F)
-					{
-						final List<Step> stepsDirection = graph.trajectories().steps(realType, currentLoc,
-								currentDirection.toAbsolute());
+    for (final DirectionFacing startDirection : walkDirection) {
+      for (final StepType[] steps : possibleSteps) {
+        int currentLoc = from;
+        DirectionFacing currentDirection = startDirection;
 
-						int to = Constants.UNDEFINED;
-						for (final Step stepDirection : stepsDirection)
-						{
-							if (stepDirection.from().siteType() != stepDirection.to().siteType())
-								continue;
+        for (final StepType step : steps) {
+          if (step == StepType.F) {
+            final List<Step> stepsDirection = graph
+              .trajectories()
+              .steps(realType, currentLoc, currentDirection.toAbsolute());
 
-							to = stepDirection.to().id();
-						}
+            int to = Constants.UNDEFINED;
+            for (final Step stepDirection : stepsDirection) {
+              if (
+                stepDirection.from().siteType() != stepDirection.to().siteType()
+              ) continue;
 
-						currentLoc = to;
+              to = stepDirection.to().id();
+            }
 
-						// No correct walk with that state.
-						if (to == Constants.UNDEFINED)
-							break;
+            currentLoc = to;
 
-					}
-					else if (step == StepType.R)
-					{
-						currentDirection = currentDirection.right();
-						while (!orthogonalSupported.contains(currentDirection))
-							currentDirection = currentDirection.right();
-					}
+            // No correct walk with that state.
+            if (to == Constants.UNDEFINED) break;
+          } else if (step == StepType.R) {
+            currentDirection = currentDirection.right();
+            while (!orthogonalSupported.contains(currentDirection))
+              currentDirection = currentDirection.right();
+          } else if (step == StepType.L) {
+            currentDirection = currentDirection.left();
+            while (!orthogonalSupported.contains(currentDirection))
+              currentDirection = currentDirection.left();
+          }
+        }
 
-					else if (step == StepType.L)
-					{
-						currentDirection = currentDirection.left();
-						while (!orthogonalSupported.contains(currentDirection))
-							currentDirection = currentDirection.left();
-					}
-				}
+        if (currentLoc != Constants.UNDEFINED) sitesAfterWalk.add(currentLoc);
+      }
+    }
 
-				if (currentLoc != Constants.UNDEFINED)
-					sitesAfterWalk.add(currentLoc);
-			}
-		}
+    return new Region(sitesAfterWalk.toArray());
+  }
 
-		return new Region(sitesAfterWalk.toArray());
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = 0;
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = 0;
+    gameFlags |= SiteType.gameFlags(type);
 
-		gameFlags |= SiteType.gameFlags(type);
+    gameFlags |= startLocationFn.gameFlags(game);
+    gameFlags |= rotations.gameFlags(game);
 
-		gameFlags |= startLocationFn.gameFlags(game);
-		gameFlags |= rotations.gameFlags(game);
+    return gameFlags;
+  }
 
-		return gameFlags;
-	}
-	
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(SiteType.concepts(type));
-		concepts.or(startLocationFn.concepts(game));
-		concepts.or(rotations.concepts(game));
-		return concepts;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(SiteType.concepts(type));
+    concepts.or(startLocationFn.concepts(game));
+    concepts.or(rotations.concepts(game));
+    return concepts;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(startLocationFn.writesEvalContextRecursive());
-		writeEvalContext.or(rotations.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(startLocationFn.writesEvalContextRecursive());
+    writeEvalContext.or(rotations.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(startLocationFn.readsEvalContextRecursive());
-		readEvalContext.or(rotations.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(startLocationFn.readsEvalContextRecursive());
+    readEvalContext.or(rotations.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
 
-		startLocationFn.preprocess(game);
-		rotations.preprocess(game);
-	}
+    startLocationFn.preprocess(game);
+    rotations.preprocess(game);
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= startLocationFn.missingRequirement(game);
-		missingRequirement |= rotations.missingRequirement(game);
-		return missingRequirement;
-	}
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= startLocationFn.missingRequirement(game);
+    missingRequirement |= rotations.missingRequirement(game);
+    return missingRequirement;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= startLocationFn.willCrash(game);
-		willCrash |= rotations.willCrash(game);
-		return willCrash;
-	}
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= startLocationFn.willCrash(game);
+    willCrash |= rotations.willCrash(game);
+    return willCrash;
+  }
 }

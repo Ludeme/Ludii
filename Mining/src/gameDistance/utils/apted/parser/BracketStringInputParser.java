@@ -23,11 +23,10 @@
 
 package gameDistance.utils.apted.parser;
 
-import java.util.List;
-
 import gameDistance.utils.apted.node.Node;
 import gameDistance.utils.apted.node.StringNodeData;
 import gameDistance.utils.apted.util.FormatUtilities;
+import java.util.List;
 
 // [TODO] Make this parser independent from FormatUtilities - move here relevant elements.
 
@@ -54,12 +53,13 @@ public class BracketStringInputParser implements InputParser<StringNodeData> {
    * @see Node
    */
   @Override
-public Node<StringNodeData> fromString(String s) {
+  public Node<StringNodeData> fromString(String s) {
     s = s.substring(s.indexOf("{"), s.lastIndexOf("}") + 1);
-    final Node<StringNodeData> node = new Node<StringNodeData>(new StringNodeData(FormatUtilities.getRoot(s)));
+    final Node<StringNodeData> node = new Node<StringNodeData>(
+      new StringNodeData(FormatUtilities.getRoot(s))
+    );
     final List<String> c = FormatUtilities.getChildren(s);
-    for(int i = 0; i < c.size(); i++)
-        node.addChild(fromString(c.get(i)));
+    for (int i = 0; i < c.size(); i++) node.addChild(fromString(c.get(i)));
     return node;
   }
 }

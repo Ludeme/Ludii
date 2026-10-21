@@ -1,123 +1,107 @@
 package game.functions.ints.count.simple;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Opt;
 import game.Game;
 import game.functions.ints.BaseIntFunction;
 import game.types.board.SiteType;
+import java.util.BitSet;
 import other.context.Context;
 
 /**
  * Returns the number of columns of the corresponding graph element.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class CountColumns extends BaseIntFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class CountColumns extends BaseIntFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** If we can, we'll precompute once and cache. */
-	private Integer preComputedInteger = null;
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /** If we can, we'll precompute once and cache. */
+  private Integer preComputedInteger = null;
 
-	/** Cell/Edge/Vertex. */
-	private SiteType type;
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @param type The graph element type.
-	 */
-	public CountColumns
-	(
-		@Opt final SiteType type
-	)
-	{
-		this.type = type;
-	}
+  /** Cell/Edge/Vertex. */
+  private SiteType type;
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param type The graph element type.
+   */
+  public CountColumns(@Opt final SiteType type) {
+    this.type = type;
+  }
 
-	@Override
-	public int eval(final Context context)
-	{
-		if (preComputedInteger != null)
-			return preComputedInteger.intValue();
+  //-------------------------------------------------------------------------
 
-		final SiteType realSiteType = (type != null) ? type
-				: context.board().defaultSite();
+  @Override
+  public int eval(final Context context) {
+    if (preComputedInteger != null) return preComputedInteger.intValue();
 
-		return context.topology().columns(realSiteType).size();
-	}
+    final SiteType realSiteType =
+      type != null ? type : context.board().defaultSite();
 
-	//-------------------------------------------------------------------------
+    return context.topology().columns(realSiteType).size();
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return true;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toString()
-	{
-		return "Columns()";
-	}
+  @Override
+  public boolean isStatic() {
+    return true;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = 0L;
+  @Override
+  public String toString() {
+    return "Columns()";
+  }
 
-		gameFlags |= SiteType.gameFlags(type);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = 0L;
 
-		return gameFlags;
-	}
+    gameFlags |= SiteType.gameFlags(type);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(SiteType.concepts(type));
-		return concepts;
-	}
+    return gameFlags;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(SiteType.concepts(type));
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    return writeEvalContext;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
-		preComputedInteger = Integer.valueOf(eval(new Context(game, null)));
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    return readEvalContext;
+  }
 
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		String typeString = "";
-		if (type != null)
-			typeString = type.name() + " ";
-		
-		return "the number of " + typeString + "columns";
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
+    preComputedInteger = Integer.valueOf(eval(new Context(game, null)));
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String typeString = "";
+    if (type != null) typeString = type.name() + " ";
+
+    return "the number of " + typeString + "columns";
+  }
+
+  //-------------------------------------------------------------------------
 }

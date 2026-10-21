@@ -6,9 +6,8 @@ import metadata.MetadataItem;
 
 /**
  * General function hint for this game.Metadata containing hints for AI agents for this game.
- * @author cambolbro 
+ * @author cambolbro
  */
-public interface AIItem extends MetadataItem
-{
-	// ...
+public interface AIItem extends MetadataItem {
+  // ...
 }

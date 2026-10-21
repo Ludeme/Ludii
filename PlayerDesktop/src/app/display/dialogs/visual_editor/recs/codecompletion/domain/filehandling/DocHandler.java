@@ -2,7 +2,6 @@ package app.display.dialogs.visual_editor.recs.codecompletion.domain.filehandlin
 
 import app.display.dialogs.visual_editor.recs.utils.FileUtils;
 import app.display.dialogs.visual_editor.recs.utils.StringUtils;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,160 +12,157 @@ import java.util.Scanner;
  * Class is a singleton
  */
 public class DocHandler {
-    // TODO: refactor paths in similar way
-    public static final String DOC_LOCATION = "../Common/res/recs/documents.txt";
-    public static final String GRAMMAR = "grammar_location";
-    public static final String GAMES = "games_location";
-    public static final String MODELS = "models_location";
-    public static final String MODEL = "location_model_";
-    public static final String LOGO = "logo_location";
-    public static final String GAMES_NAMES = "games_names_location";
-    public static final String SEPARATOR = ":";
-    public static final String MODEL_DOES_NOT_EXIST = "MODELDOESNOTEXIST";
 
-    private static final boolean DEBUG = false;
+  // TODO: refactor paths in similar way
+  public static final String DOC_LOCATION = "../Common/res/recs/documents.txt";
+  public static final String GRAMMAR = "grammar_location";
+  public static final String GAMES = "games_location";
+  public static final String MODELS = "models_location";
+  public static final String MODEL = "location_model_";
+  public static final String LOGO = "logo_location";
+  public static final String GAMES_NAMES = "games_names_location";
+  public static final String SEPARATOR = ":";
+  public static final String MODEL_DOES_NOT_EXIST = "MODELDOESNOTEXIST";
 
-    private String grammarLocation;
-    private String gamesLocation;
-    private String logoLocation;
-    private String modelsLocation;
-    private Map<Integer,String> modelLocations;
+  private static final boolean DEBUG = false;
 
-    //singleton
-    private static DocHandler docHandler;
-    private String gamesNamesLocation;
+  private String grammarLocation;
+  private String gamesLocation;
+  private String logoLocation;
+  private String modelsLocation;
+  private Map<Integer, String> modelLocations;
 
-    public static DocHandler getInstance() {
+  //singleton
+  private static DocHandler docHandler;
+  private String gamesNamesLocation;
 
-        // create object if it's not already created
-        if(docHandler == null) {
-            docHandler = new DocHandler();
-        }
-
-        // returns the singleton object
-        return docHandler;
+  public static DocHandler getInstance() {
+    // create object if it's not already created
+    if (docHandler == null) {
+      docHandler = new DocHandler();
     }
 
-    /**
-     * The constructor reads in alla available information from the file on startup
-     */
-    private DocHandler() {
-        modelLocations = new HashMap<>();
-        try(Scanner sc = FileUtils.readFile(DOC_LOCATION);)
-        {
-	        while (sc.hasNext()) {
-	            String nextLine = sc.nextLine();
-	            if(DEBUG)System.out.println(nextLine);
-	            parseDocumentsLine(nextLine);
-	        }
-	        sc.close();
-        }
-    }
+    // returns the singleton object
+    return docHandler;
+  }
 
-    /**
-     * This method parses the different lines of the documents.txt:
-     * -grammar location
-     * -games location
-     * -model location
-     * @param line
-     */
-    private void parseDocumentsLine(String line) {
-        String[] split = line.split(SEPARATOR);
-        if(StringUtils.equals(split[0], GRAMMAR)) {
-            grammarLocation = split[1];
-            if(DEBUG)System.out.println(grammarLocation);
-        }
-        if(StringUtils.equals(split[0], GAMES)) {
-            gamesLocation = split[1];
-            if(DEBUG)System.out.println(gamesLocation);
-        }
-        if(StringUtils.equals(split[0], LOGO)) {
-            logoLocation = split[1];
-            if(DEBUG)System.out.println(logoLocation);
-        }
-        if(StringUtils.equals(split[0], MODELS)) {
-            modelsLocation = split[1];
-            if(DEBUG)System.out.println(modelsLocation);
-        }
-        if(StringUtils.equals(split[0], GAMES_NAMES)) {
-            gamesNamesLocation = split[1];
-            if(DEBUG)System.out.println(gamesNamesLocation);
-        }
-        if(split[0].startsWith(MODEL)) {
-            int N = Integer.parseInt(split[0].charAt(MODEL.length())+"");
-            modelLocations.put(Integer.valueOf(N), split[1]);
-            if(DEBUG)System.out.println(modelLocations.get(Integer.valueOf(N)));
-        }
+  /**
+   * The constructor reads in alla available information from the file on startup
+   */
+  private DocHandler() {
+    modelLocations = new HashMap<>();
+    try (Scanner sc = FileUtils.readFile(DOC_LOCATION)) {
+      while (sc.hasNext()) {
+        String nextLine = sc.nextLine();
+        if (DEBUG) System.out.println(nextLine);
+        parseDocumentsLine(nextLine);
+      }
+      sc.close();
     }
+  }
 
-    /**
-     * This method writes the stored data about documents to the documents.txt
-     */
-    public void writeDocumentsFile() 
-    {
-        try (FileWriter fw = FileUtils.writeFile(DOC_LOCATION);)
-        {
-            if(grammarLocation != null) {
-                    fw.write(GRAMMAR +SEPARATOR+grammarLocation+"\n");
-            }
-            if(gamesLocation != null) {
-                fw.write(GAMES +SEPARATOR+gamesLocation+"\n");
-            }
-            if(logoLocation != null) {
-                fw.write(LOGO +SEPARATOR+logoLocation+"\n");
-            }
-            if(modelsLocation != null) {
-                fw.write(MODELS +SEPARATOR+modelsLocation+"\n");
-            }
-            if(gamesNamesLocation != null) {
-                fw.write(GAMES_NAMES +SEPARATOR+gamesNamesLocation+"\n");
-            }
-            for(Map.Entry<Integer, String> entry : modelLocations.entrySet()) 
-            {
-                int N = entry.getKey().intValue();
-                String modelLocation = entry.getValue();
-                fw.write(MODEL +N+SEPARATOR+modelLocation+"\n");
-            }
-            fw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+  /**
+   * This method parses the different lines of the documents.txt:
+   * -grammar location
+   * -games location
+   * -model location
+   * @param line
+   */
+  private void parseDocumentsLine(String line) {
+    String[] split = line.split(SEPARATOR);
+    if (StringUtils.equals(split[0], GRAMMAR)) {
+      grammarLocation = split[1];
+      if (DEBUG) System.out.println(grammarLocation);
     }
+    if (StringUtils.equals(split[0], GAMES)) {
+      gamesLocation = split[1];
+      if (DEBUG) System.out.println(gamesLocation);
+    }
+    if (StringUtils.equals(split[0], LOGO)) {
+      logoLocation = split[1];
+      if (DEBUG) System.out.println(logoLocation);
+    }
+    if (StringUtils.equals(split[0], MODELS)) {
+      modelsLocation = split[1];
+      if (DEBUG) System.out.println(modelsLocation);
+    }
+    if (StringUtils.equals(split[0], GAMES_NAMES)) {
+      gamesNamesLocation = split[1];
+      if (DEBUG) System.out.println(gamesNamesLocation);
+    }
+    if (split[0].startsWith(MODEL)) {
+      int N = Integer.parseInt(split[0].charAt(MODEL.length()) + "");
+      modelLocations.put(Integer.valueOf(N), split[1]);
+      if (DEBUG) System.out.println(modelLocations.get(Integer.valueOf(N)));
+    }
+  }
 
-    public void addModelLocation(int N, String location) 
-    {
-        modelLocations.put(Integer.valueOf(N), location);
+  /**
+   * This method writes the stored data about documents to the documents.txt
+   */
+  public void writeDocumentsFile() {
+    try (FileWriter fw = FileUtils.writeFile(DOC_LOCATION)) {
+      if (grammarLocation != null) {
+        fw.write(GRAMMAR + SEPARATOR + grammarLocation + "\n");
+      }
+      if (gamesLocation != null) {
+        fw.write(GAMES + SEPARATOR + gamesLocation + "\n");
+      }
+      if (logoLocation != null) {
+        fw.write(LOGO + SEPARATOR + logoLocation + "\n");
+      }
+      if (modelsLocation != null) {
+        fw.write(MODELS + SEPARATOR + modelsLocation + "\n");
+      }
+      if (gamesNamesLocation != null) {
+        fw.write(GAMES_NAMES + SEPARATOR + gamesNamesLocation + "\n");
+      }
+      for (Map.Entry<Integer, String> entry : modelLocations.entrySet()) {
+        int N = entry.getKey().intValue();
+        String modelLocation = entry.getValue();
+        fw.write(MODEL + N + SEPARATOR + modelLocation + "\n");
+      }
+      fw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
 
-    public String getGrammarLocation() {
-        return grammarLocation;
-    }
+  public void addModelLocation(int N, String location) {
+    modelLocations.put(Integer.valueOf(N), location);
+  }
 
-    public String getGamesLocation() {
-        return gamesLocation;
-    }
+  public String getGrammarLocation() {
+    return grammarLocation;
+  }
 
-    public String getLogoLocation() {
-        return logoLocation;
-    }
+  public String getGamesLocation() {
+    return gamesLocation;
+  }
 
-    public String getModelsLocation() {
-        return modelsLocation;
-    }
+  public String getLogoLocation() {
+    return logoLocation;
+  }
 
-    public String getGamesNamesLocation() {
-        return gamesNamesLocation;
-    }
+  public String getModelsLocation() {
+    return modelsLocation;
+  }
 
-    public String getModelLocation(int N) 
-    {
-        return modelLocations.getOrDefault(Integer.valueOf(N), MODEL_DOES_NOT_EXIST);
-    }
+  public String getGamesNamesLocation() {
+    return gamesNamesLocation;
+  }
 
-    /**
-     * Write the documents file on closing
-     */
-    public void close() {
-        writeDocumentsFile();
-    }
+  public String getModelLocation(int N) {
+    return modelLocations.getOrDefault(
+      Integer.valueOf(N),
+      MODEL_DOES_NOT_EXIST
+    );
+  }
+
+  /**
+   * Write the documents file on closing
+   */
+  public void close() {
+    writeDocumentsFile();
+  }
 }

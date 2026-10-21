@@ -1,12 +1,9 @@
 package main;
 
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import help.GenerateLudiiEditorHelpFile;
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 import xml.GenerateLudiiDocXML;
 
 /**
@@ -15,24 +12,20 @@ import xml.GenerateLudiiDocXML;
  *
  * @author Dennis Soemers
  */
-public class GenerateLudiiEditorHelpFileMain
-{
-	
-	/**
-	 * Main method
-	 * @param args
-	 * @throws IOException 
-	 * @throws InterruptedException 
-	 * @throws SAXException 
-	 * @throws ParserConfigurationException 
-	 * @throws ClassNotFoundException 
-	 */
-	public static void main(final String[] args) 
-			throws InterruptedException, IOException, ClassNotFoundException, 
-			ParserConfigurationException, SAXException
-	{
-		GenerateLudiiDocXML.generateXML();
-		GenerateLudiiEditorHelpFile.generateHelp();
-	}
+public class GenerateLudiiEditorHelpFileMain {
 
+  /**
+   * Main method
+   * @param args
+   * @throws IOException
+   * @throws InterruptedException
+   * @throws SAXException
+   * @throws ParserConfigurationException
+   * @throws ClassNotFoundException
+   */
+  public static void main(final String[] args)
+    throws InterruptedException, IOException, ClassNotFoundException, ParserConfigurationException, SAXException {
+    GenerateLudiiDocXML.generateXML();
+    GenerateLudiiEditorHelpFile.generateHelp();
+  }
 }

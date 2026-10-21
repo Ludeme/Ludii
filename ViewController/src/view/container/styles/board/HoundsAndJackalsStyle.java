@@ -10,16 +10,18 @@ import view.container.styles.BoardStyle;
  * Hounds and Jackals (i.e. 58 Holes) board style.
  * @author cambolbro
  */
-public class HoundsAndJackalsStyle extends BoardStyle
-{
-	public HoundsAndJackalsStyle(final Bridge bridge, final Container container) 
-	{
-		super(bridge, container);
-		final HoundsAndJackalsPlacement houndsAndJackalsPlacement = new HoundsAndJackalsPlacement(bridge, this);
-		containerPlacement = houndsAndJackalsPlacement;
-		containerDesign = new HoundsAndJackalsDesign(this, houndsAndJackalsPlacement);
-	} 
-	
-	//-------------------------------------------------------------------------
-	
+public class HoundsAndJackalsStyle extends BoardStyle {
+
+  public HoundsAndJackalsStyle(final Bridge bridge, final Container container) {
+    super(bridge, container);
+    final HoundsAndJackalsPlacement houndsAndJackalsPlacement =
+      new HoundsAndJackalsPlacement(bridge, this);
+    containerPlacement = houndsAndJackalsPlacement;
+    containerDesign = new HoundsAndJackalsDesign(
+      this,
+      houndsAndJackalsPlacement
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

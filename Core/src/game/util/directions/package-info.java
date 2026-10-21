@@ -1,5 +1,5 @@
 /**
- * Direction utilities define the various types of directions used in game descriptions. 
+ * Direction utilities define the various types of directions used in game descriptions.
  * These include:
  * \begin{itemize}
  * \item {\it absolute} directions that remain constant in all contexts, and

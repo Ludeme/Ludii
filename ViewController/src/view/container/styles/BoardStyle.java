@@ -10,31 +10,28 @@ import view.container.aspects.placement.BoardPlacement;
 /**
  * @author Matthew.Stephenson and cambolbro
  */
-public class BoardStyle extends BaseContainerStyle
-{
-	protected BoardPlacement boardPlacement;
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * Constructor
-	 * @param container
-	 */
-	public BoardStyle(final Bridge bridge, final Container container)
-	{
-		super(bridge, container);
-		boardPlacement = new BoardPlacement(bridge, this);
-		containerPlacement = boardPlacement;
-		containerAxis = new BoardAxis(this);
-		containerDesign = new BoardDesign(this, boardPlacement);
-	}
+public class BoardStyle extends BaseContainerStyle {
 
-	@Override
-	public void setDefaultBoardScale(final double scale) 
-	{
-		boardPlacement.setDefaultBoardScale(scale);
-	}
-	
-	//-------------------------------------------------------------------------
+  protected BoardPlacement boardPlacement;
 
+  //-------------------------------------------------------------------------
+
+  /**
+   * Constructor
+   * @param container
+   */
+  public BoardStyle(final Bridge bridge, final Container container) {
+    super(bridge, container);
+    boardPlacement = new BoardPlacement(bridge, this);
+    containerPlacement = boardPlacement;
+    containerAxis = new BoardAxis(this);
+    containerDesign = new BoardDesign(this, boardPlacement);
+  }
+
+  @Override
+  public void setDefaultBoardScale(final double scale) {
+    boardPlacement.setDefaultBoardScale(scale);
+  }
+
+  //-------------------------------------------------------------------------
 }

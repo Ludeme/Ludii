@@ -1,8 +1,7 @@
 package other.action.state;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
+import java.util.BitSet;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.BaseAction;
@@ -14,147 +13,133 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionSetTemp extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionSetTemp extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The new temporary value. */
-	private final int temp;
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous value. */
-	private int previousValue;
-	
-	//-------------------------------------------------------------------------
+  /** The new temporary value. */
+  private final int temp;
 
-	/**
-	 * @param temp The temporary value.
-	 */
-	public ActionSetTemp(final int temp)
-	{
-		this.temp = temp;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionSetTemp object from a detailed String (generated using
-	 * toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionSetTemp(final String detailedString)
-	{
-		assert (detailedString.startsWith("[SetTemp:"));
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-		final String strTemp = Action.extractData(detailedString, "temp");
-		temp = Integer.parseInt(strTemp);
+  /** The previous value. */
+  private int previousValue;
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param temp The temporary value.
+   */
+  public ActionSetTemp(final int temp) {
+    this.temp = temp;
+  }
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		if(!alreadyApplied)
-		{
-			previousValue = context.state().temp();
-			alreadyApplied = true;
-		}
-		
-		context.state().setTemp(temp);
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		context.state().setTemp(previousValue);
-		return this;
-	}
+  /**
+   * Reconstructs an ActionSetTemp object from a detailed String (generated using
+   * toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionSetTemp(final String detailedString) {
+    assert detailedString.startsWith("[SetTemp:");
 
-	//-------------------------------------------------------------------------
+    final String strTemp = Action.extractData(detailedString, "temp");
+    temp = Integer.parseInt(strTemp);
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-		sb.append("[SetTemp:");
-		sb.append("temp=" + temp);
-		if (decision)
-			sb.append(",decision=" + decision);
+  //-------------------------------------------------------------------------
 
-		sb.append(']');
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    if (!alreadyApplied) {
+      previousValue = context.state().temp();
+      alreadyApplied = true;
+    }
 
-		return sb.toString();
-	}
+    context.state().setTemp(temp);
+    return this;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + temp;
-		return result;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    context.state().setTemp(previousValue);
+    return this;
+  }
 
-		if (!(obj instanceof ActionSetTemp))
-			return false;
+  //-------------------------------------------------------------------------
 
-		final ActionSetTemp other = (ActionSetTemp) obj;
-		return (decision == other.decision && temp == other.temp);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String getDescription() 
-	{
-		return "SetTemp";
-	}
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return "Temp=" + temp;
-	}
+    sb.append("[SetTemp:");
+    sb.append("temp=" + temp);
+    if (decision) sb.append(",decision=" + decision);
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(Temp = " + temp + ")";
-	}
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.SetTemp;
-	}
+    sb.append(']');
 
-	//-------------------------------------------------------------------------
+    return sb.toString();
+  }
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.set(Concept.SetVar.id(), true);
-		return concepts;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + temp;
+    return result;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
+
+    if (!(obj instanceof ActionSetTemp)) return false;
+
+    final ActionSetTemp other = (ActionSetTemp) obj;
+    return decision == other.decision && temp == other.temp;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    return "SetTemp";
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return "Temp=" + temp;
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return "(Temp = " + temp + ")";
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.SetTemp;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+    concepts.set(Concept.SetVar.id(), true);
+    return concepts;
+  }
 }

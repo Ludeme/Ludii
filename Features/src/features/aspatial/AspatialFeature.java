@@ -10,26 +10,23 @@ import other.state.State;
  *
  * @author Dennis Soemers
  */
-public abstract class AspatialFeature extends Feature
-{
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param state
-	 * @param move
-	 * @return Feature value for given move in given state.
-	 */
-	public abstract float featureVal(final State state, final Move move);
+public abstract class AspatialFeature extends Feature {
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toString()
-	{
-		throw new UnsupportedOperationException();
-	}
-	
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
+  /**
+   * @param state
+   * @param move
+   * @return Feature value for given move in given state.
+   */
+  public abstract float featureVal(final State state, final Move move);
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toString() {
+    throw new UnsupportedOperationException();
+  }
+
+  //-------------------------------------------------------------------------
 }

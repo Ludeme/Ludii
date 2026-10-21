@@ -1,9 +1,5 @@
 package game.rules.play.moves.nonDecision.effect;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
-
 import annotations.Name;
 import annotations.Opt;
 import game.Game;
@@ -18,6 +14,9 @@ import game.types.board.SiteType;
 import game.types.component.DealableType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
 import main.Constants;
 import other.action.Action;
 import other.action.BaseAction;
@@ -30,347 +29,343 @@ import other.state.container.ContainerState;
 
 /**
  * Deals cards or dominoes to each player.
- * 
+ *
  * @author Eric.Piette
  */
-public final class Deal extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public final class Deal extends Effect {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The number to deal. */
-	private final IntFunction countFn;
+  //-------------------------------------------------------------------------
 
-	/** The number to deal. */
-	private final DealableType type;
+  /** The number to deal. */
+  private final IntFunction countFn;
 
-	/** To start to deal with a specific player. */
-	private final IntFunction beginWith;
+  /** The number to deal. */
+  private final DealableType type;
 
-	//-------------------------------------------------------------------------
+  /** To start to deal with a specific player. */
+  private final IntFunction beginWith;
 
-	/**
-	 * @param type      Type of deal.
-	 * @param count     The number of components to deal [1].
-	 * @param beginWith To start to deal with a specific player.
-	 * @param then      The moves applied after that move is applied.
-	 * 
-	 * @example (deal Cards 3 beginWith:(mover))
-	 */
-	public Deal
-	(
-			       final DealableType type,
-		@Opt       final IntFunction  count,
-		@Opt @Name final IntFunction  beginWith,
-		@Opt       final Then         then
-	)
-	{
-		super(then);
-		this.type = type;
-		countFn = (count == null) ? new IntConstant(1) : count;
-		this.beginWith = beginWith;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param type      Type of deal.
+   * @param count     The number of components to deal [1].
+   * @param beginWith To start to deal with a specific player.
+   * @param then      The moves applied after that move is applied.
+   *
+   * @example (deal Cards 3 beginWith:(mover))
+   */
+  public Deal(
+    final DealableType type,
+    @Opt final IntFunction count,
+    @Opt @Name final IntFunction beginWith,
+    @Opt final Then then
+  ) {
+    super(then);
+    this.type = type;
+    countFn = count == null ? new IntConstant(1) : count;
+    this.beginWith = beginWith;
+  }
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		if (type == DealableType.Cards)
-			return evalCards(context);
-		else if (type == DealableType.Dominoes)
-			return evalDominoes(context);
+  //-------------------------------------------------------------------------
 
-		return new BaseMoves(super.then());
-	}
+  @Override
+  public Moves eval(final Context context) {
+    if (type == DealableType.Cards) return evalCards(context);
+    else if (type == DealableType.Dominoes) return evalDominoes(context);
 
-	//-------------------------------------------------------------------------
+    return new BaseMoves(super.then());
+  }
 
-	/**
-	 * @param context
-	 * @return The moves to deal cards.
-	 */
-	public Moves evalCards(final Context context)
-	{
-		final Moves moves = new BaseMoves(super.then());
+  //-------------------------------------------------------------------------
 
-		// If no deck nothing to do.
-		if (context.game().handDeck().isEmpty())
-			return moves;
+  /**
+   * @param context
+   * @return The moves to deal cards.
+   */
+  public Moves evalCards(final Context context) {
+    final Moves moves = new BaseMoves(super.then());
 
-		final List<Integer> handIndex = new ArrayList<>();	
-		for (final Container c : context.containers())
-			if (c.isHand() && !c.isDeck() && !c.isDice())
-				handIndex.add(Integer.valueOf(context.sitesFrom()[c.index()]));
+    // If no deck nothing to do.
+    if (context.game().handDeck().isEmpty()) return moves;
 
-		// If each player does not have a hand, nothing to do.
-		if (handIndex.size() != context.game().players().count())
-			return moves;
+    final List<Integer> handIndex = new ArrayList<>();
+    for (final Container c : context.containers())
+      if (c.isHand() && !c.isDeck() && !c.isDice()) handIndex.add(
+        Integer.valueOf(context.sitesFrom()[c.index()])
+      );
 
-		final Deck deck = context.game().handDeck().get(0);
-		final ContainerState cs = context.containerState(deck.index());
-		final int indexSiteDeck = context.sitesFrom()[deck.index()];
-		final int sizeDeck = cs.sizeStackCell(indexSiteDeck);
-		final int count = countFn.eval(context);
+    // If each player does not have a hand, nothing to do.
+    if (handIndex.size() != context.game().players().count()) return moves;
 
-		if (sizeDeck < count * handIndex.size())
-			throw new IllegalArgumentException("You can not deal so much cards.");
+    final Deck deck = context.game().handDeck().get(0);
+    final ContainerState cs = context.containerState(deck.index());
+    final int indexSiteDeck = context.sitesFrom()[deck.index()];
+    final int sizeDeck = cs.sizeStackCell(indexSiteDeck);
+    final int count = countFn.eval(context);
 
-		int hand = (beginWith == null) ? 0 : (beginWith.eval(context) - 1);
-		int counter = 0;
-		for (int indexCard = 0; indexCard < count * handIndex.size(); indexCard++)
-		{
-			final Action dealAction = ActionMove.construct(SiteType.Cell, indexSiteDeck, cs.sizeStackCell(indexSiteDeck) - 1 - counter, SiteType.Cell, handIndex.get(hand).intValue(), Constants.OFF, Constants.OFF, Constants.OFF, Constants.OFF, false);
-			final Move move = new Move(dealAction);
-			moves.moves().add(move);
+    if (sizeDeck < count * handIndex.size()) throw new IllegalArgumentException(
+      "You can not deal so much cards."
+    );
 
-			if (hand == context.game().players().count() - 1)
-				hand = 0;
-			else
-				hand++;
-			counter++;
-		}
+    int hand = beginWith == null ? 0 : beginWith.eval(context) - 1;
+    int counter = 0;
+    for (int indexCard = 0; indexCard < count * handIndex.size(); indexCard++) {
+      final Action dealAction = ActionMove.construct(
+        SiteType.Cell,
+        indexSiteDeck,
+        cs.sizeStackCell(indexSiteDeck) - 1 - counter,
+        SiteType.Cell,
+        handIndex.get(hand).intValue(),
+        Constants.OFF,
+        Constants.OFF,
+        Constants.OFF,
+        Constants.OFF,
+        false
+      );
+      final Move move = new Move(dealAction);
+      moves.moves().add(move);
 
-		// The subsequents to add to the moves
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
+      if (hand == context.game().players().count() - 1) hand = 0;
+      else hand++;
+      counter++;
+    }
 
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+    // The subsequents to add to the moves
+    if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .then()
+      .add(then().moves());
 
-		return moves;
-	}
+    // Store the Moves in the computed moves.
+    for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .setMovesLudeme(this);
 
-	//-------------------------------------------------------------------------
+    return moves;
+  }
 
-	/**
-	 * @param context
-	 * @return The moves to deal dominoes.
-	 */
-	public Moves evalDominoes(final Context context)
-	{
-		final Moves moves = new BaseMoves(super.then());
+  //-------------------------------------------------------------------------
 
-		final TIntArrayList handIndex = new TIntArrayList();
-		for (final Container c : context.containers())
-			if (c.isHand() && !c.isDeck() && !c.isDice())
-				handIndex.add(context.sitesFrom()[c.index()]);
+  /**
+   * @param context
+   * @return The moves to deal dominoes.
+   */
+  public Moves evalDominoes(final Context context) {
+    final Moves moves = new BaseMoves(super.then());
 
-		// If each player does not have a hand, nothing to do.
-		if (handIndex.size() != context.game().players().count())
-			return moves;
+    final TIntArrayList handIndex = new TIntArrayList();
+    for (final Container c : context.containers())
+      if (c.isHand() && !c.isDeck() && !c.isDice()) handIndex.add(
+        context.sitesFrom()[c.index()]
+      );
 
-		final Component[] components = context.components();
-		final int count = countFn.eval(context);
+    // If each player does not have a hand, nothing to do.
+    if (handIndex.size() != context.game().players().count()) return moves;
 
-		if (components.length < count * handIndex.size())
-			throw new IllegalArgumentException("You can not deal so much dominoes.");
+    final Component[] components = context.components();
+    final int count = countFn.eval(context);
 
-		final TIntArrayList toDeal = new TIntArrayList();
-		for (int i = 1; i < components.length; i++)
-			toDeal.add(i);
+    if (
+      components.length < count * handIndex.size()
+    ) throw new IllegalArgumentException("You can not deal so much dominoes.");
 
-		final int nbPlayers = context.players().size() - 1;
+    final TIntArrayList toDeal = new TIntArrayList();
+    for (int i = 1; i < components.length; i++) toDeal.add(i);
 
-		final ArrayList<boolean[]> masked = new ArrayList<>();
-		for (int i = 1; i <= nbPlayers; i++)
-		{
-			masked.add(new boolean[nbPlayers]);
-			for (int j = 1; j <= nbPlayers; j++)
-			{
-				if (i == j)
-					masked.get(i - 1)[j - 1] = false;
-				else
-					masked.get(i - 1)[j - 1] = true;
-			}
-		}
+    final int nbPlayers = context.players().size() - 1;
 
-		int dealed = 0;
-		while (dealed < (count * 2))
-		{
-			final int index = context.rng().nextInt(toDeal.size());
-			final int indexComponent = toDeal.getQuick(index);
-			final Component component = components[indexComponent];
-			final int currentPlayer = dealed % nbPlayers;
-			final BaseAction actionAtomic = new ActionAdd(SiteType.Cell,
-					handIndex.getQuick(currentPlayer) + (dealed / nbPlayers),
-					component.index(), count, Constants.OFF, Constants.OFF, Constants.UNDEFINED,
-					null);
-			final Move move = new Move(actionAtomic);
-			moves.moves().add(move);
-			toDeal.removeAt(index);
-			dealed++;
-		}
+    final ArrayList<boolean[]> masked = new ArrayList<>();
+    for (int i = 1; i <= nbPlayers; i++) {
+      masked.add(new boolean[nbPlayers]);
+      for (int j = 1; j <= nbPlayers; j++) {
+        if (i == j) masked.get(i - 1)[j - 1] = false;
+        else masked.get(i - 1)[j - 1] = true;
+      }
+    }
 
-		// The subsequents to add to the moves.
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
+    int dealed = 0;
+    while (dealed < count * 2) {
+      final int index = context.rng().nextInt(toDeal.size());
+      final int indexComponent = toDeal.getQuick(index);
+      final Component component = components[indexComponent];
+      final int currentPlayer = dealed % nbPlayers;
+      final BaseAction actionAtomic = new ActionAdd(
+        SiteType.Cell,
+        handIndex.getQuick(currentPlayer) + dealed / nbPlayers,
+        component.index(),
+        count,
+        Constants.OFF,
+        Constants.OFF,
+        Constants.UNDEFINED,
+        null
+      );
+      final Move move = new Move(actionAtomic);
+      moves.moves().add(move);
+      toDeal.removeAt(index);
+      dealed++;
+    }
 
-		return moves;
-	}
+    // The subsequents to add to the moves.
+    if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .then()
+      .add(then().moves());
 
-	@Override
-	public boolean canMove(final Context context)
-	{
-		return false;
-	}
+    return moves;
+  }
 
-	@Override
-	public boolean canMoveTo(final Context context, final int target)
-	{
-		return false;
-	}
+  @Override
+  public boolean canMove(final Context context) {
+    return false;
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean canMoveTo(final Context context, final int target) {
+    return false;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = countFn.gameFlags(game) | super.gameFlags(game);
+  //-------------------------------------------------------------------------
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = countFn.gameFlags(game) | super.gameFlags(game);
 
-		if (type == DealableType.Cards)
-			return GameType.Card | gameFlags;
-		else if (type == DealableType.Dominoes)
-			return GameType.LargePiece | GameType.Dominoes | GameType.Stochastic | GameType.HiddenInfo
-					| gameFlags;
-		else
-			return gameFlags;
-	}
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
-		concepts.or(countFn.concepts(game));
+    if (type == DealableType.Cards) return GameType.Card | gameFlags;
+    else if (type == DealableType.Dominoes) return (
+      GameType.LargePiece |
+      GameType.Dominoes |
+      GameType.Stochastic |
+      GameType.HiddenInfo |
+      gameFlags
+    );
+    else return gameFlags;
+  }
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
+    concepts.or(countFn.concepts(game));
 
-		if (type == DealableType.Cards)
-			concepts.set(Concept.Card.id(), true);
-		else if (type == DealableType.Dominoes)
-			concepts.set(Concept.Domino.id(), true);
+    if (then() != null) concepts.or(then().concepts(game));
 
-		return concepts;
-	}
+    if (type == DealableType.Cards) concepts.set(Concept.Card.id(), true);
+    else if (type == DealableType.Dominoes) concepts.set(
+      Concept.Domino.id(),
+      true
+    );
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(super.writesEvalContextRecursive());
-		writeEvalContext.or(countFn.writesEvalContextRecursive());
+    return concepts;
+  }
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(super.writesEvalContextRecursive());
+    writeEvalContext.or(countFn.writesEvalContextRecursive());
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
-		readEvalContext.or(countFn.readsEvalContextRecursive());
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
+    readEvalContext.or(countFn.readsEvalContextRecursive());
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		if (type == DealableType.Cards)
-		{
-			boolean gameHasCard = false;
-			for (int i = 1; i < game.equipment().components().length; i++)
-			{
-				final Component component = game.equipment().components()[i];
-				if (component.isCard())
-				{
-					gameHasCard = true;
-					break;
-				}
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-			}
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    if (type == DealableType.Cards) {
+      boolean gameHasCard = false;
+      for (int i = 1; i < game.equipment().components().length; i++) {
+        final Component component = game.equipment().components()[i];
+        if (component.isCard()) {
+          gameHasCard = true;
+          break;
+        }
+      }
 
-			if (!gameHasCard)
-			{
-				game.addRequirementToReport("The ludeme (deal Cards ...) is used but the equipment has no cards.");
-				missingRequirement = true;
-			}
-		}
-		else if (type == DealableType.Dominoes)
-		{
-			if (!game.hasDominoes())
-			{
-				game.addRequirementToReport(
-						"The ludeme (deal Dominoes ...) is used but the equipment has no dominoes.");
-				missingRequirement = true;
-			}
-		}
+      if (!gameHasCard) {
+        game.addRequirementToReport(
+          "The ludeme (deal Cards ...) is used but the equipment has no cards."
+        );
+        missingRequirement = true;
+      }
+    } else if (type == DealableType.Dominoes) {
+      if (!game.hasDominoes()) {
+        game.addRequirementToReport(
+          "The ludeme (deal Dominoes ...) is used but the equipment has no dominoes."
+        );
+        missingRequirement = true;
+      }
+    }
 
-		missingRequirement |= super.missingRequirement(game);
-		missingRequirement |= countFn.missingRequirement(game);
+    missingRequirement |= super.missingRequirement(game);
+    missingRequirement |= countFn.missingRequirement(game);
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
-		willCrash |= countFn.willCrash(game);
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
+    willCrash |= countFn.willCrash(game);
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		super.preprocess(game);
-		countFn.preprocess(game);
-		if (beginWith != null)
-			beginWith.preprocess(game);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		String beginString = "";
-		if (beginWith != null)
-			beginString = " beginning with " + beginWith.toEnglish(game);
-		
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return "deal " + countFn.toEnglish(game) + " " + type.name().toLowerCase() + " to each player" + beginString + thenString;
-	}
+  @Override
+  public void preprocess(final Game game) {
+    super.preprocess(game);
+    countFn.preprocess(game);
+    if (beginWith != null) beginWith.preprocess(game);
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
+  @Override
+  public String toEnglish(final Game game) {
+    String beginString = "";
+    if (beginWith != null) beginString =
+      " beginning with " + beginWith.toEnglish(game);
+
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return (
+      "deal " +
+      countFn.toEnglish(game) +
+      " " +
+      type.name().toLowerCase() +
+      " to each player" +
+      beginString +
+      thenString
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

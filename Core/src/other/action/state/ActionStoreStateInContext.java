@@ -10,124 +10,111 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public class ActionStoreStateInContext extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public class ActionStoreStateInContext extends BaseAction {
 
-	//-------------------------------------------------------------------------
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous value. */
-	private long previousValue;
-	
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
-	public ActionStoreStateInContext()
-	{
-		// Do nothing
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionState object from a detailed String (generated using
-	 * toDetailedString())
-	 *
-	 * @param detailedString
-	 */
-	public ActionStoreStateInContext(final String detailedString)
-	{
-		assert (detailedString.startsWith("[StoreStateInContext:"));
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  /** The previous value. */
+  private long previousValue;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		if(!alreadyApplied)
-		{
-			previousValue = context.state().storedState();
-			alreadyApplied = true;
-		}
-		
-		context.state().storeCurrentState(context.state());
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		context.state().restoreCurrentState(previousValue);
-		return this;
-	}
+  /**
+   *
+   */
+  public ActionStoreStateInContext() {
+    // Do nothing
+  }
 
-	//-------------------------------------------------------------------------
+  /**
+   * Reconstructs an ActionState object from a detailed String (generated using
+   * toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionStoreStateInContext(final String detailedString) {
+    assert detailedString.startsWith("[StoreStateInContext:");
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-		sb.append("[StoreStateInContext:");
-		if (decision)
-			sb.append("decision=" + decision);
+  //-------------------------------------------------------------------------
 
-		sb.append(']');
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    if (!alreadyApplied) {
+      previousValue = context.state().storedState();
+      alreadyApplied = true;
+    }
 
-		return sb.toString();
-	}
+    context.state().storeCurrentState(context.state());
+    return this;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		final int result = 1;
-		return result;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    context.state().restoreCurrentState(previousValue);
+    return this;
+  }
 
-		if (!(obj instanceof ActionStoreStateInContext))
-			return false;
+  //-------------------------------------------------------------------------
 
-		return true;
-	}
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.StoreState;
-	}
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String getDescription() 
-	{
-		return "StoreStateInContext";
-	}
+    sb.append("[StoreStateInContext:");
+    if (decision) sb.append("decision=" + decision);
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return "Store State";
-	}
+    sb.append(']');
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(Store State)";
-	}
+    return sb.toString();
+  }
+
+  @Override
+  public int hashCode() {
+    final int result = 1;
+    return result;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
+
+    if (!(obj instanceof ActionStoreStateInContext)) return false;
+
+    return true;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.StoreState;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    return "StoreStateInContext";
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return "Store State";
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return "(Store State)";
+  }
 }

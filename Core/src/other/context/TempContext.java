@@ -14,34 +14,29 @@ import other.trial.Trial;
  *
  * @author Dennis Soemers
  */
-public final class TempContext extends Context
-{
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * 
-	 * @param other
-	 */
-	public TempContext(final Context other)
-	{
-		super(other);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	protected State copyState(final State otherState)
-	{
-		return otherState == null ? null : new CopyOnWriteState(otherState);
-	}
-	
-	@Override
-	protected Trial copyTrial(final Trial otherTrial)
-	{
-		return new TempTrial(otherTrial);
-	}
-	
-	//-------------------------------------------------------------------------
+public final class TempContext extends Context {
 
+  //-------------------------------------------------------------------------
+
+  /**
+   *
+   * @param other
+   */
+  public TempContext(final Context other) {
+    super(other);
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  protected State copyState(final State otherState) {
+    return otherState == null ? null : new CopyOnWriteState(otherState);
+  }
+
+  @Override
+  protected Trial copyTrial(final Trial otherTrial) {
+    return new TempTrial(otherTrial);
+  }
+
+  //-------------------------------------------------------------------------
 }

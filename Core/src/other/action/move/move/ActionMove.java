@@ -13,157 +13,250 @@ import other.context.Context;
  * @author Eric.Piette
  */
 @SuppressWarnings("javadoc")
-public final class ActionMove extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionMove extends BaseAction {
 
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param typeFrom   The graph element type of the from site.
-	 * @param from       From site index.
-	 * @param levelFrom  From level index.
-	 * @param typeTo     The graph element type of the to site.
-	 * @param to         To site index.
-	 * @param levelTo    To level index.
-	 * @param state      The state site of the to site.
-	 * @param rotation   The rotation value of the to site.
-	 * @param value      The piece value of the to site.
-	 * @param onStacking True if we move a full stack.
-	 */
-	public static BaseAction construct
-	(
-		final SiteType typeFrom,
-		final int from,
-		final int levelFrom,
-		final SiteType typeTo,
-		final int to,
-		final int levelTo,
-		final int state,
-		final int rotation,
-		final int value,
-		final boolean onStacking
-	)
-	{
-		if(onStacking)
-			return new ActionMoveStacking(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
-		else if (levelFrom >= 0 && levelTo >= 0)
-			return new ActionMoveLevelFromLevelTo(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
-		else if (levelFrom >= 0)
-			return new ActionMoveLevelFrom(typeFrom, from, levelFrom, typeTo, to, state, rotation, value);
-		else if (levelTo >= 0)
-			return new ActionMoveLevelTo(typeFrom, from, typeTo, to, levelTo, state, rotation, value);
-		else
-			return new ActionMoveTopPiece(typeFrom, from, typeTo, to, state, rotation, value);
-	}
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * Reconstructs an ActionMove object from a detailed String (generated using toDetailedString())
-	 * @param detailedString
-	 */
-	public static BaseAction construct(final String detailedString)
-	{ 
-		assert (detailedString.startsWith("[Move:"));
+  //-------------------------------------------------------------------------
 
-		final String strTypeFrom = Action.extractData(detailedString, "typeFrom");
-		final SiteType typeFrom = (strTypeFrom.isEmpty()) ? null : SiteType.valueOf(strTypeFrom);
+  /**
+   * @param typeFrom   The graph element type of the from site.
+   * @param from       From site index.
+   * @param levelFrom  From level index.
+   * @param typeTo     The graph element type of the to site.
+   * @param to         To site index.
+   * @param levelTo    To level index.
+   * @param state      The state site of the to site.
+   * @param rotation   The rotation value of the to site.
+   * @param value      The piece value of the to site.
+   * @param onStacking True if we move a full stack.
+   */
+  public static BaseAction construct(
+    final SiteType typeFrom,
+    final int from,
+    final int levelFrom,
+    final SiteType typeTo,
+    final int to,
+    final int levelTo,
+    final int state,
+    final int rotation,
+    final int value,
+    final boolean onStacking
+  ) {
+    if (onStacking) return new ActionMoveStacking(
+      typeFrom,
+      from,
+      levelFrom,
+      typeTo,
+      to,
+      levelTo,
+      state,
+      rotation,
+      value
+    );
+    else if (
+      levelFrom >= 0 && levelTo >= 0
+    ) return new ActionMoveLevelFromLevelTo(
+      typeFrom,
+      from,
+      levelFrom,
+      typeTo,
+      to,
+      levelTo,
+      state,
+      rotation,
+      value
+    );
+    else if (levelFrom >= 0) return new ActionMoveLevelFrom(
+      typeFrom,
+      from,
+      levelFrom,
+      typeTo,
+      to,
+      state,
+      rotation,
+      value
+    );
+    else if (levelTo >= 0) return new ActionMoveLevelTo(
+      typeFrom,
+      from,
+      typeTo,
+      to,
+      levelTo,
+      state,
+      rotation,
+      value
+    );
+    else return new ActionMoveTopPiece(
+      typeFrom,
+      from,
+      typeTo,
+      to,
+      state,
+      rotation,
+      value
+    );
+  }
 
-		final String strFrom = Action.extractData(detailedString, "from");
-		final int from = Integer.parseInt(strFrom);
+  /**
+   * Reconstructs an ActionMove object from a detailed String (generated using toDetailedString())
+   * @param detailedString
+   */
+  public static BaseAction construct(final String detailedString) {
+    assert detailedString.startsWith("[Move:");
 
-		final String strLevelFrom = Action.extractData(detailedString, "levelFrom");
-		final int levelFrom = (strLevelFrom.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevelFrom);
-		
-		final String strTypeTo = Action.extractData(detailedString, "typeTo");
-		final SiteType typeTo = (strTypeTo.isEmpty()) ? null : SiteType.valueOf(strTypeTo);
+    final String strTypeFrom = Action.extractData(detailedString, "typeFrom");
+    final SiteType typeFrom = strTypeFrom.isEmpty()
+      ? null
+      : SiteType.valueOf(strTypeFrom);
 
-		final String strTo = Action.extractData(detailedString, "to");
-		final int to = Integer.parseInt(strTo);
-		
-		final String strLevelTo = Action.extractData(detailedString, "levelTo");
-		final int levelTo = (strLevelTo.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevelTo);
+    final String strFrom = Action.extractData(detailedString, "from");
+    final int from = Integer.parseInt(strFrom);
 
-		final String strState = Action.extractData(detailedString, "state");
-		final int state = (strState.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strState);
+    final String strLevelFrom = Action.extractData(detailedString, "levelFrom");
+    final int levelFrom = strLevelFrom.isEmpty()
+      ? Constants.UNDEFINED
+      : Integer.parseInt(strLevelFrom);
 
-		final String strRotation = Action.extractData(detailedString, "rotation");
-		final int rotation = (strRotation.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strRotation);
+    final String strTypeTo = Action.extractData(detailedString, "typeTo");
+    final SiteType typeTo = strTypeTo.isEmpty()
+      ? null
+      : SiteType.valueOf(strTypeTo);
 
-		final String strValue = Action.extractData(detailedString, "value");
-		final int value = (strValue.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strValue);
+    final String strTo = Action.extractData(detailedString, "to");
+    final int to = Integer.parseInt(strTo);
 
-		final String strStack = Action.extractData(detailedString, "stack");
-		final boolean onStacking = (strStack.isEmpty()) ? false : Boolean.parseBoolean(strStack);
+    final String strLevelTo = Action.extractData(detailedString, "levelTo");
+    final int levelTo = strLevelTo.isEmpty()
+      ? Constants.UNDEFINED
+      : Integer.parseInt(strLevelTo);
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		final boolean decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-		
-		BaseAction action = null;
-		
-		if(onStacking)
-			action = new ActionMoveStacking(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
-		else if (levelFrom >= 0 && levelTo >= 0)
-			action = new ActionMoveLevelFromLevelTo(typeFrom, from, levelFrom, typeTo, to, levelTo, state, rotation, value);
-		else if (levelFrom >= 0)
-			action = new ActionMoveLevelFrom(typeFrom, from, levelFrom, typeTo, to, state, rotation, value);
-		else if (levelTo >= 0)
-			action = new ActionMoveLevelTo(typeFrom, from, typeTo, to, levelTo, state, rotation, value);
-		else
-			action = new ActionMoveTopPiece(typeFrom, from, typeTo, to, state, rotation, value);
-		
-		action.setDecision(decision);
-		
-		return action;
-	}
+    final String strState = Action.extractData(detailedString, "state");
+    final int state = strState.isEmpty()
+      ? Constants.UNDEFINED
+      : Integer.parseInt(strState);
 
-	//-------------------------------------------------------------------------
+    final String strRotation = Action.extractData(detailedString, "rotation");
+    final int rotation = strRotation.isEmpty()
+      ? Constants.UNDEFINED
+      : Integer.parseInt(strRotation);
 
-	@Override
-	public Action apply
-	(
-		final Context context,
-		final boolean store
-	)
-	{
-		throw new UnsupportedOperationException("ActionMove.eval(): Should never be called directly.");
-	}
+    final String strValue = Action.extractData(detailedString, "value");
+    final int value = strValue.isEmpty()
+      ? Constants.UNDEFINED
+      : Integer.parseInt(strValue);
 
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		throw new UnsupportedOperationException("ActionMove.undo(): Should never be called directly.");
-	}
+    final String strStack = Action.extractData(detailedString, "stack");
+    final boolean onStacking = strStack.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strStack);
 
-	//-------------------------------------------------------------------------
-	@Override
-	public String toTrialFormat(final Context context)
-	{
+    final String strDecision = Action.extractData(detailedString, "decision");
+    final boolean decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
 
-		// Should never be there
-		return null;
-	}
+    BaseAction action = null;
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String getDescription() 
-	{
-		// Should never be there
-		return null;
-	}
+    if (onStacking) action = new ActionMoveStacking(
+      typeFrom,
+      from,
+      levelFrom,
+      typeTo,
+      to,
+      levelTo,
+      state,
+      rotation,
+      value
+    );
+    else if (levelFrom >= 0 && levelTo >= 0) action =
+      new ActionMoveLevelFromLevelTo(
+        typeFrom,
+        from,
+        levelFrom,
+        typeTo,
+        to,
+        levelTo,
+        state,
+        rotation,
+        value
+      );
+    else if (levelFrom >= 0) action = new ActionMoveLevelFrom(
+      typeFrom,
+      from,
+      levelFrom,
+      typeTo,
+      to,
+      state,
+      rotation,
+      value
+    );
+    else if (levelTo >= 0) action = new ActionMoveLevelTo(
+      typeFrom,
+      from,
+      typeTo,
+      to,
+      levelTo,
+      state,
+      rotation,
+      value
+    );
+    else action = new ActionMoveTopPiece(
+      typeFrom,
+      from,
+      typeTo,
+      to,
+      state,
+      rotation,
+      value
+    );
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		// Should never be there
-		return null;
-	}
+    action.setDecision(decision);
 
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.Move;
-	}
+    return action;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
+
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    throw new UnsupportedOperationException(
+      "ActionMove.eval(): Should never be called directly."
+    );
+  }
+
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    throw new UnsupportedOperationException(
+      "ActionMove.undo(): Should never be called directly."
+    );
+  }
+
+  //-------------------------------------------------------------------------
+  @Override
+  public String toTrialFormat(final Context context) {
+    // Should never be there
+    return null;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    // Should never be there
+    return null;
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    // Should never be there
+    return null;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.Move;
+  }
+
+  //-------------------------------------------------------------------------
 }

@@ -1,256 +1,227 @@
 package game.functions.region.math;
 
-import java.util.BitSet;
-
 import annotations.Or;
 import game.Game;
 import game.functions.ints.IntFunction;
 import game.functions.region.BaseRegionFunction;
 import game.functions.region.RegionFunction;
 import game.util.equipment.Region;
+import java.util.BitSet;
 import other.concept.Concept;
 import other.context.Context;
 
 /**
  * Returns the set difference, i.e. elements of the source region are not in the
  * subtraction region.
- * 
+ *
  * @author mrraow and cambolbro and Eric.Piette
  */
-public final class Difference extends BaseRegionFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class Difference extends BaseRegionFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Which region 1. */
-	private final RegionFunction source;
+  //-------------------------------------------------------------------------
 
-	/** Which region 2. */
-	private final RegionFunction subtraction;
+  /** Which region 1. */
+  private final RegionFunction source;
 
-	/** Which site. */
-	private final IntFunction siteToRemove;
+  /** Which region 2. */
+  private final RegionFunction subtraction;
 
-	/** If we can, we'll precompute once and cache */
-	private Region precomputedRegion = null;
+  /** Which site. */
+  private final IntFunction siteToRemove;
 
-	//-------------------------------------------------------------------------
+  /** If we can, we'll precompute once and cache */
+  private Region precomputedRegion = null;
 
-	/**
-	 * @param source       The original region.
-	 * @param subtraction  The region to remove from the original.
-	 * @param siteToRemove The site to remove from the original.
-	 * @example (difference (sites Occupied by:Mover) (sites Mover))
-	 */
-	public Difference
-	(
-			final RegionFunction source, 
-		@Or final RegionFunction subtraction,
-		@Or final IntFunction    siteToRemove
-	)
-	{
-		
-		this.source = source;
-		
-		int numNonNull = 0;
-		if (subtraction != null)
-			numNonNull++;
-		if (siteToRemove != null)
-			numNonNull++;
+  //-------------------------------------------------------------------------
 
-		if (numNonNull != 1)
-			throw new IllegalArgumentException("one parameter must be non-null.");
-		
-		this.siteToRemove = siteToRemove;
-		this.subtraction  = subtraction;
-	}
+  /**
+   * @param source       The original region.
+   * @param subtraction  The region to remove from the original.
+   * @param siteToRemove The site to remove from the original.
+   * @example (difference (sites Occupied by:Mover) (sites Mover))
+   */
+  public Difference(
+    final RegionFunction source,
+    @Or final RegionFunction subtraction,
+    @Or final IntFunction siteToRemove
+  ) {
+    this.source = source;
 
-	//-------------------------------------------------------------------------
+    int numNonNull = 0;
+    if (subtraction != null) numNonNull++;
+    if (siteToRemove != null) numNonNull++;
 
-	@Override
-	public Region eval(final Context context)
-	{
-		if (precomputedRegion != null)
-			return precomputedRegion;
+    if (numNonNull != 1) throw new IllegalArgumentException(
+      "one parameter must be non-null."
+    );
 
-		final Region sites1 = new Region(source.eval(context));
-		if (subtraction != null)
-		{
-			final Region sites2 = subtraction.eval(context);
-			sites1.remove(sites2);
-			return sites1;
-		}
-		else
-		{
-			final int site2 = siteToRemove.eval(context);
-			if (site2 >= 0)
-				sites1.remove(site2);
-			return sites1;
-		}
-	}
+    this.siteToRemove = siteToRemove;
+    this.subtraction = subtraction;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean isStatic()
-	{
-		if (subtraction != null && !subtraction.isStatic())
-			return false;
-		if (siteToRemove != null && !siteToRemove.isStatic())
-			return false;
-		return source.isStatic();
-	}
+  @Override
+  public Region eval(final Context context) {
+    if (precomputedRegion != null) return precomputedRegion;
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long flag = source.gameFlags(game);
-		
-		if (subtraction != null)
-			flag |= subtraction.gameFlags(game);
-		
-		if (siteToRemove != null)
-			flag |= siteToRemove.gameFlags(game);
-		
-		return flag;
-	}
-	
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(source.concepts(game));
+    final Region sites1 = new Region(source.eval(context));
+    if (subtraction != null) {
+      final Region sites2 = subtraction.eval(context);
+      sites1.remove(sites2);
+      return sites1;
+    } else {
+      final int site2 = siteToRemove.eval(context);
+      if (site2 >= 0) sites1.remove(site2);
+      return sites1;
+    }
+  }
 
-		if (subtraction != null)
-			concepts.or(subtraction.concepts(game));
+  //-------------------------------------------------------------------------
 
-		if (siteToRemove != null)
-			concepts.or(siteToRemove.concepts(game));
+  @Override
+  public boolean isStatic() {
+    if (subtraction != null && !subtraction.isStatic()) return false;
+    if (siteToRemove != null && !siteToRemove.isStatic()) return false;
+    return source.isStatic();
+  }
 
-		concepts.set(Concept.Complement.id(), true);
+  @Override
+  public long gameFlags(final Game game) {
+    long flag = source.gameFlags(game);
 
-		return concepts;
-	}
+    if (subtraction != null) flag |= subtraction.gameFlags(game);
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(source.writesEvalContextRecursive());
+    if (siteToRemove != null) flag |= siteToRemove.gameFlags(game);
 
-		if (subtraction != null)
-			writeEvalContext.or(subtraction.writesEvalContextRecursive());
+    return flag;
+  }
 
-		if (siteToRemove != null)
-			writeEvalContext.or(siteToRemove.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(source.concepts(game));
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(source.readsEvalContextRecursive());
+    if (subtraction != null) concepts.or(subtraction.concepts(game));
 
-		if (subtraction != null)
-			readEvalContext.or(subtraction.readsEvalContextRecursive());
+    if (siteToRemove != null) concepts.or(siteToRemove.concepts(game));
 
-		if (siteToRemove != null)
-			readEvalContext.or(siteToRemove.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    concepts.set(Concept.Complement.id(), true);
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= source.missingRequirement(game);
+    return concepts;
+  }
 
-		if (subtraction != null)
-			missingRequirement |= subtraction.missingRequirement(game);
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(source.writesEvalContextRecursive());
 
-		if (siteToRemove != null)
-			missingRequirement |= siteToRemove.missingRequirement(game);
-		return missingRequirement;
-	}
+    if (subtraction != null) writeEvalContext.or(
+      subtraction.writesEvalContextRecursive()
+    );
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= source.willCrash(game);
+    if (siteToRemove != null) writeEvalContext.or(
+      siteToRemove.writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-		if (subtraction != null)
-			willCrash |= subtraction.willCrash(game);
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(source.readsEvalContextRecursive());
 
-		if (siteToRemove != null)
-			willCrash |= siteToRemove.willCrash(game);
-		return willCrash;
-	}
+    if (subtraction != null) readEvalContext.or(
+      subtraction.readsEvalContextRecursive()
+    );
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		source.preprocess(game);
-		
-		if (subtraction != null)
-			subtraction.preprocess(game);
-		
-		if (siteToRemove != null)
-			siteToRemove.preprocess(game);
-		
-		if (isStatic())
-		{
-			final Context context = new Context(game, null);
-			final Region sites1 = new Region(source.eval(context));
-			if (subtraction != null)
-			{
-				final Region sites2 = subtraction.eval(context);
-				sites1.remove(sites2);
-			}
-			else
-			{
-				final int site2 = siteToRemove.eval(context);
-				sites1.remove(site2);
-			}
+    if (siteToRemove != null) readEvalContext.or(
+      siteToRemove.readsEvalContextRecursive()
+    );
+    return readEvalContext;
+  }
 
-			precomputedRegion = sites1;
-		}
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return Source region
-	 */
-	public RegionFunction source()
-	{
-		return source;
-	}
-	
-	/**
-	 * @return Region to subtract
-	 */
-	public RegionFunction subtraction()
-	{
-		return subtraction;
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= source.missingRequirement(game);
 
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		String differenceString = "";
-		if (siteToRemove != null)
-			differenceString = "site " + siteToRemove.toEnglish(game);
-		else
-			differenceString = subtraction.toEnglish(game);
+    if (subtraction != null) missingRequirement |=
+      subtraction.missingRequirement(game);
 
-		final String englishString = "the difference between " + source.toEnglish(game) + " and " + differenceString;
-		return englishString;
-	}
-	
-	//-------------------------------------------------------------------------
+    if (siteToRemove != null) missingRequirement |=
+      siteToRemove.missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= source.willCrash(game);
+
+    if (subtraction != null) willCrash |= subtraction.willCrash(game);
+
+    if (siteToRemove != null) willCrash |= siteToRemove.willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    source.preprocess(game);
+
+    if (subtraction != null) subtraction.preprocess(game);
+
+    if (siteToRemove != null) siteToRemove.preprocess(game);
+
+    if (isStatic()) {
+      final Context context = new Context(game, null);
+      final Region sites1 = new Region(source.eval(context));
+      if (subtraction != null) {
+        final Region sites2 = subtraction.eval(context);
+        sites1.remove(sites2);
+      } else {
+        final int site2 = siteToRemove.eval(context);
+        sites1.remove(site2);
+      }
+
+      precomputedRegion = sites1;
+    }
+  }
+
+  //-------------------------------------------------------------------------
+
+  /**
+   * @return Source region
+   */
+  public RegionFunction source() {
+    return source;
+  }
+
+  /**
+   * @return Region to subtract
+   */
+  public RegionFunction subtraction() {
+    return subtraction;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String differenceString = "";
+    if (siteToRemove != null) differenceString =
+      "site " + siteToRemove.toEnglish(game);
+    else differenceString = subtraction.toEnglish(game);
+
+    final String englishString =
+      "the difference between " +
+      source.toEnglish(game) +
+      " and " +
+      differenceString;
+    return englishString;
+  }
+
+  //-------------------------------------------------------------------------
 }

@@ -1,9 +1,8 @@
 package other.action.move.remove;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
+import java.util.BitSet;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
@@ -17,264 +16,271 @@ import other.state.container.ContainerState;
  *
  * @author Eric.Piette
  */
-public final class ActionRemoveNonApplied extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionRemoveNonApplied extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Location where to remove the component(s). */
-	private final int to;
+  //-------------------------------------------------------------------------
 
-	/** The graph element type. */
-	private SiteType type;
-	
-	//-------------------------------------------------------------------------
+  /** Location where to remove the component(s). */
+  private final int to;
 
-	/**
-	 * @param type The graph element type.
-	 * @param to   Location to remove the component(s).
-	 */
-	public ActionRemoveNonApplied
-	(
-		final SiteType type,
-		final int to 
-	)
-	{
-		this.type = type;
-		this.to = to;
-	}
+  /** The graph element type. */
+  private SiteType type;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		context.state().addSitesToRemove(to);
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		context.state().removeSitesToRemove(to);
-		return this;
-	}
+  /**
+   * @param type The graph element type.
+   * @param to   Location to remove the component(s).
+   */
+  public ActionRemoveNonApplied(final SiteType type, final int to) {
+    this.type = type;
+    this.to = to;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + to;
-		return result;
-	}
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    context.state().addSitesToRemove(to);
+    return this;
+  }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  //-------------------------------------------------------------------------
 
-		if (!(obj instanceof ActionRemoveNonApplied))
-			return false;
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    context.state().removeSitesToRemove(to);
+    return this;
+  }
 
-		final ActionRemoveNonApplied other = (ActionRemoveNonApplied) obj;
-		return (decision == other.decision && to == other.to);
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + to;
+    return result;
+  }
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-		sb.append("[Remove:");
-		if (type != null || (context != null && type != context.board().defaultSite()))
-		{
-			sb.append("type=" + type);
-			sb.append(",to=" + to);
-		}
-		else
-			sb.append("to=" + to);
+    if (!(obj instanceof ActionRemoveNonApplied)) return false;
 
-		sb.append(",applied=" + false);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+    final ActionRemoveNonApplied other = (ActionRemoveNonApplied) obj;
+    return decision == other.decision && to == other.to;
+  }
 
-		return sb.toString();
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String getDescription()
-	{
-		return "Remove";
-	}
-	
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+  //-------------------------------------------------------------------------
 
-		String newTo = to + "";
-		if (useCoords)
-		{
-			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[to]
-					: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
-						.label();
-			}
-		}
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-		if (type != null && !type.equals(context.board().defaultSite()))
-			sb.append(type + " " + newTo);
-		else
-			sb.append(newTo);
+    sb.append("[Remove:");
+    if (
+      type != null || (context != null && type != context.board().defaultSite())
+    ) {
+      sb.append("type=" + type);
+      sb.append(",to=" + to);
+    } else sb.append("to=" + to);
 
-		sb.append("-");
+    sb.append(",applied=" + false);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
-		sb.append("...");
+    return sb.toString();
+  }
 
-		return sb.toString();
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+  @Override
+  public String getDescription() {
+    return "Remove";
+  }
 
-		sb.append("(Remove ");
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-		String newTo = to + "";
-		if (useCoords)
-		{
-			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[to]
-					: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
-						.label();
-			}
-		}
+    String newTo = to + "";
+    if (useCoords) {
+      final int cid =
+        type == SiteType.Cell ||
+        (type == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[to]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          type != null ? type : context.board().defaultSite();
+        newTo = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(to)
+          .label();
+      }
+    }
 
-		if (type != null && !type.equals(context.board().defaultSite()))
-			sb.append(type + " " + newTo);
-		else
-			sb.append(newTo);
+    if (type != null && !type.equals(context.board().defaultSite())) sb.append(
+      type + " " + newTo
+    );
+    else sb.append(newTo);
 
-		sb.append(" applied = false");
+    sb.append("-");
 
-		sb.append(')');
+    sb.append("...");
 
-		return sb.toString();
-	}
-		
-	//-------------------------------------------------------------------------
+    return sb.toString();
+  }
 
-	@Override
-	public SiteType fromType()
-	{
-		return type;
-	}
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public SiteType toType()
-	{
-		return type;
-	}
+    sb.append("(Remove ");
 
-	@Override
-	public int from()
-	{
-		return to;
-	}
+    String newTo = to + "";
+    if (useCoords) {
+      final int cid =
+        type == SiteType.Cell ||
+        (type == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[to]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          type != null ? type : context.board().defaultSite();
+        newTo = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(to)
+          .label();
+      }
+    }
 
-	@Override
-	public int to()
-	{
-		return to;
-	}
+    if (type != null && !type.equals(context.board().defaultSite())) sb.append(
+      type + " " + newTo
+    );
+    else sb.append(newTo);
 
-	@Override
-	public int levelFrom()
-	{
-		return Constants.GROUND_LEVEL;
-	}
+    sb.append(" applied = false");
 
-	@Override
-	public int levelTo()
-	{
-		return Constants.GROUND_LEVEL;
-	}
+    sb.append(')');
 
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.Remove;
-	}
+    return sb.toString();
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet ludemeConcept = (movesLudeme != null) ? movesLudeme.concepts(context.game()) : new BitSet();
-		final BitSet concepts = new BitSet();
+  @Override
+  public SiteType fromType() {
+    return type;
+  }
 
-		final int contId = type.equals(SiteType.Cell) ? context.containerId()[to] : 0;
-		final ContainerState cs = context.state().containerStates()[contId];
-		final int what = cs.what(to, type);
+  @Override
+  public SiteType toType() {
+    return type;
+  }
 
-		if (what != 0)
-		{
-			if (isDecision())
-				concepts.set(Concept.RemoveDecision.id(), true);
-			else
-				concepts.set(Concept.RemoveEffect.id(), true);
+  @Override
+  public int from() {
+    return to;
+  }
 
-			if (ludemeConcept.get(Concept.ReplacementCapture.id()))
-				concepts.set(Concept.ReplacementCapture.id(), true);
+  @Override
+  public int to() {
+    return to;
+  }
 
-			if (ludemeConcept.get(Concept.HopCapture.id()))
-				concepts.set(Concept.HopCapture.id(), true);
+  @Override
+  public int levelFrom() {
+    return Constants.GROUND_LEVEL;
+  }
 
-			if (ludemeConcept.get(Concept.DirectionCapture.id()))
-				concepts.set(Concept.DirectionCapture.id(), true);
+  @Override
+  public int levelTo() {
+    return Constants.GROUND_LEVEL;
+  }
 
-			if (ludemeConcept.get(Concept.EncloseCapture.id()))
-				concepts.set(Concept.EncloseCapture.id(), true);
+  @Override
+  public ActionType actionType() {
+    return ActionType.Remove;
+  }
 
-			if (ludemeConcept.get(Concept.CustodialCapture.id()))
-				concepts.set(Concept.CustodialCapture.id(), true);
+  //-------------------------------------------------------------------------
 
-			if (ludemeConcept.get(Concept.InterveneCapture.id()))
-				concepts.set(Concept.InterveneCapture.id(), true);
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet ludemeConcept =
+      movesLudeme != null ? movesLudeme.concepts(context.game()) : new BitSet();
+    final BitSet concepts = new BitSet();
 
-			if (ludemeConcept.get(Concept.SurroundCapture.id()))
-				concepts.set(Concept.SurroundCapture.id(), true);
+    final int contId = type.equals(SiteType.Cell)
+      ? context.containerId()[to]
+      : 0;
+    final ContainerState cs = context.state().containerStates()[contId];
+    final int what = cs.what(to, type);
 
-			if (ludemeConcept.get(Concept.CaptureSequence.id()))
-				concepts.set(Concept.CaptureSequence.id(), true);
+    if (what != 0) {
+      if (isDecision()) concepts.set(Concept.RemoveDecision.id(), true);
+      else concepts.set(Concept.RemoveEffect.id(), true);
 
-			if (ludemeConcept.get(Concept.SowCapture.id()))
-				concepts.set(Concept.SowCapture.id(), true);
-		}
+      if (ludemeConcept.get(Concept.ReplacementCapture.id())) concepts.set(
+        Concept.ReplacementCapture.id(),
+        true
+      );
 
-		return concepts;
-	}
+      if (ludemeConcept.get(Concept.HopCapture.id())) concepts.set(
+        Concept.HopCapture.id(),
+        true
+      );
+
+      if (ludemeConcept.get(Concept.DirectionCapture.id())) concepts.set(
+        Concept.DirectionCapture.id(),
+        true
+      );
+
+      if (ludemeConcept.get(Concept.EncloseCapture.id())) concepts.set(
+        Concept.EncloseCapture.id(),
+        true
+      );
+
+      if (ludemeConcept.get(Concept.CustodialCapture.id())) concepts.set(
+        Concept.CustodialCapture.id(),
+        true
+      );
+
+      if (ludemeConcept.get(Concept.InterveneCapture.id())) concepts.set(
+        Concept.InterveneCapture.id(),
+        true
+      );
+
+      if (ludemeConcept.get(Concept.SurroundCapture.id())) concepts.set(
+        Concept.SurroundCapture.id(),
+        true
+      );
+
+      if (ludemeConcept.get(Concept.CaptureSequence.id())) concepts.set(
+        Concept.CaptureSequence.id(),
+        true
+      );
+
+      if (ludemeConcept.get(Concept.SowCapture.id())) concepts.set(
+        Concept.SowCapture.id(),
+        true
+      );
+    }
+
+    return concepts;
+  }
 }

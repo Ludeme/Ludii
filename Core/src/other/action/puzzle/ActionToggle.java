@@ -14,258 +14,250 @@ import other.state.puzzle.ContainerDeductionPuzzleState;
  *
  * @author Eric.Piette
  */
-public class ActionToggle extends BaseAction  //implements ActionAtomic
+public class ActionToggle
+  extends BaseAction //implements ActionAtomic
 {
-	private static final long serialVersionUID = 1L;
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The index of the site (the variable). */
-	private final int var;
+  //-------------------------------------------------------------------------
 
-	/** The value to toggle to the variable. */
-	private final int value;
+  /** The index of the site (the variable). */
+  private final int var;
 
-	/** The graph element type. */
-	private SiteType type;
+  /** The value to toggle to the variable. */
+  private final int value;
 
-	//-------------------------------------------------------------------------
+  /** The graph element type. */
+  private SiteType type;
 
-	/**
-	 * @param to    The index of the site (the variable).
-	 * @param value The value to toggle.
-	 * @param type  The graph element type.
-	 */
-	public ActionToggle
-	(
-		final SiteType type,
-		final int to,
-		final int value
-	)
-	{
-		this.var = to;
-		this.value = value;
-		this.type = type;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionToggle object from a detailed String
-	 * (generated using toDetailedString())
-	 * @param detailedString
-	 */
-	public ActionToggle(final String detailedString)
-	{
-		assert (detailedString.startsWith("[Toggle:"));
+  /**
+   * @param to    The index of the site (the variable).
+   * @param value The value to toggle.
+   * @param type  The graph element type.
+   */
+  public ActionToggle(final SiteType type, final int to, final int value) {
+    this.var = to;
+    this.value = value;
+    this.type = type;
+  }
 
-		final String strType = Action.extractData(detailedString, "type");
-		type = (strType.isEmpty()) ? null : SiteType.valueOf(strType);
+  /**
+   * Reconstructs an ActionToggle object from a detailed String
+   * (generated using toDetailedString())
+   * @param detailedString
+   */
+  public ActionToggle(final String detailedString) {
+    assert detailedString.startsWith("[Toggle:");
 
-		final String strVar = Action.extractData(detailedString, "var");
-		var = Integer.parseInt(strVar);
+    final String strType = Action.extractData(detailedString, "type");
+    type = strType.isEmpty() ? null : SiteType.valueOf(strType);
 
-		final String strValue = Action.extractData(detailedString, "value");
-		value = Integer.parseInt(strValue);
+    final String strVar = Action.extractData(detailedString, "var");
+    var = Integer.parseInt(strVar);
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+    final String strValue = Action.extractData(detailedString, "value");
+    value = Integer.parseInt(strValue);
 
-	//-------------------------------------------------------------------------
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		type = (type == null) ? context.board().defaultSite() : type;
-		final int contID = context.containerId()[0];
-		final ContainerState sc = context.state().containerStates()[contID];
-		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
-		if(type.equals(SiteType.Vertex))
-			ps.toggleVerts(var, value);
-		else if(type.equals(SiteType.Edge))
-			ps.toggleEdges(var, value);
-		else // Cell
-			ps.toggleCells(var, value);
+  //-------------------------------------------------------------------------
 
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		type = (type == null) ? context.board().defaultSite() : type;
-		final int contID = context.containerId()[0];
-		final ContainerState sc = context.state().containerStates()[contID];
-		final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
-		if(type.equals(SiteType.Vertex))
-			ps.toggleVerts(var, value);
-		else if(type.equals(SiteType.Edge))
-			ps.toggleEdges(var, value);
-		else // Cell
-			ps.toggleCells(var, value);
-		
-		return this;
-	}
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    type = type == null ? context.board().defaultSite() : type;
+    final int contID = context.containerId()[0];
+    final ContainerState sc = context.state().containerStates()[contID];
+    final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
+    if (type.equals(SiteType.Vertex)) ps.toggleVerts(var, value);
+    else if (type.equals(SiteType.Edge)) ps.toggleEdges(var, value);
+    // Cell
+    else ps.toggleCells(var, value);
 
-	//-------------------------------------------------------------------------
+    return this;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + var;
-		result = prime * result + value;
-		return result;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    type = type == null ? context.board().defaultSite() : type;
+    final int contID = context.containerId()[0];
+    final ContainerState sc = context.state().containerStates()[contID];
+    final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) sc;
+    if (type.equals(SiteType.Vertex)) ps.toggleVerts(var, value);
+    else if (type.equals(SiteType.Edge)) ps.toggleEdges(var, value);
+    // Cell
+    else ps.toggleCells(var, value);
 
-		if (!(obj instanceof ActionToggle))
-			return false;
+    return this;
+  }
 
-		final ActionToggle other = (ActionToggle) obj;
-		return (decision == other.decision &&
-				var == other.var &&
-				value == other.value && type == other.type);
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + var;
+    result = prime * result + value;
+    return result;
+  }
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-		sb.append("[Toggle:");
-		if (type != null || (context != null && type != context.board().defaultSite()))
-		{
-			sb.append("type=" + type);
-			sb.append(",var=" + var);
-		}
-		else
-			sb.append("var=" + var);
+    if (!(obj instanceof ActionToggle)) return false;
 
-		sb.append(",value=" + value);
-		if (decision)
-			sb.append(",decision=" + decision);
+    final ActionToggle other = (ActionToggle) obj;
+    return (
+      decision == other.decision &&
+      var == other.var &&
+      value == other.value &&
+      type == other.type
+    );
+  }
 
-		sb.append(']');
+  //-------------------------------------------------------------------------
 
-		return sb.toString();
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String getDescription()
-	{
-		return "Toggle";
-	}
-	
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-		String newTo = var + "";
-		if (useCoords)
-		{
-			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[var]
-					: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(var)
-						.label();
-			}
-		}
+    sb.append("[Toggle:");
+    if (
+      type != null || (context != null && type != context.board().defaultSite())
+    ) {
+      sb.append("type=" + type);
+      sb.append(",var=" + var);
+    } else sb.append("var=" + var);
 
-		if (type != null && !type.equals(context.board().defaultSite()))
-			sb.append(type + " " + newTo);
-		else
-			sb.append(newTo);
+    sb.append(",value=" + value);
+    if (decision) sb.append(",decision=" + decision);
 
-		sb.append("^=" + value);
+    sb.append(']');
 
-		return sb.toString();
-	}
+    return sb.toString();
+  }
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+  //-------------------------------------------------------------------------
 
-		sb.append("(Toggle ");
+  @Override
+  public String getDescription() {
+    return "Toggle";
+  }
 
-		String newTo = var + "";
-		if (useCoords)
-		{
-			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[var]
-					: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(var)
-						.label();
-			}
-		}
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-		if (type != null && !type.equals(context.board().defaultSite()))
-			sb.append(type + " " + newTo);
-		else
-			sb.append(newTo);
+    String newTo = var + "";
+    if (useCoords) {
+      final int cid =
+        type == SiteType.Cell ||
+        (type == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[var]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          type != null ? type : context.board().defaultSite();
+        newTo = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(var)
+          .label();
+      }
+    }
 
-		sb.append(" on " + value);
+    if (type != null && !type.equals(context.board().defaultSite())) sb.append(
+      type + " " + newTo
+    );
+    else sb.append(newTo);
 
-		sb.append(')');
+    sb.append("^=" + value);
 
-		return sb.toString();
-	}
-		
-	//-------------------------------------------------------------------------
+    return sb.toString();
+  }
 
-	@Override
-	public SiteType fromType()
-	{
-		return type;
-	}
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public SiteType toType()
-	{
-		return type;
-	}
+    sb.append("(Toggle ");
 
-	@Override
-	public int from()
-	{
-		return var;
-	}
+    String newTo = var + "";
+    if (useCoords) {
+      final int cid =
+        type == SiteType.Cell ||
+        (type == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[var]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          type != null ? type : context.board().defaultSite();
+        newTo = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(var)
+          .label();
+      }
+    }
 
-	@Override
-	public int to()
-	{
-		return var;
-	}
+    if (type != null && !type.equals(context.board().defaultSite())) sb.append(
+      type + " " + newTo
+    );
+    else sb.append(newTo);
 
-	@Override
-	public int count()
-	{
-		return 1;
-	}
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.Toggle;
-	}
+    sb.append(" on " + value);
+
+    sb.append(')');
+
+    return sb.toString();
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public SiteType fromType() {
+    return type;
+  }
+
+  @Override
+  public SiteType toType() {
+    return type;
+  }
+
+  @Override
+  public int from() {
+    return var;
+  }
+
+  @Override
+  public int to() {
+    return var;
+  }
+
+  @Override
+  public int count() {
+    return 1;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.Toggle;
+  }
 }

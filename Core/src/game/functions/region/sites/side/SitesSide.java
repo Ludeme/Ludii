@@ -1,8 +1,5 @@
 package game.functions.region.sites.side;
 
-import java.util.BitSet;
-import java.util.List;
-
 import annotations.Hide;
 import annotations.Opt;
 import annotations.Or;
@@ -16,212 +13,197 @@ import game.util.directions.CompassDirection;
 import game.util.directions.DirectionFacing;
 import game.util.equipment.Region;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.BitSet;
+import java.util.List;
 import other.context.Context;
 import other.topology.TopologyElement;
 
 /**
  * Returns all the sites in a specific side of the board.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class SitesSide extends BaseRegionFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class SitesSide extends BaseRegionFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** If we can, we'll precompute once and cache. */
-	private Region precomputedRegion = null;
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /** If we can, we'll precompute once and cache. */
+  private Region precomputedRegion = null;
 
-	/** The index of the side. */
-	private final IntFunction index;
+  //-------------------------------------------------------------------------
 
-	/** The role. */
-	private final RoleType role;
+  /** The index of the side. */
+  private final IntFunction index;
 
-	//-------------------------------------------------------------------------
+  /** The role. */
+  private final RoleType role;
 
-	/**
-	 * The direction of the side.
-	 */
-	private final DirectionFacing direction;
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @param elementType Type of graph elements to return [Cell (or Vertex if the
-	 *                    main board uses intersections)].
-	 * @param player      Index of the side.
-	 * @param role        The Role type corresponding to the index.
-	 * @param direction   Direction of the side to return.
-	 */
-	public SitesSide
-	(
-		    @Opt final SiteType               elementType, 
-		@Or @Opt final game.util.moves.Player player,
-		@Or @Opt final RoleType	              role,
-		@Or @Opt final CompassDirection       direction
-	)
-	{
-		type = elementType;
-		this.direction = direction;
-		index = (role != null) ? RoleType.toIntFunction(role) : (player != null) ? player.index() : null;
-		this.role = role;
-	}
+  /**
+   * The direction of the side.
+   */
+  private final DirectionFacing direction;
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param elementType Type of graph elements to return [Cell (or Vertex if the
+   *                    main board uses intersections)].
+   * @param player      Index of the side.
+   * @param role        The Role type corresponding to the index.
+   * @param direction   Direction of the side to return.
+   */
+  public SitesSide(
+    @Opt final SiteType elementType,
+    @Or @Opt final game.util.moves.Player player,
+    @Or @Opt final RoleType role,
+    @Or @Opt final CompassDirection direction
+  ) {
+    type = elementType;
+    this.direction = direction;
+    index =
+      role != null
+        ? RoleType.toIntFunction(role)
+        : player != null
+          ? player.index()
+          : null;
+    this.role = role;
+  }
 
-	@Override
-	public Region eval(final Context context)
-	{
-		if (precomputedRegion != null)
-			return precomputedRegion;
+  //-------------------------------------------------------------------------
 
-		final boolean useCells = type != null && type.equals(SiteType.Cell)
-				|| type == null && context.game().board().defaultSite() != SiteType.Vertex;
+  @Override
+  public Region eval(final Context context) {
+    if (precomputedRegion != null) return precomputedRegion;
 
-		final other.topology.Topology graph = context.topology();
+    final boolean useCells =
+      (type != null && type.equals(SiteType.Cell)) ||
+      (type == null && context.game().board().defaultSite() != SiteType.Vertex);
 
-		if (role != null && role == RoleType.Shared)
-			return new Region(useCells ? graph.outer(SiteType.Cell) : graph.outer(SiteType.Vertex));
+    final other.topology.Topology graph = context.topology();
 
-		DirectionFacing dirn = direction;
-		if (dirn == null && index != null)
-		{
-			// Get direction from (possibly dynamic) player index
-			final int pid = index.eval(context);
-			if (pid < 1 || pid > context.game().players().count())
-			{
-				System.out.println("** Bad player index.");
-				return new Region();
-			}
-			final Player player = context.game().players().players().get(pid);
-			dirn = player.direction();
-		}
+    if (role != null && role == RoleType.Shared) return new Region(
+      useCells ? graph.outer(SiteType.Cell) : graph.outer(SiteType.Vertex)
+    );
 
-		if (dirn == null)
-			return new Region();
+    DirectionFacing dirn = direction;
+    if (dirn == null && index != null) {
+      // Get direction from (possibly dynamic) player index
+      final int pid = index.eval(context);
+      if (pid < 1 || pid > context.game().players().count()) {
+        System.out.println("** Bad player index.");
+        return new Region();
+      }
+      final Player player = context.game().players().players().get(pid);
+      dirn = player.direction();
+    }
 
-		final TIntArrayList sites = new TIntArrayList();
-		if (useCells)
-		{
-			final List<TopologyElement> side = graph.sides(SiteType.Cell).get(dirn);
-			for (final TopologyElement v : side)
-				sites.add(v.index());
-		}
-		else
-		{
-			final List<TopologyElement> side = graph.sides(SiteType.Vertex).get(dirn);
-			for (final other.topology.TopologyElement v : side)
-				sites.add(v.index());
-		}
-		return new Region(sites.toArray());
-	}
+    if (dirn == null) return new Region();
 
-	//-------------------------------------------------------------------------
+    final TIntArrayList sites = new TIntArrayList();
+    if (useCells) {
+      final List<TopologyElement> side = graph.sides(SiteType.Cell).get(dirn);
+      for (final TopologyElement v : side) sites.add(v.index());
+    } else {
+      final List<TopologyElement> side = graph.sides(SiteType.Vertex).get(dirn);
+      for (final other.topology.TopologyElement v : side) sites.add(v.index());
+    }
+    return new Region(sites.toArray());
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		if (index != null)
-			return index.isStatic();
-		return true;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toString()
-	{
-		return "Side()";
-	}
+  @Override
+  public boolean isStatic() {
+    if (index != null) return index.isStatic();
+    return true;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long flags = 0L;
+  @Override
+  public String toString() {
+    return "Side()";
+  }
 
-		if (index != null)
-			flags = index.gameFlags(game);
+  @Override
+  public long gameFlags(final Game game) {
+    long flags = 0L;
 
-		flags |= SiteType.gameFlags(type);
+    if (index != null) flags = index.gameFlags(game);
 
-		return flags;
-	}
+    flags |= SiteType.gameFlags(type);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(SiteType.concepts(type));
-		if (index != null)
-			concepts.or(index.concepts(game));
-		return concepts;
-	}
+    return flags;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		if (index != null)
-			writeEvalContext.or(index.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(SiteType.concepts(type));
+    if (index != null) concepts.or(index.concepts(game));
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		if (index != null)
-			readEvalContext.or(index.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    if (index != null) writeEvalContext.or(index.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		if (index != null)
-			missingRequirement |= index.missingRequirement(game);
-		return missingRequirement;
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    if (index != null) readEvalContext.or(index.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		if (index != null)
-			willCrash |= index.willCrash(game);
-		return willCrash;
-	}
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    if (index != null) missingRequirement |= index.missingRequirement(game);
+    return missingRequirement;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
-		if (index != null)
-			index.preprocess(game);
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    if (index != null) willCrash |= index.willCrash(game);
+    return willCrash;
+  }
 
-		if (isStatic())
-		{
-			if (type.equals(SiteType.Cell))
-				precomputedRegion = new Region(
-						game.equipment().containers()[0].topology().sides(SiteType.Cell)
-								.get(direction));
-			else
-				precomputedRegion = new Region(
-						game.equipment().containers()[0].topology().sides(SiteType.Vertex)
-								.get(direction));
-		}
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
+    if (index != null) index.preprocess(game);
 
-	@Override
-	public String toEnglish(Game game) 
-	{
-		return "the " + direction.toEnglish(game) + " side";
-	}
-	
-	//-------------------------------------------------------------------------
-		
+    if (isStatic()) {
+      if (type.equals(SiteType.Cell)) precomputedRegion = new Region(
+        game
+          .equipment()
+          .containers()[0]
+          .topology()
+          .sides(SiteType.Cell)
+          .get(direction)
+      );
+      else precomputedRegion = new Region(
+        game
+          .equipment()
+          .containers()[0]
+          .topology()
+          .sides(SiteType.Vertex)
+          .get(direction)
+      );
+    }
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(Game game) {
+    return "the " + direction.toEnglish(game) + " side";
+  }
+
+  //-------------------------------------------------------------------------
 }

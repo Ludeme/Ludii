@@ -1,10 +1,9 @@
 package other.action.die;
 
-import java.util.BitSet;
-
 import game.equipment.container.other.Dice;
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
+import java.util.BitSet;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
@@ -19,260 +18,251 @@ import other.state.container.ContainerState;
  *
  * @author Eric.Piette
  */
-public final class ActionUpdateDice extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionUpdateDice extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Site index. */
-	private final int site;
+  //-------------------------------------------------------------------------
 
-	/** The new state value. */
-	private final int newState;
+  /** Site index. */
+  private final int site;
 
-	//----------------------Undo Data---------------------------------------------
+  /** The new state value. */
+  private final int newState;
 
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyAppliedState = false;
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyAppliedValue = false;
-	
-	/** The previous state of the die. */
-	private int previousState;
-	
-	/** The previous value of the die. */
-	private int previousDieValue;
-	
-	//-------------------------------------------------------------------------
+  //----------------------Undo Data---------------------------------------------
 
-	/**
-	 * Constructor.
-	 *
-	 * @param site     The index of the site.
-	 * @param newState The new state value.
-	 */
-	public ActionUpdateDice
-	(
-		final int site,
-		final int newState
-	)
-	{
-		this.site = site;
-		this.newState = newState;
-	}
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyAppliedState = false;
 
-	/**
-	 * Reconstructs an ActionSetStateAndUpdateDice object from a detailed String
-	 * (generated using toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionUpdateDice(final String detailedString)
-	{
-		assert (detailedString.startsWith("[SetStateAndUpdateDice:"));
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyAppliedValue = false;
 
-		final String strSite = Action.extractData(detailedString, "site");
-		site = Integer.parseInt(strSite);
+  /** The previous state of the die. */
+  private int previousState;
 
-		final String strState = Action.extractData(detailedString, "state");
-		newState = Integer.parseInt(strState);
+  /** The previous value of the die. */
+  private int previousDieValue;
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * Constructor.
+   *
+   * @param site     The index of the site.
+   * @param newState The new state value.
+   */
+  public ActionUpdateDice(final int site, final int newState) {
+    this.site = site;
+    this.newState = newState;
+  }
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		if(newState < 0)
-			return this;
-		
-		final int cid = context.containerId()[site];
-		final ContainerState cs = context.state().containerStates()[cid];
-		
-		if(!alreadyAppliedState)
-		{
-			previousState = cs.state(site, SiteType.Cell);
-			alreadyAppliedState = true;
-		}
-		
-		cs.setSite(context.state(), site, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, newState,
-				Constants.UNDEFINED, Constants.UNDEFINED, SiteType.Cell);
+  /**
+   * Reconstructs an ActionSetStateAndUpdateDice object from a detailed String
+   * (generated using toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionUpdateDice(final String detailedString) {
+    assert detailedString.startsWith("[SetStateAndUpdateDice:");
 
-		if (context.containers()[cid].isDice())
-		{
-			final Dice dice = (Dice) context.containers()[cid];
-			int indexDice = 0;
-			for (int i = 0; i < context.handDice().size(); i++)
-			{
-				final Dice d = context.handDice().get(i);
-				if (d.index() == dice.index())
-				{
-					indexDice = i;
-					break;
-				}
-			}
-			final int from = context.sitesFrom()[cid];
-			final int what = cs.whatCell(site);
-			final int dieIndex = site - from;
-			
-			if(!alreadyAppliedValue)
-			{
-				previousDieValue = context.state().currentDice()[indexDice][dieIndex];
-				alreadyAppliedValue = true;
-			}
-			
-			context.state().currentDice()[indexDice][dieIndex] = context.components()[what].getFaces()[newState];
-		}
+    final String strSite = Action.extractData(detailedString, "site");
+    site = Integer.parseInt(strSite);
 
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		if(newState < 0)
-			return this;
-		
-		final int cid = context.containerId()[site];
-		final ContainerState cs = context.state().containerStates()[cid];
-		
-		cs.setSite(context.state(), site, Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousState,
-				Constants.UNDEFINED, Constants.UNDEFINED, SiteType.Cell);
+    final String strState = Action.extractData(detailedString, "state");
+    newState = Integer.parseInt(strState);
 
-		if (context.containers()[cid].isDice())
-		{
-			final Dice dice = (Dice) context.containers()[cid];
-			int indexDice = 0;
-			for (int i = 0; i < context.handDice().size(); i++)
-			{
-				final Dice d = context.handDice().get(i);
-				if (d.index() == dice.index())
-				{
-					indexDice = i;
-					break;
-				}
-			}
-			final int from = context.sitesFrom()[cid];
-			final int dieIndex = site - from;
-			
-			context.state().currentDice()[indexDice][dieIndex] = previousDieValue;
-		}
-		
-		return this;
-	}
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + site;
-		result = prime * result + newState;
-		return result;
-	}
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    if (newState < 0) return this;
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+    final int cid = context.containerId()[site];
+    final ContainerState cs = context.state().containerStates()[cid];
 
-		if (!(obj instanceof ActionUpdateDice))
-			return false;
+    if (!alreadyAppliedState) {
+      previousState = cs.state(site, SiteType.Cell);
+      alreadyAppliedState = true;
+    }
 
-		final ActionUpdateDice other = (ActionUpdateDice) obj;
+    cs.setSite(
+      context.state(),
+      site,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      newState,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      SiteType.Cell
+    );
 
-		return (decision == other.decision &&
-				site == other.site &&
-				newState == other.newState);
-	}
+    if (context.containers()[cid].isDice()) {
+      final Dice dice = (Dice) context.containers()[cid];
+      int indexDice = 0;
+      for (int i = 0; i < context.handDice().size(); i++) {
+        final Dice d = context.handDice().get(i);
+        if (d.index() == dice.index()) {
+          indexDice = i;
+          break;
+        }
+      }
+      final int from = context.sitesFrom()[cid];
+      final int what = cs.whatCell(site);
+      final int dieIndex = site - from;
 
-	//-------------------------------------------------------------------------
+      if (!alreadyAppliedValue) {
+        previousDieValue = context.state().currentDice()[indexDice][dieIndex];
+        alreadyAppliedValue = true;
+      }
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+      context.state().currentDice()[indexDice][dieIndex] = context
+        .components()[what]
+        .getFaces()[newState];
+    }
 
-		sb.append("[SetStateAndUpdateDice:");
-		sb.append("site=" + site);
-		sb.append(",state=" + newState);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+    return this;
+  }
 
-		return sb.toString();
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String getDescription() 
-	{
-		return "SetStateAndUpdateDice";
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return "Die " + site + "=" + newState;
-	}
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    if (newState < 0) return this;
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(Die at " + site + " state=" + newState + ")";
-	}
-		
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public int from()
-	{
-		return site;
-	}
+    final int cid = context.containerId()[site];
+    final ContainerState cs = context.state().containerStates()[cid];
 
-	@Override
-	public int to()
-	{
-		return site;
-	}
+    cs.setSite(
+      context.state(),
+      site,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      previousState,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      SiteType.Cell
+    );
 
-	@Override
-	public int state()
-	{
-		return newState;
-	}
+    if (context.containers()[cid].isDice()) {
+      final Dice dice = (Dice) context.containers()[cid];
+      int indexDice = 0;
+      for (int i = 0; i < context.handDice().size(); i++) {
+        final Dice d = context.handDice().get(i);
+        if (d.index() == dice.index()) {
+          indexDice = i;
+          break;
+        }
+      }
+      final int from = context.sitesFrom()[cid];
+      final int dieIndex = site - from;
 
-	@Override
-	public int who()
-	{
-		return newState;
-	}
+      context.state().currentDice()[indexDice][dieIndex] = previousDieValue;
+    }
 
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.SetStateAndUpdateDice;
-	}
+    return this;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.set(Concept.Roll.id(), true);
-		return concepts;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + site;
+    result = prime * result + newState;
+    return result;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
+
+    if (!(obj instanceof ActionUpdateDice)) return false;
+
+    final ActionUpdateDice other = (ActionUpdateDice) obj;
+
+    return (
+      decision == other.decision &&
+      site == other.site &&
+      newState == other.newState
+    );
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
+
+    sb.append("[SetStateAndUpdateDice:");
+    sb.append("site=" + site);
+    sb.append(",state=" + newState);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
+
+    return sb.toString();
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    return "SetStateAndUpdateDice";
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return "Die " + site + "=" + newState;
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return "(Die at " + site + " state=" + newState + ")";
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public int from() {
+    return site;
+  }
+
+  @Override
+  public int to() {
+    return site;
+  }
+
+  @Override
+  public int state() {
+    return newState;
+  }
+
+  @Override
+  public int who() {
+    return newState;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.SetStateAndUpdateDice;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+    concepts.set(Concept.Roll.id(), true);
+    return concepts;
+  }
 }

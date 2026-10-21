@@ -6,14 +6,16 @@ import view.container.aspects.components.ContainerComponents;
 
 /**
  * Table components properties.
- * 
+ *
  * @author Eric.Piette
  */
-public class TableComponents extends ContainerComponents
-{
-	public TableComponents(final Bridge bridge, final BaseContainerStyle containerStyle)
-	{
-		super(bridge, containerStyle);
-		setPieceScale(1.1);
-	}
+public class TableComponents extends ContainerComponents {
+
+  public TableComponents(
+    final Bridge bridge,
+    final BaseContainerStyle containerStyle
+  ) {
+    super(bridge, containerStyle);
+    setPieceScale(1.1);
+  }
 }

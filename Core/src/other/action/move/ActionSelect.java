@@ -1,9 +1,8 @@
 package other.action.move;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
+import java.util.BitSet;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
@@ -16,359 +15,376 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionSelect extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionSelect extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Location From index. */
-	private final int from;
+  //-------------------------------------------------------------------------
 
-	/** Location To index. */
-	private final int to;
+  /** Location From index. */
+  private final int from;
 
-	/** Level From. */
-	private final int levelFrom;
+  /** Location To index. */
+  private final int to;
 
-	/** Level To. */
-	private final int levelTo;
+  /** Level From. */
+  private final int levelFrom;
 
-	/** Add on Vertex/Edge/Face. */
-	private final SiteType typeFrom;
+  /** Level To. */
+  private final int levelTo;
 
-	/** Add on Vertex/Edge/Face. */
-	private final SiteType typeTo;
+  /** Add on Vertex/Edge/Face. */
+  private final SiteType typeFrom;
 
-	//-------------------------------------------------------------------------
+  /** Add on Vertex/Edge/Face. */
+  private final SiteType typeTo;
 
-	/**
-	 * @param typeFrom  The graph element type of the origin.
-	 * @param from      The site of the origin.
-	 * @param levelFrom The level of the origin.
-	 * @param typeTo    The graph element type of the target.
-	 * @param to        The site of the target.
-	 * @param levelTo   The level of the target.
-	 */
-	public ActionSelect
-	(
-		final SiteType typeFrom,
-		final int from, 
-		final int levelFrom, 
-		final SiteType typeTo,
-		final int to, 
-		final int levelTo
-	)
-	{
-		this.from = from;
-		this.to = to;
-		this.typeFrom = typeFrom;
-		this.typeTo = (typeTo != null) ? typeTo : typeFrom;
-		this.levelFrom = levelFrom;
-		this.levelTo = levelTo;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionSelect object from a detailed String (generated using
-	 * toDetailedString())
-	 *
-	 * @param detailedString
-	 */
-	public ActionSelect(final String detailedString)
-	{
-		assert (detailedString.startsWith("[Select:"));
+  /**
+   * @param typeFrom  The graph element type of the origin.
+   * @param from      The site of the origin.
+   * @param levelFrom The level of the origin.
+   * @param typeTo    The graph element type of the target.
+   * @param to        The site of the target.
+   * @param levelTo   The level of the target.
+   */
+  public ActionSelect(
+    final SiteType typeFrom,
+    final int from,
+    final int levelFrom,
+    final SiteType typeTo,
+    final int to,
+    final int levelTo
+  ) {
+    this.from = from;
+    this.to = to;
+    this.typeFrom = typeFrom;
+    this.typeTo = typeTo != null ? typeTo : typeFrom;
+    this.levelFrom = levelFrom;
+    this.levelTo = levelTo;
+  }
 
-		final String strTypeFrom = Action.extractData(detailedString, "typeFrom");
-		typeFrom = (strTypeFrom.isEmpty()) ? null : SiteType.valueOf(strTypeFrom);
+  /**
+   * Reconstructs an ActionSelect object from a detailed String (generated using
+   * toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionSelect(final String detailedString) {
+    assert detailedString.startsWith("[Select:");
 
-		final String strFrom = Action.extractData(detailedString, "from");
-		from = (strFrom.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strFrom);
+    final String strTypeFrom = Action.extractData(detailedString, "typeFrom");
+    typeFrom = strTypeFrom.isEmpty() ? null : SiteType.valueOf(strTypeFrom);
 
-		final String strLevelFrom = Action.extractData(detailedString, "levelFrom");
-		levelFrom = (strLevelFrom.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevelFrom);
+    final String strFrom = Action.extractData(detailedString, "from");
+    from = strFrom.isEmpty() ? Constants.UNDEFINED : Integer.parseInt(strFrom);
 
-		final String strTypeTo = Action.extractData(detailedString, "typeTo");
-		typeTo = (strTypeTo.isEmpty()) ? typeFrom : SiteType.valueOf(strTypeTo);
+    final String strLevelFrom = Action.extractData(detailedString, "levelFrom");
+    levelFrom = strLevelFrom.isEmpty()
+      ? Constants.UNDEFINED
+      : Integer.parseInt(strLevelFrom);
 
-		final String strTo = Action.extractData(detailedString, "to");
-		to = (strTo.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strTo);
+    final String strTypeTo = Action.extractData(detailedString, "typeTo");
+    typeTo = strTypeTo.isEmpty() ? typeFrom : SiteType.valueOf(strTypeTo);
 
-		final String strLevelTo = Action.extractData(detailedString, "levelTo");
-		levelTo = (strLevelTo.isEmpty()) ? Constants.UNDEFINED : Integer.parseInt(strLevelTo);
+    final String strTo = Action.extractData(detailedString, "to");
+    to = strTo.isEmpty() ? Constants.UNDEFINED : Integer.parseInt(strTo);
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+    final String strLevelTo = Action.extractData(detailedString, "levelTo");
+    levelTo = strLevelTo.isEmpty()
+      ? Constants.UNDEFINED
+      : Integer.parseInt(strLevelTo);
 
-	//-------------------------------------------------------------------------
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		// do nothing
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, final boolean discard)
-	{
-		return this;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    // do nothing
+    return this;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + from;
-		result = prime * result + to;
-		result = prime * result + ((typeFrom == null) ? 0 : typeFrom.hashCode());
-		result = prime * result + ((typeTo == null) ? 0 : typeTo.hashCode());
-		return result;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  @Override
+  public Action undo(final Context context, final boolean discard) {
+    return this;
+  }
 
-		if (!(obj instanceof ActionSelect))
-			return false;
+  //-------------------------------------------------------------------------
 
-		final ActionSelect other = (ActionSelect) obj;
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + from;
+    result = prime * result + to;
+    result = prime * result + (typeFrom == null ? 0 : typeFrom.hashCode());
+    result = prime * result + (typeTo == null ? 0 : typeTo.hashCode());
+    return result;
+  }
 
-		return (decision == other.decision &&
-				from == other.from && to == other.to && typeFrom == other.typeFrom && typeTo == other.typeTo);
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-	//-------------------------------------------------------------------------
+    if (!(obj instanceof ActionSelect)) return false;
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+    final ActionSelect other = (ActionSelect) obj;
 
-		sb.append("[Select:");
+    return (
+      decision == other.decision &&
+      from == other.from &&
+      to == other.to &&
+      typeFrom == other.typeFrom &&
+      typeTo == other.typeTo
+    );
+  }
 
-		if (typeFrom != null || (context != null && typeFrom != context.board().defaultSite()))
-		{
-			sb.append("typeFrom=" + typeFrom);
-			sb.append(",from=" + from);
-		}
-		else
-			sb.append("from=" + from);
+  //-------------------------------------------------------------------------
 
-		if (levelFrom != Constants.UNDEFINED)
-			sb.append(",levelFrom=" + levelFrom);
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-		if (to != Constants.UNDEFINED)
-		{
-			if (typeTo != null)
-				sb.append(",typeTo=" + typeTo);
-			sb.append(",to=" + to);
-			if (levelTo != Constants.UNDEFINED)
-				sb.append(",levelTo=" + levelTo);
-		}
+    sb.append("[Select:");
 
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+    if (
+      typeFrom != null ||
+      (context != null && typeFrom != context.board().defaultSite())
+    ) {
+      sb.append("typeFrom=" + typeFrom);
+      sb.append(",from=" + from);
+    } else sb.append("from=" + from);
 
-		return sb.toString();
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String getDescription()
-	{
-		return "Select";
-	}
-	
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+    if (levelFrom != Constants.UNDEFINED) sb.append(",levelFrom=" + levelFrom);
 
-		sb.append("*");
-		String newFrom = from + "";
-		if (useCoords)
-		{
-			final int cid = (typeFrom == SiteType.Cell
-					|| typeFrom == null && context.board().defaultSite() == SiteType.Cell) ? context.containerId()[from]
-							: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (typeFrom != null) ? typeFrom : context.board().defaultSite();
-				newFrom = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(from)
-						.label();
-			}
-		}
+    if (to != Constants.UNDEFINED) {
+      if (typeTo != null) sb.append(",typeTo=" + typeTo);
+      sb.append(",to=" + to);
+      if (levelTo != Constants.UNDEFINED) sb.append(",levelTo=" + levelTo);
+    }
 
-		if (typeFrom != null && !typeFrom.equals(context.board().defaultSite()))
-			sb.append(typeFrom + " " + newFrom);
-		else
-			sb.append(newFrom);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
-		if (levelFrom != Constants.UNDEFINED)
-			sb.append("/" + levelFrom);
+    return sb.toString();
+  }
 
-		if (to != Constants.UNDEFINED)
-		{
-			String newTo = to + "";
-			if (useCoords)
-			{
-				final int cid = (typeTo == SiteType.Cell
-						|| typeTo == null && context.board().defaultSite() == SiteType.Cell) ? context.containerId()[to]
-								: 0;
-				if (cid == 0)
-				{
-					final SiteType realType = (typeTo != null) ? typeTo : context.board().defaultSite();
-					newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
-							.label();
-				}
-			}
+  //-------------------------------------------------------------------------
 
-			if (typeTo != null && !typeTo.equals(context.board().defaultSite()))
-				sb.append("-" + typeTo + " " + newTo);
-			else
-				sb.append("-" + newTo);
+  @Override
+  public String getDescription() {
+    return "Select";
+  }
 
-			if (levelTo != Constants.UNDEFINED)
-				sb.append("/" + levelTo);
-		}
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-		return sb.toString();
-	}
+    sb.append("*");
+    String newFrom = from + "";
+    if (useCoords) {
+      final int cid =
+        typeFrom == SiteType.Cell ||
+        (typeFrom == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[from]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          typeFrom != null ? typeFrom : context.board().defaultSite();
+        newFrom = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(from)
+          .label();
+      }
+    }
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+    if (
+      typeFrom != null && !typeFrom.equals(context.board().defaultSite())
+    ) sb.append(typeFrom + " " + newFrom);
+    else sb.append(newFrom);
 
-		sb.append("(Select ");
+    if (levelFrom != Constants.UNDEFINED) sb.append("/" + levelFrom);
 
-		String newFrom = from + "";
-		if (useCoords)
-		{
-			final int cid = (typeFrom == SiteType.Cell
-					|| typeFrom == null && context.board().defaultSite() == SiteType.Cell) ? context.containerId()[from]
-							: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (typeFrom != null) ? typeFrom : context.board().defaultSite();
-				newFrom = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(from)
-						.label();
-			}
-		}
+    if (to != Constants.UNDEFINED) {
+      String newTo = to + "";
+      if (useCoords) {
+        final int cid =
+          typeTo == SiteType.Cell ||
+          (typeTo == null && context.board().defaultSite() == SiteType.Cell)
+            ? context.containerId()[to]
+            : 0;
+        if (cid == 0) {
+          final SiteType realType =
+            typeTo != null ? typeTo : context.board().defaultSite();
+          newTo = context
+            .game()
+            .equipment()
+            .containers()[cid]
+            .topology()
+            .getGraphElements(realType)
+            .get(to)
+            .label();
+        }
+      }
 
-		if (typeFrom != null && typeTo != null
-				&& (!typeFrom.equals(context.board().defaultSite()) || !typeFrom.equals(typeTo)))
-			sb.append(typeFrom + " " + newFrom);
-		else
-			sb.append(newFrom);
+      if (
+        typeTo != null && !typeTo.equals(context.board().defaultSite())
+      ) sb.append("-" + typeTo + " " + newTo);
+      else sb.append("-" + newTo);
 
-		if (levelFrom != Constants.UNDEFINED)
-			sb.append("/" + levelFrom);
+      if (levelTo != Constants.UNDEFINED) sb.append("/" + levelTo);
+    }
 
-		if (to != Constants.UNDEFINED)
-		{
-			String newTo = to + "";
-			if (useCoords)
-			{
-				final int cid = (typeTo == SiteType.Cell
-						|| typeTo == null && context.board().defaultSite() == SiteType.Cell) ? context.containerId()[to]
-								: 0;
-				if (cid == 0)
-				{
-					final SiteType realType = (typeTo != null) ? typeTo : context.board().defaultSite();
-					newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
-							.label();
-				}
-			}
+    return sb.toString();
+  }
 
-			if (typeFrom != null && typeTo != null
-					&& (!typeTo.equals(context.board().defaultSite()) || !typeFrom.equals(typeTo)))
-				sb.append(" - " + typeTo + " " + newTo);
-			else
-				sb.append("-" + newTo);
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-			if (levelTo != Constants.UNDEFINED)
-				sb.append("/" + levelTo);
-		}
+    sb.append("(Select ");
 
-		sb.append(')');
+    String newFrom = from + "";
+    if (useCoords) {
+      final int cid =
+        typeFrom == SiteType.Cell ||
+        (typeFrom == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[from]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          typeFrom != null ? typeFrom : context.board().defaultSite();
+        newFrom = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(from)
+          .label();
+      }
+    }
 
-		return sb.toString();
-	}
-	
-	//-------------------------------------------------------------------------
+    if (
+      typeFrom != null &&
+      typeTo != null &&
+      (!typeFrom.equals(context.board().defaultSite()) ||
+        !typeFrom.equals(typeTo))
+    ) sb.append(typeFrom + " " + newFrom);
+    else sb.append(newFrom);
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet ludemeConcept = (movesLudeme != null) ? movesLudeme.concepts(context.game()) : new BitSet();
-		final BitSet concepts = new BitSet();
+    if (levelFrom != Constants.UNDEFINED) sb.append("/" + levelFrom);
 
-		// ---- Swap Pieces concepts
+    if (to != Constants.UNDEFINED) {
+      String newTo = to + "";
+      if (useCoords) {
+        final int cid =
+          typeTo == SiteType.Cell ||
+          (typeTo == null && context.board().defaultSite() == SiteType.Cell)
+            ? context.containerId()[to]
+            : 0;
+        if (cid == 0) {
+          final SiteType realType =
+            typeTo != null ? typeTo : context.board().defaultSite();
+          newTo = context
+            .game()
+            .equipment()
+            .containers()[cid]
+            .topology()
+            .getGraphElements(realType)
+            .get(to)
+            .label();
+        }
+      }
 
-		if (ludemeConcept.get(Concept.SwapPiecesEffect.id()))
-			concepts.set(Concept.SwapPiecesEffect.id(), true);
+      if (
+        typeFrom != null &&
+        typeTo != null &&
+        (!typeTo.equals(context.board().defaultSite()) ||
+          !typeFrom.equals(typeTo))
+      ) sb.append(" - " + typeTo + " " + newTo);
+      else sb.append("-" + newTo);
 
-		if (ludemeConcept.get(Concept.SwapPiecesDecision.id()))
-			concepts.set(Concept.SwapPiecesDecision.id(), true);
+      if (levelTo != Constants.UNDEFINED) sb.append("/" + levelTo);
+    }
 
-		return concepts;
-	}
-		
-	//-------------------------------------------------------------------------
+    sb.append(')');
 
-	@Override
-	public int from()
-	{
-		return from;
-	}
+    return sb.toString();
+  }
 
-	@Override
-	public int to()
-	{
-		return (to == Constants.UNDEFINED) ? from : to;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public int levelFrom()
-	{
-		return (levelFrom == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : levelFrom;
-	}
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet ludemeConcept =
+      movesLudeme != null ? movesLudeme.concepts(context.game()) : new BitSet();
+    final BitSet concepts = new BitSet();
 
-	@Override
-	public int levelTo()
-	{
-		return (levelTo == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : levelTo;
-	}
+    // ---- Swap Pieces concepts
 
-	@Override
-	public SiteType fromType()
-	{
-		return typeFrom;
-	}
+    if (ludemeConcept.get(Concept.SwapPiecesEffect.id())) concepts.set(
+      Concept.SwapPiecesEffect.id(),
+      true
+    );
 
-	@Override
-	public SiteType toType()
-	{
-		return typeTo;
-	}
+    if (ludemeConcept.get(Concept.SwapPiecesDecision.id())) concepts.set(
+      Concept.SwapPiecesDecision.id(),
+      true
+    );
 
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.Select;
-	}
+    return concepts;
+  }
 
+  //-------------------------------------------------------------------------
+
+  @Override
+  public int from() {
+    return from;
+  }
+
+  @Override
+  public int to() {
+    return to == Constants.UNDEFINED ? from : to;
+  }
+
+  @Override
+  public int levelFrom() {
+    return levelFrom == Constants.UNDEFINED
+      ? Constants.GROUND_LEVEL
+      : levelFrom;
+  }
+
+  @Override
+  public int levelTo() {
+    return levelTo == Constants.UNDEFINED ? Constants.GROUND_LEVEL : levelTo;
+  }
+
+  @Override
+  public SiteType fromType() {
+    return typeFrom;
+  }
+
+  @Override
+  public SiteType toType() {
+    return typeTo;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.Select;
+  }
 }

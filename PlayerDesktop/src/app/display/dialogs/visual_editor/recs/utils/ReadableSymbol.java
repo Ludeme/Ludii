@@ -4,18 +4,18 @@ import main.grammar.Symbol;
 
 public class ReadableSymbol {
 
-    private final Symbol symbol;
+  private final Symbol symbol;
 
-    public ReadableSymbol(Symbol symbol) {
-        this.symbol = symbol;
-    }
+  public ReadableSymbol(Symbol symbol) {
+    this.symbol = symbol;
+  }
 
-    public Symbol getSymbol() {
-        return symbol;
-    }
+  public Symbol getSymbol() {
+    return symbol;
+  }
 
-    @Override
-    public String toString() {
-        return symbol.name();
-    }
+  @Override
+  public String toString() {
+    return symbol.name();
+  }
 }

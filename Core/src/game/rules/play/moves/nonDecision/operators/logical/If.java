@@ -1,8 +1,5 @@
 package game.rules.play.moves.nonDecision.operators.logical;
 
-import java.util.BitSet;
-import java.util.function.BiPredicate;
-
 import annotations.Opt;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
@@ -10,6 +7,8 @@ import game.rules.play.moves.BaseMoves;
 import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.rules.play.moves.nonDecision.operator.Operator;
+import java.util.BitSet;
+import java.util.function.BiPredicate;
 import other.concept.Concept;
 import other.context.Context;
 import other.move.Move;
@@ -17,352 +16,302 @@ import other.move.MovesIterator;
 
 /**
  * Returns, depending on the condition, a list of legal moves or an other list.
- * 
+ *
  * @author Eric.Piette and cambolbro
  */
-public final class If extends Operator
-{
-	private static final long serialVersionUID = 1L;
+public final class If extends Operator {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Which condition. */
-	final BooleanFunction cond;
+  //-------------------------------------------------------------------------
 
-	/** If the condition is true. */
-	final Moves list;
+  /** Which condition. */
+  final BooleanFunction cond;
 
-	/** If the condition if false. */
-	final Moves elseList;
+  /** If the condition is true. */
+  final Moves list;
 
-	//-------------------------------------------------------------------------
+  /** If the condition if false. */
+  final Moves elseList;
 
-	/**
-	 * @param cond     The condition to satisfy to get the first list of legal
-	 *                 moves.
-	 * @param list     The first list of legal moves.
-	 * @param elseList The other list of legal moves if the condition is not
-	 *                 satisfied.
-	 * @param then     The moves applied after that move is applied.
-	 * 
-	 * @example (if (is Mover P1) (moveAgain))
-	 * 
-	 * @example (if (is Mover P1) (moveAgain) (remove (last To)))
-	 */
-	public If
-	(
-			 final BooleanFunction cond,
-			 final Moves           list,
-		@Opt final Moves           elseList,
-		@Opt final Then            then
-	)
-	{
-		super(then);
-		this.cond = cond;
-		this.list = list;
-		this.elseList = elseList;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public MovesIterator movesIterator(final Context context)
-	{
-		return new MovesIterator()
-				{
-			
-					protected MovesIterator itr = computeItr();
+  /**
+   * @param cond     The condition to satisfy to get the first list of legal
+   *                 moves.
+   * @param list     The first list of legal moves.
+   * @param elseList The other list of legal moves if the condition is not
+   *                 satisfied.
+   * @param then     The moves applied after that move is applied.
+   *
+   * @example (if (is Mover P1) (moveAgain))
+   *
+   * @example (if (is Mover P1) (moveAgain) (remove (last To)))
+   */
+  public If(
+    final BooleanFunction cond,
+    final Moves list,
+    @Opt final Moves elseList,
+    @Opt final Then then
+  ) {
+    super(then);
+    this.cond = cond;
+    this.list = list;
+    this.elseList = elseList;
+  }
 
-					@Override
-					public boolean hasNext()
-					{
-						return itr != null && itr.hasNext();
-					}
+  //-------------------------------------------------------------------------
 
-					@Override
-					public Move next()
-					{
-						final Move next = itr.next();
-						
-						if (then() != null)
-							next.then().add(then().moves());
-						
-						return next;
-					}
-					
-					/**
-					 * Computes which iterator to use for given context
-					 * @return Moves iterator
-					 */
-					private MovesIterator computeItr()
-					{
-						if (cond.eval(context)) 
-							return list.movesIterator(context);
-						else if (elseList != null)
-							return elseList.movesIterator(context);
-						else
-							return null;
-					}
+  @Override
+  public MovesIterator movesIterator(final Context context) {
+    return new MovesIterator() {
+      protected MovesIterator itr = computeItr();
 
-					@Override
-					public boolean canMoveConditionally(final BiPredicate<Context, Move> predicate)
-					{
-						return itr.canMoveConditionally(predicate);
-					}
-				};
-	}
-	
-	//-------------------------------------------------------------------------
+      @Override
+      public boolean hasNext() {
+        return itr != null && itr.hasNext();
+      }
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		if (cond.eval(context)) 
-		{
-			final Moves moves = list.eval(context);
-			if (then() != null)
-				for (int j = 0; j < moves.moves().size(); j++)
-					moves.moves().get(j).then().add(then().moves());
+      @Override
+      public Move next() {
+        final Move next = itr.next();
 
-			return moves;
-		}
-		else if (elseList != null) 
-		{
-			final Moves moves = elseList.eval(context);
-			if (then() != null)
-				for (int j = 0; j < moves.moves().size(); j++)
-					moves.moves().get(j).then().add(then().moves());
+        if (then() != null) next.then().add(then().moves());
 
-			return moves;
-		}
+        return next;
+      }
 
-		final Moves moves = new BaseMoves(super.then());
-		
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
-		
-		return new BaseMoves(super.then());
-	}
+      /**
+       * Computes which iterator to use for given context
+       * @return Moves iterator
+       */
+      private MovesIterator computeItr() {
+        if (cond.eval(context)) return list.movesIterator(context);
+        else if (elseList != null) return elseList.movesIterator(context);
+        else return null;
+      }
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public boolean canMove(final Context context)
-	{
-		if (cond.eval(context)) 
-			return list.canMove(context);
-		else if (elseList != null)
-			return elseList.canMove(context);
-		
-		return false;
-	}
-	
-	@Override
-	public boolean canMoveTo(final Context context, final int target)
-	{
-		if (cond.eval(context))
-			return list.canMoveTo(context, target);
-		else if (elseList != null)
-			return elseList.canMoveTo(context, target);
-		else
-			return false;
-	}
+      @Override
+      public boolean canMoveConditionally(
+        final BiPredicate<Context, Move> predicate
+      ) {
+        return itr.canMoveConditionally(predicate);
+      }
+    };
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = super.gameFlags(game);
+  @Override
+  public Moves eval(final Context context) {
+    if (cond.eval(context)) {
+      final Moves moves = list.eval(context);
+      if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+        .moves()
+        .get(j)
+        .then()
+        .add(then().moves());
 
-		if (cond != null)
-			gameFlags |= cond.gameFlags(game);
+      return moves;
+    } else if (elseList != null) {
+      final Moves moves = elseList.eval(context);
+      if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+        .moves()
+        .get(j)
+        .then()
+        .add(then().moves());
 
-		if (list != null)
-			gameFlags |= list.gameFlags(game);
+      return moves;
+    }
 
-		if (elseList != null)
-			gameFlags |= elseList.gameFlags(game);
+    final Moves moves = new BaseMoves(super.then());
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+    if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .then()
+      .add(then().moves());
 
-		return gameFlags;
-	}
+    return new BaseMoves(super.then());
+  }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
+  //-------------------------------------------------------------------------
 
-		if (cond != null)
-			concepts.or(cond.concepts(game));
+  @Override
+  public boolean canMove(final Context context) {
+    if (cond.eval(context)) return list.canMove(context);
+    else if (elseList != null) return elseList.canMove(context);
 
-		if (list != null)
-			concepts.or(list.concepts(game));
+    return false;
+  }
 
-		if (elseList != null)
-			concepts.or(elseList.concepts(game));
+  @Override
+  public boolean canMoveTo(final Context context, final int target) {
+    if (cond.eval(context)) return list.canMoveTo(context, target);
+    else if (elseList != null) return elseList.canMoveTo(context, target);
+    else return false;
+  }
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+  //-------------------------------------------------------------------------
 
-		concepts.set(Concept.ConditionalStatement.id(), true);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = super.gameFlags(game);
 
-		return concepts;
-	}
+    if (cond != null) gameFlags |= cond.gameFlags(game);
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(super.writesEvalContextRecursive());
+    if (list != null) gameFlags |= list.gameFlags(game);
 
-		if (cond != null)
-			writeEvalContext.or(cond.writesEvalContextRecursive());
+    if (elseList != null) gameFlags |= elseList.gameFlags(game);
 
-		if (list != null)
-			writeEvalContext.or(list.writesEvalContextRecursive());
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-		if (elseList != null)
-			writeEvalContext.or(elseList.writesEvalContextRecursive());
+    return gameFlags;
+  }
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
+    if (cond != null) concepts.or(cond.concepts(game));
 
-		if (cond != null)
-			readEvalContext.or(cond.readsEvalContextRecursive());
+    if (list != null) concepts.or(list.concepts(game));
 
-		if (list != null)
-			readEvalContext.or(list.readsEvalContextRecursive());
+    if (elseList != null) concepts.or(elseList.concepts(game));
 
-		if (elseList != null)
-			readEvalContext.or(elseList.readsEvalContextRecursive());
+    if (then() != null) concepts.or(then().concepts(game));
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    concepts.set(Concept.ConditionalStatement.id(), true);
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
+    return concepts;
+  }
 
-		if (cond != null)
-			missingRequirement |= cond.missingRequirement(game);
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(super.writesEvalContextRecursive());
 
-		if (list != null)
-			missingRequirement |= list.missingRequirement(game);
+    if (cond != null) writeEvalContext.or(cond.writesEvalContextRecursive());
 
-		if (elseList != null)
-			missingRequirement |= elseList.missingRequirement(game);
+    if (list != null) writeEvalContext.or(list.writesEvalContextRecursive());
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+    if (elseList != null) writeEvalContext.or(
+      elseList.writesEvalContextRecursive()
+    );
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-		if (cond != null)
-			willCrash |= cond.willCrash(game);
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
 
-		if (list != null)
-			willCrash |= list.willCrash(game);
+    if (cond != null) readEvalContext.or(cond.readsEvalContextRecursive());
 
-		if (elseList != null)
-			willCrash |= elseList.willCrash(game);
+    if (list != null) readEvalContext.or(list.readsEvalContextRecursive());
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+    if (elseList != null) readEvalContext.or(
+      elseList.readsEvalContextRecursive()
+    );
 
-	@Override
-	public boolean isStatic()
-	{
-		if (cond != null && !cond.isStatic())
-			return false;
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-		if (list != null && !list.isStatic())
-			return false;
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
 
-		if (elseList != null && !elseList.isStatic())
-			return false;
+    if (cond != null) missingRequirement |= cond.missingRequirement(game);
 
-		return true;
-	}
-	
-	@Override
-	public void preprocess(final Game game)
-	{
-		super.preprocess(game);
-		
-		if (cond != null)
-			cond.preprocess(game);
-		
-		if (list != null)
-			list.preprocess(game);
-		
-		if (elseList != null)
-			elseList.preprocess(game);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return Our condition
-	 */
-	public BooleanFunction cond()
-	{
-		return cond;
-	}
-	
-	/**
-	 * @return Move generator if condition holds
-	 */
-	public Moves list()
-	{
-		return list;
-	}
-	
-	/**
-	 * @return Move generator if condition does not hold
-	 */
-	public Moves elseList()
-	{
-		return elseList;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		String text = "if " + cond.toEnglish(game);
-		
-		if(list != null && !list.toEnglish(game).equals(""))
-			text += ", " + list.toEnglish(game);
-		
-		if(elseList != null && !elseList.toEnglish(game).equals(""))
-			text+= ", else "+ elseList.toEnglish(game);
-		
-		return text;
-	}
+    if (list != null) missingRequirement |= list.missingRequirement(game);
+
+    if (elseList != null) missingRequirement |= elseList.missingRequirement(
+      game
+    );
+
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
+
+    if (cond != null) willCrash |= cond.willCrash(game);
+
+    if (list != null) willCrash |= list.willCrash(game);
+
+    if (elseList != null) willCrash |= elseList.willCrash(game);
+
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public boolean isStatic() {
+    if (cond != null && !cond.isStatic()) return false;
+
+    if (list != null && !list.isStatic()) return false;
+
+    if (elseList != null && !elseList.isStatic()) return false;
+
+    return true;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    super.preprocess(game);
+
+    if (cond != null) cond.preprocess(game);
+
+    if (list != null) list.preprocess(game);
+
+    if (elseList != null) elseList.preprocess(game);
+  }
+
+  //-------------------------------------------------------------------------
+
+  /**
+   * @return Our condition
+   */
+  public BooleanFunction cond() {
+    return cond;
+  }
+
+  /**
+   * @return Move generator if condition holds
+   */
+  public Moves list() {
+    return list;
+  }
+
+  /**
+   * @return Move generator if condition does not hold
+   */
+  public Moves elseList() {
+    return elseList;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String text = "if " + cond.toEnglish(game);
+
+    if (list != null && !list.toEnglish(game).equals("")) text +=
+      ", " + list.toEnglish(game);
+
+    if (elseList != null && !elseList.toEnglish(game).equals("")) text +=
+      ", else " + elseList.toEnglish(game);
+
+    return text;
+  }
 }

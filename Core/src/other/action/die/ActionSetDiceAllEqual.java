@@ -11,173 +11,155 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionSetDiceAllEqual extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionSetDiceAllEqual extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The value to set. */
-	private final boolean value;
+  //-------------------------------------------------------------------------
 
-	//----------------------Undo Data---------------------------------------------
+  /** The value to set. */
+  private final boolean value;
 
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous value of DiceAllEqual. */
-	private boolean previousValue;
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param value The value to set.
-	 */
-	public ActionSetDiceAllEqual
-	(
-		final boolean value
-	)
-	{
-		this.value = value;
-	}
+  //----------------------Undo Data---------------------------------------------
 
-	/**
-	 * Reconstructs an ActionSetDiceAllEqual object from a detailed String
-	 * (generated using toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionSetDiceAllEqual(final String detailedString)
-	{
-		assert (detailedString.startsWith("[SetDiceAllEqual:"));
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-		final String strValue = Action.extractData(detailedString, "value");
-		value = Boolean.parseBoolean(strValue);
+  /** The previous value of DiceAllEqual. */
+  private boolean previousValue;
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param value The value to set.
+   */
+  public ActionSetDiceAllEqual(final boolean value) {
+    this.value = value;
+  }
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		if(!alreadyApplied)
-		{
-			previousValue = context.state().isDiceAllEqual();
-			alreadyApplied = true;
-		}
-		
-		context.state().setDiceAllEqual(value);
-		
-		// To update the sum of the dice container.
-		for (int i = 0; i < context.handDice().size(); i++)
-		{
-			final Dice dice = context.handDice().get(i);
-			final int siteFrom = context.sitesFrom()[dice.index()];
-			final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
-			int sum = 0;
-			for (int site = siteFrom; site < siteTo; site++)
-				sum += context.state().currentDice()[i][site - siteFrom];
-			context.state().sumDice()[i] = sum;
-		}
-		
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		context.state().setDiceAllEqual(previousValue);
-		
-		// To update the sum of the dice container.
-		for (int i = 0; i < context.handDice().size(); i++)
-		{
-			final Dice dice = context.handDice().get(i);
-			final int siteFrom = context.sitesFrom()[dice.index()];
-			final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
-			int sum = 0;
-			for (int site = siteFrom; site < siteTo; site++)
-				sum += context.state().currentDice()[i][site - siteFrom];
-			context.state().sumDice()[i] = sum;
-		}
-		
-		return this;
-	}
+  /**
+   * Reconstructs an ActionSetDiceAllEqual object from a detailed String
+   * (generated using toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionSetDiceAllEqual(final String detailedString) {
+    assert detailedString.startsWith("[SetDiceAllEqual:");
 
-	//-------------------------------------------------------------------------
+    final String strValue = Action.extractData(detailedString, "value");
+    value = Boolean.parseBoolean(strValue);
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-		sb.append("[SetDiceAllEqual:");
-		sb.append("value=" + value);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
-		return sb.toString();
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + (value ? 1231 : 1237);
-		return result;
-	}
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    if (!alreadyApplied) {
+      previousValue = context.state().isDiceAllEqual();
+      alreadyApplied = true;
+    }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+    context.state().setDiceAllEqual(value);
 
-		if (!(obj instanceof ActionSetDiceAllEqual))
-			return false;
+    // To update the sum of the dice container.
+    for (int i = 0; i < context.handDice().size(); i++) {
+      final Dice dice = context.handDice().get(i);
+      final int siteFrom = context.sitesFrom()[dice.index()];
+      final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
+      int sum = 0;
+      for (int site = siteFrom; site < siteTo; site++) sum += context
+        .state()
+        .currentDice()[i][site - siteFrom];
+      context.state().sumDice()[i] = sum;
+    }
 
-		final ActionSetDiceAllEqual other = (ActionSetDiceAllEqual) obj;
+    return this;
+  }
 
-		return (decision == other.decision && value == other.value);
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    context.state().setDiceAllEqual(previousValue);
 
-	@Override
-	public String getDescription()
-	{
-		return "SetDiceAllEqual";
-	}
+    // To update the sum of the dice container.
+    for (int i = 0; i < context.handDice().size(); i++) {
+      final Dice dice = context.handDice().get(i);
+      final int siteFrom = context.sitesFrom()[dice.index()];
+      final int siteTo = context.sitesFrom()[dice.index()] + dice.numSites();
+      int sum = 0;
+      for (int site = siteFrom; site < siteTo; site++) sum += context
+        .state()
+        .currentDice()[i][site - siteFrom];
+      context.state().sumDice()[i] = sum;
+    }
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		if (value)
-			return "Dice Equal";
+    return this;
+  }
 
-		return "Dice Not Equal";
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		if (value)
-			return "(Dice Equal)";
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-		return "(Dice Not Equal)";
-	}
+    sb.append("[SetDiceAllEqual:");
+    sb.append("value=" + value);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
+    return sb.toString();
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + (value ? 1231 : 1237);
+    return result;
+  }
 
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.SetDiceAllEqual;
-	}
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
+
+    if (!(obj instanceof ActionSetDiceAllEqual)) return false;
+
+    final ActionSetDiceAllEqual other = (ActionSetDiceAllEqual) obj;
+
+    return decision == other.decision && value == other.value;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String getDescription() {
+    return "SetDiceAllEqual";
+  }
+
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    if (value) return "Dice Equal";
+
+    return "Dice Not Equal";
+  }
+
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    if (value) return "(Dice Equal)";
+
+    return "(Dice Not Equal)";
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.SetDiceAllEqual;
+  }
 }

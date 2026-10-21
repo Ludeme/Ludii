@@ -9,17 +9,16 @@ import view.container.styles.BoardStyle;
 
 /**
  * Custom style for Table boards.
- * 
+ *
  * @author Eric.Piette
  */
-public class TableStyle extends BoardStyle
-{
-	public TableStyle(final Bridge bridge, final Container container)
-	{
-		super(bridge, container);
-		final TablePlacement backgammonPlacement = new TablePlacement(bridge, this);
-		containerPlacement = backgammonPlacement;
-		containerDesign = new TableDesign(this, backgammonPlacement);
-		containerComponents = new TableComponents(bridge, this);
-	}
+public class TableStyle extends BoardStyle {
+
+  public TableStyle(final Bridge bridge, final Container container) {
+    super(bridge, container);
+    final TablePlacement backgammonPlacement = new TablePlacement(bridge, this);
+    containerPlacement = backgammonPlacement;
+    containerDesign = new TableDesign(this, backgammonPlacement);
+    containerComponents = new TableComponents(bridge, this);
+  }
 }

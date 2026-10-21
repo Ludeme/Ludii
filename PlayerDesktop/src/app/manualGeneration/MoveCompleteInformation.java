@@ -1,134 +1,130 @@
 package app.manualGeneration;
 
-import java.util.List;
-
-import org.apache.commons.rng.core.RandomProviderDefaultState;
-
 import game.Game;
+import java.util.List;
+import org.apache.commons.rng.core.RandomProviderDefaultState;
 import other.move.Move;
 import other.trial.Trial;
 
 /**
  * Object containing all necessary information to recreate (and compare) a specific move from a specific trial.
- * 
+ *
  * @author Matthew.Stephenson
  */
-public class MoveCompleteInformation
-{
-	
-	//-------------------------------------------------------------------------
-	
-	private final Trial trial;
-	private final RandomProviderDefaultState rng;
-	private final Move move;
-	private final int moveIndex;
-	private final String pieceName;
-	private final List<Move> similarMoves;
-	private final String englishDescription;
-	private String endingDescription = "Not Found";
-	
-	// Locations of generated gif/images
-	private String gifLocation = "";
-	private String screenshotA = "";
-	private String screenshotB = "";
-	
-	//-------------------------------------------------------------------------
-	
-	MoveCompleteInformation(final Game game, final Trial trial, final RandomProviderDefaultState rng, final Move move, final int moveIndex, 
-							final String pieceName, final List<Move> similarMoves)
-	{
-		this.trial = trial == null ? null : new Trial(trial);
-		this.rng = rng == null ? null : new RandomProviderDefaultState(rng.getState());
-		this.move = move == null ? null : new Move(move);
-		this.moveIndex = moveIndex;
-		this.pieceName = pieceName;
-		this.similarMoves = similarMoves;
-		englishDescription = move.movesLudeme() == null ? "Not Found" : move.movesLudeme().toEnglish(game);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toString()
-	{
-		return move().toString().replaceAll("[^a-zA-Z0-9]", "") + "_piece_" + pieceName() + "_mover_" + move().mover();
-	}
+public class MoveCompleteInformation {
 
-	Trial trial()
-	{
-		return trial;
-	}
+  //-------------------------------------------------------------------------
 
-	RandomProviderDefaultState rng()
-	{
-		return rng;
-	}
+  private final Trial trial;
+  private final RandomProviderDefaultState rng;
+  private final Move move;
+  private final int moveIndex;
+  private final String pieceName;
+  private final List<Move> similarMoves;
+  private final String englishDescription;
+  private String endingDescription = "Not Found";
 
-	Move move()
-	{
-		return move;
-	}
+  // Locations of generated gif/images
+  private String gifLocation = "";
+  private String screenshotA = "";
+  private String screenshotB = "";
 
-	int moveIndex()
-	{
-		return moveIndex;
-	}
+  //-------------------------------------------------------------------------
 
-	String pieceName()
-	{
-		return pieceName;
-	}
+  MoveCompleteInformation(
+    final Game game,
+    final Trial trial,
+    final RandomProviderDefaultState rng,
+    final Move move,
+    final int moveIndex,
+    final String pieceName,
+    final List<Move> similarMoves
+  ) {
+    this.trial = trial == null ? null : new Trial(trial);
+    this.rng =
+      rng == null ? null : new RandomProviderDefaultState(rng.getState());
+    this.move = move == null ? null : new Move(move);
+    this.moveIndex = moveIndex;
+    this.pieceName = pieceName;
+    this.similarMoves = similarMoves;
+    englishDescription =
+      move.movesLudeme() == null
+        ? "Not Found"
+        : move.movesLudeme().toEnglish(game);
+  }
 
-	List<Move> similarMoves()
-	{
-		return similarMoves;
-	}
+  //-------------------------------------------------------------------------
 
-	String englishDescription()
-	{
-		return englishDescription;
-	}
+  @Override
+  public String toString() {
+    return (
+      move().toString().replaceAll("[^a-zA-Z0-9]", "") +
+      "_piece_" +
+      pieceName() +
+      "_mover_" +
+      move().mover()
+    );
+  }
 
-	String endingDescription()
-	{
-		return endingDescription;
-	}
+  Trial trial() {
+    return trial;
+  }
 
-	void setEndingDescription(String endingDescription)
-	{
-		this.endingDescription = endingDescription;
-	}
+  RandomProviderDefaultState rng() {
+    return rng;
+  }
 
-	String gifLocation()
-	{
-		return gifLocation;
-	}
+  Move move() {
+    return move;
+  }
 
-	void setGifLocation(String gifLocation)
-	{
-		this.gifLocation = gifLocation;
-	}
+  int moveIndex() {
+    return moveIndex;
+  }
 
-	String screenshotA()
-	{
-		return screenshotA;
-	}
+  String pieceName() {
+    return pieceName;
+  }
 
-	void setScreenshotA(String screenshotA)
-	{
-		this.screenshotA = screenshotA;
-	}
+  List<Move> similarMoves() {
+    return similarMoves;
+  }
 
-	String screenshotB()
-	{
-		return screenshotB;
-	}
+  String englishDescription() {
+    return englishDescription;
+  }
 
-	void setScreenshotB(String screenshotB)
-	{
-		this.screenshotB = screenshotB;
-	}
-	
-	//-------------------------------------------------------------------------
-	
+  String endingDescription() {
+    return endingDescription;
+  }
+
+  void setEndingDescription(String endingDescription) {
+    this.endingDescription = endingDescription;
+  }
+
+  String gifLocation() {
+    return gifLocation;
+  }
+
+  void setGifLocation(String gifLocation) {
+    this.gifLocation = gifLocation;
+  }
+
+  String screenshotA() {
+    return screenshotA;
+  }
+
+  void setScreenshotA(String screenshotA) {
+    this.screenshotA = screenshotA;
+  }
+
+  String screenshotB() {
+    return screenshotB;
+  }
+
+  void setScreenshotB(String screenshotB) {
+    this.screenshotB = screenshotB;
+  }
+
+  //-------------------------------------------------------------------------
 }

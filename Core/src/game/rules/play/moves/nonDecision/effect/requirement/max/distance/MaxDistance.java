@@ -1,7 +1,5 @@
 package game.rules.play.moves.nonDecision.effect.requirement.max.distance;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Opt;
 import game.Game;
@@ -12,6 +10,7 @@ import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.play.RoleType;
+import java.util.BitSet;
 import main.Constants;
 import other.concept.Concept;
 import other.context.Context;
@@ -21,283 +20,282 @@ import other.move.Move;
 /**
  * Filters the moves to keep only the moves allowing the maximum distance on a
  * track in a turn.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class MaxDistance extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public final class MaxDistance extends Effect {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The moves to maximise. */
-	private final Moves moves;
-	
-	/** The name of the track. */
-	private final String trackName;
+  //-------------------------------------------------------------------------
 
-	/** The owner of the track. */
-	private final RoleType owner;
+  /** The moves to maximise. */
+  private final Moves moves;
 
-	/**
-	 * @param trackName The name of the track.
-	 * @param owner     The owner of the track.
-	 * @param moves     The moves to filter.
-	 * @param then      The moves applied after that move is applied.
-	 */
-	public MaxDistance
-	(
-		@Opt final String   trackName,
-		@Opt final RoleType owner, 
-			 final Moves    moves, 
-		@Opt final Then     then
-	)
-	{
-		super(then);
+  /** The name of the track. */
+  private final String trackName;
 
-		this.moves = moves;
-		this.trackName = trackName;
-		this.owner = owner;
-	}
+  /** The owner of the track. */
+  private final RoleType owner;
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param trackName The name of the track.
+   * @param owner     The owner of the track.
+   * @param moves     The moves to filter.
+   * @param then      The moves applied after that move is applied.
+   */
+  public MaxDistance(
+    @Opt final String trackName,
+    @Opt final RoleType owner,
+    final Moves moves,
+    @Opt final Then then
+  ) {
+    super(then);
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		final Moves returnMoves = new BaseMoves(super.then());
+    this.moves = moves;
+    this.trackName = trackName;
+    this.owner = owner;
+  }
 
-		Track track = null;
-		final int who = (owner == null) ? Constants.UNDEFINED : new Id(null, owner).eval(context);
-		for (final Track t : context.tracks())
-		{
-			if (trackName == null || (who == Constants.OFF && t.name().equals(trackName)
-					|| (who != Constants.OFF && t.owner() == who && t.name().contains(trackName))))
-			{
-				track = t;
-				break;
-			}
-		}
+  //-------------------------------------------------------------------------
 
-		// If the track does exist we return an empty list of moves.
-		if (track == null)
-			return moves;
+  @Override
+  public Moves eval(final Context context) {
+    final Moves returnMoves = new BaseMoves(super.then());
 
-		// We compute the moves.
-		final Moves movesToEval = moves.eval(context);
-		final int[] distanceCount = new int[movesToEval.moves().size()];
+    Track track = null;
+    final int who =
+      owner == null ? Constants.UNDEFINED : new Id(null, owner).eval(context);
+    for (final Track t : context.tracks()) {
+      if (
+        trackName == null ||
+        (who == Constants.OFF && t.name().equals(trackName)) ||
+          (who != Constants.OFF &&
+            t.owner() == who &&
+            t.name().contains(trackName))
+      ) {
+        track = t;
+        break;
+      }
+    }
 
-		for (int i = 0; i < movesToEval.moves().size(); i++)
-		{
-			final Move m = movesToEval.moves().get(i);
+    // If the track does exist we return an empty list of moves.
+    if (track == null) return moves;
 
-			int indexFrom = Constants.UNDEFINED;
-			int indexTo = Constants.UNDEFINED;
-			for (int j = 0; j < track.elems().length; j++)
-			{
-				if (track.elems()[j].site == m.fromNonDecision())
-					indexFrom = j;
-				else if (track.elems()[j].site == m.toNonDecision())
-					indexTo = j;
-				
-				if(indexFrom != Constants.UNDEFINED && indexTo != Constants.UNDEFINED)
-					break;
-			}
+    // We compute the moves.
+    final Moves movesToEval = moves.eval(context);
+    final int[] distanceCount = new int[movesToEval.moves().size()];
 
-			final int distance = Math.abs(indexFrom - indexTo);
-			distanceCount[i] = context.recursiveCalled() ? distance
-					: getDistanceCount(context, track, context.state().mover(), m, distance);
-		}
+    for (int i = 0; i < movesToEval.moves().size(); i++) {
+      final Move m = movesToEval.moves().get(i);
 
-		int max = 0;
+      int indexFrom = Constants.UNDEFINED;
+      int indexTo = Constants.UNDEFINED;
+      for (int j = 0; j < track.elems().length; j++) {
+        if (track.elems()[j].site == m.fromNonDecision()) indexFrom = j;
+        else if (track.elems()[j].site == m.toNonDecision()) indexTo = j;
 
-		// Get the max of the distanceCount.
-		for (final int sizeDistance : distanceCount)
-			if (sizeDistance > max)
-				max = sizeDistance;
+        if (
+          indexFrom != Constants.UNDEFINED && indexTo != Constants.UNDEFINED
+        ) break;
+      }
 
+      final int distance = Math.abs(indexFrom - indexTo);
+      distanceCount[i] = context.recursiveCalled()
+        ? distance
+        : getDistanceCount(
+            context,
+            track,
+            context.state().mover(),
+            m,
+            distance
+          );
+    }
 
-		// Keep only the large distance moves.
-		for (int i = 0; i < movesToEval.moves().size(); i++)
-			if (distanceCount[i] == max)
-				returnMoves.moves().add(movesToEval.moves().get(i));
-		
-		final Moves toReturn = moves.eval(context);
+    int max = 0;
 
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < toReturn.moves().size(); j++)
-			toReturn.moves().get(j).setMovesLudeme(toReturn);
+    // Get the max of the distanceCount.
+    for (final int sizeDistance : distanceCount)
+      if (sizeDistance > max) max = sizeDistance;
 
-		return toReturn;
-	}
+    // Keep only the large distance moves.
+    for (int i = 0; i < movesToEval.moves().size(); i++) if (
+      distanceCount[i] == max
+    ) returnMoves.moves().add(movesToEval.moves().get(i));
 
-	//-------------------------------------------------------------------------
+    final Moves toReturn = moves.eval(context);
 
-	/**
-	 * 
-	 * @param context
-	 * @param move
-	 * @return the count of the replay of this move.
-	 */
-	private int getDistanceCount(final Context context, final Track track, final int mover, final Move m,
-			final int distance)
-	{
-		if (m.isPass() || m.toNonDecision() == m.fromNonDecision())
-			return distance;
+    // Store the Moves in the computed moves.
+    for (int j = 0; j < toReturn.moves().size(); j++) toReturn
+      .moves()
+      .get(j)
+      .setMovesLudeme(toReturn);
 
-		final Context newContext = new TempContext(context);
-		newContext.setRecursiveCalled(true);
-		newContext.game().apply(newContext, m);
+    return toReturn;
+  }
 
-		// Not same player
-		if (mover != newContext.state().mover())
-			return distance;
+  //-------------------------------------------------------------------------
 
-		final Moves legalMoves = newContext.game().moves(newContext);
+  /**
+   *
+   * @param context
+   * @param move
+   * @return the count of the replay of this move.
+   */
+  private int getDistanceCount(
+    final Context context,
+    final Track track,
+    final int mover,
+    final Move m,
+    final int distance
+  ) {
+    if (m.isPass() || m.toNonDecision() == m.fromNonDecision()) return distance;
 
-		final int[] distanceCount = new int[legalMoves.moves().size()];
+    final Context newContext = new TempContext(context);
+    newContext.setRecursiveCalled(true);
+    newContext.game().apply(newContext, m);
 
-		for (int i = 0; i < legalMoves.moves().size(); i++)
-		{
-			final Move newMove = legalMoves.moves().get(i);
+    // Not same player
+    if (mover != newContext.state().mover()) return distance;
 
-			int indexFrom = Constants.UNDEFINED;
-			int indexTo = Constants.UNDEFINED;
-			for (int j = 0; j < track.elems().length; j++)
-			{
-				if (track.elems()[j].site == m.fromNonDecision())
-					indexFrom = j;
-				else if (track.elems()[j].site == m.toNonDecision())
-					indexTo = j;
+    final Moves legalMoves = newContext.game().moves(newContext);
 
-				if (indexFrom != Constants.UNDEFINED && indexTo != Constants.UNDEFINED)
-					break;
-			}
+    final int[] distanceCount = new int[legalMoves.moves().size()];
 
-			final int newDistance = Math.abs(indexFrom - indexTo);
-			distanceCount[i] = getDistanceCount(newContext, track, mover, newMove, distance + newDistance);
-		}
+    for (int i = 0; i < legalMoves.moves().size(); i++) {
+      final Move newMove = legalMoves.moves().get(i);
 
-		int max = 0;
+      int indexFrom = Constants.UNDEFINED;
+      int indexTo = Constants.UNDEFINED;
+      for (int j = 0; j < track.elems().length; j++) {
+        if (track.elems()[j].site == m.fromNonDecision()) indexFrom = j;
+        else if (track.elems()[j].site == m.toNonDecision()) indexTo = j;
 
-		// Get the max of the replayCount.
-		for (final int sizeDistance : distanceCount)
-			if (sizeDistance > max)
-				max = sizeDistance;
+        if (
+          indexFrom != Constants.UNDEFINED && indexTo != Constants.UNDEFINED
+        ) break;
+      }
 
-		return max;
-	}
+      final int newDistance = Math.abs(indexFrom - indexTo);
+      distanceCount[i] = getDistanceCount(
+        newContext,
+        track,
+        mover,
+        newMove,
+        distance + newDistance
+      );
+    }
 
-	//-------------------------------------------------------------------------
+    int max = 0;
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = moves.gameFlags(game) | super.gameFlags(game);
+    // Get the max of the replayCount.
+    for (final int sizeDistance : distanceCount)
+      if (sizeDistance > max) max = sizeDistance;
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+    return max;
+  }
 
-		return gameFlags;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(moves.concepts(game));
-		concepts.or(super.concepts(game));
-		concepts.set(Concept.MaxDistance.id(), true);
-		concepts.set(Concept.CopyContext.id(), true);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = moves.gameFlags(game) | super.gameFlags(game);
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
-		return concepts;
-	}
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(moves.writesEvalContextRecursive());
-		writeEvalContext.or(super.writesEvalContextRecursive());
+    return gameFlags;
+  }
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(moves.concepts(game));
+    concepts.or(super.concepts(game));
+    concepts.set(Concept.MaxDistance.id(), true);
+    concepts.set(Concept.CopyContext.id(), true);
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(moves.readsEvalContextRecursive());
-		readEvalContext.or(super.readsEvalContextRecursive());
+    if (then() != null) concepts.or(then().concepts(game));
+    return concepts;
+  }
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(moves.writesEvalContextRecursive());
+    writeEvalContext.or(super.writesEvalContextRecursive());
 
-	@Override
-	public boolean isStatic()
-	{
-		final boolean isStatic = moves.isStatic();
-		return isStatic;
-	}
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		moves.preprocess(game);
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(moves.readsEvalContextRecursive());
+    readEvalContext.or(super.readsEvalContextRecursive());
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		if (!game.hasTrack())
-		{
-			game.addRequirementToReport("The ludeme (max Distance ...) is used but the board has no tracks.");
-			missingRequirement = true;
-		}
-		missingRequirement |= moves.missingRequirement(game);
-		missingRequirement |= super.missingRequirement(game);
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+  @Override
+  public boolean isStatic() {
+    final boolean isStatic = moves.isStatic();
+    return isStatic;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= moves.willCrash(game);
-		willCrash |= super.willCrash(game);
+  @Override
+  public void preprocess(final Game game) {
+    moves.preprocess(game);
+  }
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{		
-		String trackNameString = "";
-		if (trackName != null)
-			trackNameString = "along track \"" + trackName + "\" ";
-		
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return "perform any of the following moves which travels the furthest distance " + trackNameString + moves.toEnglish(game) + thenString;
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    if (!game.hasTrack()) {
+      game.addRequirementToReport(
+        "The ludeme (max Distance ...) is used but the board has no tracks."
+      );
+      missingRequirement = true;
+    }
+    missingRequirement |= moves.missingRequirement(game);
+    missingRequirement |= super.missingRequirement(game);
 
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= moves.willCrash(game);
+    willCrash |= super.willCrash(game);
+
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String trackNameString = "";
+    if (trackName != null) trackNameString =
+      "along track \"" + trackName + "\" ";
+
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return (
+      "perform any of the following moves which travels the furthest distance " +
+      trackNameString +
+      moves.toEnglish(game) +
+      thenString
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

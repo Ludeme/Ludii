@@ -1,9 +1,8 @@
 package other.action.state;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
+import java.util.BitSet;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
@@ -17,362 +16,373 @@ import other.state.container.ContainerState;
  *
  * @author Eric.Piette
  */
-public final class ActionSetRotation extends BaseAction
-{
-	//-------------------------------------------------------------------------
+public final class ActionSetRotation extends BaseAction {
 
-	private static final long serialVersionUID = 1L;
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Loc index. */
-	private final int to;
+  //-------------------------------------------------------------------------
 
-	/** The new rotation value. */
-	private final int rotation;
+  /** Loc index. */
+  private final int to;
 
-	/** The graph element type. */
-	private SiteType type;
+  /** The new rotation value. */
+  private final int rotation;
 
-	//-------------------------------------------------------------------------
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous rotation. */
-	private int previousRotation;
-	
-	/** The previous site type. */
-	private SiteType previousType;
-	
-	//-------------------------------------------------------------------------
+  /** The graph element type. */
+  private SiteType type;
 
-	/**
-	 * @param type     The graph element type.
-	 * @param to       The index of the site.
-	 * @param rotation The new rotation.
-	 */
-	public ActionSetRotation
-	( 
-		final SiteType type,
-		final int to, 
-		final int rotation
-	)
-	{
-		this.to = to;
-		this.rotation = rotation;
-		this.type = type;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionSetRotation object from a detailed String (generated
-	 * using toDetailedString())
-	 *
-	 * @param detailedString
-	 */
-	public ActionSetRotation(final String detailedString)
-	{
-		assert (detailedString.startsWith("[SetRotation:"));
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-		final String strType = Action.extractData(detailedString, "type");
-		type = (strType.isEmpty()) ? null : SiteType.valueOf(strType);
+  /** The previous rotation. */
+  private int previousRotation;
 
-		final String strTo = Action.extractData(detailedString, "to");
-		to = Integer.parseInt(strTo);
+  /** The previous site type. */
+  private SiteType previousType;
 
-		final String strRotation = Action.extractData(detailedString, "rotation");
-		rotation = Integer.parseInt(strRotation);
+  //-------------------------------------------------------------------------
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  /**
+   * @param type     The graph element type.
+   * @param to       The index of the site.
+   * @param rotation The new rotation.
+   */
+  public ActionSetRotation(
+    final SiteType type,
+    final int to,
+    final int rotation
+  ) {
+    this.to = to;
+    this.rotation = rotation;
+    this.type = type;
+  }
 
-	//-------------------------------------------------------------------------
+  /**
+   * Reconstructs an ActionSetRotation object from a detailed String (generated
+   * using toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionSetRotation(final String detailedString) {
+    assert detailedString.startsWith("[SetRotation:");
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		type = (type == null) ? context.board().defaultSite() : type;
-		final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
-		final ContainerState cs = context.state().containerStates()[cid];
-		
-//		if (context.game().isStacking()) // Level has to be implemented
-//		{
-//			if (level != Constants.UNDEFINED)
-//			{
-//				final int stackSize = cs.sizeStack(to, type);
-//				if (level < stackSize)
-//				{
-//					if(!alreadyApplied)
-//					{
-//						previousValue = cs.value(to, level, type);
-//						previousType = type;
-//						alreadyApplied = true;
-//					}
-//					
-//					final int what = cs.what(to, level, type);
-//					final int who = cs.who(to, level, type);
-//					final int value = cs.value(to, level, type);
-//					final int state = cs.state(to, level, type);
-//					cs.remove(context.state(), to, level);
-//					cs.insert(context.state(), type, to, level, what, who, state, rotation, value, context.game());
-//				}
-//			}
-//			else
-//			{
-//				if(!alreadyApplied)
-//				{
-//					previousValue = cs.value(to, type);
-//					previousType = type;
-//					alreadyApplied = true;
-//				}
-//				
-//				context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
-//						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, rotation, Constants.UNDEFINED,
-//						type);
-//			}
-//		}
-//		else
-//		{
-			if(!alreadyApplied)
-			{
-				previousRotation = cs.rotation(to, type);
-				previousType = type;
-				alreadyApplied = true;
-			}
-			
-			cs.setSite(context.state(), to, Constants.UNDEFINED,
-				Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, rotation, Constants.UNDEFINED, type);
-		//}
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
-		final ContainerState cs = context.state().containerStates()[cid];
-		
-//		if (context.game().isStacking()) // Level has to be implemented
-//		{
-//			final int stackSize = cs.sizeStack(to, type);
-//			
-//			if (level != Constants.UNDEFINED)
-//			{
-//				if (level < stackSize)
-//				{
-//					final int what = cs.what(to, level, type);
-//					final int who = cs.who(to, level, type);
-//					final int value = cs.value(to, level, type);
-//					final int state = cs.state(to, level, type);
-//					cs.remove(context.state(), to, level);
-//					cs.insert(context.state(), previousType, to, level, what, who, state, previousValue, value, context.game());
-//				}
-//			}
-//			else
-//			{
-//				cs.setSite(context.state(), to, Constants.UNDEFINED,
-//						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousValue, Constants.UNDEFINED,
-//						previousType);
-//			}
-//		}
-//		else
-//		{
-			cs.setSite(context.state(), to, Constants.UNDEFINED,
-				Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousRotation, Constants.UNDEFINED, previousType);
-//		}
-		
-		return this;
-	}
+    final String strType = Action.extractData(detailedString, "type");
+    type = strType.isEmpty() ? null : SiteType.valueOf(strType);
 
-	//-------------------------------------------------------------------------
+    final String strTo = Action.extractData(detailedString, "to");
+    to = Integer.parseInt(strTo);
 
+    final String strRotation = Action.extractData(detailedString, "rotation");
+    rotation = Integer.parseInt(strRotation);
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + to;
-		result = prime * result + rotation;
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		return result;
-	}
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  //-------------------------------------------------------------------------
 
-		if (!(obj instanceof ActionSetRotation))
-			return false;
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    type = type == null ? context.board().defaultSite() : type;
+    final int cid =
+      to >= context.containerId().length ? 0 : context.containerId()[to];
+    final ContainerState cs = context.state().containerStates()[cid];
 
-		final ActionSetRotation other = (ActionSetRotation) obj;
+    //		if (context.game().isStacking()) // Level has to be implemented
+    //		{
+    //			if (level != Constants.UNDEFINED)
+    //			{
+    //				final int stackSize = cs.sizeStack(to, type);
+    //				if (level < stackSize)
+    //				{
+    //					if(!alreadyApplied)
+    //					{
+    //						previousValue = cs.value(to, level, type);
+    //						previousType = type;
+    //						alreadyApplied = true;
+    //					}
+    //
+    //					final int what = cs.what(to, level, type);
+    //					final int who = cs.who(to, level, type);
+    //					final int value = cs.value(to, level, type);
+    //					final int state = cs.state(to, level, type);
+    //					cs.remove(context.state(), to, level);
+    //					cs.insert(context.state(), type, to, level, what, who, state, rotation, value, context.game());
+    //				}
+    //			}
+    //			else
+    //			{
+    //				if(!alreadyApplied)
+    //				{
+    //					previousValue = cs.value(to, type);
+    //					previousType = type;
+    //					alreadyApplied = true;
+    //				}
+    //
+    //				context.containerState(context.containerId()[to]).setSite(context.state(), to, Constants.UNDEFINED,
+    //						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, rotation, Constants.UNDEFINED,
+    //						type);
+    //			}
+    //		}
+    //		else
+    //		{
+    if (!alreadyApplied) {
+      previousRotation = cs.rotation(to, type);
+      previousType = type;
+      alreadyApplied = true;
+    }
 
-		return (decision == other.decision && to == other.to && rotation == other.rotation
-				&& type == other.type);
-	}
+    cs.setSite(
+      context.state(),
+      to,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      rotation,
+      Constants.UNDEFINED,
+      type
+    );
+    //}
+    return this;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    final int cid =
+      to >= context.containerId().length ? 0 : context.containerId()[to];
+    final ContainerState cs = context.state().containerStates()[cid];
 
-		sb.append("[SetRotation:");
-		if (type != null || (context != null && type != context.board().defaultSite()))
-		{
-			sb.append("type=" + type);
-			sb.append(",to=" + to);
-		}
-		else
-			sb.append("to=" + to);
-		sb.append(",rotation=" + rotation);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+    //		if (context.game().isStacking()) // Level has to be implemented
+    //		{
+    //			final int stackSize = cs.sizeStack(to, type);
+    //
+    //			if (level != Constants.UNDEFINED)
+    //			{
+    //				if (level < stackSize)
+    //				{
+    //					final int what = cs.what(to, level, type);
+    //					final int who = cs.who(to, level, type);
+    //					final int value = cs.value(to, level, type);
+    //					final int state = cs.state(to, level, type);
+    //					cs.remove(context.state(), to, level);
+    //					cs.insert(context.state(), previousType, to, level, what, who, state, previousValue, value, context.game());
+    //				}
+    //			}
+    //			else
+    //			{
+    //				cs.setSite(context.state(), to, Constants.UNDEFINED,
+    //						Constants.UNDEFINED, Constants.UNDEFINED, Constants.UNDEFINED, previousValue, Constants.UNDEFINED,
+    //						previousType);
+    //			}
+    //		}
+    //		else
+    //		{
+    cs.setSite(
+      context.state(),
+      to,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      Constants.UNDEFINED,
+      previousRotation,
+      Constants.UNDEFINED,
+      previousType
+    );
+    //		}
 
-		return sb.toString();
-	}
-	
-	//-------------------------------------------------------------------------
-	
+    return this;
+  }
 
-	@Override
-	public String getDescription()
-	{
-		return "SetRotation";
-	}
-	
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+  //-------------------------------------------------------------------------
 
-		String newTo = to + "";
-		if (useCoords)
-		{
-			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[to]
-					: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
-						.label();
-			}
-		}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + to;
+    result = prime * result + rotation;
+    result = prime * result + (type == null ? 0 : type.hashCode());
+    return result;
+  }
 
-		if (type != null && !type.equals(context.board().defaultSite()))
-			sb.append(type + " " + newTo);
-		else
-			sb.append(newTo);
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-		sb.append(" r" + rotation);
+    if (!(obj instanceof ActionSetRotation)) return false;
 
-		return sb.toString();
-	}
+    final ActionSetRotation other = (ActionSetRotation) obj;
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+    return (
+      decision == other.decision &&
+      to == other.to &&
+      rotation == other.rotation &&
+      type == other.type
+    );
+  }
 
-		sb.append("(Rotation ");
+  //-------------------------------------------------------------------------
 
-		String newTo = to + "";
-		if (useCoords)
-		{
-			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[to]
-					: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
-						.label();
-			}
-		}
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-		if (type != null && !type.equals(context.board().defaultSite()))
-			sb.append(type + " " + newTo);
-		else
-			sb.append(newTo);
+    sb.append("[SetRotation:");
+    if (
+      type != null || (context != null && type != context.board().defaultSite())
+    ) {
+      sb.append("type=" + type);
+      sb.append(",to=" + to);
+    } else sb.append("to=" + to);
+    sb.append(",rotation=" + rotation);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
-		sb.append(" = " + rotation);
+    return sb.toString();
+  }
 
-		sb.append(')');
+  //-------------------------------------------------------------------------
 
-		return sb.toString();
-	}
-		
-	//-------------------------------------------------------------------------
+  @Override
+  public String getDescription() {
+    return "SetRotation";
+  }
 
-	@Override
-	public SiteType fromType()
-	{
-		return type;
-	}
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public SiteType toType()
-	{
-		return type;
-	}
+    String newTo = to + "";
+    if (useCoords) {
+      final int cid =
+        type == SiteType.Cell ||
+        (type == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[to]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          type != null ? type : context.board().defaultSite();
+        newTo = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(to)
+          .label();
+      }
+    }
 
-	@Override
-	public int rotation()
-	{
-		return rotation;
-	}
+    if (type != null && !type.equals(context.board().defaultSite())) sb.append(
+      type + " " + newTo
+    );
+    else sb.append(newTo);
 
-	@Override
-	public int from()
-	{
-		return to;
-	}
+    sb.append(" r" + rotation);
 
-	@Override
-	public int to()
-	{
-		return to;
-	}
+    return sb.toString();
+  }
 
-	@Override
-	public int state()
-	{
-		return rotation;
-	}
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public int who()
-	{
-		return rotation;
-	}
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.SetRotation;
-	}
-	
-	//-------------------------------------------------------------------------
+    sb.append("(Rotation ");
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		
-		if(decision)
-			concepts.set(Concept.RotationDecision.id(), true);
-		else
-			concepts.set(Concept.SetRotation.id(), true);
-		
-		return concepts;
-	}
+    String newTo = to + "";
+    if (useCoords) {
+      final int cid =
+        type == SiteType.Cell ||
+        (type == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[to]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          type != null ? type : context.board().defaultSite();
+        newTo = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(to)
+          .label();
+      }
+    }
+
+    if (type != null && !type.equals(context.board().defaultSite())) sb.append(
+      type + " " + newTo
+    );
+    else sb.append(newTo);
+
+    sb.append(" = " + rotation);
+
+    sb.append(')');
+
+    return sb.toString();
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public SiteType fromType() {
+    return type;
+  }
+
+  @Override
+  public SiteType toType() {
+    return type;
+  }
+
+  @Override
+  public int rotation() {
+    return rotation;
+  }
+
+  @Override
+  public int from() {
+    return to;
+  }
+
+  @Override
+  public int to() {
+    return to;
+  }
+
+  @Override
+  public int state() {
+    return rotation;
+  }
+
+  @Override
+  public int who() {
+    return rotation;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.SetRotation;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+
+    if (decision) concepts.set(Concept.RotationDecision.id(), true);
+    else concepts.set(Concept.SetRotation.id(), true);
+
+    return concepts;
+  }
 }

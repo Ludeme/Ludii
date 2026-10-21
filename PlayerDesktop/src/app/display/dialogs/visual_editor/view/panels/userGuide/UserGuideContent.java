@@ -1,74 +1,60 @@
 package app.display.dialogs.visual_editor.view.panels.userGuide;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 /**
  * Contains a paragraph + image (if any).
  * Displays image
  */
 
-public class UserGuideContent
-{
+public class UserGuideContent {
 
-    private final String paragraph;
-    private final List<Image> images;
+  private final String paragraph;
+  private final List<Image> images;
 
-    /**
-     * Constructor.
-     * @param paragraph
-     * @param imageNames Names of images in the folder Common/res/img/visual_editor/user_guide/
-     */
-    public UserGuideContent(String paragraph, List<String> imageNames)
-    {
-        this.paragraph = paragraph;
-        images = new ArrayList<>();
-        for(String imageName : imageNames)
-        {
-            String path = "/visual_editor/user_guide/" + imageName;
-            try
-            {
-                images.add(ImageIO.read(getClass().getResource(path)));
-            }
-            catch (IOException e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
+  /**
+   * Constructor.
+   * @param paragraph
+   * @param imageNames Names of images in the folder Common/res/img/visual_editor/user_guide/
+   */
+  public UserGuideContent(String paragraph, List<String> imageNames) {
+    this.paragraph = paragraph;
+    images = new ArrayList<>();
+    for (String imageName : imageNames) {
+      String path = "/visual_editor/user_guide/" + imageName;
+      try {
+        images.add(ImageIO.read(getClass().getResource(path)));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
+  }
 
-    public UserGuideContent(String paragraph, String image)
-    {
-        this.paragraph = paragraph;
-        List<String> imageNames = new ArrayList<>();
-        imageNames.add(image);
+  public UserGuideContent(String paragraph, String image) {
+    this.paragraph = paragraph;
+    List<String> imageNames = new ArrayList<>();
+    imageNames.add(image);
 
-        images = new ArrayList<>();
-        for(String imageName : imageNames)
-        {
-            String path = "/visual_editor/user_guide/" + imageName;
-            try
-            {
-            	images.add(ImageIO.read(getClass().getResource(path)));
-            }
-            catch (IOException e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
+    images = new ArrayList<>();
+    for (String imageName : imageNames) {
+      String path = "/visual_editor/user_guide/" + imageName;
+      try {
+        images.add(ImageIO.read(getClass().getResource(path)));
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
+  }
 
-    public List<Image> images()
-    {
-        return images;
-    }
+  public List<Image> images() {
+    return images;
+  }
 
-    public String paragraph()
-    {
-        return paragraph;
-    }
-
+  public String paragraph() {
+    return paragraph;
+  }
 }

@@ -1,4 +1,5 @@
 package gameDistance.utils.apted.test.java;
+
 /* MIT License
  *
  * Copyright (c) 2017 Mateusz Pawlik
@@ -24,16 +25,15 @@ package gameDistance.utils.apted.test.java;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
 import gameDistance.utils.apted.costmodel.PerEditOperationStringNodeDataCostModel;
 import gameDistance.utils.apted.distance.APTED;
 import gameDistance.utils.apted.distance.AllPossibleMappingsTED;
 import gameDistance.utils.apted.node.Node;
 import gameDistance.utils.apted.node.StringNodeData;
 import gameDistance.utils.apted.parser.BracketStringInputParser;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  * Correctness unit tests of distance computation for node labels with a single
@@ -87,7 +87,7 @@ public class PerEditOperationCorrectnessTest {
      * @see CorrectnessTest#data()
      */
     @Override
-	public String toString() {
+    public String toString() {
       return "testID:" + testID + ",t1:" + t1 + ",t2:" + t2 + ",d:" + d;
     }
 
@@ -127,7 +127,6 @@ public class PerEditOperationCorrectnessTest {
     public int getD() {
       return d;
     }
-
   }
 
   /**
@@ -159,12 +158,19 @@ public class PerEditOperationCorrectnessTest {
     final Node<StringNodeData> t1 = parser.fromString(testCase.getT1());
     final Node<StringNodeData> t2 = parser.fromString(testCase.getT2());
     // Initialise algorithms.
-    final APTED<PerEditOperationStringNodeDataCostModel, StringNodeData> apted = new APTED<>(new PerEditOperationStringNodeDataCostModel(0.4f, 0.4f, 0.6f));
-    final AllPossibleMappingsTED<PerEditOperationStringNodeDataCostModel, StringNodeData> apmted = new AllPossibleMappingsTED<>(new PerEditOperationStringNodeDataCostModel(0.4f, 0.4f, 0.6f));
+    final APTED<PerEditOperationStringNodeDataCostModel, StringNodeData> apted =
+      new APTED<>(
+        new PerEditOperationStringNodeDataCostModel(0.4f, 0.4f, 0.6f)
+      );
+    final AllPossibleMappingsTED<
+      PerEditOperationStringNodeDataCostModel,
+      StringNodeData
+    > apmted = new AllPossibleMappingsTED<>(
+      new PerEditOperationStringNodeDataCostModel(0.4f, 0.4f, 0.6f)
+    );
     // Calculate distances using both algorithms.
     final float result = apted.computeEditDistance(t1, t2);
     final float correctResult = apmted.computeEditDistance(t1, t2);
     assertEquals(correctResult, result, 0.0001);
   }
-
 }

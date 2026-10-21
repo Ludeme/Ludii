@@ -6,21 +6,21 @@ group: edge
 
 branches:
   only:
-  - master
-  - dev
-  
+    - master
+    - dev
+
 before_script:
   - sudo apt-get install ant-optional
   - git clone --branch=master https://github.com/Ludeme/TravisTrials.git ../TravisTrials
-  
+
 script:
   - cd PlayerDesktop
   - travis_wait 180 ant clean test
-  
+
 after_failure:
   - cat ./hs_err.log
   - cat ./replay.log
-  
+
 notifications:
   email:
     recipients:

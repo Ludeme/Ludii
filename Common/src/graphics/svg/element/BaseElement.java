@@ -8,76 +8,67 @@ import java.awt.geom.Rectangle2D;
  * Base SVG element type.
  * @author cambolbro
  */
-public abstract class BaseElement implements Element
-{
-	private final String label;
-	private int filePos;  // start position in SVG file
+public abstract class BaseElement implements Element {
 
-	protected final Style style = new Style();
+  private final String label;
+  private int filePos; // start position in SVG file
 
-	protected Rectangle2D.Double bounds = new Rectangle2D.Double();
+  protected final Style style = new Style();
 
-	//-------------------------------------------------------------------------
-	
-	public BaseElement(final String label)
-	{
-		this.label = new String(label);
-	}
-	
-	//-------------------------------------------------------------------------
+  protected Rectangle2D.Double bounds = new Rectangle2D.Double();
 
-	@Override
-	public String label()
-	{
-		return label;
-	}
-	
-	@Override
-	public int compare(final Element other)
-	{
-		return filePos - ((BaseElement)other).filePos;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  public BaseElement(final String label) {
+    this.label = new String(label);
+  }
 
-	public int filePos()
-	{
-		return filePos;
-	}
+  //-------------------------------------------------------------------------
 
-	public void setFilePos(final int pos)
-	{
-		filePos = pos;
-	}
-	
-	@Override
-	public Style style()
-	{
-		return style;
-	}
+  @Override
+  public String label() {
+    return label;
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public int compare(final Element other) {
+    return filePos - ((BaseElement) other).filePos;
+  }
 
-	public Rectangle2D.Double bounds()
-	{
-		return bounds;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Set bounds for this shape.
-	 */
-	public abstract void setBounds();
+  public int filePos() {
+    return filePos;
+  }
 
-	//-------------------------------------------------------------------------
+  public void setFilePos(final int pos) {
+    filePos = pos;
+  }
 
-	/**
-	 * @return Stroke width of element (else 0 is none specified). 
-	 */
-	public double strokeWidth()
-	{
-		return 0;  // default implementation
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public Style style() {
+    return style;
+  }
 
+  //-------------------------------------------------------------------------
+
+  public Rectangle2D.Double bounds() {
+    return bounds;
+  }
+
+  /**
+   * Set bounds for this shape.
+   */
+  public abstract void setBounds();
+
+  //-------------------------------------------------------------------------
+
+  /**
+   * @return Stroke width of element (else 0 is none specified).
+   */
+  public double strokeWidth() {
+    return 0; // default implementation
+  }
+
+  //-------------------------------------------------------------------------
 }

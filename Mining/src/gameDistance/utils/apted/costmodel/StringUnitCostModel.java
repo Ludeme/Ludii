@@ -32,8 +32,8 @@ import gameDistance.utils.apted.node.StringNodeData;
  * @see CostModel
  * @see StringNodeData
  */
- // TODO: Use a label dictionary to encode string labels with integers for
- //       faster rename cost computation.
+// TODO: Use a label dictionary to encode string labels with integers for
+//       faster rename cost computation.
 public class StringUnitCostModel implements CostModel<StringNodeData> {
 
   /**
@@ -43,7 +43,7 @@ public class StringUnitCostModel implements CostModel<StringNodeData> {
    * @return {@code 1} - a fixed cost of deleting a node.
    */
   @Override
-public float del(final Node<StringNodeData> n) {
+  public float del(final Node<StringNodeData> n) {
     return 1.0f;
   }
 
@@ -54,7 +54,7 @@ public float del(final Node<StringNodeData> n) {
    * @return {@code 1} - a fixed cost of inserting a node.
    */
   @Override
-public float ins(final Node<StringNodeData> n) {
+  public float ins(final Node<StringNodeData> n) {
     return 1.0f;
   }
 
@@ -67,7 +67,12 @@ public float ins(final Node<StringNodeData> n) {
    * @return {@code 1} if labels of renamed nodes are equal, and {@code 0} otherwise.
    */
   @Override
-public float ren(final Node<StringNodeData> n1, final Node<StringNodeData> n2) {
-    return (n1.getNodeData().getLabel().equals(n2.getNodeData().getLabel())) ? 0.0f : 1.0f;
+  public float ren(
+    final Node<StringNodeData> n1,
+    final Node<StringNodeData> n2
+  ) {
+    return n1.getNodeData().getLabel().equals(n2.getNodeData().getLabel())
+      ? 0.0f
+      : 1.0f;
   }
 }

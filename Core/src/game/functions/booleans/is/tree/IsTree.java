@@ -1,7 +1,5 @@
 package game.functions.booleans.is.tree;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Or;
 import game.Game;
@@ -12,6 +10,7 @@ import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
 import game.util.moves.Player;
+import java.util.BitSet;
 import main.Constants;
 import other.context.Context;
 import other.state.container.ContainerState;
@@ -20,171 +19,144 @@ import other.topology.Topology;
 
 /**
  * Test the induced graph (by adding or deleting edges) is a tree or not.
- * 
+ *
  * @author tahmina and cambolbro and Eric.Piette
- * 
+ *
  * @remarks It used for any GT game, where we need to detect a tree.
  */
 @Hide
-public class IsTree extends BaseBooleanFunction
-{
-	private static final long serialVersionUID = 1L;	
+public class IsTree extends BaseBooleanFunction {
 
-	//----------------------------------------------------------------------------------
-	
-	/** The type of player. **/
-	private final IntFunction who;	
-				
-	/**
-	 * @param who  Data about the owner of the tree.
-	 * @param role RoleType of the owner of the tree.
-	 */
-	public IsTree
-	(					
-		@Or  final Player   who,
-		@Or  final RoleType role
-	)
-	{		
-		this.who = (role != null) ? RoleType.toIntFunction(role) : who.index();
-	} 
+  private static final long serialVersionUID = 1L;
 
-	//----------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------
 
-	@Override
-	public boolean eval(final Context context)
+  /** The type of player. **/
+  private final IntFunction who;
 
-	{	
-		final int siteId = new LastTo(null).eval(context); 
-		if(siteId == Constants.OFF)
-			return false;
-		
-		final Topology graph 		= context.topology();
-		final int cid              	= context.containerId()[0];
-		final ContainerState state 	= context.state().containerStates()[cid];
-		int whoSiteId 		    	= who.eval(context);
-		final int totalVertices		= graph.vertices().size();
-		final int[] localParent    	= new int [totalVertices];			
+  /**
+   * @param who  Data about the owner of the tree.
+   * @param role RoleType of the owner of the tree.
+   */
+  public IsTree(@Or final Player who, @Or final RoleType role) {
+    this.who = role != null ? RoleType.toIntFunction(role) : who.index();
+  }
 
-				
-		if(whoSiteId == 0)
-		{
-			if (state.what(siteId, SiteType.Edge) == 0)
-				whoSiteId = 1; // for neutral player
-			else
-				whoSiteId = state.what(siteId, SiteType.Edge);
-		}
-		
-		for (int i = 0; i < totalVertices; i++)
-		{			 			
-			localParent[i] = i;							
-		}	
-		
-		for(int k = graph.edges().size() - 1; k >= 0; k--)
-		{
-			if(state.what(k, SiteType.Edge) ==  whoSiteId)
-			{
-				final Edge kEdge = graph.edges().get(k);				
-				final int vARoot = find(kEdge.vA().index(), localParent);
-				final int vBRoot = find(kEdge.vB().index(), localParent);				
-				if (vARoot == vBRoot) return false;				
-				localParent[vARoot] = vBRoot;	
-			}
-		}						
-		return true;
-	}
+  //----------------------------------------------------------------------------------
 
-	//----------------------------------------------------------------------
-	
-	/**
-	 * 
-	 * @param position  	A location.
-	 * @param parent 	    The array with parent id.
-	 * 
-	 * @return 				The root of the position.
-	 */
-	private int find(final int position, final int[] parent)
-	{
-		final int parentId = parent[position];		
-		if (parentId == position) 
-			return position;
-		
-		return find (parentId, parent);
-	}
+  @Override
+  public boolean eval(final Context context) {
+    final int siteId = new LastTo(null).eval(context);
+    if (siteId == Constants.OFF) return false;
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toString()
-	{		
-		return  "IsTree()";
-	}
+    final Topology graph = context.topology();
+    final int cid = context.containerId()[0];
+    final ContainerState state = context.state().containerStates()[cid];
+    int whoSiteId = who.eval(context);
+    final int totalVertices = graph.vertices().size();
+    final int[] localParent = new int[totalVertices];
 
-	@Override
-	public boolean isStatic()
-	{		
-		return false;		
-	}
+    if (whoSiteId == 0) {
+      if (state.what(siteId, SiteType.Edge) == 0) whoSiteId = 1;
+      // for neutral player
+      else whoSiteId = state.what(siteId, SiteType.Edge);
+    }
 
-	@Override
-	public long gameFlags(final Game game)
-	{		
-		return GameType.Graph | who.gameFlags(game);
-	}
-	
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(who.concepts(game));
-		return concepts;
-	}
+    for (int i = 0; i < totalVertices; i++) {
+      localParent[i] = i;
+    }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(who.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+    for (int k = graph.edges().size() - 1; k >= 0; k--) {
+      if (state.what(k, SiteType.Edge) == whoSiteId) {
+        final Edge kEdge = graph.edges().get(k);
+        final int vARoot = find(kEdge.vA().index(), localParent);
+        final int vBRoot = find(kEdge.vB().index(), localParent);
+        if (vARoot == vBRoot) return false;
+        localParent[vARoot] = vBRoot;
+      }
+    }
+    return true;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(who.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  //----------------------------------------------------------------------
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		who.preprocess(game);
-	}
+  /**
+   *
+   * @param position  	A location.
+   * @param parent 	    The array with parent id.
+   *
+   * @return 				The root of the position.
+   */
+  private int find(final int position, final int[] parent) {
+    final int parentId = parent[position];
+    if (parentId == position) return position;
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= who.missingRequirement(game);
-		return missingRequirement;
-	}
+    return find(parentId, parent);
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= who.willCrash(game);
-		return willCrash;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "Player " + who.toEnglish(game) + "has formed a tree";
-	}
-	
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
+  @Override
+  public String toString() {
+    return "IsTree()";
+  }
+
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
+
+  @Override
+  public long gameFlags(final Game game) {
+    return GameType.Graph | who.gameFlags(game);
+  }
+
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(who.concepts(game));
+    return concepts;
+  }
+
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(who.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
+
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(who.readsEvalContextRecursive());
+    return readEvalContext;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    who.preprocess(game);
+  }
+
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= who.missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= who.willCrash(game);
+    return willCrash;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    return "Player " + who.toEnglish(game) + "has formed a tree";
+  }
+
+  //-------------------------------------------------------------------------
 }

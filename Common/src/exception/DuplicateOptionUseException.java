@@ -6,19 +6,16 @@ package exception;
  *
  * @author Dennis Soemers
  */
-public class DuplicateOptionUseException extends RuntimeException
-{
-	
-	/** */
-	private static final long serialVersionUID = 1L;
+public class DuplicateOptionUseException extends RuntimeException {
 
-	/**
-	 * Constructor
-	 * @param optionString
-	 */
-	public DuplicateOptionUseException(final String optionString)
-	{
-		super("Option with duplicate matches: " + optionString);
-	}
+  /** */
+  private static final long serialVersionUID = 1L;
 
+  /**
+   * Constructor
+   * @param optionString
+   */
+  public DuplicateOptionUseException(final String optionString) {
+    super("Option with duplicate matches: " + optionString);
+  }
 }

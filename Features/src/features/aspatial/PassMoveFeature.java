@@ -9,61 +9,52 @@ import other.state.State;
  *
  * @author Dennis Soemers
  */
-public class PassMoveFeature extends AspatialFeature
-{
-	
-	//-------------------------------------------------------------------------
-	
-	/** The singleton instance */
-	private static final PassMoveFeature INSTANCE = new PassMoveFeature();
+public class PassMoveFeature extends AspatialFeature {
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Private: singleton
-	 */
-	private PassMoveFeature()
-	{
-		// Do nothing
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public float featureVal(final State state, final Move move)
-	{
-		if (move.isPass())
-			return 1.f;
-		else
-			return 0.f;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toString()
-	{
-		return "PassMove";
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String generateTikzCode(final Game game)
-	{
-		return "\\node[rectangle,draw{,REL_POS}] ({LABEL}) {Pass};";
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @return The singleton instance
-	 */
-	public static PassMoveFeature instance()
-	{
-		return INSTANCE;
-	}
-	
-	//-------------------------------------------------------------------------
+  /** The singleton instance */
+  private static final PassMoveFeature INSTANCE = new PassMoveFeature();
 
+  //-------------------------------------------------------------------------
+
+  /**
+   * Private: singleton
+   */
+  private PassMoveFeature() {
+    // Do nothing
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public float featureVal(final State state, final Move move) {
+    if (move.isPass()) return 1.f;
+    else return 0.f;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toString() {
+    return "PassMove";
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String generateTikzCode(final Game game) {
+    return "\\node[rectangle,draw{,REL_POS}] ({LABEL}) {Pass};";
+  }
+
+  //-------------------------------------------------------------------------
+
+  /**
+   * @return The singleton instance
+   */
+  public static PassMoveFeature instance() {
+    return INSTANCE;
+  }
+
+  //-------------------------------------------------------------------------
 }

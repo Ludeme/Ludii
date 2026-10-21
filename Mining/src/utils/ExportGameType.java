@@ -1,14 +1,13 @@
 package utils;
 
+import game.Game;
+import game.types.state.GameType;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.regex.Pattern;
-
-import game.Game;
-import game.types.state.GameType;
 import main.FileHandling;
 import main.StringRoutines;
 import main.UnixPrintWriter;
@@ -19,75 +18,75 @@ import other.GameLoader;
  *
  * @author Eric Piette
  */
-public class ExportGameType
-{
-	/**
-	 * Main method
-	 * 
-	 * @param args
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 */
-	public static void main(final String[] args) throws IllegalArgumentException, IllegalAccessException
-	{
-		try (final PrintWriter writer = new UnixPrintWriter(new File("./res/concepts/output/LudiiGameFlags.csv"),
-				"UTF-8"))
-		{
-			final Field[] fields = GameType.class.getFields();
-			final String[] flags = new String[fields.length];
-			final long[] flagsValues = new long[fields.length];
-			
-			for (int i = 0; i < fields.length; i++)
-			{
-				flags[i] = fields[i].toString();
-				flags[i] = flags[i].substring(flags[i].lastIndexOf('.') + 1);
-				flagsValues[i] = fields[i].getLong(GameType.class);
-			}
+public class ExportGameType {
 
-			final String[] headers = new String[flags.length + 1];
-			headers[0] = "Game Name";
-			for (int i = 0; i < flags.length; i++)
-				headers[i + 1] = flags[i];
+  /**
+   * Main method
+   *
+   * @param args
+   * @throws IllegalAccessException
+   * @throws IllegalArgumentException
+   */
+  public static void main(final String[] args)
+    throws IllegalArgumentException, IllegalAccessException {
+    try (
+      final PrintWriter writer = new UnixPrintWriter(
+        new File("./res/concepts/output/LudiiGameFlags.csv"),
+        "UTF-8"
+      )
+    ) {
+      final Field[] fields = GameType.class.getFields();
+      final String[] flags = new String[fields.length];
+      final long[] flagsValues = new long[fields.length];
 
-			// Write header line
-			writer.println(StringRoutines.join(",", headers));
+      for (int i = 0; i < fields.length; i++) {
+        flags[i] = fields[i].toString();
+        flags[i] = flags[i].substring(flags[i].lastIndexOf('.') + 1);
+        flagsValues[i] = fields[i].getLong(GameType.class);
+      }
 
-			final String[] gameNames = FileHandling.listGames();
+      final String[] headers = new String[flags.length + 1];
+      headers[0] = "Game Name";
+      for (int i = 0; i < flags.length; i++) headers[i + 1] = flags[i];
 
-			for (final String gameName : gameNames)
-			{
-				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/"))
-					continue;
+      // Write header line
+      writer.println(StringRoutines.join(",", headers));
 
-				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/"))
-					continue;
+      final String[] gameNames = FileHandling.listGames();
 
-				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/WishlistDLP/"))
-					continue;
+      for (final String gameName : gameNames) {
+        if (
+          gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/bad/")
+        ) continue;
 
-				if (gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/"))
-					continue;
+        if (
+          gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/wip/")
+        ) continue;
 
-				System.out.println("Loading game: " + gameName);
-				final Game game = GameLoader.loadGameFromName(gameName);
-				final String flagsOn[] = new String[flags.length + 1];
-				flagsOn[0] = game.name();
-				for (int i = 0; i < flagsValues.length; i++)
-				{
-					if ((game.gameFlags() & flagsValues[i]) != 0L)
-						flagsOn[i + 1] = "Yes";
-					else
-						flagsOn[i + 1] = "";
-				}
+        if (
+          gameName
+            .replaceAll(Pattern.quote("\\"), "/")
+            .contains("/lud/WishlistDLP/")
+        ) continue;
 
-				// Write row for this game
-				writer.println(StringRoutines.join(",", flagsOn));
-			}
-		}
-		catch (final FileNotFoundException | UnsupportedEncodingException e)
-		{
-			e.printStackTrace();
-		}
-	}
+        if (
+          gameName.replaceAll(Pattern.quote("\\"), "/").contains("/lud/test/")
+        ) continue;
 
+        System.out.println("Loading game: " + gameName);
+        final Game game = GameLoader.loadGameFromName(gameName);
+        final String flagsOn[] = new String[flags.length + 1];
+        flagsOn[0] = game.name();
+        for (int i = 0; i < flagsValues.length; i++) {
+          if ((game.gameFlags() & flagsValues[i]) != 0L) flagsOn[i + 1] = "Yes";
+          else flagsOn[i + 1] = "";
+        }
+
+        // Write row for this game
+        writer.println(StringRoutines.join(",", flagsOn));
+      }
+    } catch (final FileNotFoundException | UnsupportedEncodingException e) {
+      e.printStackTrace();
+    }
+  }
 }

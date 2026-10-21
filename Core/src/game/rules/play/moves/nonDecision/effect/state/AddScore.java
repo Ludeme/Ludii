@@ -1,7 +1,5 @@
 package game.rules.play.moves.nonDecision.effect.state;
 
-import java.util.BitSet;
-
 import annotations.Opt;
 import annotations.Or;
 import game.Game;
@@ -13,6 +11,7 @@ import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.play.RoleType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.BitSet;
 import other.PlayersIndices;
 import other.action.state.ActionSetScore;
 import other.concept.Concept;
@@ -21,331 +20,313 @@ import other.move.Move;
 
 /**
  * Adds a value to the score of a player.
- * 
+ *
  * @author Eric.Piette
  */
-public final class AddScore extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public final class AddScore extends Effect {
 
-	//-------------------------------------------------------------------------
-	
-	/** The players. */
-	private final IntFunction players[];
+  private static final long serialVersionUID = 1L;
 
-	/** The score. */
-	private final IntFunction scores[];
+  //-------------------------------------------------------------------------
 
-	/** The roleTypes used to check in the requiredLudeme */
-	private final RoleType[] roles;
+  /** The players. */
+  private final IntFunction players[];
 
-	//-------------------------------------------------------------------------
+  /** The score. */
+  private final IntFunction scores[];
 
-	/**
-	 * For adding a score to a player.
-	 * 
-	 * @param player The index of the player.
-	 * @param role   The roleType of the player.
-	 * @param score  The score of the player.
-	 * @param then   The moves applied after that move is applied.
-	 * 
-	 * @example (addScore Mover 50)
-	 */
-	public AddScore
-	(
-		     @Or final game.util.moves.Player player,
-		     @Or final RoleType               role,
-			     final IntFunction            score,
-		@Opt     final Then                   then
-	)
-	{
-		super(then);
+  /** The roleTypes used to check in the requiredLudeme */
+  private final RoleType[] roles;
 
-		int numNonNull = 0;
-		if (player != null)
-			numNonNull++;
-		if (role != null)
-			numNonNull++;
+  //-------------------------------------------------------------------------
 
-		if (numNonNull != 1)
-			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
+  /**
+   * For adding a score to a player.
+   *
+   * @param player The index of the player.
+   * @param role   The roleType of the player.
+   * @param score  The score of the player.
+   * @param then   The moves applied after that move is applied.
+   *
+   * @example (addScore Mover 50)
+   */
+  public AddScore(
+    @Or final game.util.moves.Player player,
+    @Or final RoleType role,
+    final IntFunction score,
+    @Opt final Then then
+  ) {
+    super(then);
 
-		players = new IntFunction[1];
-		players[0] = (player == null) ? RoleType.toIntFunction(role) : player.index();
-		
-		if (score != null)
-		{
-			scores = new IntFunction[1];
-			scores[0] = score;
-		}
-		else
-		{
-			scores = null;
-		}
+    int numNonNull = 0;
+    if (player != null) numNonNull++;
+    if (role != null) numNonNull++;
 
-		roles = (role != null) ? new RoleType[] { role } : null;
-	} 
-	
-	/**
-	 * For adding a score to many players.
-	 * 
-	 * @param players The indices of the players.
-	 * @param roles   The roleType of the players.
-	 * @param scores  The scores to add.
-	 * @param then    The moves applied after that move is applied.
-	 * 
-	 * 
-	 * @example (addScore {P1 P2} {50 10})
-	 */
-	public AddScore
-	(
-		     @Or final IntFunction[] players,
-		     @Or final RoleType[]    roles,
-			     final IntFunction[] scores,
-		@Opt     final Then then
-	)
-	{
-		super(then);
-		int numNonNull = 0;
-		if (players != null)
-			numNonNull++;
-		if (roles != null)
-			numNonNull++;
+    if (numNonNull != 1) throw new IllegalArgumentException(
+      "Exactly one Or parameter must be non-null."
+    );
 
-		if (numNonNull != 1)
-			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
+    players = new IntFunction[1];
+    players[0] = player == null ? RoleType.toIntFunction(role) : player.index();
 
-		if (players != null)
-		{
-			this.players = players;
-		}
-		else
-		{
-			this.players = new IntFunction[roles.length];
-			for (int i = 0; i < roles.length; i++)
-			{
-				final RoleType role = roles[i];
-				this.players[i] = RoleType.toIntFunction(role);
-			}
-		}
-		this.scores = scores;
-		this.roles = roles;
-	}
-	
-	//-------------------------------------------------------------------------
+    if (score != null) {
+      scores = new IntFunction[1];
+      scores[0] = score;
+    } else {
+      scores = null;
+    }
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		final Moves moves = new BaseMoves(super.then());
-		
-		final int length = Math.min(players.length, scores.length);
-		if(roles != null)
-		{
-			for (int i = 0; i < length; i++)
-			{
-				final RoleType role = roles[i];
-				final int score = scores[i].eval(context);
-				final TIntArrayList idPlayers = PlayersIndices.getIdRealPlayers(context, role);
-				for(int j = 0; j < idPlayers.size();j++)
-				{
-					final int pid = idPlayers.get(j);
-					final ActionSetScore actionScore = new ActionSetScore(pid, score, Boolean.TRUE);
-					final Move move = new Move(actionScore);
-					moves.moves().add(move);
-				}
-			}
-		}
-		else
-		{
-			for (int i = 0; i < length; i++)
-			{
-				final int playerId = players[i].eval(context);
-				final int score = scores[i].eval(context);
-				final ActionSetScore actionScore = new ActionSetScore(playerId, score, Boolean.TRUE);
-				final Move move = new Move(actionScore);
-				moves.moves().add(move);
-			}
-		}
-		
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
+    roles = role != null ? new RoleType[] { role } : null;
+  }
 
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+  /**
+   * For adding a score to many players.
+   *
+   * @param players The indices of the players.
+   * @param roles   The roleType of the players.
+   * @param scores  The scores to add.
+   * @param then    The moves applied after that move is applied.
+   *
+   *
+   * @example (addScore {P1 P2} {50 10})
+   */
+  public AddScore(
+    @Or final IntFunction[] players,
+    @Or final RoleType[] roles,
+    final IntFunction[] scores,
+    @Opt final Then then
+  ) {
+    super(then);
+    int numNonNull = 0;
+    if (players != null) numNonNull++;
+    if (roles != null) numNonNull++;
 
-		return moves;
-	}
+    if (numNonNull != 1) throw new IllegalArgumentException(
+      "Exactly one Or parameter must be non-null."
+    );
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public boolean canMoveTo(final Context context, final int target)
-	{
-		return false;
-	}
+    if (players != null) {
+      this.players = players;
+    } else {
+      this.players = new IntFunction[roles.length];
+      for (int i = 0; i < roles.length; i++) {
+        final RoleType role = roles[i];
+        this.players[i] = RoleType.toIntFunction(role);
+      }
+    }
+    this.scores = scores;
+    this.roles = roles;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = GameType.Score | GameType.HashScores | super.gameFlags(game);
+  @Override
+  public Moves eval(final Context context) {
+    final Moves moves = new BaseMoves(super.then());
 
-		for (final IntFunction player : players)
-			gameFlags |= player.gameFlags(game);
+    final int length = Math.min(players.length, scores.length);
+    if (roles != null) {
+      for (int i = 0; i < length; i++) {
+        final RoleType role = roles[i];
+        final int score = scores[i].eval(context);
+        final TIntArrayList idPlayers = PlayersIndices.getIdRealPlayers(
+          context,
+          role
+        );
+        for (int j = 0; j < idPlayers.size(); j++) {
+          final int pid = idPlayers.get(j);
+          final ActionSetScore actionScore = new ActionSetScore(
+            pid,
+            score,
+            Boolean.TRUE
+          );
+          final Move move = new Move(actionScore);
+          moves.moves().add(move);
+        }
+      }
+    } else {
+      for (int i = 0; i < length; i++) {
+        final int playerId = players[i].eval(context);
+        final int score = scores[i].eval(context);
+        final ActionSetScore actionScore = new ActionSetScore(
+          playerId,
+          score,
+          Boolean.TRUE
+        );
+        final Move move = new Move(actionScore);
+        moves.moves().add(move);
+      }
+    }
 
-		for (final IntFunction score : scores)
-			gameFlags |= score.gameFlags(game);
+    if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .then()
+      .add(then().moves());
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+    // Store the Moves in the computed moves.
+    for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .setMovesLudeme(this);
 
-		return gameFlags;
-	}
+    return moves;
+  }
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
-		concepts.set(Concept.Scoring.id(), true);
+  //-------------------------------------------------------------------------
 
-		for (final IntFunction player : players)
-			concepts.or(player.concepts(game));
+  @Override
+  public boolean canMoveTo(final Context context, final int target) {
+    return false;
+  }
 
-		for (final IntFunction score : scores)
-			concepts.or(score.concepts(game));
+  //-------------------------------------------------------------------------
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags =
+      GameType.Score | GameType.HashScores | super.gameFlags(game);
 
-		return concepts;
-	}
+    for (final IntFunction player : players)
+      gameFlags |= player.gameFlags(game);
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(super.writesEvalContextRecursive());
+    for (final IntFunction score : scores) gameFlags |= score.gameFlags(game);
 
-		for (final IntFunction player : players)
-			writeEvalContext.or(player.writesEvalContextRecursive());
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-		for (final IntFunction score : scores)
-			writeEvalContext.or(score.writesEvalContextRecursive());
+    return gameFlags;
+  }
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
+    concepts.set(Concept.Scoring.id(), true);
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
+    for (final IntFunction player : players) concepts.or(player.concepts(game));
 
-		for (final IntFunction player : players)
-			readEvalContext.or(player.readsEvalContextRecursive());
+    for (final IntFunction score : scores) concepts.or(score.concepts(game));
 
-		for (final IntFunction score : scores)
-			readEvalContext.or(score.readsEvalContextRecursive());
+    if (then() != null) concepts.or(then().concepts(game));
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    return concepts;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(super.writesEvalContextRecursive());
 
-		missingRequirement |= super.missingRequirement(game);
+    for (final IntFunction player : players)
+      writeEvalContext.or(player.writesEvalContextRecursive());
 
-		if (roles != null)
-		{
-			for (final RoleType role : roles)
-			{
-				final int indexOwnerPhase = role.owner();
+    for (final IntFunction score : scores)
+      writeEvalContext.or(score.writesEvalContextRecursive());
 
-				if (role.equals(RoleType.Mover) || role.equals(RoleType.Next) || role.equals(RoleType.Prev) || role.equals(RoleType.Player))
-					continue;
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-				if (indexOwnerPhase < 1 || indexOwnerPhase > game.players().count())
-				{
-					game.addRequirementToReport(
-							"An incorrect roletype is used in the ludeme (addScore ...): " + role + ".");
-					missingRequirement = true;
-				}
-			}
-		}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
 
-		for (final IntFunction player : players)
-			missingRequirement |= player.missingRequirement(game);
+    for (final IntFunction player : players)
+      readEvalContext.or(player.readsEvalContextRecursive());
 
-		for (final IntFunction score : scores)
-			missingRequirement |= score.missingRequirement(game);
+    for (final IntFunction score : scores)
+      readEvalContext.or(score.readsEvalContextRecursive());
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
 
-		for (final IntFunction player : players)
-			willCrash |= player.willCrash(game);
+    missingRequirement |= super.missingRequirement(game);
 
-		for (final IntFunction score : scores)
-			willCrash |= score.willCrash(game);
+    if (roles != null) {
+      for (final RoleType role : roles) {
+        final int indexOwnerPhase = role.owner();
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+        if (
+          role.equals(RoleType.Mover) ||
+          role.equals(RoleType.Next) ||
+          role.equals(RoleType.Prev) ||
+          role.equals(RoleType.Player)
+        ) continue;
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
-	
-	@Override
-	public void preprocess(final Game game)
-	{
-		super.preprocess(game);
+        if (indexOwnerPhase < 1 || indexOwnerPhase > game.players().count()) {
+          game.addRequirementToReport(
+            "An incorrect roletype is used in the ludeme (addScore ...): " +
+              role +
+              "."
+          );
+          missingRequirement = true;
+        }
+      }
+    }
 
-		for (final IntFunction player : players)
-			player.preprocess(game);
+    for (final IntFunction player : players)
+      missingRequirement |= player.missingRequirement(game);
 
-		if (scores != null)
-			for (final IntFunction score : scores)
-				score.preprocess(game);
-	}
+    for (final IntFunction score : scores)
+      missingRequirement |= score.missingRequirement(game);
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		String text = "";
-		
-		for (int i = 0; i < players.length; i++)
-			text += "add score " + scores[i].toEnglish(game) + " to player " + players[i].toEnglish(game) + "\n";
-			
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return text + thenString;
-	}
-	
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
+
+    for (final IntFunction player : players)
+      willCrash |= player.willCrash(game);
+
+    for (final IntFunction score : scores) willCrash |= score.willCrash(game);
+
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    super.preprocess(game);
+
+    for (final IntFunction player : players) player.preprocess(game);
+
+    if (scores != null) for (final IntFunction score : scores)
+      score.preprocess(game);
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String text = "";
+
+    for (int i = 0; i < players.length; i++) text +=
+      "add score " +
+      scores[i].toEnglish(game) +
+      " to player " +
+      players[i].toEnglish(game) +
+      "\n";
+
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return text + thenString;
+  }
 }

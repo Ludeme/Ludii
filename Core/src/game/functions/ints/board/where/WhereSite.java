@@ -1,8 +1,5 @@
 package game.functions.ints.board.where;
 
-import java.util.ArrayList;
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -15,330 +12,294 @@ import game.types.board.SiteType;
 import game.types.play.RoleType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.ArrayList;
+import java.util.BitSet;
 import main.Constants;
 import other.context.Context;
 import other.state.container.ContainerState;
 
 /**
  * Returns the site of a piece if it is on the board, else OFF (-1).
- * 
+ *
  * @author Eric.Piette
  * @remarks The name of the piece can be specific without the number on it
  *          because the owner is also specified in the ludeme.
  */
 @Hide
-public final class WhereSite extends BaseIntFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class WhereSite extends BaseIntFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The name of the piece. */
-	private final String namePiece;
+  //-------------------------------------------------------------------------
 
-	/** The index of the owner. */
-	private final IntFunction playerFn;
+  /** The name of the piece. */
+  private final String namePiece;
 
-	/** The index of the piece. */
-	private final IntFunction whatFn;
+  /** The index of the owner. */
+  private final IntFunction playerFn;
 
-	/** The local state of the piece. */
-	private final IntFunction localStateFn;
+  /** The index of the piece. */
+  private final IntFunction whatFn;
 
-	/** Cell/Edge/Vertex. */
-	private SiteType type;
-	
-	/** List of components that match namePiece (if it is not null) */
-	private final ArrayList<Component> matchingNameComponents;
+  /** The local state of the piece. */
+  private final IntFunction localStateFn;
 
-	//-------------------------------------------------------------------------
+  /** Cell/Edge/Vertex. */
+  private SiteType type;
 
-	/**
-	 * If a piece is on the board, return its site else Off.
-	 * 
-	 * @param namePiece   The name of the piece (without the number at the end).
-	 * @param indexPlayer The index of the owner.
-	 * @param role        The roleType of the owner.
-	 * @param state       The local state of the piece.
-	 * @param type        The graph element type [default SiteType of the board].
-	 * 
-	 * @example (where "Pawn" Mover)
-	 */
-	public WhereSite
-	(
-			           final String      namePiece, 
-			 @Or       final IntFunction indexPlayer,
-			 @Or       final RoleType    role,
-		@Opt     @Name final IntFunction state,
-		@Opt           final SiteType    type
-	)
-	{
-		this.namePiece = namePiece;
-		int numNonNull = 0;
-		if (indexPlayer != null)
-			numNonNull++;
-		if (role != null)
-			numNonNull++;
+  /** List of components that match namePiece (if it is not null) */
+  private final ArrayList<Component> matchingNameComponents;
 
-		if (numNonNull != 1)
-			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
+  //-------------------------------------------------------------------------
 
-		if (indexPlayer != null)
-			playerFn = indexPlayer;
-		else
-			playerFn = RoleType.toIntFunction(role);
+  /**
+   * If a piece is on the board, return its site else Off.
+   *
+   * @param namePiece   The name of the piece (without the number at the end).
+   * @param indexPlayer The index of the owner.
+   * @param role        The roleType of the owner.
+   * @param state       The local state of the piece.
+   * @param type        The graph element type [default SiteType of the board].
+   *
+   * @example (where "Pawn" Mover)
+   */
+  public WhereSite(
+    final String namePiece,
+    @Or final IntFunction indexPlayer,
+    @Or final RoleType role,
+    @Opt @Name final IntFunction state,
+    @Opt final SiteType type
+  ) {
+    this.namePiece = namePiece;
+    int numNonNull = 0;
+    if (indexPlayer != null) numNonNull++;
+    if (role != null) numNonNull++;
 
-		this.type = type;
-		whatFn = null;
-		localStateFn = state;
-		
-		matchingNameComponents = new ArrayList<Component>();
-	}
-	
-	/**
-	 * If a piece is on the board, return its site else -1.
-	 * 
-	 * @param what The index of the piece.
-	 * @param type The graph element type [default SiteType of the board].
-	 * 
-	 * @example (where (what at:(last To)))
-	 */
-	public WhereSite
-	(
-			 final IntFunction what,
-		@Opt final SiteType    type
-	)
-	{
-		playerFn = null;
-		this.type = type;
-		whatFn = what;
-		namePiece = null;
-		localStateFn = null;
-		
-		matchingNameComponents = null;
-	}
+    if (numNonNull != 1) throw new IllegalArgumentException(
+      "Exactly one Or parameter must be non-null."
+    );
 
-	//-------------------------------------------------------------------------
+    if (indexPlayer != null) playerFn = indexPlayer;
+    else playerFn = RoleType.toIntFunction(role);
 
-	@Override
-	public int eval(final Context context)
-	{
-		final int numSite = context.board().numSites();
-		final ContainerState cs = context.containerState(0);
-		final int localState = (localStateFn != null) ? localStateFn.eval(context) : Constants.UNDEFINED;
+    this.type = type;
+    whatFn = null;
+    localStateFn = state;
 
-		int what = Constants.OFF;
-		if (whatFn != null)
-		{
-			what = whatFn.eval(context);
-			
-			if (what <= Constants.NO_PIECE)
-				return Constants.OFF;
+    matchingNameComponents = new ArrayList<Component>();
+  }
 
-			if (context.game().isStacking())
-			{
-				for (int site = 0; site < numSite; site++)
-				{
-					final int stackSize = cs.sizeStack(site, type);
-					for (int level = 0; level < stackSize; level++)
-						if (cs.what(site, level, type) == what)
-							if (localState == Constants.UNDEFINED || cs.state(site, level, type) == localState)
-								return site;
-				}
-			}
-			else
-			{
-				for (int site = 0; site < numSite; site++)
-					if (cs.what(site, type) == what)
-						if (localState == Constants.UNDEFINED || cs.state(site, type) == localState)
-							return site;
-			}
-		}
-		else
-		{
-			final int playerId = playerFn.eval(context);
-			for (final Component c : matchingNameComponents)
-			{
-				if (c.owner() == playerId)
-				{
-					what = c.index();
-					break;
-				}
-			}
-			
-			if (what <= Constants.OFF)
-				return Constants.OFF;
-			
-			final TIntArrayList sites = context.state().owned().sites(playerId, what);
-			
-			if (context.game().isStacking())
-			{
-				for (int i = 0; i < sites.size(); ++i)
-				{
-					final int site = sites.getQuick(i);
-					if (site < numSite)
-					{
-						final int stackSize = cs.sizeStack(site, type);
-						for (int level = 0; level < stackSize; level++)
-							if (cs.what(site, level, type) == what)
-								if (localState == Constants.UNDEFINED || cs.state(site, level, type) == localState)
-									return site;
-					}
-				}
-			}
-			else
-			{
-				for (int i = 0; i < sites.size(); ++i)
-				{
-					final int site = sites.getQuick(i);
-					if (site < numSite && cs.what(site, type) == what)
-						if (localState == Constants.UNDEFINED || cs.state(site, type) == localState)
-							return site;
-				}
-			}
-		}
+  /**
+   * If a piece is on the board, return its site else -1.
+   *
+   * @param what The index of the piece.
+   * @param type The graph element type [default SiteType of the board].
+   *
+   * @example (where (what at:(last To)))
+   */
+  public WhereSite(final IntFunction what, @Opt final SiteType type) {
+    playerFn = null;
+    this.type = type;
+    whatFn = what;
+    namePiece = null;
+    localStateFn = null;
 
-		return Constants.OFF;
-	}
+    matchingNameComponents = null;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  @Override
+  public int eval(final Context context) {
+    final int numSite = context.board().numSites();
+    final ContainerState cs = context.containerState(0);
+    final int localState =
+      localStateFn != null ? localStateFn.eval(context) : Constants.UNDEFINED;
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = 0L;
+    int what = Constants.OFF;
+    if (whatFn != null) {
+      what = whatFn.eval(context);
 
-		if (playerFn != null)
-			gameFlags |= playerFn.gameFlags(game);
+      if (what <= Constants.NO_PIECE) return Constants.OFF;
 
-		if (whatFn != null)
-			gameFlags |= whatFn.gameFlags(game);
+      if (context.game().isStacking()) {
+        for (int site = 0; site < numSite; site++) {
+          final int stackSize = cs.sizeStack(site, type);
+          for (int level = 0; level < stackSize; level++) if (
+            cs.what(site, level, type) == what
+          ) if (
+            localState == Constants.UNDEFINED ||
+            cs.state(site, level, type) == localState
+          ) return site;
+        }
+      } else {
+        for (int site = 0; site < numSite; site++) if (
+          cs.what(site, type) == what
+        ) if (
+          localState == Constants.UNDEFINED ||
+          cs.state(site, type) == localState
+        ) return site;
+      }
+    } else {
+      final int playerId = playerFn.eval(context);
+      for (final Component c : matchingNameComponents) {
+        if (c.owner() == playerId) {
+          what = c.index();
+          break;
+        }
+      }
 
-		if (localStateFn != null)
-			gameFlags |= localStateFn.gameFlags(game) | GameType.SiteState;
-		gameFlags |= SiteType.gameFlags(type);
-		return gameFlags;
-	}
-	
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
+      if (what <= Constants.OFF) return Constants.OFF;
 
-		concepts.or(SiteType.concepts(type));
+      final TIntArrayList sites = context.state().owned().sites(playerId, what);
 
-		if (playerFn != null)
-			concepts.or(playerFn.concepts(game));
+      if (context.game().isStacking()) {
+        for (int i = 0; i < sites.size(); ++i) {
+          final int site = sites.getQuick(i);
+          if (site < numSite) {
+            final int stackSize = cs.sizeStack(site, type);
+            for (int level = 0; level < stackSize; level++) if (
+              cs.what(site, level, type) == what
+            ) if (
+              localState == Constants.UNDEFINED ||
+              cs.state(site, level, type) == localState
+            ) return site;
+          }
+        }
+      } else {
+        for (int i = 0; i < sites.size(); ++i) {
+          final int site = sites.getQuick(i);
+          if (site < numSite && cs.what(site, type) == what) if (
+            localState == Constants.UNDEFINED ||
+            cs.state(site, type) == localState
+          ) return site;
+        }
+      }
+    }
 
-		if (whatFn != null)
-			concepts.or(whatFn.concepts(game));
+    return Constants.OFF;
+  }
 
-		if (localStateFn != null)
-			concepts.or(localStateFn.concepts(game));
-		return concepts;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-		if (playerFn != null)
-			writeEvalContext.or(playerFn.writesEvalContextRecursive());
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = 0L;
 
-		if (whatFn != null)
-			writeEvalContext.or(whatFn.writesEvalContextRecursive());
+    if (playerFn != null) gameFlags |= playerFn.gameFlags(game);
 
-		if (localStateFn != null)
-			writeEvalContext.or(localStateFn.writesEvalContextRecursive());
+    if (whatFn != null) gameFlags |= whatFn.gameFlags(game);
 
-		return writeEvalContext;
-	}
+    if (localStateFn != null) gameFlags |=
+      localStateFn.gameFlags(game) | GameType.SiteState;
+    gameFlags |= SiteType.gameFlags(type);
+    return gameFlags;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
 
-		if (playerFn != null)
-			readEvalContext.or(playerFn.readsEvalContextRecursive());
+    concepts.or(SiteType.concepts(type));
 
-		if (whatFn != null)
-			readEvalContext.or(whatFn.readsEvalContextRecursive());
+    if (playerFn != null) concepts.or(playerFn.concepts(game));
 
-		if (localStateFn != null)
-			readEvalContext.or(localStateFn.readsEvalContextRecursive());
+    if (whatFn != null) concepts.or(whatFn.concepts(game));
 
-		return readEvalContext;
-	}
+    if (localStateFn != null) concepts.or(localStateFn.concepts(game));
+    return concepts;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		if (playerFn != null)
-			missingRequirement |= playerFn.missingRequirement(game);
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
 
-		if (whatFn != null)
-			missingRequirement |= whatFn.missingRequirement(game);
+    if (playerFn != null) writeEvalContext.or(
+      playerFn.writesEvalContextRecursive()
+    );
 
-		if (localStateFn != null)
-			missingRequirement |= localStateFn.missingRequirement(game);
-		return missingRequirement;
-	}
+    if (whatFn != null) writeEvalContext.or(
+      whatFn.writesEvalContextRecursive()
+    );
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		if (playerFn != null)
-			willCrash |= playerFn.willCrash(game);
+    if (localStateFn != null) writeEvalContext.or(
+      localStateFn.writesEvalContextRecursive()
+    );
 
-		if (whatFn != null)
-			willCrash |= whatFn.willCrash(game);
+    return writeEvalContext;
+  }
 
-		if (localStateFn != null)
-			willCrash |= localStateFn.willCrash(game);
-		return willCrash;
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
-		if (playerFn != null)
-			playerFn.preprocess(game);
-		if (whatFn != null)
-			whatFn.preprocess(game);
-		if (localStateFn != null)
-			localStateFn.preprocess(game);
-		
-		if (namePiece != null)
-		{
-			// Precompute list of components for which name matches
-			for (final Component c : game.equipment().components())
-			{
-				if (c != null && c.name().contains(namePiece))
-					matchingNameComponents.add(c);
-			}
-			
-			matchingNameComponents.trimToSize();
-		}
-	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		String playerString = "";
-		if (playerFn != null)
-			playerString = " of " + playerFn.toEnglish(game);
-		
-		return namePiece + playerString + " is in";
-	}
+    if (playerFn != null) readEvalContext.or(
+      playerFn.readsEvalContextRecursive()
+    );
+
+    if (whatFn != null) readEvalContext.or(whatFn.readsEvalContextRecursive());
+
+    if (localStateFn != null) readEvalContext.or(
+      localStateFn.readsEvalContextRecursive()
+    );
+
+    return readEvalContext;
+  }
+
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    if (playerFn != null) missingRequirement |= playerFn.missingRequirement(
+      game
+    );
+
+    if (whatFn != null) missingRequirement |= whatFn.missingRequirement(game);
+
+    if (localStateFn != null) missingRequirement |=
+      localStateFn.missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    if (playerFn != null) willCrash |= playerFn.willCrash(game);
+
+    if (whatFn != null) willCrash |= whatFn.willCrash(game);
+
+    if (localStateFn != null) willCrash |= localStateFn.willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
+    if (playerFn != null) playerFn.preprocess(game);
+    if (whatFn != null) whatFn.preprocess(game);
+    if (localStateFn != null) localStateFn.preprocess(game);
+
+    if (namePiece != null) {
+      // Precompute list of components for which name matches
+      for (final Component c : game.equipment().components()) {
+        if (
+          c != null && c.name().contains(namePiece)
+        ) matchingNameComponents.add(c);
+      }
+
+      matchingNameComponents.trimToSize();
+    }
+  }
+
+  @Override
+  public String toEnglish(final Game game) {
+    String playerString = "";
+    if (playerFn != null) playerString = " of " + playerFn.toEnglish(game);
+
+    return namePiece + playerString + " is in";
+  }
 }

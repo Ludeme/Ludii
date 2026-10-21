@@ -68,11 +68,11 @@ public class Node<D> {
    * @return number of nodes in the tree rooted at this node.
    */
   public int getNodeCount() {
-      int sum = 1;
-      for(final Node<D> child : getChildren()) {
-        sum += child.getNodeCount();
-      }
-      return sum;
+    int sum = 1;
+    for (final Node<D> child : getChildren()) {
+      sum += child.getNodeCount();
+    }
+    return sum;
   }
 
   /**
@@ -94,12 +94,16 @@ public class Node<D> {
    * @return tree in bracket notation.
    */
   @Override
-public String toString() {
-    String res = (new StringBuilder("{")).append(((StringNodeData)getNodeData()).getLabel()).toString();
-    for(final Node<D> child : getChildren()) {
-      res = (new StringBuilder(String.valueOf(res))).append(child.toString()).toString();
+  public String toString() {
+    String res = new StringBuilder("{")
+      .append(((StringNodeData) getNodeData()).getLabel())
+      .toString();
+    for (final Node<D> child : getChildren()) {
+      res = new StringBuilder(String.valueOf(res))
+        .append(child.toString())
+        .toString();
     }
-    res = (new StringBuilder(String.valueOf(res))).append("}").toString();
+    res = new StringBuilder(String.valueOf(res)).append("}").toString();
     return res;
   }
 
@@ -129,5 +133,4 @@ public String toString() {
   public List<Node<D>> getChildren() {
     return children;
   }
-
 }

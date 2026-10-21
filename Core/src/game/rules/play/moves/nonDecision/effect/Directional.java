@@ -1,8 +1,5 @@
 package game.rules.play.moves.nonDecision.effect;
 
-import java.util.BitSet;
-import java.util.List;
-
 import annotations.Opt;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
@@ -19,6 +16,8 @@ import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import game.util.directions.AbsoluteDirection;
 import game.util.graph.Radial;
+import java.util.BitSet;
+import java.util.List;
 import main.Constants;
 import main.StringRoutines;
 import other.concept.Concept;
@@ -30,279 +29,289 @@ import other.topology.TopologyElement;
 
 /**
  * Is used to apply an effect to all the pieces in a direction from a location.
- * 
+ *
  * @author Eric.Piette
  * @remarks For example, used in Fanorona.
  */
-public final class Directional extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public final class Directional extends Effect {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** Location of the piece. */
-	private final IntFunction startLocationFn;
+  //-------------------------------------------------------------------------
 
-	/** The kind of piece to capture. */
-	private final BooleanFunction targetRule;
+  /** Location of the piece. */
+  private final IntFunction startLocationFn;
 
-	/** Moves to apply. */
-	private final Moves effect;
+  /** The kind of piece to capture. */
+  private final BooleanFunction targetRule;
 
-	/** Add on Cell/Edge/Vertex. */
-	private SiteType type;
+  /** Moves to apply. */
+  private final Moves effect;
 
-	/** Direction to use. */
-	private final DirectionsFunction dirnChoice;
+  /** Add on Cell/Edge/Vertex. */
+  private SiteType type;
 
-	//-------------------------------------------------------------------------
+  /** Direction to use. */
+  private final DirectionsFunction dirnChoice;
 
-	/**
-	 * @param from       The origin of the move [(from (last To))].
-	 * @param directions The directions to use [(directions from:(last From)
-	 *                   to:(last To))].
-	 * @param to         The condition of the location to apply the effect [(to
-	 *                   if:(is Enemy (to)) (apply (remove (from))))].
-	 * @param then       The moves applied after that move is applied.
-	 * 
-	 * @example (directional (from (last To)) (to if:(is Enemy (who at:(to))) (apply
-	 *          (remove (to))) ))
-	 */
-	public Directional
-	(
-		@Opt final game.util.moves.From           from,
-		@Opt final game.util.directions.Direction directions,
-		@Opt final game.util.moves.To             to,
-		@Opt final Then                           then
-	)  
-	{
-		super(then);
-		startLocationFn = (from == null) ? new LastTo(null) : from.loc();
-		type = (from == null) ? null : from.type();
-		targetRule = (to == null || to.cond() == null)
-				? new IsEnemy(To.instance(), null)
-				: to.cond();
-		effect = (to == null || to.effect() == null)
-				? new Remove(null, new From(null), null, null, null, null, null)
-				: to.effect();
+  //-------------------------------------------------------------------------
 
-		// The directions
-		dirnChoice = (directions != null) ? directions.directionsFunctions()
-				: null;
-	}
+  /**
+   * @param from       The origin of the move [(from (last To))].
+   * @param directions The directions to use [(directions from:(last From)
+   *                   to:(last To))].
+   * @param to         The condition of the location to apply the effect [(to
+   *                   if:(is Enemy (to)) (apply (remove (from))))].
+   * @param then       The moves applied after that move is applied.
+   *
+   * @example (directional (from (last To)) (to if:(is Enemy (who at:(to))) (apply
+   *          (remove (to))) ))
+   */
+  public Directional(
+    @Opt final game.util.moves.From from,
+    @Opt final game.util.directions.Direction directions,
+    @Opt final game.util.moves.To to,
+    @Opt final Then then
+  ) {
+    super(then);
+    startLocationFn = from == null ? new LastTo(null) : from.loc();
+    type = from == null ? null : from.type();
+    targetRule =
+      to == null || to.cond() == null
+        ? new IsEnemy(To.instance(), null)
+        : to.cond();
+    effect =
+      to == null || to.effect() == null
+        ? new Remove(null, new From(null), null, null, null, null, null)
+        : to.effect();
 
-	//-------------------------------------------------------------------------
+    // The directions
+    dirnChoice = directions != null ? directions.directionsFunctions() : null;
+  }
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		final Moves moves = new BaseMoves(super.then());
+  //-------------------------------------------------------------------------
 
-		final int from = startLocationFn.eval(context);
+  @Override
+  public Moves eval(final Context context) {
+    final Moves moves = new BaseMoves(super.then());
 
-		final int fromOrig = context.from();
-		final int toOrig = context.to();
+    final int from = startLocationFn.eval(context);
 
-		final Topology topology = context.topology();
-		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
-		final TopologyElement fromV = topology.getGraphElements(realType).get(from);
+    final int fromOrig = context.from();
+    final int toOrig = context.to();
 
-		final List<AbsoluteDirection> directions = (dirnChoice != null)
-				? dirnChoice.convertToAbsolute(realType, fromV, null, null, null, context)
-				: new Directions(realType, new LastFrom(null), new LastTo(null)).convertToAbsolute(realType, fromV,
-						null, null, null, context);
+    final Topology topology = context.topology();
+    final SiteType realType =
+      type != null ? type : context.game().board().defaultSite();
+    final TopologyElement fromV = topology.getGraphElements(realType).get(from);
 
-		for (final AbsoluteDirection direction : directions)
-		{
-			final List<Radial> radials = topology.trajectories().radials(type, fromV.index(), direction);
+    final List<AbsoluteDirection> directions =
+      dirnChoice != null
+        ? dirnChoice.convertToAbsolute(
+            realType,
+            fromV,
+            null,
+            null,
+            null,
+            context
+          )
+        : new Directions(
+            realType,
+            new LastFrom(null),
+            new LastTo(null)
+          ).convertToAbsolute(realType, fromV, null, null, null, context);
 
-			for (final Radial radial : radials)
-			{
-				for (int i = 1; i < radial.steps().length; i++)
-				{
-					final int locUnderThreat = radial.steps()[i].id();
-					if (!isTarget(context, locUnderThreat))
-						break;
+    for (final AbsoluteDirection direction : directions) {
+      final List<Radial> radials = topology
+        .trajectories()
+        .radials(type, fromV.index(), direction);
 
-					final int saveFrom = context.from();
-					final int saveTo = context.to();
-					context.setFrom(Constants.OFF);
-					context.setTo(locUnderThreat);
-					MoveUtilities.chainRuleCrossProduct(context, moves, effect, null, false);
-					context.setTo(saveTo);
-					context.setFrom(saveFrom);
-				}
-			}
-		}
+      for (final Radial radial : radials) {
+        for (int i = 1; i < radial.steps().length; i++) {
+          final int locUnderThreat = radial.steps()[i].id();
+          if (!isTarget(context, locUnderThreat)) break;
 
-		context.setFrom(fromOrig);
-		context.setTo(toOrig);
+          final int saveFrom = context.from();
+          final int saveTo = context.to();
+          context.setFrom(Constants.OFF);
+          context.setTo(locUnderThreat);
+          MoveUtilities.chainRuleCrossProduct(
+            context,
+            moves,
+            effect,
+            null,
+            false
+          );
+          context.setTo(saveTo);
+          context.setFrom(saveFrom);
+        }
+      }
+    }
 
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+    context.setFrom(fromOrig);
+    context.setTo(toOrig);
 
-		return moves;
-	}
+    // Store the Moves in the computed moves.
+    for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .setMovesLudeme(this);
 
-	/**
-	 * @param context  The context.
-	 * @param location The location.
-	 * @return True if the target condition is true.
-	 */
-	private boolean isTarget
-	(
-		final Context context,
-		final int location
-	)
-	{
-		context.setTo(location);
-		return targetRule.eval(context);
-	}
+    return moves;
+  }
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param context  The context.
+   * @param location The location.
+   * @return True if the target condition is true.
+   */
+  private boolean isTarget(final Context context, final int location) {
+    context.setTo(location);
+    return targetRule.eval(context);
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = startLocationFn.gameFlags(game) | targetRule.gameFlags(game)
-				| effect.gameFlags(game) | super.gameFlags(game);
-		
-		gameFlags |= SiteType.gameFlags(type);
-		
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+  //-------------------------------------------------------------------------
 
-		return gameFlags;
-	}
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags =
+      startLocationFn.gameFlags(game) |
+      targetRule.gameFlags(game) |
+      effect.gameFlags(game) |
+      super.gameFlags(game);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(SiteType.concepts(type));
-		concepts.or(super.concepts(game));
-		concepts.or(startLocationFn.concepts(game));
-		concepts.or(targetRule.concepts(game));
-		concepts.or(effect.concepts(game));
+    gameFlags |= SiteType.gameFlags(type);
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-		// We check if that's effectively a capture (remove or fromTo).
-		if (effect.concepts(game).get(Concept.RemoveEffect.id())
-				|| effect.concepts(game).get(Concept.FromToEffect.id()))
-			concepts.set(Concept.DirectionCapture.id(), true);
+    return gameFlags;
+  }
 
-		return concepts;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(SiteType.concepts(type));
+    concepts.or(super.concepts(game));
+    concepts.or(startLocationFn.concepts(game));
+    concepts.or(targetRule.concepts(game));
+    concepts.or(effect.concepts(game));
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = writesEvalContextFlat();
-		writeEvalContext.or(super.writesEvalContextRecursive());
-		writeEvalContext.or(startLocationFn.writesEvalContextRecursive());
-		writeEvalContext.or(targetRule.writesEvalContextRecursive());
-		writeEvalContext.or(effect.writesEvalContextRecursive());
+    if (then() != null) concepts.or(then().concepts(game));
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
-	
-	@Override
-	public BitSet writesEvalContextFlat()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.set(EvalContextData.To.id(), true);
-		writeEvalContext.set(EvalContextData.From.id(), true);
-		return writeEvalContext;
-	}
+    // We check if that's effectively a capture (remove or fromTo).
+    if (
+      effect.concepts(game).get(Concept.RemoveEffect.id()) ||
+      effect.concepts(game).get(Concept.FromToEffect.id())
+    ) concepts.set(Concept.DirectionCapture.id(), true);
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
-		readEvalContext.or(startLocationFn.readsEvalContextRecursive());
-		readEvalContext.or(targetRule.readsEvalContextRecursive());
-		readEvalContext.or(effect.readsEvalContextRecursive());
+    return concepts;
+  }
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = writesEvalContextFlat();
+    writeEvalContext.or(super.writesEvalContextRecursive());
+    writeEvalContext.or(startLocationFn.writesEvalContextRecursive());
+    writeEvalContext.or(targetRule.writesEvalContextRecursive());
+    writeEvalContext.or(effect.writesEvalContextRecursive());
 
-	@Override
-	public boolean isStatic()
-	{
-		return startLocationFn.isStatic() && targetRule.isStatic() && effect.isStatic();
-	}
-	
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
-		super.preprocess(game);
-		
-		startLocationFn.preprocess(game);
-		targetRule.preprocess(game);
-		effect.preprocess(game);
-	}
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
-		missingRequirement |= startLocationFn.missingRequirement(game);
-		missingRequirement |= targetRule.missingRequirement(game);
-		missingRequirement |= effect.missingRequirement(game);
+  @Override
+  public BitSet writesEvalContextFlat() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.set(EvalContextData.To.id(), true);
+    writeEvalContext.set(EvalContextData.From.id(), true);
+    return writeEvalContext;
+  }
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
+    readEvalContext.or(startLocationFn.readsEvalContextRecursive());
+    readEvalContext.or(targetRule.readsEvalContextRecursive());
+    readEvalContext.or(effect.readsEvalContextRecursive());
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
-		willCrash |= startLocationFn.willCrash(game);
-		willCrash |= targetRule.willCrash(game);
-		willCrash |= effect.willCrash(game);
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+  @Override
+  public boolean isStatic() {
+    return (
+      startLocationFn.isStatic() && targetRule.isStatic() && effect.isStatic()
+    );
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
+    super.preprocess(game);
 
-	@Override
-	public String toEnglish(final Game game)
-	{		
-		String targetString = "";
-		if (targetRule != null)
-			targetString = " if the target is " + targetRule.toEnglish(game);
-		
-		String directionString = "";
-		if (dirnChoice != null)
-			directionString += " with "+ dirnChoice.toEnglish(game)+ " direction";
-		
-		String fromString = "";
-		if (startLocationFn != null)
-			fromString = " starting from " + startLocationFn.toEnglish(game);
+    startLocationFn.preprocess(game);
+    targetRule.preprocess(game);
+    effect.preprocess(game);
+  }
 
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return "for all pieces on " + type.name() + StringRoutines.getPlural(type.name()) + fromString + directionString + targetString + effect.toEnglish(game) + thenString;
-	}
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
+    missingRequirement |= startLocationFn.missingRequirement(game);
+    missingRequirement |= targetRule.missingRequirement(game);
+    missingRequirement |= effect.missingRequirement(game);
 
-	//-------------------------------------------------------------------------
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
 
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
+    willCrash |= startLocationFn.willCrash(game);
+    willCrash |= targetRule.willCrash(game);
+    willCrash |= effect.willCrash(game);
+
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String targetString = "";
+    if (targetRule != null) targetString =
+      " if the target is " + targetRule.toEnglish(game);
+
+    String directionString = "";
+    if (dirnChoice != null) directionString +=
+      " with " + dirnChoice.toEnglish(game) + " direction";
+
+    String fromString = "";
+    if (startLocationFn != null) fromString =
+      " starting from " + startLocationFn.toEnglish(game);
+
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return (
+      "for all pieces on " +
+      type.name() +
+      StringRoutines.getPlural(type.name()) +
+      fromString +
+      directionString +
+      targetString +
+      effect.toEnglish(game) +
+      thenString
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

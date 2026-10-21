@@ -1,7 +1,5 @@
 package game.rules.play.moves.nonDecision.effect;
 
-import java.util.BitSet;
-
 import annotations.Or;
 import game.Game;
 import game.functions.booleans.BooleanFunction;
@@ -10,6 +8,7 @@ import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
 import game.types.state.GameType;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.BitSet;
 import main.Constants;
 import other.action.puzzle.ActionSet;
 import other.action.puzzle.ActionToggle;
@@ -23,307 +22,292 @@ import other.state.puzzle.ContainerDeductionPuzzleState;
 
 /**
  * Defines constraints applied at run-time for filtering legal puzzle moves.
- * 
+ *
  * @author Eric
- * 
+ *
  * @remarks This ludeme applies to deduction puzzles.
  */
-public class Satisfy extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public class Satisfy extends Effect {
 
-	//-------------------------------------------------------------------------
-	
-	/** Constraints to apply. */
-	protected final BooleanFunction[] constraints;
+  private static final long serialVersionUID = 1L;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @param constraint  The constraint of the puzzle.
-	 * @param constraints The constraints of the puzzle.
-	 * 
-	 * @example (satisfy (all Different))
-	 */
-	public Satisfy
-	(
-		@Or	final BooleanFunction   constraint,
-		@Or	final BooleanFunction[] constraints
-	)
-	{
-		super(null);
-		
-		int numNonNull = 0;
-		if (constraint != null)
-			numNonNull++;
-		if (constraints != null)
-			numNonNull++;
-		
-		if (numNonNull != 1)
-			throw new IllegalArgumentException("Exactly one Or parameter must be non-null.");
-		
-		if (constraints != null)
-		{
-			this.constraints = constraints;
-		}
-		else
-		{
-			this.constraints = new BooleanFunction[1];
-			this.constraints[0] = constraint;
-		}
-	}
+  /** Constraints to apply. */
+  protected final BooleanFunction[] constraints;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		final Moves moves = new BaseMoves(super.then());
+  /**
+   * @param constraint  The constraint of the puzzle.
+   * @param constraints The constraints of the puzzle.
+   *
+   * @example (satisfy (all Different))
+   */
+  public Satisfy(
+    @Or final BooleanFunction constraint,
+    @Or final BooleanFunction[] constraints
+  ) {
+    super(null);
 
-		final SiteType type = context.board().defaultSite();
-		final int min = context.board().getRange(type).min(context);
-		final int max = context.board().getRange(type).max(context);
+    int numNonNull = 0;
+    if (constraint != null) numNonNull++;
+    if (constraints != null) numNonNull++;
 
-		// Eric: improvement possible here in doing the next three steps one time when
-		// the game is started.
+    if (numNonNull != 1) throw new IllegalArgumentException(
+      "Exactly one Or parameter must be non-null."
+    );
 
-		// We get all the variables constrained by the puzzle.
-		final TIntArrayList varsConstraints = context.game().constraintVariables();
+    if (constraints != null) {
+      this.constraints = constraints;
+    } else {
+      this.constraints = new BooleanFunction[1];
+      this.constraints[0] = constraint;
+    }
+  }
 
-		// We got the variables (locations) already solved.
-		final TIntArrayList initLoc = new TIntArrayList();
-		if (context.game().rules().start() != null)
-			if (context.game().rules().start().rules()[0].isSet())
-			{
-				final game.rules.start.deductionPuzzle.Set startRule = (game.rules.start.deductionPuzzle.Set) context
-						.game().rules().start().rules()[0];
-				final Integer[] init = startRule.vars();
-				for (final Integer in : init)
-					initLoc.add(in.intValue());
-			}
+  //-------------------------------------------------------------------------
 
-		// We keep only the real variables of the problem.
-		final TIntArrayList sites = new TIntArrayList();
-		for (int i = 0; i < varsConstraints.size(); i++)
-		{
-			final int var = varsConstraints.getQuick(i);
-			if (!initLoc.contains(var))
-				sites.add(var);
-		}
+  @Override
+  public Moves eval(final Context context) {
+    final Moves moves = new BaseMoves(super.then());
 
-		// We compute the legal moves
-		for (int i = 0; i < sites.size(); i++)
-		{
-			final int site = sites.getQuick(i);
-			for (int index = min; index <= max; index++)
-			{
-				// SET
-				final ActionSet actionSet = new ActionSet(type, site, index);
-				actionSet.setDecision(true);
-				final Move moveSet = new Move(actionSet);
-				moveSet.setFromNonDecision(site);
-				moveSet.setToNonDecision(site);
+    final SiteType type = context.board().defaultSite();
+    final int min = context.board().getRange(type).min(context);
+    final int max = context.board().getRange(type).max(context);
 
-				// Check constraint
-				final Context newContext = new TempContext(context);
-				newContext.game().apply(newContext, moveSet);
-				boolean constraintOK = true;
-				if (constraints != null)
-					for (final BooleanFunction constraint : constraints)
-						if (!constraint.eval(newContext))
-						{
-							constraintOK = false;
-							break;
-						}
+    // Eric: improvement possible here in doing the next three steps one time when
+    // the game is started.
 
-				if (constraintOK)
-				{
-					final int saveFrom = context.from();
-					final int saveTo = context.to();
-					context.setFrom(site);
-					context.setTo(Constants.OFF);
-					MoveUtilities.chainRuleCrossProduct(context, moves, null, moveSet, false);
-					context.setTo(saveTo);
-					context.setFrom(saveFrom);
-				}
+    // We get all the variables constrained by the puzzle.
+    final TIntArrayList varsConstraints = context.game().constraintVariables();
 
-				// TOGGLE
-				final ActionToggle actionToggle = new ActionToggle(type, site, index);
-				actionToggle.setDecision(true);
-				final Move moveToggle = new Move(actionToggle);
-				moveToggle.setFromNonDecision(site);
-				moveToggle.setToNonDecision(site);
+    // We got the variables (locations) already solved.
+    final TIntArrayList initLoc = new TIntArrayList();
+    if (context.game().rules().start() != null) if (
+      context.game().rules().start().rules()[0].isSet()
+    ) {
+      final game.rules.start.deductionPuzzle.Set startRule =
+        (game.rules.start.deductionPuzzle.Set) context
+          .game()
+          .rules()
+          .start()
+          .rules()[0];
+      final Integer[] init = startRule.vars();
+      for (final Integer in : init) initLoc.add(in.intValue());
+    }
 
-				final ContainerDeductionPuzzleState ps = (ContainerDeductionPuzzleState) context.state().containerStates()[0];
+    // We keep only the real variables of the problem.
+    final TIntArrayList sites = new TIntArrayList();
+    for (int i = 0; i < varsConstraints.size(); i++) {
+      final int var = varsConstraints.getQuick(i);
+      if (!initLoc.contains(var)) sites.add(var);
+    }
 
-				// Check if all is off
-				if (!(ps.isResolved(site, type) && ps.bit(site, index, type)))
-				{
-					final int saveFrom = context.from();
-					final int saveTo = context.to();
-					context.setFrom(site);
-					context.setTo(Constants.OFF);
-					MoveUtilities.chainRuleCrossProduct(context, moves, null, moveToggle, false);
-					context.setTo(saveTo);
-					context.setFrom(saveFrom);
-				}
-			}
-		}
-		
-		for (final Move m : moves.moves())
-			m.setMover(1);
+    // We compute the legal moves
+    for (int i = 0; i < sites.size(); i++) {
+      final int site = sites.getQuick(i);
+      for (int index = min; index <= max; index++) {
+        // SET
+        final ActionSet actionSet = new ActionSet(type, site, index);
+        actionSet.setDecision(true);
+        final Move moveSet = new Move(actionSet);
+        moveSet.setFromNonDecision(site);
+        moveSet.setToNonDecision(site);
 
-		return moves;
-	}
+        // Check constraint
+        final Context newContext = new TempContext(context);
+        newContext.game().apply(newContext, moveSet);
+        boolean constraintOK = true;
+        if (
+          constraints != null
+        ) for (final BooleanFunction constraint : constraints)
+          if (!constraint.eval(newContext)) {
+            constraintOK = false;
+            break;
+          }
 
-	//-------------------------------------------------------------------------
+        if (constraintOK) {
+          final int saveFrom = context.from();
+          final int saveTo = context.to();
+          context.setFrom(site);
+          context.setTo(Constants.OFF);
+          MoveUtilities.chainRuleCrossProduct(
+            context,
+            moves,
+            null,
+            moveSet,
+            false
+          );
+          context.setTo(saveTo);
+          context.setFrom(saveFrom);
+        }
 
-	/**
-	 * @return The constraints to satisfy.
-	 */
-	public BooleanFunction[] constraints() 
-	{
-		return constraints;
-	}
+        // TOGGLE
+        final ActionToggle actionToggle = new ActionToggle(type, site, index);
+        actionToggle.setDecision(true);
+        final Move moveToggle = new Move(actionToggle);
+        moveToggle.setFromNonDecision(site);
+        moveToggle.setToNonDecision(site);
 
-	//-------------------------------------------------------------------------
+        final ContainerDeductionPuzzleState ps =
+          (ContainerDeductionPuzzleState) context.state().containerStates()[0];
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = super.gameFlags(game) | GameType.DeductionPuzzle;
+        // Check if all is off
+        if (!(ps.isResolved(site, type) && ps.bit(site, index, type))) {
+          final int saveFrom = context.from();
+          final int saveTo = context.to();
+          context.setFrom(site);
+          context.setTo(Constants.OFF);
+          MoveUtilities.chainRuleCrossProduct(
+            context,
+            moves,
+            null,
+            moveToggle,
+            false
+          );
+          context.setTo(saveTo);
+          context.setFrom(saveFrom);
+        }
+      }
+    }
 
-		for (final BooleanFunction constraint : constraints)
-			gameFlags |= constraint.gameFlags(game);
+    for (final Move m : moves.moves()) m.setMover(1);
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+    return moves;
+  }
 
-		return gameFlags;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
-		concepts.set(Concept.DeductionPuzzle.id(), true);
-		concepts.set(Concept.CopyContext.id(), true);
+  /**
+   * @return The constraints to satisfy.
+   */
+  public BooleanFunction[] constraints() {
+    return constraints;
+  }
 
-		for (final BooleanFunction constraint : constraints)
-			concepts.or(constraint.concepts(game));
+  //-------------------------------------------------------------------------
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = super.gameFlags(game) | GameType.DeductionPuzzle;
 
-		return concepts;
-	}
+    for (final BooleanFunction constraint : constraints)
+      gameFlags |= constraint.gameFlags(game);
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = writesEvalContextFlat();
-		writeEvalContext.or(super.writesEvalContextRecursive());
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-		for (final BooleanFunction constraint : constraints)
-			writeEvalContext.or(constraint.writesEvalContextRecursive());
+    return gameFlags;
+  }
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
-	
-	@Override
-	public BitSet writesEvalContextFlat()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.set(EvalContextData.To.id(), true);
-		writeEvalContext.set(EvalContextData.From.id(), true);
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
+    concepts.set(Concept.DeductionPuzzle.id(), true);
+    concepts.set(Concept.CopyContext.id(), true);
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
+    for (final BooleanFunction constraint : constraints)
+      concepts.or(constraint.concepts(game));
 
-		for (final BooleanFunction constraint : constraints)
-			readEvalContext.or(constraint.readsEvalContextRecursive());
+    if (then() != null) concepts.or(then().concepts(game));
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    return concepts;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = writesEvalContextFlat();
+    writeEvalContext.or(super.writesEvalContextRecursive());
 
-		for (final BooleanFunction constraint : constraints)
-			missingRequirement |= constraint.missingRequirement(game);
+    for (final BooleanFunction constraint : constraints)
+      writeEvalContext.or(constraint.writesEvalContextRecursive());
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		if (game.players().count() != 1)
-		{
-			game.addCrashToReport("The ludeme (satisfy ...) is used but the number of players is not 1.");
-			willCrash = true;
-		}
-		willCrash |= super.willCrash(game);
+  @Override
+  public BitSet writesEvalContextFlat() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.set(EvalContextData.To.id(), true);
+    writeEvalContext.set(EvalContextData.From.id(), true);
+    return writeEvalContext;
+  }
 
-		for (final BooleanFunction constraint : constraints)
-			willCrash |= constraint.willCrash(game);
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+    for (final BooleanFunction constraint : constraints)
+      readEvalContext.or(constraint.readsEvalContextRecursive());
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		super.preprocess(game);
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-		for (final BooleanFunction constraint : constraints)
-			constraint.preprocess(game);
-	}
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+    for (final BooleanFunction constraint : constraints)
+      missingRequirement |= constraint.missingRequirement(game);
 
-	//-------------------------------------------------------------------------
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
 
-	@Override
-	public boolean isConstraintsMoves()
-	{
-		return true;
-	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		String text = "";
-		for (final BooleanFunction constraint : constraints)
-			text += "Satisfy the constraint: " + constraint.toEnglish(game) + ", ";
-		
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return text.substring(0, text.length()-2) + thenString;
-	}
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    if (game.players().count() != 1) {
+      game.addCrashToReport(
+        "The ludeme (satisfy ...) is used but the number of players is not 1."
+      );
+      willCrash = true;
+    }
+    willCrash |= super.willCrash(game);
 
+    for (final BooleanFunction constraint : constraints)
+      willCrash |= constraint.willCrash(game);
+
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    super.preprocess(game);
+
+    for (final BooleanFunction constraint : constraints)
+      constraint.preprocess(game);
+  }
+
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public boolean isConstraintsMoves() {
+    return true;
+  }
+
+  @Override
+  public String toEnglish(final Game game) {
+    String text = "";
+    for (final BooleanFunction constraint : constraints)
+      text += "Satisfy the constraint: " + constraint.toEnglish(game) + ", ";
+
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return text.substring(0, text.length() - 2) + thenString;
+  }
 }

@@ -1,7 +1,5 @@
 package game.functions.region.sites.largePiece;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -12,6 +10,7 @@ import game.functions.region.BaseRegionFunction;
 import game.types.board.SiteType;
 import game.util.equipment.Region;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.BitSet;
 import other.context.Context;
 import other.state.container.ContainerState;
 
@@ -21,149 +20,141 @@ import other.state.container.ContainerState;
  * @author Eric.Piette
  */
 @Hide
-public final class SitesLargePiece extends BaseRegionFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class SitesLargePiece extends BaseRegionFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The site to look */
-	private final IntFunction at;
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @param type The type of the graph element [DefaultSite].
-	 * @param at   The site to look.
-	 */
-	public SitesLargePiece
-	(
-		      @Opt  final SiteType    type, 
-		@Name       final IntFunction at
-	)
-	{
-		this.at = at;
-		this.type = type;
-	}
+  /** The site to look */
+  private final IntFunction at;
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param type The type of the graph element [DefaultSite].
+   * @param at   The site to look.
+   */
+  public SitesLargePiece(@Opt final SiteType type, @Name final IntFunction at) {
+    this.at = at;
+    this.type = type;
+  }
 
-	@Override
-	public Region eval(final Context context)
-	{
-		final int site = at.eval(context);
-		final SiteType realType = (type != null) ? type : context.game().board().defaultSite();
-		final TIntArrayList sitesOccupied = new TIntArrayList();
+  //-------------------------------------------------------------------------
 
-		// If not on the main board.
-		if (site >= context.board().topology().getGraphElements(realType).size())
-			return new Region(sitesOccupied.toArray());
+  @Override
+  public Region eval(final Context context) {
+    final int site = at.eval(context);
+    final SiteType realType =
+      type != null ? type : context.game().board().defaultSite();
+    final TIntArrayList sitesOccupied = new TIntArrayList();
 
-		final ContainerState cs = context.containerState(0);
-		final int what = cs.what(site, realType);
+    // If not on the main board.
+    if (
+      site >= context.board().topology().getGraphElements(realType).size()
+    ) return new Region(sitesOccupied.toArray());
 
-		// If no piece.
-		if (what == 0)
-			return new Region(sitesOccupied.toArray());
+    final ContainerState cs = context.containerState(0);
+    final int what = cs.what(site, realType);
 
-		final Component piece = context.components()[what];
+    // If no piece.
+    if (what == 0) return new Region(sitesOccupied.toArray());
 
-		// If not large piece
-		if (!piece.isLargePiece())
-		{
-			sitesOccupied.add(site);
-			return new Region(sitesOccupied.toArray());
-		}
+    final Component piece = context.components()[what];
 
-		final int localState = cs.state(site, type);
-		final TIntArrayList locs = piece.locs(context, site, localState, context.topology());
-		for (int j = 0; j < locs.size(); j++)
-			if (!sitesOccupied.contains(locs.get(j)))
-				sitesOccupied.add(locs.get(j));
+    // If not large piece
+    if (!piece.isLargePiece()) {
+      sitesOccupied.add(site);
+      return new Region(sitesOccupied.toArray());
+    }
 
-		return new Region(sitesOccupied.toArray());
-	}
+    final int localState = cs.state(site, type);
+    final TIntArrayList locs = piece.locs(
+      context,
+      site,
+      localState,
+      context.topology()
+    );
+    for (int j = 0; j < locs.size(); j++) if (
+      !sitesOccupied.contains(locs.get(j))
+    ) sitesOccupied.add(locs.get(j));
 
-	//-------------------------------------------------------------------------
+    return new Region(sitesOccupied.toArray());
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = 0;
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-		gameFlags |= SiteType.gameFlags(type);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = 0;
 
-		gameFlags |= at.gameFlags(game);
+    gameFlags |= SiteType.gameFlags(type);
 
-		return gameFlags;
-	}
+    gameFlags |= at.gameFlags(game);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(SiteType.concepts(type));
-		concepts.or(at.concepts(game));
-		return concepts;
-	}
+    return gameFlags;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(at.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(SiteType.concepts(type));
+    concepts.or(at.concepts(game));
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(at.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(at.writesEvalContextRecursive());
+    return writeEvalContext;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
-		at.preprocess(game);
-	}
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(at.readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		if (!game.hasLargePiece())
-		{
-			game.addRequirementToReport(
-					"The ludeme (sites LargePiece ...) is used but the equipment has no large pieces.");
-			missingRequirement = true;
-		}
-		missingRequirement |= at.missingRequirement(game);
-		return missingRequirement;
-	}
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
+    at.preprocess(game);
+  }
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= at.willCrash(game);
-		return willCrash;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{		
-		return "the sites covered by the large piece located on site " + at.toEnglish(game);
-	}
-	
-	//-------------------------------------------------------------------------
-		
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    if (!game.hasLargePiece()) {
+      game.addRequirementToReport(
+        "The ludeme (sites LargePiece ...) is used but the equipment has no large pieces."
+      );
+      missingRequirement = true;
+    }
+    missingRequirement |= at.missingRequirement(game);
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= at.willCrash(game);
+    return willCrash;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    return (
+      "the sites covered by the large piece located on site " +
+      at.toEnglish(game)
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

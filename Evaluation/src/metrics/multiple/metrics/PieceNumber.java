@@ -1,7 +1,6 @@
 package metrics.multiple.metrics;
 
 import java.util.ArrayList;
-
 import main.Constants;
 import metrics.Evaluation;
 import metrics.Utils;
@@ -13,61 +12,59 @@ import other.trial.Trial;
 
 /**
  * The number of pieces on the board.
- * 
+ *
  * @author matthew.stephenson
  */
-public class PieceNumber extends MultiMetricFramework
-{
+public class PieceNumber extends MultiMetricFramework {
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Constructor
-	 */
-	public PieceNumber(final MultiMetricValue multiMetricValue, final Concept concept)
-	{
-		super
-		(
-			"Piece Number " + multiMetricValue.name(), 
-			"The number of pieces on the board.", 
-			0.0, 
-			Constants.INFINITY,
-			concept,
-			multiMetricValue
-		);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Double[] getMetricValueList(final Evaluation evaluation, final Trial trial, final Context context)
-	{
-		final ArrayList<Double> valueList = new ArrayList<>();
-		valueList.add(Double.valueOf(Utils.numPieces(context)));
-		for (final Move m : trial.generateRealMovesList())
-		{
-			context.game().apply(context, m);
-			valueList.add(Double.valueOf(Utils.numPieces(context)));
-		}
-		return valueList.toArray(new Double[0]);
-	}
+  /**
+   * Constructor
+   */
+  public PieceNumber(
+    final MultiMetricValue multiMetricValue,
+    final Concept concept
+  ) {
+    super(
+      "Piece Number " + multiMetricValue.name(),
+      "The number of pieces on the board.",
+      0.0,
+      Constants.INFINITY,
+      concept,
+      multiMetricValue
+    );
+  }
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public void startNewTrial(final Context context, final Trial fullTrial)
-	{
-		currValueList = new ArrayList<Double>();
-		currValueList.add(Double.valueOf(Utils.numPieces(context)));
-	}
-	
-	@Override
-	public void observeNextState(final Context context)
-	{
-		currValueList.add(Double.valueOf(Utils.numPieces(context)));
-	}
-	
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
+  @Override
+  public Double[] getMetricValueList(
+    final Evaluation evaluation,
+    final Trial trial,
+    final Context context
+  ) {
+    final ArrayList<Double> valueList = new ArrayList<>();
+    valueList.add(Double.valueOf(Utils.numPieces(context)));
+    for (final Move m : trial.generateRealMovesList()) {
+      context.game().apply(context, m);
+      valueList.add(Double.valueOf(Utils.numPieces(context)));
+    }
+    return valueList.toArray(new Double[0]);
+  }
 
+  //-------------------------------------------------------------------------
+
+  @Override
+  public void startNewTrial(final Context context, final Trial fullTrial) {
+    currValueList = new ArrayList<Double>();
+    currValueList.add(Double.valueOf(Utils.numPieces(context)));
+  }
+
+  @Override
+  public void observeNextState(final Context context) {
+    currValueList.add(Double.valueOf(Utils.numPieces(context)));
+  }
+
+  //-------------------------------------------------------------------------
 }

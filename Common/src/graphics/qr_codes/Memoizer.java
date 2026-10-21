@@ -1,11 +1,11 @@
 package graphics.qr_codes;
 
-/* 
+/*
  * Fast QR Code generator library
- * 
+ *
  * Copyright (c) Project Nayuki. (MIT License)
  * https://www.nayuki.io/page/fast-qr-code-generator-library
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
@@ -30,66 +30,59 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-
 // A thread-safe cache based on soft references.
-final class Memoizer<T,R> {
-	
-	private final Function<T,R> function;
-	Map<T,SoftReference<R>> cache = new ConcurrentHashMap<>();
-	private Set<T> pending = new HashSet<>();
-	
-	
-	// Creates a memoizer based on the given function that takes one input to compute an output.
-	public Memoizer(Function<T,R> func) {
-		function = func;
-	}
-	
-	
-	// Computes function.apply(arg) or returns a cached copy of a previous call.
-	public R get(T arg) {
-		// Non-blocking fast path
-		{
-			SoftReference<R> ref = cache.get(arg);
-			if (ref != null) {
-				R result = ref.get();
-				if (result != null)
-					return result;
-			}
-		}
-		
-		// Sequential slow path
-		while (true) {
-			synchronized(this) {
-				SoftReference<R> ref = cache.get(arg);
-				if (ref != null) {
-					R result = ref.get();
-					if (result != null)
-						return result;
-					cache.remove(arg);
-				}
-				assert !cache.containsKey(arg);
-				
-				if (pending.add(arg))
-					break;
-				
-				try {
-					this.wait();
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
-		
-		try {
-			R result = function.apply(arg);
-			cache.put(arg, new SoftReference<>(result));
-			return result;
-		} finally {
-			synchronized(this) {
-				pending.remove(arg);
-				this.notifyAll();
-			}
-		}
-	}
-	
+final class Memoizer<T, R> {
+
+  private final Function<T, R> function;
+  Map<T, SoftReference<R>> cache = new ConcurrentHashMap<>();
+  private Set<T> pending = new HashSet<>();
+
+  // Creates a memoizer based on the given function that takes one input to compute an output.
+  public Memoizer(Function<T, R> func) {
+    function = func;
+  }
+
+  // Computes function.apply(arg) or returns a cached copy of a previous call.
+  public R get(T arg) {
+    // Non-blocking fast path
+    {
+      SoftReference<R> ref = cache.get(arg);
+      if (ref != null) {
+        R result = ref.get();
+        if (result != null) return result;
+      }
+    }
+
+    // Sequential slow path
+    while (true) {
+      synchronized (this) {
+        SoftReference<R> ref = cache.get(arg);
+        if (ref != null) {
+          R result = ref.get();
+          if (result != null) return result;
+          cache.remove(arg);
+        }
+        assert !cache.containsKey(arg);
+
+        if (pending.add(arg)) break;
+
+        try {
+          this.wait();
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    }
+
+    try {
+      R result = function.apply(arg);
+      cache.put(arg, new SoftReference<>(result));
+      return result;
+    } finally {
+      synchronized (this) {
+        pending.remove(arg);
+        this.notifyAll();
+      }
+    }
+  }
 }

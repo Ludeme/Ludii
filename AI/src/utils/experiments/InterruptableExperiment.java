@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.time.LocalDateTime;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,172 +29,148 @@ import javax.swing.WindowConstants;
  *
  * @author Dennis Soemers
  */
-public abstract class InterruptableExperiment
-{
+public abstract class InterruptableExperiment {
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/** Flag which will be set to true if the interrupt button is pressed */
-	protected boolean interrupted = false;
+  /** Flag which will be set to true if the interrupt button is pressed */
+  protected boolean interrupted = false;
 
-	/** Start time of experiment (in milliseconds) */
-	protected final long experimentStartTime;
+  /** Start time of experiment (in milliseconds) */
+  protected final long experimentStartTime;
 
-	/** Maximum wall time we're allowed to run for (in milliseconds) */
-	protected final long maxWallTimeMs;
+  /** Maximum wall time we're allowed to run for (in milliseconds) */
+  protected final long maxWallTimeMs;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Creates an "interruptible" experiment (with button to interrupt
-	 * experiment if useGUI = True), which will then also immediately
-	 * start running.
-	 *
-	 * @param useGUI
-	 */
-	public InterruptableExperiment(final boolean useGUI)
-	{
-		this(useGUI, -1);
-	}
+  /**
+   * Creates an "interruptible" experiment (with button to interrupt
+   * experiment if useGUI = True), which will then also immediately
+   * start running.
+   *
+   * @param useGUI
+   */
+  public InterruptableExperiment(final boolean useGUI) {
+    this(useGUI, -1);
+  }
 
-	/**
-	 * Creates an "interruptible" experiment (with button to interrupt
-	 * experiment if useGUI = True), which will then also immediately
-	 * start running.
-	 *
-	 * Using the checkWallTime() method, the experiment can also automatically
-	 * interrupt itself and exit cleanly before getting interrupted in a
-	 * not-clean manner due to exceeding wall time (e.g. on cluster)
-	 *
-	 * @param useGUI
-	 * @param maxWallTime Maximum wall time (in minutes)
-	 */
-	public InterruptableExperiment(final boolean useGUI, final int maxWallTime)
-	{
-		JFrame frame = null;
+  /**
+   * Creates an "interruptible" experiment (with button to interrupt
+   * experiment if useGUI = True), which will then also immediately
+   * start running.
+   *
+   * Using the checkWallTime() method, the experiment can also automatically
+   * interrupt itself and exit cleanly before getting interrupted in a
+   * not-clean manner due to exceeding wall time (e.g. on cluster)
+   *
+   * @param useGUI
+   * @param maxWallTime Maximum wall time (in minutes)
+   */
+  public InterruptableExperiment(final boolean useGUI, final int maxWallTime) {
+    JFrame frame = null;
 
-		experimentStartTime = System.currentTimeMillis();
-		maxWallTimeMs = 60L * 1000L * maxWallTime;
+    experimentStartTime = System.currentTimeMillis();
+    maxWallTimeMs = 60L * 1000L * maxWallTime;
 
-		if (useGUI)
-		{
-			frame = new JFrame("Ludii Interruptible Experiment");
-			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    if (useGUI) {
+      frame = new JFrame("Ludii Interruptible Experiment");
+      frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-			frame.addWindowListener(new WindowAdapter()
-			{
-				@Override
-				public void windowClosing(final WindowEvent e)
-				{
-					interrupted = true;
-				}
-			});
+      frame.addWindowListener(
+        new WindowAdapter() {
+          @Override
+          public void windowClosing(final WindowEvent e) {
+            interrupted = true;
+          }
+        }
+      );
 
-			// Logo
-			try
-			{
-				final URL resource = this.getClass().getResource("/ludii-logo-100x100.png");
-				final BufferedImage image = ImageIO.read(resource);
-				frame.setIconImage(image);
-			}
-			catch (final IOException e)
-			{
-				e.printStackTrace();
-			}
+      // Logo
+      try {
+        final URL resource = this.getClass().getResource(
+          "/ludii-logo-100x100.png"
+        );
+        final BufferedImage image = ImageIO.read(resource);
+        frame.setIconImage(image);
+      } catch (final IOException e) {
+        e.printStackTrace();
+      }
 
-			final JPanel panel = new JPanel(new GridLayout());
+      final JPanel panel = new JPanel(new GridLayout());
 
-			final JButton interruptButton = new JButton("Interrupt Experiment");
-			interruptButton.addActionListener(new ActionListener()
-			{
-				@Override
-				public void actionPerformed(final ActionEvent e) {
-					interrupted = true;
-				}
-			});
-			panel.add(interruptButton);
+      final JButton interruptButton = new JButton("Interrupt Experiment");
+      interruptButton.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(final ActionEvent e) {
+            interrupted = true;
+          }
+        }
+      );
+      panel.add(interruptButton);
 
-			frame.setContentPane(panel);
+      frame.setContentPane(panel);
 
-			frame.setSize(600, 250);
-			frame.setLocationRelativeTo(null);
+      frame.setSize(600, 250);
+      frame.setLocationRelativeTo(null);
 
-			frame.setVisible(true);
-		}
+      frame.setVisible(true);
+    }
 
-		try
-		{
-			runExperiment();
-		}
-		finally
-		{
-			if (frame != null)
-			{
-				frame.dispose();
-			}
-		}
-	}
+    try {
+      runExperiment();
+    } finally {
+      if (frame != null) {
+        frame.dispose();
+      }
+    }
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/** Implement experiment code here */
-	public abstract void runExperiment();
+  /** Implement experiment code here */
+  public abstract void runExperiment();
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Checks if we're about to exceed maximum wall time, and automatically
-	 * sets the interrupted flag if we are.
-	 *
-	 * @param safetyBuffer Ratio of maximum wall time that we're willing to
-	 * throw away just to be safe (0.01 or 0.05 should be good values)
-	 */
-	public void checkWallTime(final double safetyBuffer)
-	{
-		if (maxWallTimeMs > 0)
-		{
-			final long terminateAt =
-					(long) (experimentStartTime +
-							(1.0 - safetyBuffer) * maxWallTimeMs);
+  /**
+   * Checks if we're about to exceed maximum wall time, and automatically
+   * sets the interrupted flag if we are.
+   *
+   * @param safetyBuffer Ratio of maximum wall time that we're willing to
+   * throw away just to be safe (0.01 or 0.05 should be good values)
+   */
+  public void checkWallTime(final double safetyBuffer) {
+    if (maxWallTimeMs > 0) {
+      final long terminateAt = (long) (experimentStartTime +
+        (1.0 - safetyBuffer) * maxWallTimeMs);
 
-			if (System.currentTimeMillis() >= terminateAt)
-			{
-				interrupted = true;
-			}
-		}
-	}
+      if (System.currentTimeMillis() >= terminateAt) {
+        interrupted = true;
+      }
+    }
+  }
 
-	/**
-	 * Utility method that uses a given PrintWriter to print a single given
-	 * line to a log, but with the current time prepended.
-	 * @param logWriter
-	 * @param line
-	 */
-	@SuppressWarnings("static-method")
-	public void logLine(final PrintWriter logWriter, final String line)
-	{
-		if (logWriter != null)
-		{
-			logWriter.println
-			(
-				String.format
-				(
-					"[%s]: %s",
-					LocalDateTime.now(),
-					line
-				)
-			);
-		}
-	}
-	
-	/**
-	 * @return Do we want to be interrupted?
-	 */
-	public boolean wantsInterrupt()
-	{
-		return interrupted;
-	}
+  /**
+   * Utility method that uses a given PrintWriter to print a single given
+   * line to a log, but with the current time prepended.
+   * @param logWriter
+   * @param line
+   */
+  @SuppressWarnings("static-method")
+  public void logLine(final PrintWriter logWriter, final String line) {
+    if (logWriter != null) {
+      logWriter.println(String.format("[%s]: %s", LocalDateTime.now(), line));
+    }
+  }
 
-	//-------------------------------------------------------------------------
+  /**
+   * @return Do we want to be interrupted?
+   */
+  public boolean wantsInterrupt() {
+    return interrupted;
+  }
 
+  //-------------------------------------------------------------------------
 }

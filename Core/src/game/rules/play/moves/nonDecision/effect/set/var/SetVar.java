@@ -1,7 +1,5 @@
 package game.rules.play.moves.nonDecision.effect.set.var;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Opt;
 import game.Game;
@@ -12,6 +10,7 @@ import game.rules.play.moves.Moves;
 import game.rules.play.moves.nonDecision.effect.Effect;
 import game.rules.play.moves.nonDecision.effect.Then;
 import game.types.state.GameType;
+import java.util.BitSet;
 import main.Constants;
 import other.action.state.ActionSetTemp;
 import other.action.state.ActionSetVar;
@@ -21,194 +20,174 @@ import other.move.Move;
 
 /**
  * Stores an integer in the state in the variable "var".
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class SetVar extends Effect
-{
-	private static final long serialVersionUID = 1L;
+public final class SetVar extends Effect {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The value to set. */
-	private final IntFunction value;
+  //-------------------------------------------------------------------------
 
-	/** The name of the var */
-	private final String name;
+  /** The value to set. */
+  private final IntFunction value;
 
-	/**
-	 * @param name  The name of the var.
-	 * @param value The value to store in the context [-1].
-	 * @param then  The moves applied after that move is applied.
-	 */
-	public SetVar
-	(
-	    @Opt final String      name,
-	    @Opt final IntFunction value,
-		@Opt final Then        then
-	)
-	{
-		super(then);
-		this.value = (value == null) ? new IntConstant(Constants.UNDEFINED) : value;
-		this.name = name;
-	}
+  /** The name of the var */
+  private final String name;
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param name  The name of the var.
+   * @param value The value to store in the context [-1].
+   * @param then  The moves applied after that move is applied.
+   */
+  public SetVar(
+    @Opt final String name,
+    @Opt final IntFunction value,
+    @Opt final Then then
+  ) {
+    super(then);
+    this.value = value == null ? new IntConstant(Constants.UNDEFINED) : value;
+    this.name = name;
+  }
 
-	@Override
-	public Moves eval(final Context context)
-	{
-		final Moves moves = new BaseMoves(super.then());
-		final Move move;
+  //-------------------------------------------------------------------------
 
-		if (name == null)
-		{
-			final ActionSetTemp actionTemp = new ActionSetTemp(value.eval(context));
-			move = new Move(actionTemp);
-			moves.moves().add(move);
-		}
-		else
-		{
-			final ActionSetVar actionSetVar = new ActionSetVar(name, value.eval(context));
-			move = new Move(actionSetVar);
-			moves.moves().add(move);
-		}
+  @Override
+  public Moves eval(final Context context) {
+    final Moves moves = new BaseMoves(super.then());
+    final Move move;
 
-		if (then() != null)
-			for (int j = 0; j < moves.moves().size(); j++)
-				moves.moves().get(j).then().add(then().moves());
+    if (name == null) {
+      final ActionSetTemp actionTemp = new ActionSetTemp(value.eval(context));
+      move = new Move(actionTemp);
+      moves.moves().add(move);
+    } else {
+      final ActionSetVar actionSetVar = new ActionSetVar(
+        name,
+        value.eval(context)
+      );
+      move = new Move(actionSetVar);
+      moves.moves().add(move);
+    }
 
-		// Store the Moves in the computed moves.
-		for (int j = 0; j < moves.moves().size(); j++)
-			moves.moves().get(j).setMovesLudeme(this);
+    if (then() != null) for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .then()
+      .add(then().moves());
 
-		return moves;
-	}
+    // Store the Moves in the computed moves.
+    for (int j = 0; j < moves.moves().size(); j++) moves
+      .moves()
+      .get(j)
+      .setMovesLudeme(this);
 
-	//-------------------------------------------------------------------------
+    return moves;
+  }
 
-	@Override
-	public boolean canMoveTo(final Context context, final int target)
-	{
-		return false;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean canMoveTo(final Context context, final int target) {
+    return false;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = GameType.MapValue | super.gameFlags(game);
-		if (value != null)
-			gameFlags |= value.gameFlags(game);
+  //-------------------------------------------------------------------------
 
-		if (then() != null)
-			gameFlags |= then().gameFlags(game);
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = GameType.MapValue | super.gameFlags(game);
+    if (value != null) gameFlags |= value.gameFlags(game);
 
-		return gameFlags;
-	}
+    if (then() != null) gameFlags |= then().gameFlags(game);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(super.concepts(game));
+    return gameFlags;
+  }
 
-		if (value != null)
-			concepts.or(value.concepts(game));
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(super.concepts(game));
 
-		if (then() != null)
-			concepts.or(then().concepts(game));
+    if (value != null) concepts.or(value.concepts(game));
 
-		concepts.set(Concept.Variable.id(), true);
-		concepts.set(Concept.SetVar.id(), true);
+    if (then() != null) concepts.or(then().concepts(game));
 
-		return concepts;
-	}
+    concepts.set(Concept.Variable.id(), true);
+    concepts.set(Concept.SetVar.id(), true);
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.or(super.writesEvalContextRecursive());
+    return concepts;
+  }
 
-		if (value != null)
-			writeEvalContext.or(value.writesEvalContextRecursive());
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.or(super.writesEvalContextRecursive());
 
-		if (then() != null)
-			writeEvalContext.or(then().writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+    if (value != null) writeEvalContext.or(value.writesEvalContextRecursive());
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		readEvalContext.or(super.readsEvalContextRecursive());
+    if (then() != null) writeEvalContext.or(
+      then().writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
 
-		if (value != null)
-			readEvalContext.or(value.readsEvalContextRecursive());
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    readEvalContext.or(super.readsEvalContextRecursive());
 
-		if (then() != null)
-			readEvalContext.or(then().readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    if (value != null) readEvalContext.or(value.readsEvalContextRecursive());
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
-		missingRequirement |= super.missingRequirement(game);
+    if (then() != null) readEvalContext.or(then().readsEvalContextRecursive());
+    return readEvalContext;
+  }
 
-		if (value != null)
-			missingRequirement |= value.missingRequirement(game);
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+    missingRequirement |= super.missingRequirement(game);
 
-		if (then() != null)
-			missingRequirement |= then().missingRequirement(game);
-		return missingRequirement;
-	}
+    if (value != null) missingRequirement |= value.missingRequirement(game);
 
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
-		willCrash |= super.willCrash(game);
+    if (then() != null) missingRequirement |= then().missingRequirement(game);
+    return missingRequirement;
+  }
 
-		if (value != null)
-			willCrash |= value.willCrash(game);
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+    willCrash |= super.willCrash(game);
 
-		if (then() != null)
-			willCrash |= then().willCrash(game);
-		return willCrash;
-	}
+    if (value != null) willCrash |= value.willCrash(game);
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+    if (then() != null) willCrash |= then().willCrash(game);
+    return willCrash;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		super.preprocess(game);
-		if (value != null)
-			value.preprocess(game);
-	}
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		String thenString = "";
-		if (then() != null)
-			thenString = " then " + then().toEnglish(game);
-		
-		return "set the variable " + name + " to " + value.toEnglish(game) + thenString;
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public void preprocess(final Game game) {
+    super.preprocess(game);
+    if (value != null) value.preprocess(game);
+  }
 
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    String thenString = "";
+    if (then() != null) thenString = " then " + then().toEnglish(game);
+
+    return (
+      "set the variable " + name + " to " + value.toEnglish(game) + thenString
+    );
+  }
+
+  //-------------------------------------------------------------------------
 }

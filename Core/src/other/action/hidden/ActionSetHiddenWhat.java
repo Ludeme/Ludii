@@ -1,9 +1,8 @@
 package other.action.hidden;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
 import game.types.board.SiteType;
+import java.util.BitSet;
 import main.Constants;
 import other.action.Action;
 import other.action.ActionType;
@@ -18,297 +17,309 @@ import other.state.container.ContainerState;
  *
  * @author Eric.Piette
  */
-public final class ActionSetHiddenWhat extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionSetHiddenWhat extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The index of the graph element. */
-	private final int to;
+  //-------------------------------------------------------------------------
 
-	/** The cost to set. */
-	private int level = Constants.UNDEFINED;
+  /** The index of the graph element. */
+  private final int to;
 
-	/** The value to set */
-	private final boolean value;
+  /** The cost to set. */
+  private int level = Constants.UNDEFINED;
 
-	/** The id of the player */
-	private final int who;
+  /** The value to set */
+  private final boolean value;
 
-	/** The type of the graph element. */
-	private SiteType type;
+  /** The id of the player */
+  private final int who;
 
-	//-------------------------------------------------------------------------
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous value. */
-	private boolean previousValue;
-	
-	/** The previous site type. */
-	private SiteType previousType;
+  /** The type of the graph element. */
+  private SiteType type;
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	/**
-	 * @param who   The player index.
-	 * @param type  The graph element.
-	 * @param to    The index of the site.
-	 * @param level The level.
-	 * @param value The value to set.
-	 */
-	public ActionSetHiddenWhat(final int who, final SiteType type, final int to, final int level, final boolean value)
-	{
-		this.type = type;
-		this.to = to;
-		this.who = who;
-		this.level = level;
-		this.value = value;
-	}
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-	/**
-	 * Reconstructs an ActionSetHiddenWhat object from a detailed String (generated
-	 * using toDetailedString())
-	 * 
-	 * @param detailedString
-	 */
-	public ActionSetHiddenWhat(final String detailedString)
-	{
-		assert (detailedString.startsWith("[SetHiddenWhat:"));
+  /** The previous value. */
+  private boolean previousValue;
 
-		final String strWho = Action.extractData(detailedString, "who");
-		who = Integer.parseInt(strWho);
+  /** The previous site type. */
+  private SiteType previousType;
 
-		final String strType = Action.extractData(detailedString, "type");
-		type = (strType.isEmpty()) ? null : SiteType.valueOf(strType);
+  //-------------------------------------------------------------------------
 
-		final String strTo = Action.extractData(detailedString, "to");
-		to = Integer.parseInt(strTo);
+  /**
+   * @param who   The player index.
+   * @param type  The graph element.
+   * @param to    The index of the site.
+   * @param level The level.
+   * @param value The value to set.
+   */
+  public ActionSetHiddenWhat(
+    final int who,
+    final SiteType type,
+    final int to,
+    final int level,
+    final boolean value
+  ) {
+    this.type = type;
+    this.to = to;
+    this.who = who;
+    this.level = level;
+    this.value = value;
+  }
 
-		final String strLevel = Action.extractData(detailedString, "level");
-		level = (strLevel.isEmpty()) ? 0 : Integer.parseInt(strLevel);
+  /**
+   * Reconstructs an ActionSetHiddenWhat object from a detailed String (generated
+   * using toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionSetHiddenWhat(final String detailedString) {
+    assert detailedString.startsWith("[SetHiddenWhat:");
 
-		final String strValue = Action.extractData(detailedString, "value");
-		value = Boolean.parseBoolean(strValue);
+    final String strWho = Action.extractData(detailedString, "who");
+    who = Integer.parseInt(strWho);
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+    final String strType = Action.extractData(detailedString, "type");
+    type = strType.isEmpty() ? null : SiteType.valueOf(strType);
 
-	//-------------------------------------------------------------------------
+    final String strTo = Action.extractData(detailedString, "to");
+    to = Integer.parseInt(strTo);
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		type = (type == null) ? context.board().defaultSite() : type;
-		
-		if(!alreadyApplied)
-		{
-			final int cid = to >= context.containerId().length ? 0 : context.containerId()[to];
-			final ContainerState cs = context.state().containerStates()[cid];
-			previousValue = cs.isHiddenWhat(who, to, level, type);
-			previousType = type;
-			alreadyApplied = true;
-		}
-		
-		context.containerState(context.containerId()[to]).setHiddenWhat(context.state(), who, to, level, type, value);
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		context.containerState(context.containerId()[to]).setHiddenWhat(context.state(), who, to, level, previousType, previousValue);
-		return this;
-	}
+    final String strLevel = Action.extractData(detailedString, "level");
+    level = strLevel.isEmpty() ? 0 : Integer.parseInt(strLevel);
 
-	//-------------------------------------------------------------------------
+    final String strValue = Action.extractData(detailedString, "value");
+    value = Boolean.parseBoolean(strValue);
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-		sb.append("[SetHiddenWhat:");
-		if (type != null || (context != null && type != context.board().defaultSite()))
-		{
-			sb.append("type=" + type);
-			sb.append(",to=" + to);
-		}
-		else
-			sb.append("to=" + to);
+  //-------------------------------------------------------------------------
 
-		if (level != Constants.UNDEFINED)
-			sb.append(",level=" + level);
-		sb.append(",who=" + who);
-		sb.append(",value=" + value);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    type = type == null ? context.board().defaultSite() : type;
 
-		return sb.toString();
-	}
+    if (!alreadyApplied) {
+      final int cid =
+        to >= context.containerId().length ? 0 : context.containerId()[to];
+      final ContainerState cs = context.state().containerStates()[cid];
+      previousValue = cs.isHiddenWhat(who, to, level, type);
+      previousType = type;
+      alreadyApplied = true;
+    }
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + to;
-		result = prime * result + (value ? 1231 : 1237);
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		result = prime * result + who;
-		return result;
-	}
+    context
+      .containerState(context.containerId()[to])
+      .setHiddenWhat(context.state(), who, to, level, type, value);
+    return this;
+  }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  //-------------------------------------------------------------------------
 
-		if (!(obj instanceof ActionSetHiddenWhat))
-			return false;
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    context
+      .containerState(context.containerId()[to])
+      .setHiddenWhat(
+        context.state(),
+        who,
+        to,
+        level,
+        previousType,
+        previousValue
+      );
+    return this;
+  }
 
-		final ActionSetHiddenWhat other = (ActionSetHiddenWhat) obj;
-		return (decision == other.decision && to == other.to && value == other.value && who == other.who
-				&& value == other.value && type.equals(other.type));
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public String getDescription()
-	{
-		return "SetHiddenWhat";
-	}
+    sb.append("[SetHiddenWhat:");
+    if (
+      type != null || (context != null && type != context.board().defaultSite())
+    ) {
+      sb.append("type=" + type);
+      sb.append(",to=" + to);
+    } else sb.append("to=" + to);
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+    if (level != Constants.UNDEFINED) sb.append(",level=" + level);
+    sb.append(",who=" + who);
+    sb.append(",value=" + value);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
-		String newTo = to + "";
-		if (useCoords)
-		{
-			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[to]
-					: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
-						.label();
-			}
-		}
+    return sb.toString();
+  }
 
-		if (type != null && !type.equals(context.board().defaultSite()))
-			sb.append(type + " " + newTo);
-		else
-			sb.append(newTo);
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + to;
+    result = prime * result + (value ? 1231 : 1237);
+    result = prime * result + (type == null ? 0 : type.hashCode());
+    result = prime * result + who;
+    return result;
+  }
 
-		if (level != Constants.UNDEFINED)
-			sb.append("/" + level);
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-		sb.append("P" + who);
-		if (value)
-			sb.append("=HiddenWhat");
-		else
-			sb.append("!=HiddenWhat");
+    if (!(obj instanceof ActionSetHiddenWhat)) return false;
 
-		return sb.toString();
-	}
+    final ActionSetHiddenWhat other = (ActionSetHiddenWhat) obj;
+    return (
+      decision == other.decision &&
+      to == other.to &&
+      value == other.value &&
+      who == other.who &&
+      value == other.value &&
+      type.equals(other.type)
+    );
+  }
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		final StringBuilder sb = new StringBuilder();
+  //-------------------------------------------------------------------------
 
-		sb.append("(HiddenWhat at ");
+  @Override
+  public String getDescription() {
+    return "SetHiddenWhat";
+  }
 
-		String newTo = to + "";
-		if (useCoords)
-		{
-			final int cid = (type == SiteType.Cell || type == null && context.board().defaultSite() == SiteType.Cell)
-					? context.containerId()[to]
-					: 0;
-			if (cid == 0)
-			{
-				final SiteType realType = (type != null) ? type : context.board().defaultSite();
-				newTo = context.game().equipment().containers()[cid].topology().getGraphElements(realType).get(to)
-						.label();
-			}
-		}
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-		if (type != null && !type.equals(context.board().defaultSite()))
-			sb.append(type + " " + newTo);
-		else
-			sb.append(newTo);
+    String newTo = to + "";
+    if (useCoords) {
+      final int cid =
+        type == SiteType.Cell ||
+        (type == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[to]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          type != null ? type : context.board().defaultSite();
+        newTo = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(to)
+          .label();
+      }
+    }
 
-		if (level != Constants.UNDEFINED)
-			sb.append("/" + level);
+    if (type != null && !type.equals(context.board().defaultSite())) sb.append(
+      type + " " + newTo
+    );
+    else sb.append(newTo);
 
-		sb.append(" to P" + who);
-		sb.append(" = " + value + ")");
-		return sb.toString();
-	}
+    if (level != Constants.UNDEFINED) sb.append("/" + level);
 
-	//-------------------------------------------------------------------------
+    sb.append("P" + who);
+    if (value) sb.append("=HiddenWhat");
+    else sb.append("!=HiddenWhat");
 
-	@Override
-	public int from()
-	{
-		return to;
-	}
+    return sb.toString();
+  }
 
-	@Override
-	public int to()
-	{
-		return to;
-	}
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public int levelFrom()
-	{
-		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
-	}
+    sb.append("(HiddenWhat at ");
 
-	@Override
-	public int levelTo()
-	{
-		return (level == Constants.UNDEFINED) ? Constants.GROUND_LEVEL : level;
-	}
+    String newTo = to + "";
+    if (useCoords) {
+      final int cid =
+        type == SiteType.Cell ||
+        (type == null && context.board().defaultSite() == SiteType.Cell)
+          ? context.containerId()[to]
+          : 0;
+      if (cid == 0) {
+        final SiteType realType =
+          type != null ? type : context.board().defaultSite();
+        newTo = context
+          .game()
+          .equipment()
+          .containers()[cid]
+          .topology()
+          .getGraphElements(realType)
+          .get(to)
+          .label();
+      }
+    }
 
-	@Override
-	public SiteType fromType()
-	{
-		return type;
-	}
+    if (type != null && !type.equals(context.board().defaultSite())) sb.append(
+      type + " " + newTo
+    );
+    else sb.append(newTo);
 
-	@Override
-	public SiteType toType()
-	{
-		return type;
-	}
-	
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.SetHiddenWhat;
-	}
+    if (level != Constants.UNDEFINED) sb.append("/" + level);
 
-	//-------------------------------------------------------------------------
+    sb.append(" to P" + who);
+    sb.append(" = " + value + ")");
+    return sb.toString();
+  }
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.set(Concept.SetHiddenWhat.id(), true);
-		return concepts;
-	}
+  //-------------------------------------------------------------------------
+
+  @Override
+  public int from() {
+    return to;
+  }
+
+  @Override
+  public int to() {
+    return to;
+  }
+
+  @Override
+  public int levelFrom() {
+    return level == Constants.UNDEFINED ? Constants.GROUND_LEVEL : level;
+  }
+
+  @Override
+  public int levelTo() {
+    return level == Constants.UNDEFINED ? Constants.GROUND_LEVEL : level;
+  }
+
+  @Override
+  public SiteType fromType() {
+    return type;
+  }
+
+  @Override
+  public SiteType toType() {
+    return type;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.SetHiddenWhat;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+    concepts.set(Concept.SetHiddenWhat.id(), true);
+    return concepts;
+  }
 }

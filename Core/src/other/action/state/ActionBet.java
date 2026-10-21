@@ -1,8 +1,7 @@
 package other.action.state;
 
-import java.util.BitSet;
-
 import game.rules.play.moves.Moves;
+import java.util.BitSet;
 import other.action.Action;
 import other.action.ActionType;
 import other.action.BaseAction;
@@ -14,187 +13,166 @@ import other.context.Context;
  *
  * @author Eric.Piette
  */
-public final class ActionBet extends BaseAction
-{
-	private static final long serialVersionUID = 1L;
+public final class ActionBet extends BaseAction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The player who bet. */
-	private final int player;
+  //-------------------------------------------------------------------------
 
-	/** The bet. */
-	private final int bet;
+  /** The player who bet. */
+  private final int player;
 
-	//-------------------------------------------------------------------------
-	
-	/** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
-	private boolean alreadyApplied = false;
-	
-	/** The previous amount. */
-	private int previousBet;
-	
-	//-------------------------------------------------------------------------
+  /** The bet. */
+  private final int bet;
 
-	/**
-	 * @param player The index of the player.
-	 * @param bet    The bet.
-	 */
-	public ActionBet
-	(
-		final int player, 
-		final int bet
-	)
-	{
-		this.player = player;
-		this.bet = bet;
-	}
+  //-------------------------------------------------------------------------
 
-	/**
-	 * Reconstructs an ActionBet object from a detailed String (generated using
-	 * toDetailedString())
-	 *
-	 * @param detailedString
-	 */
-	public ActionBet(final String detailedString)
-	{
-		assert (detailedString.startsWith("[Bet:"));
+  /** A variable to know that we already applied this action so we do not want to modify the data to undo if apply again. */
+  private boolean alreadyApplied = false;
 
-		final String strPlayer = Action.extractData(detailedString, "player");
-		player = Integer.parseInt(strPlayer);
+  /** The previous amount. */
+  private int previousBet;
 
-		final String strBet = Action.extractData(detailedString, "bet");
-		bet = Integer.parseInt(strBet);
+  //-------------------------------------------------------------------------
 
-		final String strDecision = Action.extractData(detailedString, "decision");
-		decision = (strDecision.isEmpty()) ? false : Boolean.parseBoolean(strDecision);
-	}
+  /**
+   * @param player The index of the player.
+   * @param bet    The bet.
+   */
+  public ActionBet(final int player, final int bet) {
+    this.player = player;
+    this.bet = bet;
+  }
 
-	//-------------------------------------------------------------------------
+  /**
+   * Reconstructs an ActionBet object from a detailed String (generated using
+   * toDetailedString())
+   *
+   * @param detailedString
+   */
+  public ActionBet(final String detailedString) {
+    assert detailedString.startsWith("[Bet:");
 
-	@Override
-	public Action apply(final Context context, final boolean store)
-	{
-		if(!alreadyApplied)
-		{
-			previousBet = context.state().amount(player);
-			alreadyApplied = true;
-		}
-		
-		context.state().setAmount(player, bet);
-		return this;
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public Action undo(final Context context, boolean discard)
-	{
-		context.state().setAmount(player, previousBet);
-		return this;
-	}
+    final String strPlayer = Action.extractData(detailedString, "player");
+    player = Integer.parseInt(strPlayer);
 
-	//-------------------------------------------------------------------------
+    final String strBet = Action.extractData(detailedString, "bet");
+    bet = Integer.parseInt(strBet);
 
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (decision ? 1231 : 1237);
-		result = prime * result + player;
-		result = prime * result + bet;
-		return result;
-	}
+    final String strDecision = Action.extractData(detailedString, "decision");
+    decision = strDecision.isEmpty()
+      ? false
+      : Boolean.parseBoolean(strDecision);
+  }
 
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if (this == obj)
-			return true;
+  //-------------------------------------------------------------------------
 
-		if (!(obj instanceof ActionBet))
-			return false;
+  @Override
+  public Action apply(final Context context, final boolean store) {
+    if (!alreadyApplied) {
+      previousBet = context.state().amount(player);
+      alreadyApplied = true;
+    }
 
-		final ActionBet other = (ActionBet) obj;
-		return (decision == other.decision && bet == other.bet && player == other.player);
-	}
+    context.state().setAmount(player, bet);
+    return this;
+  }
 
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toTrialFormat(final Context context)
-	{
-		final StringBuilder sb = new StringBuilder();
+  @Override
+  public Action undo(final Context context, boolean discard) {
+    context.state().setAmount(player, previousBet);
+    return this;
+  }
 
-		sb.append("[Bet:");
-		sb.append("player=" + player);
-		sb.append(",bet=" + bet);
-		if (decision)
-			sb.append(",decision=" + decision);
-		sb.append(']');
+  //-------------------------------------------------------------------------
 
-		return sb.toString();
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + (decision ? 1231 : 1237);
+    result = prime * result + player;
+    result = prime * result + bet;
+    return result;
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) return true;
 
-	@Override
-	public String getDescription()
-	{
-		return "Bet";
-	}
+    if (!(obj instanceof ActionBet)) return false;
 
-	@Override
-	public String toTurnFormat(final Context context, final boolean useCoords)
-	{
-		return "Bet P" + player + " $" + bet;
-	}
+    final ActionBet other = (ActionBet) obj;
+    return (
+      decision == other.decision && bet == other.bet && player == other.player
+    );
+  }
 
-	@Override
-	public String toMoveFormat(final Context context, final boolean useCoords)
-	{
-		return "(P" + player + " Bet = " + bet + ")";
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  @Override
+  public String toTrialFormat(final Context context) {
+    final StringBuilder sb = new StringBuilder();
 
-	@Override
-	public boolean isOtherMove()
-	{
-		return true;
-	}
+    sb.append("[Bet:");
+    sb.append("player=" + player);
+    sb.append(",bet=" + bet);
+    if (decision) sb.append(",decision=" + decision);
+    sb.append(']');
 
-	@Override
-	public int who()
-	{
-		return player;
-	}
+    return sb.toString();
+  }
 
-	@Override
-	public int count()
-	{
-		return bet;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public ActionType actionType()
-	{
-		return ActionType.Bet;
-	}
+  @Override
+  public String getDescription() {
+    return "Bet";
+  }
 
-	//-------------------------------------------------------------------------
+  @Override
+  public String toTurnFormat(final Context context, final boolean useCoords) {
+    return "Bet P" + player + " $" + bet;
+  }
 
-	@Override
-	public BitSet concepts(final Context context, final Moves movesLudeme)
-	{
-		final BitSet concepts = new BitSet();
-		
-		if (decision)
-			concepts.set(Concept.BetDecision.id(), true);
-		else
-			concepts.set(Concept.BetEffect.id(), true);
-		
-		return concepts;
-	}
+  @Override
+  public String toMoveFormat(final Context context, final boolean useCoords) {
+    return "(P" + player + " Bet = " + bet + ")";
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public boolean isOtherMove() {
+    return true;
+  }
+
+  @Override
+  public int who() {
+    return player;
+  }
+
+  @Override
+  public int count() {
+    return bet;
+  }
+
+  @Override
+  public ActionType actionType() {
+    return ActionType.Bet;
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public BitSet concepts(final Context context, final Moves movesLudeme) {
+    final BitSet concepts = new BitSet();
+
+    if (decision) concepts.set(Concept.BetDecision.id(), true);
+    else concepts.set(Concept.BetEffect.id(), true);
+
+    return concepts;
+  }
 }

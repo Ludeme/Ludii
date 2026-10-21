@@ -1,8 +1,5 @@
 package game.functions.booleans.all.groups;
 
-import java.util.BitSet;
-import java.util.List;
-
 import annotations.Hide;
 import annotations.Name;
 import annotations.Opt;
@@ -16,6 +13,8 @@ import game.util.directions.AbsoluteDirection;
 import game.util.directions.Direction;
 import game.util.equipment.Region;
 import gnu.trove.list.array.TIntArrayList;
+import java.util.BitSet;
+import java.util.List;
 import other.concept.Concept;
 import other.context.Context;
 import other.context.EvalContextData;
@@ -25,293 +24,286 @@ import other.topology.TopologyElement;
 
 /**
  * Returns true if all the groups of the board verify a condition.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class AllGroups extends BaseBooleanFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class AllGroups extends BaseBooleanFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** The condition for each element of the group. */
-	private final BooleanFunction groupElementConditionFn;
-	
-	/** The condition for each group to check. */
-	private final BooleanFunction groupCondition;
-	
-	/** Direction chosen. */
-	private final DirectionsFunction dirnChoice;
+  //-------------------------------------------------------------------------
 
-	/** The graph element type. */
-	private SiteType type;
-	
-	//-------------------------------------------------------------------------
-	
-	/**
-	 * @param type        The type of the graph elements of the group.
-	 * @param directions  The directions of the connection between elements in the
-	 *                    group [Adjacent].
-	 * @param of          The condition on the pieces to include in the group [(= (to) (mover))].
-	 * @param If          The condition for each group to verify.
-	 */
-	public AllGroups
-	(
-			@Opt	   final SiteType type,
-			@Opt       final Direction    directions,
-			@Opt @Name final BooleanFunction of,
-			     @Name final BooleanFunction If
-	)
-	{ 
-		this.type = type;
-		groupCondition = If;
-		groupElementConditionFn = of;
-		dirnChoice = (directions != null) ? directions.directionsFunctions()
-				: new Directions(AbsoluteDirection.Adjacent, null);
-	} 
+  /** The condition for each element of the group. */
+  private final BooleanFunction groupElementConditionFn;
 
-	//-------------------------------------------------------------------------
+  /** The condition for each group to check. */
+  private final BooleanFunction groupCondition;
 
-	@Override
-	public boolean eval(final Context context)
-	{
-		final Topology topology = context.topology();
-		final int maxIndexElement = context.topology().getGraphElements(type).size();
-		final ContainerState cs = context.containerState(0);
-		final int origFrom = context.from();
-		final int origTo = context.to();
-		final Region origRegion = context.region();
-		final int who = context.state().mover();
+  /** Direction chosen. */
+  private final DirectionsFunction dirnChoice;
 
-		// We get the minimum set of sites to look.
-		final TIntArrayList sitesToCheck = new TIntArrayList();
-		if (groupElementConditionFn != null)
-		{
-			for (int i = 0; i <= context.game().players().size(); i++)
-			{
-				final TIntArrayList allSites = context.state().owned().sites(i);
-				for (int j = 0; j < allSites.size(); j++)
-				{
-					final int site = allSites.get(j);
-					if (site < maxIndexElement)
-						sitesToCheck.add(site);
-				}
-			}
-		}
-		else
-		{
-			for (int j = 0; j < context.state().owned().sites(who).size(); j++)
-			{
-				final int site = context.state().owned().sites(who).get(j);
-				if (site < maxIndexElement)
-					sitesToCheck.add(site);
-			}
-		}
+  /** The graph element type. */
+  private SiteType type;
 
-		// We get each group.
-		final TIntArrayList sitesChecked = new TIntArrayList();
-		for (int k = 0; k < sitesToCheck.size(); k++)
-		{
-			final int from = sitesToCheck.get(k);
+  //-------------------------------------------------------------------------
 
-			if (sitesChecked.contains(from))
-				continue;
+  /**
+   * @param type        The type of the graph elements of the group.
+   * @param directions  The directions of the connection between elements in the
+   *                    group [Adjacent].
+   * @param of          The condition on the pieces to include in the group [(= (to) (mover))].
+   * @param If          The condition for each group to verify.
+   */
+  public AllGroups(
+    @Opt final SiteType type,
+    @Opt final Direction directions,
+    @Opt @Name final BooleanFunction of,
+    @Name final BooleanFunction If
+  ) {
+    this.type = type;
+    groupCondition = If;
+    groupElementConditionFn = of;
+    dirnChoice =
+      directions != null
+        ? directions.directionsFunctions()
+        : new Directions(AbsoluteDirection.Adjacent, null);
+  }
 
-			final TIntArrayList groupSites = new TIntArrayList();
+  //-------------------------------------------------------------------------
 
-			context.setFrom(from);
-			context.setTo(from);
-			if ((who == cs.who(from, type) && groupElementConditionFn == null) || (groupElementConditionFn != null && groupElementConditionFn.eval(context)))
-				groupSites.add(from);
+  @Override
+  public boolean eval(final Context context) {
+    final Topology topology = context.topology();
+    final int maxIndexElement = context
+      .topology()
+      .getGraphElements(type)
+      .size();
+    final ContainerState cs = context.containerState(0);
+    final int origFrom = context.from();
+    final int origTo = context.to();
+    final Region origRegion = context.region();
+    final int who = context.state().mover();
 
-			if (groupSites.size() > 0)
-			{
-				context.setFrom(from);
-				final TIntArrayList sitesExplored = new TIntArrayList();
-				int i = 0;
-				while (sitesExplored.size() != groupSites.size())
-				{
-					final int site = groupSites.get(i);
-					final TopologyElement siteElement = topology.getGraphElements(type).get(site);
-					final List<AbsoluteDirection> directions = dirnChoice.convertToAbsolute(type, siteElement, null,
-							null, null, context);
+    // We get the minimum set of sites to look.
+    final TIntArrayList sitesToCheck = new TIntArrayList();
+    if (groupElementConditionFn != null) {
+      for (int i = 0; i <= context.game().players().size(); i++) {
+        final TIntArrayList allSites = context.state().owned().sites(i);
+        for (int j = 0; j < allSites.size(); j++) {
+          final int site = allSites.get(j);
+          if (site < maxIndexElement) sitesToCheck.add(site);
+        }
+      }
+    } else {
+      for (int j = 0; j < context.state().owned().sites(who).size(); j++) {
+        final int site = context.state().owned().sites(who).get(j);
+        if (site < maxIndexElement) sitesToCheck.add(site);
+      }
+    }
 
-					for (final AbsoluteDirection direction : directions)
-					{
-						final List<game.util.graph.Step> steps = topology.trajectories().steps(type,
-								siteElement.index(), type, direction);
+    // We get each group.
+    final TIntArrayList sitesChecked = new TIntArrayList();
+    for (int k = 0; k < sitesToCheck.size(); k++) {
+      final int from = sitesToCheck.get(k);
 
-						for (final game.util.graph.Step step : steps)
-						{
-							final int to = step.to().id();
+      if (sitesChecked.contains(from)) continue;
 
-							// If we already have it we continue to look the others.
-							if (groupSites.contains(to))
-								continue;
+      final TIntArrayList groupSites = new TIntArrayList();
 
-							context.setTo(to);
-							if ((groupElementConditionFn == null && who == cs.who(to, type)
-									|| (groupElementConditionFn != null && groupElementConditionFn.eval(context))))
-								groupSites.add(to);
-						}
-					}
+      context.setFrom(from);
+      context.setTo(from);
+      if (
+        (who == cs.who(from, type) && groupElementConditionFn == null) ||
+        (groupElementConditionFn != null &&
+          groupElementConditionFn.eval(context))
+      ) groupSites.add(from);
 
-					sitesExplored.add(site);
-					i++;
-				}
+      if (groupSites.size() > 0) {
+        context.setFrom(from);
+        final TIntArrayList sitesExplored = new TIntArrayList();
+        int i = 0;
+        while (sitesExplored.size() != groupSites.size()) {
+          final int site = groupSites.get(i);
+          final TopologyElement siteElement = topology
+            .getGraphElements(type)
+            .get(site);
+          final List<AbsoluteDirection> directions =
+            dirnChoice.convertToAbsolute(
+              type,
+              siteElement,
+              null,
+              null,
+              null,
+              context
+            );
 
-				context.setRegion(new Region(groupSites.toArray()));
-				if(!groupCondition.eval(context))
-					return false;
+          for (final AbsoluteDirection direction : directions) {
+            final List<game.util.graph.Step> steps = topology
+              .trajectories()
+              .steps(type, siteElement.index(), type, direction);
 
-				sitesChecked.addAll(groupSites);
-			}
-		}
+            for (final game.util.graph.Step step : steps) {
+              final int to = step.to().id();
 
-		context.setTo(origTo);
-		context.setFrom(origFrom);
-		context.setRegion(origRegion);
+              // If we already have it we continue to look the others.
+              if (groupSites.contains(to)) continue;
 
-		return true;
-	}
+              context.setTo(to);
+              if (
+                (groupElementConditionFn == null && who == cs.who(to, type)) ||
+                (groupElementConditionFn != null &&
+                  groupElementConditionFn.eval(context))
+              ) groupSites.add(to);
+            }
+          }
 
-	//-------------------------------------------------------------------------
+          sitesExplored.add(site);
+          i++;
+        }
 
-	@Override
-	public String toString()
-	{
-		return "AllGroups()";
-	}
+        context.setRegion(new Region(groupSites.toArray()));
+        if (!groupCondition.eval(context)) return false;
 
-	//-------------------------------------------------------------------------
+        sitesChecked.addAll(groupSites);
+      }
+    }
 
-	@Override
-	public boolean isStatic()
-	{
-		return false;
-	}
+    context.setTo(origTo);
+    context.setFrom(origFrom);
+    context.setRegion(origRegion);
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long gameFlags = 0L;
+    return true;
+  }
 
-		gameFlags |= SiteType.gameFlags(type);
+  //-------------------------------------------------------------------------
 
-		if (groupElementConditionFn != null)
-			gameFlags |= groupElementConditionFn.gameFlags(game);
+  @Override
+  public String toString() {
+    return "AllGroups()";
+  }
 
-		if (groupCondition != null)
-			gameFlags |= groupCondition.gameFlags(game);
-		
-		return gameFlags;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(SiteType.concepts(type));
-		concepts.set(Concept.Group.id(), true);
+  @Override
+  public boolean isStatic() {
+    return false;
+  }
 
-		if (groupElementConditionFn != null)
-			concepts.or(groupElementConditionFn.concepts(game));
+  @Override
+  public long gameFlags(final Game game) {
+    long gameFlags = 0L;
 
-		if (groupCondition != null)
-			concepts.or(groupCondition.concepts(game));
+    gameFlags |= SiteType.gameFlags(type);
 
-		if (dirnChoice != null)
-			concepts.or(dirnChoice.concepts(game));
+    if (groupElementConditionFn != null) gameFlags |=
+      groupElementConditionFn.gameFlags(game);
 
-		return concepts;
-	}
+    if (groupCondition != null) gameFlags |= groupCondition.gameFlags(game);
 
-	@Override
-	public BitSet writesEvalContextFlat()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		writeEvalContext.set(EvalContextData.To.id(), true);
-		writeEvalContext.set(EvalContextData.From.id(), true);
-		writeEvalContext.set(EvalContextData.Region.id(), true);
-		return writeEvalContext;
-	}
-	
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		
-		if (groupElementConditionFn != null)
-			writeEvalContext.or(groupElementConditionFn.writesEvalContextRecursive());
-		
-		if (groupCondition != null)
-			writeEvalContext.or(groupCondition.writesEvalContextRecursive());
+    return gameFlags;
+  }
 
-		if (dirnChoice != null)
-			writeEvalContext.or(dirnChoice.writesEvalContextRecursive());
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(SiteType.concepts(type));
+    concepts.set(Concept.Group.id(), true);
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		
-		if (groupElementConditionFn != null)
-			readEvalContext.or(groupElementConditionFn.readsEvalContextRecursive());
-		
-		if (groupCondition != null)
-			readEvalContext.or(groupCondition.readsEvalContextRecursive());
+    if (groupElementConditionFn != null) concepts.or(
+      groupElementConditionFn.concepts(game)
+    );
 
-		if (dirnChoice != null)
-			readEvalContext.or(dirnChoice.readsEvalContextRecursive());
-		return readEvalContext;
-	}
+    if (groupCondition != null) concepts.or(groupCondition.concepts(game));
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
+    if (dirnChoice != null) concepts.or(dirnChoice.concepts(game));
 
-		if (groupElementConditionFn != null)
-			groupElementConditionFn.preprocess(game);
+    return concepts;
+  }
 
-		if (groupCondition != null)
-			groupCondition.preprocess(game);
-	}
+  @Override
+  public BitSet writesEvalContextFlat() {
+    final BitSet writeEvalContext = new BitSet();
+    writeEvalContext.set(EvalContextData.To.id(), true);
+    writeEvalContext.set(EvalContextData.From.id(), true);
+    writeEvalContext.set(EvalContextData.Region.id(), true);
+    return writeEvalContext;
+  }
 
-	@Override
-	public boolean missingRequirement(final Game game)
-	{
-		boolean missingRequirement = false;
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
 
-		if (groupElementConditionFn != null)
-			missingRequirement |= groupElementConditionFn.missingRequirement(game);
-		
-		if (groupCondition != null)
-			missingRequirement |= groupCondition.missingRequirement(game);
-		
-		return missingRequirement;
-	}
-	
-	@Override
-	public boolean willCrash(final Game game)
-	{
-		boolean willCrash = false;
+    if (groupElementConditionFn != null) writeEvalContext.or(
+      groupElementConditionFn.writesEvalContextRecursive()
+    );
 
-		if (groupElementConditionFn != null)
-			willCrash |= groupElementConditionFn.willCrash(game);
-		
-		if (groupCondition != null)
-			willCrash |= groupCondition.willCrash(game);
-		
-		return willCrash;
-	}
-	
-	@Override
-	public String toEnglish(final Game game) 
-	{
-		return "all groups satisfy the condition " + groupCondition.toEnglish(game);
-	}
+    if (groupCondition != null) writeEvalContext.or(
+      groupCondition.writesEvalContextRecursive()
+    );
+
+    if (dirnChoice != null) writeEvalContext.or(
+      dirnChoice.writesEvalContextRecursive()
+    );
+    return writeEvalContext;
+  }
+
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+
+    if (groupElementConditionFn != null) readEvalContext.or(
+      groupElementConditionFn.readsEvalContextRecursive()
+    );
+
+    if (groupCondition != null) readEvalContext.or(
+      groupCondition.readsEvalContextRecursive()
+    );
+
+    if (dirnChoice != null) readEvalContext.or(
+      dirnChoice.readsEvalContextRecursive()
+    );
+    return readEvalContext;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
+
+    if (groupElementConditionFn != null) groupElementConditionFn.preprocess(
+      game
+    );
+
+    if (groupCondition != null) groupCondition.preprocess(game);
+  }
+
+  @Override
+  public boolean missingRequirement(final Game game) {
+    boolean missingRequirement = false;
+
+    if (groupElementConditionFn != null) missingRequirement |=
+      groupElementConditionFn.missingRequirement(game);
+
+    if (groupCondition != null) missingRequirement |=
+      groupCondition.missingRequirement(game);
+
+    return missingRequirement;
+  }
+
+  @Override
+  public boolean willCrash(final Game game) {
+    boolean willCrash = false;
+
+    if (groupElementConditionFn != null) willCrash |=
+      groupElementConditionFn.willCrash(game);
+
+    if (groupCondition != null) willCrash |= groupCondition.willCrash(game);
+
+    return willCrash;
+  }
+
+  @Override
+  public String toEnglish(final Game game) {
+    return "all groups satisfy the condition " + groupCondition.toEnglish(game);
+  }
 }

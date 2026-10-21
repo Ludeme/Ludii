@@ -1,119 +1,104 @@
 package game.functions.region.sites.simple;
 
-import java.util.BitSet;
-
 import annotations.Hide;
 import annotations.Opt;
 import game.Game;
 import game.functions.region.BaseRegionFunction;
 import game.types.board.SiteType;
 import game.util.equipment.Region;
+import java.util.BitSet;
 import other.context.Context;
 
 /**
  * Returns all the centre sites of the board.
- * 
+ *
  * @author Eric.Piette
  */
 @Hide
-public final class SitesCentre extends BaseRegionFunction
-{
-	private static final long serialVersionUID = 1L;
+public final class SitesCentre extends BaseRegionFunction {
 
-	//-------------------------------------------------------------------------
+  private static final long serialVersionUID = 1L;
 
-	/** If we can, we'll precompute once and cache. */
-	private Region precomputedRegion = null;
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /** If we can, we'll precompute once and cache. */
+  private Region precomputedRegion = null;
 
-	/**
-	 * @param elementType Type of graph elements to return [Cell (or Vertex if the
-	 *                    main board uses intersections)].
-	 */
-	public SitesCentre
-	(
-		@Opt final SiteType elementType
-	)
-	{
-		type = elementType;
-	}
+  //-------------------------------------------------------------------------
 
-	//-------------------------------------------------------------------------
+  /**
+   * @param elementType Type of graph elements to return [Cell (or Vertex if the
+   *                    main board uses intersections)].
+   */
+  public SitesCentre(@Opt final SiteType elementType) {
+    type = elementType;
+  }
 
-	@Override
-	public Region eval(final Context context)
-	{
-		if (precomputedRegion != null)
-			return precomputedRegion;
+  //-------------------------------------------------------------------------
 
-		final SiteType realType = (type != null) ? type
-				: context.game().board().defaultSite();
+  @Override
+  public Region eval(final Context context) {
+    if (precomputedRegion != null) return precomputedRegion;
 
-		final other.topology.Topology graph = context.topology();
-		return new Region(graph.centre(realType));
-	}
+    final SiteType realType =
+      type != null ? type : context.game().board().defaultSite();
 
-	//-------------------------------------------------------------------------
+    final other.topology.Topology graph = context.topology();
+    return new Region(graph.centre(realType));
+  }
 
-	@Override
-	public boolean isStatic()
-	{
-		return true;
-	}
+  //-------------------------------------------------------------------------
 
-	@Override
-	public String toString()
-	{
-		return "Centre()";
-	}
+  @Override
+  public boolean isStatic() {
+    return true;
+  }
 
-	@Override
-	public long gameFlags(final Game game)
-	{
-		long flags = 0L;
+  @Override
+  public String toString() {
+    return "Centre()";
+  }
 
-		flags |= SiteType.gameFlags(type);
+  @Override
+  public long gameFlags(final Game game) {
+    long flags = 0L;
 
-		return flags;
-	}
+    flags |= SiteType.gameFlags(type);
 
-	@Override
-	public BitSet concepts(final Game game)
-	{
-		final BitSet concepts = new BitSet();
-		concepts.or(SiteType.concepts(type));
-		return concepts;
-	}
+    return flags;
+  }
 
-	@Override
-	public BitSet writesEvalContextRecursive()
-	{
-		final BitSet writeEvalContext = new BitSet();
-		return writeEvalContext;
-	}
+  @Override
+  public BitSet concepts(final Game game) {
+    final BitSet concepts = new BitSet();
+    concepts.or(SiteType.concepts(type));
+    return concepts;
+  }
 
-	@Override
-	public BitSet readsEvalContextRecursive()
-	{
-		final BitSet readEvalContext = new BitSet();
-		return readEvalContext;
-	}
+  @Override
+  public BitSet writesEvalContextRecursive() {
+    final BitSet writeEvalContext = new BitSet();
+    return writeEvalContext;
+  }
 
-	@Override
-	public void preprocess(final Game game)
-	{
-		type = SiteType.use(type, game);
-		precomputedRegion = eval(new Context(game, null));
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	public String toEnglish(final Game game)
-	{
-		return "the centre sites of the board";
-	}
-	
-	//-------------------------------------------------------------------------
+  @Override
+  public BitSet readsEvalContextRecursive() {
+    final BitSet readEvalContext = new BitSet();
+    return readEvalContext;
+  }
+
+  @Override
+  public void preprocess(final Game game) {
+    type = SiteType.use(type, game);
+    precomputedRegion = eval(new Context(game, null));
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  public String toEnglish(final Game game) {
+    return "the centre sites of the board";
+  }
+
+  //-------------------------------------------------------------------------
 }

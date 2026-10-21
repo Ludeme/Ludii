@@ -10,33 +10,33 @@ import other.state.track.OnTrackIndicesCOW;
  *
  * @author Dennis Soemers
  */
-public final class CopyOnWriteState extends State
-{
-	
-	//-------------------------------------------------------------------------
-	
-	/** */
-	private static final long serialVersionUID = 1L;
-	
-	//-------------------------------------------------------------------------
+public final class CopyOnWriteState extends State {
 
-	/**
-	 * Copy constructor (with some copy-on-write behaviour)
-	 * @param other
-	 */
-	public CopyOnWriteState(final State other)
-	{
-		super(other);
-	}
-	
-	//-------------------------------------------------------------------------
-	
-	@Override
-	protected OnTrackIndices copyOnTrackIndices(final OnTrackIndices otherOnTrackIndices)
-	{
-		return otherOnTrackIndices == null ? null : new OnTrackIndicesCOW(otherOnTrackIndices);
-	}
-	
-	//-------------------------------------------------------------------------
+  //-------------------------------------------------------------------------
 
+  /** */
+  private static final long serialVersionUID = 1L;
+
+  //-------------------------------------------------------------------------
+
+  /**
+   * Copy constructor (with some copy-on-write behaviour)
+   * @param other
+   */
+  public CopyOnWriteState(final State other) {
+    super(other);
+  }
+
+  //-------------------------------------------------------------------------
+
+  @Override
+  protected OnTrackIndices copyOnTrackIndices(
+    final OnTrackIndices otherOnTrackIndices
+  ) {
+    return otherOnTrackIndices == null
+      ? null
+      : new OnTrackIndicesCOW(otherOnTrackIndices);
+  }
+
+  //-------------------------------------------------------------------------
 }
